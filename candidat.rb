@@ -13,7 +13,9 @@ module Democratech
 
 		get '/candidat/:uuid' do
 			res=Candidat.db.exec("SELECT * FROM candidates WHERE uuid='%s'" % [params['uuid']])
-			erb :candidat, :locals=>{:candidat=>res[0]}
+			puts params
+			page={'url'=>"toto"}
+			erb :candidat, :locals=>{:candidat=>res[0],:page=>page}
 		end
 	end
 end

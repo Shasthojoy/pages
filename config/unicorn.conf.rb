@@ -5,6 +5,7 @@ require 'bundler/setup'
 # http://nebulab.it/blog/monitoring-unicorn-with-monit
 # For complete documentation, see http://unicorn.bogomips.org/Unicorn/Configurator.html
 APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
+require APP_ROOT+'/candidat.rb'
 
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
@@ -16,7 +17,7 @@ working_directory APP_ROOT # available in 0.94.0+
 
 # listen on both a Unix domain socket and a TCP port,
 # we use a shorter backlog for quicker failover when busy
-listen 9293, :tcp_nopush => true
+listen 9293
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
@@ -46,6 +47,7 @@ end
 
 before_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
+  Democratech::Candidat.db.close if not Democratech::Candidat.db.nil?
   old_pid = "%s/pid.oldbin" % [APP_ROOT]
   if File.exists?(old_pid) && server.pid != old_pid
     begin
@@ -59,7 +61,7 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
-
+  Democratech::Candidat.db=PG::Connection.open(:dbname=>DBNAME,"user"=>DBUSER,"sslmode"=>"require","password"=>DBPWD,"host"=>DBHOST)
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
