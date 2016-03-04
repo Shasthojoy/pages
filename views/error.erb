@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="LaPrimaire.org">
+    <title>Page candidat inconnue</title>
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://laprimaire.org/docs/laprimaire.css">
+    <style>
+body {
+	background: url(https://web.laprimaire.org/img/laprimaire/background-image.jpg) repeat center center fixed;
+}
+header {
+	background:none;
+}
+h2 span {
+	color: #d91d1c;
+}
+h2.green {
+	color:white;
+	background-color:green;
+	margin-left:-10px;
+	width:107%;
+	padding:5px;
+}
+h2.red {
+	color:white;
+	background-color:#d91d1c;
+	margin-left:-10px;
+	width:107%;
+	padding:5px;
+}
+h2 {
+	font-size: 28px;
+}
+#candidat_support.qualified {
+	border:20px solid green;
+}
+#candidat_support {
+	border:20px solid #d91d1c;
+	padding:10px;
+	margin-top:10px;
+	background-color:white;
+}
+#candidat_about {
+	border:20px solid #527bdd;
+	padding:10px;
+	margin-top:-40px;
+	background-color:white;
+}
+#candidat_photo {
+	border: 1px solid #5e5e5e;
+	margin:20px;
+}
+#candidat_name {
+	font-size: 24px;
+	font-weight: bold;
+	margin:20px;
+}
+#candidat_programme p {
+	margin-top: 20px;
+	font-size: 14px;
+}
+#candidat_programme {
+	margin: 20px;
+}
+#candidat_soutiens {
+	font-size: 15px;
+	margin-top:10px;
+}
+#candidat_legend {
+	font-size: 15px;
+	margin:15px 0px;
+}
+#candidat_supportme {
+	font-size: 15px;
+}
+.navbar-default {
+	border-bottom:40px solid #d91d1c;
+}
+.donateurs .goalProgress {
+	/*background: #527bdd;*/
+	background: white;
+	border:1px solid #BBB;
+}
+.donateurs div.progressBar {
+	/*background: #d91d1c;*/
+	background: #56d840;
+	overflow:visible;
+	height:32px;
+	color: #5e5e5e;
+	text-align:left;
+	font-size: 22px;
+	letter-spacing: -1px;
+	padding-left: 20px;
+	padding-top: 2px;
+	display: block;
+	width: 20px;
+}
+span.goalAmount {
+	display: none;
+	text-indent: -9999px;
+}
+
+@media (min-width: 768px) {
+	#candidat_support {
+		margin-left:-60px;
+	}
+}
+    </style>
+</head>
+<body class="index">
+<div id="fb-root"></div>
+<!-- Navigation -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+		<a class="navbar-brand" href="/"><img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg" width="185" height="60" alt="logo LaPrimaire.org"></a>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+	<div class="container">
+            <div class="row">
+		    <div class="col-lg-12">
+			    <div style="border:2px solid #527bdd;background-color:white;padding-bottom:10px;margin:0 auto;width: 400px;">
+				    <h2><%= error['title'] %></h2>
+				    <p><%= error['message'] %></p>
+			    </div>
+		    </div>
+            </div>
+       </div>
+    </header>
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -61,8 +61,7 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
-  Democratech::Candidat.db=PG.connect(:dbname=>DBNAME,"user"=>DBUSER,"sslmode"=>"require","password"=>DBPWD,"host"=>DBHOST) 
-  Democratech::Candidat.db.prepare("get_candidate",GET_CANDIDATE)
+  Democratech::Candidat.db_init
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
