@@ -34,112 +34,225 @@
     <link rel="stylesheet" href="https://laprimaire.org/docs/laprimaire.css">
     <style>
 body {
+	background: url(https://web.laprimaire.org/img/laprimaire/background-image.jpg) repeat center center fixed;
+}
+header {
+	background:none;
+}
+h2 span {
+	color: #d91d1c;
+}
+h2.red {
+	color:white;
+	background-color:#d91d1c;
+	margin-left:-10px;
+	width:107%;
+	padding:5px;
+}
+h2 {
+	font-size: 28px;
+}
+#candidat_support.qualified {
+	border:20px solid green;
+}
+#candidat_support {
+	border:20px solid #d91d1c;
+	padding:10px;
+	margin-top:10px;
+	background-color:white;
+}
+#candidat_about {
+	border:20px solid #527bdd;
+	padding:10px;
+	margin-top:-40px;
+	background-color:white;
+}
+#candidat_photo {
+	border: 1px solid #5e5e5e;
+	margin:20px;
+}
+#candidat_name {
+	font-size: 24px;
+	font-weight: bold;
+	margin:20px;
+}
+#candidat_programme p {
+	margin-top: 20px;
+	font-size: 14px;
+}
+#candidat_programme {
+	margin: 20px;
+}
+#candidat_soutiens {
+	font-size: 15px;
+	margin-top:10px;
+}
+#candidat_legend {
+	font-size: 15px;
+}
+#candidat_supportme {
+	font-size: 15px;
+}
+.navbar-default {
+	border-bottom:40px solid #d91d1c;
+}
+.donateurs .goalProgress {
+	/*background: #527bdd;*/
+	background: white;
+	border:1px solid #BBB;
+}
+.donateurs div.progressBar {
+	/*background: #d91d1c;*/
+	background: #56d840;
+	overflow:visible;
+	height:32px;
+	color: #5e5e5e;
+	text-align:left;
+	font-size: 22px;
+	letter-spacing: -1px;
+	padding-left: 20px;
+	padding-top: 2px;
+	display: block;
+	width: 20px;
+}
+span.goalAmount {
+	display: none;
+	text-indent: -9999px;
+}
+
+@media (min-width: 768px) {
+	#candidat_support {
+		margin-left:-60px;
+	}
 }
     </style>
 </head>
 <body class="index">
 <div id="fb-root"></div>
 <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Changer la navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
 		<a class="navbar-brand" href="/"><img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg" width="185" height="60" alt="logo LaPrimaire.org"></a>
             </div>
-
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
 
     <header>
-	<div id="header_overlay" class="white">
 	<div class="container">
-	    <div class="intro-text">
-		<div class="intro-heading">Pour un vrai choix en 2017&nbsp;!</div>
-		<div class="intro-lead-in">La Primaire Ouverte pour l'élection Présidentielle de 2017</div>
-	    </div>
             <div class="row">
-                <div class="col-lg-12">
-                    <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row" id="lettre_inline">
-                            <div class="col-md-8">
-				    <div class="lettre">
-					    <h3>Qu'est-ce que LaPrimaire.org ?</h3>
-					    <p><i>LaPrimaire.org</i> est <b>une primaire ouverte</b>, organisée pour permettre aux Français de choisir librement, de manière <b>transparente</b> et <b>démocratique</b>, les candidats qu'ils souhaitent voir se présenter à l'élection présidentielle de 2017 (voir <a href="/manifeste">notre manifeste</a>).</p>
-					    <h3>Quel intérêt ?</h3>
-					    <p>Aujourd'hui en France, les partis politiques (<a target="_blank" href="http://www.lemonde.fr/les-decodeurs/article/2015/09/22/des-republicains-au-ps-la-desertion-des-militants_4766932_4355770.html">365,000 personnes</a> soit <b>0,5% de la population</b>) désignent les candidats aux élections alors que les citoyens <a href="http://www.cevipof.com/fr/le-barometre-de-la-confiance-politique-du-cevipof/resultats-1/vague6/vague6prime/" target="_blank">les rejettent massivement</a>. L'objectif de <i>LaPrimaire.org</i> est d'insuffler un nouvel élan démocratique à notre pays en favorisant le renouvellement de notre classe politique.</p>
-					    <h3>Comment ça marche ?</h3>
-					    <p>Un processus de sélection des candidats (voir <a href="/deroulement/">le déroulement</a>) a été spécifiquement mis au point pour permettre une primaire démocratique à laquelle toute personne peut se présenter et au sein de laquelle toutes les idées peuvent s'exprimer.</p>
-					    <h3>Comment participer ?</h3>
-					    <p>Pour participer, en tant que citoyen ou candidat, <a href="/participer">inscrivez-vous</a> dès aujourd'hui. Il est important de s'inscrire dès à présent car la primaire <b>n'aura pas lieu si moins de 100,000 citoyens sont inscrits</b> au moment du vote.</p>
-					    <h3>Qui organise ?</h3>
-					    <p><i>LaPrimaire.org</i> est organisée de manière entièrement <b>bénévole</b> par des <a href="/equipe/">citoyens ordinaires</a> <b>indépendants des partis politiques</b> via <a href="/statuts/">une association loi 1901</a>.</p>
-					    <h3>Qui finance ?</h3>
-					    <p>Pour financer <i>LaPrimaire.org</i>, nous avons ouvert une <a href="/financer/" class="donate-link">campagne de financement participatif</a>. Si vous estimez que ce projet est utile pour l'avenir de notre démocratie, n'hésitez pas à <a href="/financer/" class="donate-link"><b>faire un don</b></a>, selon vos moyens, peu importe le montant. <b>Chaque don compte</b> afin que la primaire puisse avoir lieu.</p>
-				    </div><a name="lancement"></a>
-					<div style="margin:20px auto 50px auto; min-height:30px; width:300px;">
-					    <div class="col-xs-12 col-md-6" style="text-align:center;padding:5px;">
-	<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-text="LaPrimaire.org - Pour un vrai choix de candidats en 2017 !" data-via="democratech" data-url="https://laprimaire.org">Tweet</a>
-					    </div>
-					    <div class="col-xs-12 col-md-6" style="text-align:center;padding:5px;">
-						<div class="fb-like" data-href="https://laprimaire.org" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
-					    </div>
+                <div class="col-lg-6">
+			<div id="candidat_about">
+				<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
+				<div id="candidat_name"><%= candidat['name'] %></div>
+				<div id="candidat_programme">
+				<% if candidat['trello'].nil? %>
+					<button type="button" style="padding:10px;" class="btn btn-primary" disabled="disabled"><i>Voir son programme</i></button>
+					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> n'a pas encore mis son programme en ligne.</p>
+				<% else %>
+					<button type="button" style="padding:10px;" class="btn btn-primary">Voir son programme</button>
+				<% end %>
+				</div>
+			</div>
+                </div>
+		<div class="col-lg-6">
+			<div>
+				<% if not candidat['qualified']  %>
+					<h2><span>Statut :</span> pas encore <%= gender['qualifié'] %></h2>
+				<% else %>
+					<h2><span>Statut :</span> <%= gender['qualifié'].capitalize %> !</h2>
+				<% end %>
+			</div>
+			<div id="candidat_support" <% if candidat['qualified'] %>class="qualified"<% end %>>
+				<div class="row pledge">
+					<div class="col-xs-12" style="padding-right:0px;padding-left:0px;">
+						<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">500+</div>
+						<div id="fundraising_bar" class="donateurs"></div>
 					</div>
-                            </div>
-                            <div class="col-md-4">
-				    <a href="/10000/" style="text-decoration:none;"><div id="campaign_title" style="margin:5px 0px;font-size:22px;color:#d91d1c;"></div></a>
-				<div style="background-color:#527bdd;padding: 4px 0px 0px 0px;">
-					<div style="margin:0px auto 4px auto;width:98%;padding:5px;background-color:white;" class="hidden-xs hidden-sm">
-						<div style="margin:0px auto;width:321px;height:175px;">
-							<canvas id="myChart" width="300" height="160"></canvas>
+				</div>
+				<% if not candidat['qualified']  %>
+					<div id="candidat_soutiens">Pour se qualifier et pouvoir participer à LaPrimaire.org <%= candidat['name'] %> doit rassembler 500 soutiens citoyens.</div>
+				<% else %>
+					<div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 500 citoyens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
+				<% end %>
+				<h2 class="red">Soutenez <%= candidat['name'] %></h2>
+				<div id="candidat_legend">Vous aimeriez que <%= candidat['name'] %> participe à LaPrimaire.org pour y apporter ses idées et participe à la construction de l'avenir du pays&nbsp;?</div>
+				<a data-toggle="modal" data-target="#Isupport" class="btn btn-success" style="font-weight:bold;padding:10px;margin:10px;">APPORTER MON SOUTIEN</a>
+				<h3>Aidez <%= candidat['name'] %></h3>
+				<div id="candidat_supportme">Invitez vos amis et proches à soutenir <%= candidat['name'] %>&nbsp;:</div><br/>
+				<div class="row">
+					<div class="col-lg-4 text-center">
+						<div class="shareitem">
+							<a href="/email/?candidat=<%= candidat['uuid'] %>" target="_blank"><img style="height:90px;border: 4px solid #d74937;" src="https://laprimaire.org/assets/images/partage/email-share-small.png"></a>
 						</div>
+						<div class="sharetitle">email</div>
 					</div>
-					<div id="fundraising_bar" class="supporteurs"></div>
-				</div>
-				<div class="joinus">
-					<div style="padding-bottom:10px;"><h2>Participez&#8239;!</h2></div>
-					<div id="wufoo-m4zeh7t16z7142">
-						Fill out my <a href="https://democratech.wufoo.com/forms/m4zeh7t16z7142">online form</a>.
+					<div class="col-lg-4 text-center">
+						<div class="shareitem">
+							<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org/candidat/<%= candidat['uuid'] %>" target="_blank"><img style="height:90px;border: 4px solid #425f9c;" src="https://laprimaire.org/assets/images/partage/facebook-share-small.png"></a>
+						</div>
+						<div class="sharetitle">facebook</div>
 					</div>
-					<script type="text/javascript">var m4zeh7t16z7142;(function(d, t) {
-function getURLParameter(name) {
-	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
-}
-var s = d.createElement(t), options = {
-'userName':'democratech',
-'formHash':'m4zeh7t16z7142',
-'autoResize':true,
-'height':'515',
-'defaultValues':'field132='+getURLParameter('cmp'),
-'async':true,
-'host':'wufoo.com',
-'header':'hide',
-'ssl':true};
-s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-s.onload = s.onreadystatechange = function() {
-var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-try { m4zeh7t16z7142 = new WufooForm();m4zeh7t16z7142.initialize(options);m4zeh7t16z7142.display(); } catch (e) {}};
-var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-})(document, 'script');</script>
-
+					<div class="col-lg-4 text-center">
+						<div class="shareitem">
+							<a href="https://twitter.com/intent/tweet?text=Pour%202017%2C%20Je%20souhaiterai%20que%20Thibauld%20Favre%20participe%20%C3%A0%20la%20construction%20de%20l%27avenir%20du%20pays&hashtags=LaPrimaire" target="_blank"><img style="height:90px;border: 4px solid #1c9fef;" src="https://laprimaire.org/assets/images/partage/twitter-share-small.png"></a>
+						</div>
+						<div class="sharetitle">twitter</div>
+					</div>
 				</div>
-                            </div>
-                        </div>
-                    </form>
+			</div>
                 </div>
             </div>
-            </div>
-            </div>
+       </div>
     </header>
+    <!-- Modal -->
+    <div class="modal fade" id="Isupport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="myModalLabel">Comment apporter votre soutien à <%= candidat['name'] %></h4>
+	          </div>
+	          <div class="modal-body">
+	            ...
+	          </div>
+	          <div class="modal-footer">
+	            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	            <button type="button" class="btn btn-primary">Save changes</button>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+(function($){$.fn.extend({goalProgress:function(options){var defaults={goalAmount:100,currentAmount:50,speed:1E3,textBefore:"",textAfter:""};var options=$.extend(defaults,options);return this.each(function(){var obj=$(this);var goalAmountParsed=parseInt(defaults.goalAmount);var currentAmountParsed=parseInt(defaults.currentAmount);var percentage=currentAmountParsed/goalAmountParsed*100;var progressBar='<div class="progressBar">'+defaults.textBefore+currentAmountParsed+defaults.textAfter+"</div>";var progressBarWrapped=
+'<div class="goalProgress">'+progressBar+"</div>";obj.append(progressBarWrapped);var rendered=obj.find("div.progressBar");rendered.each(function(){$(this).html($(this).text().replace(/\s/g,"&nbsp;"))});rendered.animate({width:percentage+"%"},defaults.speed)})}})})(jQuery);
+    </script>
+    <script type="text/javascript">
 
 
-Je suis <%= candidat['name'] %>
+$(document).ready(function(){
+	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+	var now = new Date();
+	var firstDate = (new Date(2016,6,30)).getTime();
+	var secondDate= (new Date(now.getFullYear(),now.getMonth()+1,now.getDate())).getTime();
+	var diffDays = Math.round(Math.abs((firstDate - secondDate)/(oneDay)));
+	amount=<%= candidat['soutiens'] %>;
+	$('#fundraising_bar').goalProgress({
+		goalAmount: 500,
+		currentAmount: amount,
+		textBefore: '',
+		textAfter: ' soutiens'
+	});
+	$('#nb_days_left').html(diffDays);
+});
+
+    </script>
+
 </body>
 </html>

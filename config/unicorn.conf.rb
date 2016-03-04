@@ -20,7 +20,7 @@ working_directory APP_ROOT # available in 0.94.0+
 listen 9293
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
-timeout 30
+timeout 15
 
 # Whether the app should be pre-loaded
 preload_app true
@@ -31,11 +31,11 @@ pid "%s/pid/pid" % [APP_ROOT]
 # By default, the Unicorn logger will write to stderr.
 # Additionally, ome applications/frameworks log to stderr or stdout,
 # so prevent them from going to /dev/null when daemonized here:
-stderr_path "%s/logs/candidats.err.log" % [APP_ROOT]
-stdout_path "%s/logs/candidats.log" % [APP_ROOT]
-
-# The user/group to run unicorn as
-# user 'www-data', 'www-data'
+if ENV['RACK_ENV']=='production' then
+	stderr_path "%s/logs/candidats.err.log" % [APP_ROOT]
+	stdout_path "%s/logs/candidats.log" % [APP_ROOT]
+	user 'www-data', 'www-data'
+end
 
 if GC.respond_to?(:copy_on_write_friendly=)
   GC.copy_on_write_friendly = true
@@ -61,7 +61,8 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
-  Democratech::Candidat.db=PG::Connection.open(:dbname=>DBNAME,"user"=>DBUSER,"sslmode"=>"require","password"=>DBPWD,"host"=>DBHOST)
+  Democratech::Candidat.db=PG.connect(:dbname=>DBNAME,"user"=>DBUSER,"sslmode"=>"require","password"=>DBPWD,"host"=>DBHOST) 
+  Democratech::Candidat.db.prepare("get_candidate",GET_CANDIDATE)
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
