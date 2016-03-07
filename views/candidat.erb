@@ -52,8 +52,6 @@ h2.green {
 h2.red {
 	color:white;
 	background-color:#d91d1c;
-	margin-left:-10px;
-	width:107%;
 	padding:5px;
 }
 h2 {
@@ -74,7 +72,7 @@ h2 {
 }
 #candidat_support {
 	border:20px solid #d91d1c;
-	padding:10px;
+	padding: 10px 0px;
 	margin-top:10px;
 	background-color:white;
 }
@@ -138,9 +136,60 @@ span.goalAmount {
 	text-indent: -9999px;
 }
 
+footer {
+	position: relative;
+	padding: 10px;
+	margin-top: 40px;
+	font-size: 18px;
+}
+.join-link {
+	font-size: 18px;
+	font-weight: bold;
+}
+#slogan {
+	float: right !important;
+	color:#5e5e5e;
+	font-weight:bold;
+	font-size:18px;
+	margin-top: 0px;
+	font-variant:small-caps;
+	margin-right: 20px;
+}
+.about-lp {
+	text-align:center;
+	padding-top:0px;
+	padding-bottom:10px;
+}
 @media (min-width: 768px) {
+	#slogan {
+		float: right !important;
+		color:#5e5e5e;
+		font-weight:bold;
+		font-size:28px;
+		margin-top: 20px;
+		font-variant:small-caps;
+		margin-right: 20px;
+	}
+	.join-link {
+		font-size: 20px;
+	}
+	.about-lp {
+		text-align:right;
+		padding-top:10px;
+	}
+}
+@media (min-width: 1280px) {
+	footer {
+		font-size: 20px;
+		position:fixed;
+		padding: 0px;
+	}
 	#candidat_support {
 		margin-left:-60px;
+	}
+	.about-lp {
+		padding-bottom:0px;
+		padding-top:7px;
 	}
 }
     </style>
@@ -154,6 +203,7 @@ span.goalAmount {
             <div class="navbar-header">
 		<a class="navbar-brand" href="/"><img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg" width="185" height="60" alt="logo LaPrimaire.org"></a>
             </div>
+	    <div id="slogan"><span>Pour un VRAI choix en 2017&nbsp;!</span></div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
@@ -173,6 +223,32 @@ span.goalAmount {
 				<% else %>
 					<button type="button" style="padding:10px;" class="btn btn-primary">Voir son profil</button>
 				<% end %>
+					<div>
+				<% if not candidat['website'].nil? %>
+					<a href="<%= candidat['website'] %>" target="_blank"><i class="fa fa-globe">&nbsp;site web officiel</i></a>
+				<% end %>
+				<% if not candidat['facebook'].nil? %>
+					<a href="<%= candidat['facebook'] %>" target="_blank"><i class="fa fa-facebook-square">&nbsp;facebook</i></a>
+				<% end %>
+				<% if not candidat['twitter'].nil? %>
+					<a href="<%= candidat['twitter'] %>" target="_blank"><i class="fa fa-twitter-square">&nbsp;twitter</i></a>
+				<% end %>
+				<% if not candidat['youtube'].nil? %>
+					<a href="<%= candidat['youtube'] %>" target="_blank"><i class="fa fa-youtube-square">&nbsp;youtube</i></a>
+				<% end %>
+				<% if not candidat['linkedin'].nil? %>
+					<a href="<%= candidat['linkedin'] %>" target="_blank"><i class="fa fa-linkedin-square">&nbsp;linkedin</i></a>
+				<% end %>
+				<% if not candidat['blog'].nil? %>
+					<a href="<%= candidat['blog'] %>" target="_blank"><i class="fa fa-wordpress">&nbsp;wordpress</i></a>
+				<% end %>
+				<% if not candidat['tumblr'].nil? %>
+					<a href="<%= candidat['tumblr'] %>" target="_blank"><i class="fa fa-tumblr-square">&nbsp;tumblr</i></a>
+				<% end %>
+				<% if not candidat['medium'].nil? %>
+					<a href="<%= candidat['medium'] %>" target="_blank"><i class="fa fa-medium">&nbsp;medium</i></a>
+				<% end %>
+					</div>
 				</div>
 			</div>
                 </div>
@@ -230,6 +306,20 @@ span.goalAmount {
             </div>
        </div>
     </header>
+
+    <footer>
+        <div class="container">
+            <div class="row" style="margin-bottom:0px;">
+		<div class="col-sm-12 col-md-9 about-lp">
+		    <span style="color:white;font-weight:bold;font-variant:small-caps;">LaPrimaire.org, la Primaire Ouverte pour l'élection Présidentielle de 2017&nbsp;: </span>
+		</div>
+		<div class="col-sm-12 col-md-3">
+		    <a style="font-variant:small-caps;" href="/" class="btn red join-link" title="En savoir plus sur LaPrimaire.org" target="_blank">En savoir plus</a>
+		</div>
+ 	    </div>
+        </div>
+    </footer>
+
     <!-- Modal -->
     <div class="modal fade" id="Isupport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	      <div class="modal-dialog" role="document">
