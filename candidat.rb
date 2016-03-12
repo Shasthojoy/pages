@@ -25,7 +25,7 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
 	    GROUP BY candidate_id
       ) as s
   on (s.candidate_id = c.candidate_id)
-WHERE c.uuid = $1;
+WHERE c.candidate_id = $1;
 END
 			Candidat.db_close
 			Candidat.db=PG.connect(:dbname=>DBNAME,"user"=>DBUSER,"sslmode"=>"require","password"=>DBPWD,"host"=>DBHOST)
@@ -41,9 +41,9 @@ END
 			register Sinatra::Reloader
 		end
 
-		get '/candidat/:uuid' do
+		get '/candidat/:candidate_id' do
 			begin
-				res=Candidat.db_query("get_candidate",[params['uuid']])
+				res=Candidat.db_query("get_candidate",[params['candidate_id']])
 			rescue PG::Error => e
 				status 500
 				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
@@ -67,7 +67,7 @@ END
 				"qualifié"=>m ? "qualifié":"qualifiée",
 				"son"=>m ? "son":"sa"
 			}
-			candidat['photo']="https://bot.democratech.co/static/photos/%s%s" % [candidat['uuid'],File.extname(candidat['photo'])] if not candidat['photo'].nil?
+			candidat['photo']="https://bot.democratech.co/static/photos/%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])] if not candidat['photo'].nil?
 			page={'url'=>"toto"}
 			erb :candidat, :locals=>{:candidat=>candidat,:page=>page, :gender=>gender}
 		end
