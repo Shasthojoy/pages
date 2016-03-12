@@ -48,7 +48,7 @@ end
 before_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
   Democratech::Candidat.db.close if not Democratech::Candidat.db.nil?
-  old_pid = "%s/pid.oldbin" % [APP_ROOT]
+  old_pid = "%s/pid/pid.oldbin" % [APP_ROOT]
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill('QUIT', File.read(old_pid).to_i)

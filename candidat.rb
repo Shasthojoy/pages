@@ -67,7 +67,7 @@ END
 				"qualifié"=>m ? "qualifié":"qualifiée",
 				"son"=>m ? "son":"sa"
 			}
-			candidat['photo']="https://bot.democratech.co/static/photos/%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])] if not candidat['photo'].nil?
+			candidat['photo']="https://bot.democratech.co/static/candidats/%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])] if not candidat['photo'].nil?
 			page={'url'=>"toto"}
 			erb :candidat, :locals=>{:candidat=>candidat,:page=>page, :gender=>gender}
 		end
