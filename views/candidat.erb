@@ -221,7 +221,7 @@ footer {
 					<a type="button" style="padding:10px;" class="btn btn-primary" disabled="disabled"><i>Voir son profil</i></button>
 					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> n'a pas encore mis son profil en ligne.</p>
 				<% else %>
-					<a href="<%= candidat['trello'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Voir son profil</button>
+					<a href="<%= candidat['trello'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Voir son profil</a>
 				<% end %>
 					<div>
 				<% if not candidat['website'].nil? %>
