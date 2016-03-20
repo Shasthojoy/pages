@@ -387,12 +387,17 @@ $(document).ready(function(){
 	var firstDate = (new Date(2016,6,30)).getTime();
 	var secondDate= (new Date(now.getFullYear(),now.getMonth()+1,now.getDate())).getTime();
 	var diffDays = Math.round(Math.abs((firstDate - secondDate)/(oneDay)));
-	amount=<%= candidat['soutiens'] %>;
+	var amount=<%= candidat['soutiens'] %>;
+	var amount_int=parseInt(amount,10);
+	var soutien=" soutiens";
+	if (amount_int<2) {
+		soutien=" soutien"
+	}
 	$('#fundraising_bar').goalProgress({
 		goalAmount: 500,
 		currentAmount: amount,
 		textBefore: '',
-		textAfter: ' soutiens'
+		textAfter: soutien
 	});
 	$('#nb_days_left').html(diffDays);
 	if (device.android()) {
