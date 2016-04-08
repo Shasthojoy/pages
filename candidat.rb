@@ -28,7 +28,7 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
 WHERE c.candidate_id = $1;
 END
 			Candidat.db_close
-			Candidat.db=PG.connect(:dbname=>DBNAME,"user"=>DBUSER,"sslmode"=>"require","password"=>DBPWD,"host"=>DBHOST)
+			Candidat.db=PG.connect(:dbname=>PGNAME,"user"=>PGUSER,"sslmode"=>"disable","password"=>PGPWD,"host"=>PGHOST,"port"=>PGPORT)
 			Candidat.db.prepare("get_candidate",get_candidate)
 		end
 
@@ -53,7 +53,9 @@ END
 				return erb :error, :locals=>{:error=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
 			end
 			candidat=res[0]
-			candidat['soutiens']=candidat['soutiens'].to_i<=500 ? candidat['soutiens'] : 500
+			candidat['encoded_name']=URI::encode(candidat['name'])
+			candidat['soutiens']='430'
+			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			candidat['qualified']=candidat['soutiens']==500
 			m=(candidat['gender']=="M")
 			gender={

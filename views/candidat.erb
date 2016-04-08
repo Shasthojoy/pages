@@ -218,8 +218,9 @@ footer {
 				<div id="candidat_name"><%= candidat['name'] %></div>
 				<div id="candidat_programme">
 				<% if candidat['trello'].nil? %>
-					<button type="button" style="padding:10px;" class="btn btn-primary" disabled="disabled"><i>Voir son profil</i></button>
-					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> n'a pas encore mis son profil en ligne.</p>
+					<a href="<%= "https://www.qwant.com/?q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>
+					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> a été plébiscité pour être candidat sur LaPrimaire.org.</p>
+					<p style="font-size: 13px; font-style:italic;text-align:justify;">Il est important de noter que <%= candidat['name'] %> n'est pas responsable de cette démarche : sa candidature a été proposée par une ou plusieurs personnes qui souhaiteraient <%= gender['le'] %> voir se présenter en tant que <%= gender['candidat'] %> sur <a href="https://laprimaire.org" target="_blank">LaPrimaire.org.</a></p>
 				<% else %>
 					<a href="<%= candidat['trello'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Voir son profil</a>
 				<% end %>
@@ -240,7 +241,7 @@ footer {
 					<a href="<%= candidat['linkedin'] %>" target="_blank"><i class="fa fa-linkedin-square">&nbsp;linkedin</i></a>
 				<% end %>
 				<% if not candidat['blog'].nil? %>
-					<a href="<%= candidat['blog'] %>" target="_blank"><i class="fa fa-wordpress">&nbsp;wordpress</i></a>
+					<a href="<%= candidat['blog'] %>" target="_blank"><i class="fa fa-wordpress">&nbsp;blog</i></a>
 				<% end %>
 				<% if not candidat['tumblr'].nil? %>
 					<a href="<%= candidat['tumblr'] %>" target="_blank"><i class="fa fa-tumblr-square">&nbsp;tumblr</i></a>
@@ -254,10 +255,14 @@ footer {
                 </div>
 		<div class="col-lg-6">
 			<div>
-				<% if not candidat['qualified']  %>
-					<h2><span>Statut :</span> pas encore <%= gender['qualifié'] %></h2>
+				<% if not candidat['trello']  %>
+					<h2><span>Statut :</span> <%= gender['citoyen'] %> plébiscité</h2>
 				<% else %>
-					<h2><span>Statut :</span> <%= gender['qualifié'].capitalize %> !</h2>
+					<% if not candidat['qualified']  %>
+						<h2><span>Statut :</span> pas encore <%= gender['qualifié'] %></h2>
+					<% else %>
+						<h2><span>Statut :</span> <%= gender['qualifié'].capitalize %> !</h2>
+					<% end %>
 				<% end %>
 			</div>
 			<div id="candidat_support" <% if candidat['qualified'] %>class="qualified"<% end %>>
@@ -267,10 +272,14 @@ footer {
 						<div id="fundraising_bar" class="donateurs"></div>
 					</div>
 				</div>
-				<% if not candidat['qualified']  %>
-					<div id="candidat_soutiens">Pour se qualifier et pouvoir participer à LaPrimaire.org <%= candidat['name'] %> doit rassembler 500 soutiens citoyens.</div>
+				<% if not candidat['trello']  %>
+					<div id="candidat_soutiens">Si <%= candidat['name'] %> atteint 500 soutiens, nous l'inviterons formellement à se déclarer <%= gender['candidat'] %> sur LaPrimaire.org.</div>
 				<% else %>
-					<div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 500 citoyens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
+					<% if not candidat['qualified']  %>
+						<div id="candidat_soutiens">Pour se qualifier et pouvoir participer à LaPrimaire.org <%= candidat['name'] %> doit rassembler 500 soutiens citoyens.</div>
+					<% else %>
+						<div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 500 soutiens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
+					<% end %>
 				<% end %>
 				<h2 class="<%= candidat['qualified']?"green":"red"%>">Soutenez <%= candidat['name'] %></h2>
 			<% if not candidat['qualified'] %>
@@ -279,8 +288,13 @@ footer {
 				<div id="candidat_legend"><%= candidat['name'] %> est <%= gender['qualifié'] %> pour LaPrimaire.org, continuez à <%= gender['le'] %> soutenir pour donner un maximum de poids à ses idées&nbsp;:</div>
 			 <% end %>
 				<a data-toggle="modal" data-target="#Isupport" class="btn btn-success" style="font-weight:bold;padding:10px;margin:10px;">APPORTER MON SOUTIEN</a>
-				<h3>Aidez <%= candidat['name'] %></h3>
-				<div id="candidat_supportme">Invitez vos amis et proches à soutenir <%= candidat['name'] %>&nbsp;:</div><br/>
+				<% if not candidat['trello']  %>
+					<h3>Invitez <%= candidat['name'] %> à être <%= gender['candidat'] %></h3>
+					<div id="candidat_supportme">Invitez vos amis et proches à soutenir une candidature <%= candidat['name'] %>&nbsp;:</div><br/>
+				<% else %>
+					<h3>Aidez <%= candidat['name'] %></h3>
+					<div id="candidat_supportme">Invitez vos amis et proches à soutenir <%= candidat['name'] %>&nbsp;:</div><br/>
+				<% end %>
 				<div class="row">
 					<div class="col-lg-4 text-center">
 						<div class="shareitem">
@@ -388,13 +402,15 @@ $(document).ready(function(){
 	var secondDate= (new Date(now.getFullYear(),now.getMonth()+1,now.getDate())).getTime();
 	var diffDays = Math.round(Math.abs((firstDate - secondDate)/(oneDay)));
 	var amount=<%= candidat['soutiens'] %>;
+	var goal=<%= candidat['goal'] %>;
+	var goal_int=parseInt(goal);
 	var amount_int=parseInt(amount,10);
 	var soutien=" soutiens";
 	if (amount_int<2) {
 		soutien=" soutien"
 	}
 	$('#fundraising_bar').goalProgress({
-		goalAmount: 500,
+		goalAmount: goal_int,
 		currentAmount: amount,
 		textBefore: '',
 		textAfter: soutien
