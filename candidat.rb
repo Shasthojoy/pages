@@ -64,7 +64,7 @@ END
 			candidat=res[0]
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
-			candidat['qualified']=candidat['soutiens']>=500
+			candidat['qualified']= (candidat['soutiens'].to_i >= 500)
 			m=(candidat['gender']=="M")
 			gender={
 				"le"=>m ? "le":"la",
