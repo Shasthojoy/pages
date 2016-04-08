@@ -47,7 +47,7 @@ end
 
 before_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
-  Democratech::Candidat.db.close if not Democratech::Candidat.db.nil?
+  Democratech::Candidat.db_close()
   old_pid = "%s/pid/pid.oldbin" % [APP_ROOT]
   if File.exists?(old_pid) && server.pid != old_pid
     begin
@@ -61,7 +61,7 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
-  Democratech::Candidat.db_init
+  Democratech::Candidat.db_init()
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
