@@ -8,15 +8,9 @@ module Democratech
 			attr_accessor :db
 		end
 
-		def self.db_close
-			if Candidat.db then
-				Candidat.db.flush
-				Candidat.db.close
-			end
-		end
-
-		def self.db_init
-			get_candidate=<<END
+		def self.db_load_queries
+			@queries={}
+			@queries['get_candidate']=<<END
 SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
   FROM candidates as c
     left join (
@@ -27,23 +21,19 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
   on (s.candidate_id = c.candidate_id)
 WHERE c.candidate_id = $1;
 END
-			Candidat.db_close
+		end
+		def self.db_init
 			Candidat.db=PG.connect(
 				"dbname"=>PGNAME,
 				"user"=>PGUSER,
 				"password"=>PGPWD,
-				"sslmode"=>"require",
 				"host"=>PGHOST,
 				"port"=>PGPORT
 			)
-			Candidat.db.prepare("get_candidate",get_candidate)
 		end
 
 		def self.db_query(name,params)
-			if Candidat.db.nil? or Candidat.db.status!=PG::CONNECTION_OK then
-				self.db_init
-			end
-			Candidat.db.exec_prepared("get_candidate",params)
+			Candidat.db.exec_params(@queries['get_candidate'],params)
 		end
 
 		configure :development do
@@ -51,11 +41,18 @@ END
 		end
 
 		get '/candidat/:candidate_id' do
+			if params['candidate_id']=='sitemap.xml' then
+				content_type 'text/xml'
+				return File.read(File.expand_path(File.dirname(__FILE__))+'/sitemap.xml') 
+			end
 			begin
+				Candidat.db_init()
 				res=Candidat.db_query("get_candidate",[params['candidate_id']])
 			rescue PG::Error => e
 				status 500
 				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+			ensure
+				Candidat.db.close() unless Candidat.db.nil?
 			end
 			if res.num_tuples.zero? then
 				status 404

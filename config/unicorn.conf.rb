@@ -9,7 +9,7 @@ require APP_ROOT+'/candidat.rb'
 
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
-worker_processes 4
+# worker_processes 4
 
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
@@ -20,7 +20,7 @@ working_directory APP_ROOT # available in 0.94.0+
 listen 9293
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
-timeout 15
+timeout 20
 
 # Whether the app should be pre-loaded
 preload_app true
@@ -35,6 +35,9 @@ if ENV['RACK_ENV']=='production' then
 	stderr_path "%s/logs/candidats.err.log" % [APP_ROOT]
 	stdout_path "%s/logs/candidats.log" % [APP_ROOT]
 	user 'www-data', 'www-data'
+	worker_processes 10
+else
+	worker_processes 4
 end
 
 if GC.respond_to?(:copy_on_write_friendly=)
@@ -47,7 +50,6 @@ end
 
 before_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
-  Democratech::Candidat.db_close()
   old_pid = "%s/pid/pid.oldbin" % [APP_ROOT]
   if File.exists?(old_pid) && server.pid != old_pid
     begin
@@ -61,7 +63,7 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
-  Democratech::Candidat.db_init()
+  Democratech::Candidat.db_load_queries()
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
