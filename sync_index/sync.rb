@@ -69,7 +69,7 @@ if not res.num_tuples.zero? then
 				"wikipedia"=>r['wikipedia'],
 				"instagram"=>r['instagram'],
 				"date_added"=>r['date_added'],
-				"nb_days_added"=>r['nb_days_added'],
+				"nb_days_added"=>r['nb_days_added'].to_i,
 				"verified"=>verified,
 				"date_verified"=>r['date_verified'],
 				"nb_days_verified"=>r['nb_days_verified'].to_i,
@@ -94,6 +94,8 @@ END
 				"name"=>r['name'],
 				"photo"=>r['photo'],
 				"gender"=>gender,
+				"date_added"=>r['date_added'],
+				"nb_days_added"=>r['nb_days_added'].to_i,
 				"nb_soutiens"=>r['nb_soutiens'].to_i,
 				"nb_views"=>r['nb_views'].to_i
 			})
