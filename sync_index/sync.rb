@@ -95,6 +95,7 @@ if not res.num_tuples.zero? then
 				"official"=>official,
 				"date_officializied"=>r['date_officializied'],
 				"nb_soutiens"=>r['nb_soutiens'].to_i,
+				"nb_soutiens_7j"=>r['nb_soutiens_7j'].to_i,
 				"nb_views"=>r['nb_views'].to_i
 			})
 			sitemap+=<<END
@@ -114,6 +115,7 @@ END
 				"date_added"=>r['date_added'],
 				"nb_days_added"=>r['nb_days_added'].to_i,
 				"nb_soutiens"=>r['nb_soutiens'].to_i,
+				"nb_soutiens_7j"=>r['nb_soutiens_7j'].to_i,
 				"nb_views"=>r['nb_views'].to_i
 			})
 			sitemap+=<<END
