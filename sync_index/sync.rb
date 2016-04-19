@@ -19,24 +19,42 @@ Algolia.init :application_id=>ALGOLIA_ID, :api_key=>ALGOLIA_KEY
 index_candidats=Algolia::Index.new("candidates")
 index_citoyens=Algolia::Index.new("citizens")
 candidates_list=<<END
-SELECT ca.candidate_id,ca.user_id,ca.name,ca.gender,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens
+SELECT ca.candidate_id,ca.user_id,ca.name,ca.gender,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens, w.nb_soutiens_7j
 FROM candidates as ca
 LEFT JOIN (
-       SELECT y.candidate_id, y.nb_views, count(s.user_id) as nb_soutiens
- FROM (
+	SELECT y.candidate_id, y.nb_views, count(s.user_id) as nb_soutiens
+	FROM (
 		SELECT c.candidate_id, sum(cv.nb_views) as nb_views
-		  FROM candidates as c
-		  LEFT JOIN candidates_views as cv
-		    ON (
-			       cv.candidate_id=c.candidate_id
-		       )
-		 GROUP BY c.candidate_id
+		FROM candidates as c
+		LEFT JOIN candidates_views as cv
+		ON (
+			cv.candidate_id=c.candidate_id
+		)
+		GROUP BY c.candidate_id
 	) as y
 	LEFT JOIN supporters as s
 	ON ( s.candidate_id=y.candidate_id)
 	GROUP BY y.candidate_id,y.nb_views
 ) as z
 ON (z.candidate_id = ca.candidate_id)
+LEFT JOIN (
+	SELECT y.candidate_id, y.nb_views, count(s.user_id) as nb_soutiens_7j
+	FROM (
+		SELECT c.candidate_id, sum(cv.nb_views) as nb_views
+		FROM candidates as c
+		LEFT JOIN candidates_views as cv
+		ON (
+			cv.candidate_id=c.candidate_id
+		)
+		GROUP BY c.candidate_id
+	) as y
+	LEFT JOIN supporters as s
+	ON ( s.candidate_id=y.candidate_id)
+	WHERE s.support_date> (now()::date-7)
+	GROUP BY y.candidate_id,y.nb_views
+) as w
+ON (w.candidate_id = ca.candidate_id)
+ORDER BY z.nb_soutiens DESC
 END
 
 sitemap=<<END
