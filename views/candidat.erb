@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="LaPrimaire.org">
+<% if not candidat['trello']  %>
+    <meta property="og:title" content="Plébsicitez <%= candidat['name'] %> pour qu'<%=gender['il']%> soit <%=gender['candidat']%> à LaPrimaire.org !">
+<% else %>
     <meta property="og:title" content="Soutenez la candidature de <%= candidat['name'] %> à LaPrimaire.org !">
+<% end %>
     <meta property="og:site_name" content="LaPrimaire.org"/>
     <meta property="og:url" content="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>">
     <meta property="fb:app_id" content="115809635110050"/>
@@ -20,10 +24,18 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@democratech">
     <meta name="twitter:creator" content="@democratech">
+<% if not candidat['trello']  %>
+    <meta name="twitter:title" content="Plébsicitez <%= candidat['name'] %> pour qu'<%=gender['il']%> soit <%=gender['candidat']%> à LaPrimaire.org !">
+<% else %>
     <meta name="twitter:title" content="Soutenez la candidature de <%= candidat['name'] %> à LaPrimaire.org !">
+<% end %>
     <meta name="twitter:image" content="<%= candidat['photo'].nil? ? "https://laprimaire.org/assets/images/democratiser-les-elections-logo.jpg": candidat['photo'] %>">
     <meta name="twitter:description" content="Vous adhérez aux idées de <%= candidat['name'] %> et souhaiteriez qu'<%=gender['il']%> joue un rôle plus important pour décider de l'avenir du pays ? Soutenez sa candidature à LaPrimaire.org !">
+<% if not candidat['trello']  %>
+    <title>Plébsicitez <%= candidat['name'] %> pour qu'<%=gender['il']%> soit <%=gender['candidat']%> à LaPrimaire.org !</title>
+<% else %>
     <title>Soutenez la candidature de <%= candidat['name'] %> à LaPrimaire.org</title>
+<% end %>
     <link rel="icon" type="image/png" href="https://laprimaire.org/assets/images/favicon.png" />
     <link rel="canonical" href="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>">
     <!--[if lt IE 9]>
@@ -218,7 +230,7 @@ footer {
 				<div id="candidat_name"><%= candidat['name'] %></div>
 				<div id="candidat_programme">
 				<% if candidat['trello'].nil? %>
-					<a href="<%= "https://www.qwant.com/?q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>
+					<a href="<%= "https://www.google.fr/#q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>
 					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> a été plébiscité pour être candidat sur LaPrimaire.org.</p>
 					<p style="font-size: 13px; font-style:italic;text-align:justify;">Il est important de noter que <%= candidat['name'] %> n'est pas responsable de cette démarche : sa candidature a été proposée par une ou plusieurs personnes qui souhaiteraient <%= gender['le'] %> voir se présenter en tant que <%= gender['candidat'] %> sur <a href="https://laprimaire.org" target="_blank">LaPrimaire.org.</a></p>
 				<% else %>
@@ -248,6 +260,9 @@ footer {
 				<% end %>
 				<% if not candidat['medium'].nil? %>
 					<a href="<%= candidat['medium'] %>" target="_blank"><i class="fa fa-medium">&nbsp;medium</i></a>
+				<% end %>
+				<% if not candidat['wikipedia'].nil? %>
+					<a href="<%= candidat['wikipedia'] %>" target="_blank"><i class="fa fa-medium">&nbsp;wikipedia</i></a>
 				<% end %>
 					</div>
 				</div>
@@ -346,7 +361,8 @@ footer {
 			  <p>Très simple&nbsp;:</p>
 			  <ol>
 				  <li><p>Connectez-vous sur l'application LaPrimaire.org</p></li>
-				  <li><p>Proposez "<i><%= candidat['name']%></i>" comme <%= gender['candidat']%></p></li>
+				  <li><p>Une fois inscrit, cliquez sur le bouton "Soutenir un candidat"</p></li>
+				  <li><p>Ecrivez "<i><%= candidat['name']%></i>" et confirmez votre soutien</p></li>
 			  </ol>
 	          </div>
 	          <div class="modal-footer">
