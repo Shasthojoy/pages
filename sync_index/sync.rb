@@ -64,7 +64,7 @@ END
 res=db.exec(candidates_list)
 if not res.num_tuples.zero? then
 	res.each do |r|
-		qualified = r['qualified'].to_b ? "qualified" : "not_qualified"
+		qualified = r['qualified'].to_b ? "oui" : "non"
 		verified = r['verified'].to_b ? "verified" : "not_verified"
 		official= r['official'].to_b ? "official" : "not_official"
 		gender= r['gender']=='M' ? "Homme" : "Femme"
