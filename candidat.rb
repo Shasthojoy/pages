@@ -75,11 +75,30 @@ END
 				"son"=>m ? "son":"sa"
 			}
 			if candidat['photo'] then
-				candidat['photo']="https://bot.democratech.co/static/candidats/%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])]
+				candidat['photo']="#{AWS_S3_BUCKET_URL}%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])]
 			else
 				candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 			end
 			erb :candidat, :locals=>{:candidat=>candidat, :gender=>gender}
 		end
+
+		get '/admin/:candidate_key' do
+			begin
+				Candidat.db_init()
+				res=Candidat.db_query("get_candidate",[params['candidate_key']])
+			rescue PG::Error => e
+				status 500
+				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+			ensure
+				Candidat.db.close() unless Candidat.db.nil?
+			end
+			if res.num_tuples.zero? then
+				status 404
+				return erb :error, :locals=>{:error=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
+			end
+			candidat=res[0]
+			erb :admin, :locals=>{:candidat=>candidat}
+		end
+
 	end
 end
