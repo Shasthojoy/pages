@@ -328,23 +328,33 @@ footer {
 			<div class="candidate_box">
 				<div class="candidate_pic col-xs-6" style="margin: 0 auto;">
 					<a href="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>">
-						<img src="https://bot.democratech.co/static/candidats/<%= candidat['photo']%>" height="300px">
+						<img src="<%= AWS_S3_BUCKET_URL+candidat['photo']%>" height="300px">
 					</a>
 				</div>
 				<div class="candidate_bio col-xs-6" style="margin: 0 auto;">
 					<div class="vision_title">Ma vision</div>
-					<div class="vision"><q>Faire de la France le plus beau pays du monde</q></div>
+				<% if not vision.nil? then %>
+					<div class="vision"><q><%= vision %></q></div>
+				<% else %>
+					<div class="vision"><q><%= gender['ce']+' '+gender['candidat'] %> n'a pas encore renseigné sa vision pour la France</q></div>
+				<% end %>
 					<div class="priorite_title">Mes priorités</div>
+				<% if not prio1.nil? then %>
 					<ol>
-						<li class="priorite">Reduire le chomage</li>
-						<li class="priorite">Reduire le chomage</li>
-						<li class="priorite">Reduire le chomage</li>
+						<li class="priorite"><%= prio1 %></li>
+						<li class="priorite"><%= prio2 %></li>
+						<li class="priorite"><%= prio3 %></li>
 					</ol>
+				<% else %>
+					<div><%= gender['ce']+' '+gender['candidat'] %> n'a pas encore renseigné ses priorités pour le pays.</div>
+				<% end %>
 				</div>
 			</div>
 			<div class="candidate_name"><a href="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>"><%= candidat['name']%></a></div>
-			<div class="candidate_infos">30 ans - Ile de France
-				<div class="candidate_M_since <%= candidat['gender'] %>">candidat depuis <%= candidat['nb_days_verified'] %> jours</div>
+			<div class="candidate_infos"><%= age %> ans - <%= departement_name %>
+				<% if not days_verified.nil? then %>
+				<div class="candidate_M_since <%= candidat['gender'] %>">candidat depuis <%= days_verified %> jours</div>
+				<% end %>
 			</div>
 
                 </div>
@@ -372,6 +382,7 @@ var s = d.createElement(t), options = {
 'async':true,
 'host':'wufoo.com',
 'header':'hide',
+'defaultValues':'<%= prefill['about'] %>',
 'ssl':true};
 s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
 s.onload = s.onreadystatechange = function() {
@@ -397,6 +408,7 @@ var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s
 	'async':true,
 	'host':'wufoo.com',
 	'header':'hide',
+	'defaultValues':'<%= prefill['summary'] %>',
 	'ssl':true};
 	s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
 	s.onload = s.onreadystatechange = function() {
@@ -413,10 +425,10 @@ var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-4" style="overflow:hidden;">
                     <h4 class="section-heading">Ma photo</h4>
 		    <p style="font-size:12px; color:#777;font-style:italic; text-align:left;">Mettez à jour votre photo. 300px de hauteur minimum.<br/>Taille idéale : 300x300px.</p>
-		    <img src="https://bot.democratech.co/static/candidats/<%= candidat['photo']%>" height="300px">
+		    <img src="<%= AWS_S3_BUCKET_URL+candidat['photo']%>" height="300px">
 		    <div id="wufoo-m104ir981sc6ggq">
 			    Fill out my <a href="https://democratech.wufoo.com/forms/m104ir981sc6ggq">online form</a>.
 		    </div>
@@ -428,6 +440,7 @@ var s = d.createElement(t), options = {
 'height':'263',
 'async':true,
 'host':'wufoo.com',
+'defaultValues':'<%= prefill['photo'] %>',
 'header':'hide',
 'ssl':true};
 s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
@@ -452,6 +465,7 @@ var s = d.createElement(t), options = {
 'height':'731',
 'async':true,
 'host':'wufoo.com',
+'defaultValues':'<%= prefill['links'] %>',
 'header':'hide',
 'ssl':true};
 s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
@@ -461,7 +475,7 @@ try { m1kqi86z0of5y47 = new WufooForm();m1kqi86z0of5y47.initialize(options);m1kq
 var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
 })(document, 'script');</script>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" style="display:none;">
                     <h4 class="section-heading">Moi et la politique</h4>
 		    <p style="font-size:12px; color:#777;font-style:italic;text-align:left;">Vous et votre rapport à la politique.</p>
 		    <div id="wufoo-m3fr2zs0a0fhgp">
@@ -476,6 +490,7 @@ var s = d.createElement(t), options = {
 'async':true,
 'host':'wufoo.com',
 'header':'hide',
+'defaultValues':'Field22=Un programme complet&Field24=Oui',
 'ssl':true};
 s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
 s.onload = s.onreadystatechange = function() {
