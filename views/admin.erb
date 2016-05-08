@@ -15,6 +15,7 @@
     <![endif]-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://laprimaire.org/docs/laprimaire.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css">
     <style>
 body {
 	background: url(https://web.laprimaire.org/img/laprimaire/background-image.jpg) repeat center center fixed;
@@ -346,12 +347,15 @@ footer {
 						<li class="priorite"><%= prio3 %></li>
 					</ol>
 				<% else %>
-					<div><%= gender['ce']+' '+gender['candidat'] %> n'a pas encore renseigné ses priorités pour le pays.</div>
+					<div class="priorite" style="margin-left:0px;"><%= gender['ce']+' '+gender['candidat'] %> n'a pas encore renseigné ses priorités pour le pays.</div>
 				<% end %>
 				</div>
 			</div>
 			<div class="candidate_name"><a href="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>"><%= candidat['name']%></a></div>
-			<div class="candidate_infos"><%= age %> ans - <%= departement_name %>
+			<div class="candidate_infos">
+				<% if not age.nil? then %>
+					<%= age %> ans <%= "(#{departement_name})" %>
+				<% end %>
 				<% if not days_verified.nil? then %>
 				<div class="candidate_M_since <%= candidat['gender'] %>">candidat depuis <%= days_verified %> jours</div>
 				<% end %>
@@ -475,29 +479,40 @@ try { m1kqi86z0of5y47 = new WufooForm();m1kqi86z0of5y47.initialize(options);m1kq
 var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
 })(document, 'script');</script>
                 </div>
-                <div class="col-lg-4" style="display:none;">
-                    <h4 class="section-heading">Moi et la politique</h4>
-		    <p style="font-size:12px; color:#777;font-style:italic;text-align:left;">Vous et votre rapport à la politique.</p>
-		    <div id="wufoo-m3fr2zs0a0fhgp">
-			    Fill out my <a href="https://democratech.wufoo.com/forms/m3fr2zs0a0fhgp">online form</a>.
-		    </div>
-		    <script type="text/javascript">var m3fr2zs0a0fhgp;(function(d, t) {
-var s = d.createElement(t), options = {
-'userName':'democratech',
-'formHash':'m3fr2zs0a0fhgp',
-'autoResize':true,
-'height':'919',
-'async':true,
-'host':'wufoo.com',
-'header':'hide',
-'defaultValues':'Field22=Un programme complet&Field24=Oui',
-'ssl':true};
-s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-s.onload = s.onreadystatechange = function() {
-var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-try { m3fr2zs0a0fhgp = new WufooForm();m3fr2zs0a0fhgp.initialize(options);m3fr2zs0a0fhgp.display(); } catch (e) {}};
-var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-})(document, 'script');</script>
+                <div class="col-lg-4">&nbsp;
+                </div>
+            </div>
+	</div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row" style="display:none;">
+                <div class="col-lg-12">
+                    <h4 class="section-heading">Mes soutiens</h4>
+		    <p style="font-size:12px; color:#777;font-style:italic;text-align:left;">La liste de vos soutiens sur LaPrimaire.org</p>
+		    <table id="liste_soutiens" class="display">
+			        <thead>
+			            <tr>
+			                <th>Nom</th>
+			                <th>Prénom</th>
+			                <th>Ville</th>
+			                <th>Dpt</th>
+			                <th>Date</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+				<% soutiens.each do |s| %>
+			            <tr>
+				        <td><%= s['firstname'] %></td>
+				        <td><%= s['lastname'] %></td>
+				        <td><%= s['city'] %></td>
+				        <td><%= s['departement'] %></td>
+				        <td><%= s['support_date'] %></td>
+			            </tr>
+				<% end %>
+			        </tbody>
+			</table>
                 </div>
             </div>
 	</div>
@@ -561,70 +576,14 @@ var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s
       </div>
 
 
-
-
-
     <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-(function($){$.fn.extend({goalProgress:function(options){var defaults={goalAmount:100,currentAmount:50,speed:1E3,textBefore:"",textAfter:""};var options=$.extend(defaults,options);return this.each(function(){var obj=$(this);var goalAmountParsed=parseInt(defaults.goalAmount);var currentAmountParsed=parseInt(defaults.currentAmount);var percentage=currentAmountParsed/goalAmountParsed*100;var progressBar='<div class="progressBar">'+defaults.textBefore+currentAmountParsed+defaults.textAfter+"</div>";var progressBarWrapped=
-'<div class="goalProgress">'+progressBar+"</div>";obj.append(progressBarWrapped);var rendered=obj.find("div.progressBar");rendered.each(function(){$(this).html($(this).text().replace(/\s/g,"&nbsp;"))});rendered.animate({width:percentage+"%"},defaults.speed)})}})})(jQuery);
-    </script>
-    <script type="text/javascript">
-/*! device.js 0.2.7 */
-    (function(){var a,b,c,d,e,f,g,h,i,j;b=window.device,a={},window.device=a,d=window.document.documentElement,j=window.navigator.userAgent.toLowerCase(),a.ios=function(){return a.iphone()||a.ipod()||a.ipad()},a.iphone=function(){return!a.windows()&&e("iphone")},a.ipod=function(){return e("ipod")},a.ipad=function(){return e("ipad")},a.android=function(){return!a.windows()&&e("android")},a.androidPhone=function(){return a.android()&&e("mobile")},a.androidTablet=function(){return a.android()&&!e("mobile")},a.blackberry=function(){return e("blackberry")||e("bb10")||e("rim")},a.blackberryPhone=function(){return a.blackberry()&&!e("tablet")},a.blackberryTablet=function(){return a.blackberry()&&e("tablet")},a.windows=function(){return e("windows")},a.windowsPhone=function(){return a.windows()&&e("phone")},a.windowsTablet=function(){return a.windows()&&e("touch")&&!a.windowsPhone()},a.fxos=function(){return(e("(mobile;")||e("(tablet;"))&&e("; rv:")},a.fxosPhone=function(){return a.fxos()&&e("mobile")},a.fxosTablet=function(){return a.fxos()&&e("tablet")},a.meego=function(){return e("meego")},a.cordova=function(){return window.cordova&&"file:"===location.protocol},a.nodeWebkit=function(){return"object"==typeof window.process},a.mobile=function(){return a.androidPhone()||a.iphone()||a.ipod()||a.windowsPhone()||a.blackberryPhone()||a.fxosPhone()||a.meego()},a.tablet=function(){return a.ipad()||a.androidTablet()||a.blackberryTablet()||a.windowsTablet()||a.fxosTablet()},a.desktop=function(){return!a.tablet()&&!a.mobile()},a.television=function(){var a;for(television=["googletv","viera","smarttv","internet.tv","netcast","nettv","appletv","boxee","kylo","roku","dlnadoc","roku","pov_tv","hbbtv","ce-html"],a=0;a<television.length;){if(e(television[a]))return!0;a++}return!1},a.portrait=function(){return window.innerHeight/window.innerWidth>1},a.landscape=function(){return window.innerHeight/window.innerWidth<1},a.noConflict=function(){return window.device=b,this},e=function(a){return-1!==j.indexOf(a)},g=function(a){var b;return b=new RegExp(a,"i"),d.className.match(b)},c=function(a){var b=null;g(a)||(b=d.className.replace(/^\s+|\s+$/g,""),d.className=b+" "+a)},i=function(a){g(a)&&(d.className=d.className.replace(" "+a,""))},a.ios()?a.ipad()?c("ios ipad tablet"):a.iphone()?c("ios iphone mobile"):a.ipod()&&c("ios ipod mobile"):a.android()?c(a.androidTablet()?"android tablet":"android mobile"):a.blackberry()?c(a.blackberryTablet()?"blackberry tablet":"blackberry mobile"):a.windows()?c(a.windowsTablet()?"windows tablet":a.windowsPhone()?"windows mobile":"desktop"):a.fxos()?c(a.fxosTablet()?"fxos tablet":"fxos mobile"):a.meego()?c("meego mobile"):a.nodeWebkit()?c("node-webkit"):a.television()?c("television"):a.desktop()&&c("desktop"),a.cordova()&&c("cordova"),f=function(){a.landscape()?(i("portrait"),c("landscape")):(i("landscape"),c("portrait"))},h=Object.prototype.hasOwnProperty.call(window,"onorientationchange")?"orientationchange":"resize",window.addEventListener?window.addEventListener(h,f,!1):window.attachEvent?window.attachEvent(h,f):window[h]=f,f(),"function"==typeof define&&"object"==typeof define.amd&&define.amd?define(function(){return a}):"undefined"!=typeof module&&module.exports?module.exports=a:window.device=a}).call(this);
-    </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script>
     <script type="text/javascript">
-
-
 $(document).ready(function(){
-	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-	var now = new Date();
-	var firstDate = (new Date(2016,6,30)).getTime();
-	var secondDate= (new Date(now.getFullYear(),now.getMonth()+1,now.getDate())).getTime();
-	var diffDays = Math.round(Math.abs((firstDate - secondDate)/(oneDay)));
-	var amount=<%= candidat['soutiens'] %>;
-	var goal=<%= candidat['goal'] %>;
-	var goal_int=parseInt(goal);
-	var amount_int=parseInt(amount,10);
-	var soutien=" soutiens";
-	if (amount_int<2) {
-		soutien=" soutien"
-	}
-	$('#fundraising_bar').goalProgress({
-		goalAmount: goal_int,
-		currentAmount: amount,
-		textBefore: '',
-		textAfter: soutien
-	});
-	$('#nb_days_left').html(diffDays);
-	if (device.android()) {
-		$('#desktop_app').hide();
-		$('#android_app').show();
-	};
-	$('#Iemail').on('shown.bs.modal', function () {
-		var z172u35g0xjklqk;(function(d, t) {
-		var s = d.createElement(t), options = {
-		'userName':'democratech',
-		'formHash':'z172u35g0xjklqk',
-		'autoResize':true,
-		'height':'259',
-		'defaultValues':'field3=<%= candidat['candidate_id'] %>',
-		'async':true,
-		'host':'wufoo.com',
-		'header':'hide',
-		'ssl':true};
-		s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-		s.onload = s.onreadystatechange = function() {
-		var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-		try { z172u35g0xjklqk = new WufooForm();z172u35g0xjklqk.initialize(options);z172u35g0xjklqk.display(); } catch (e) {}};
-		var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-		})(document, 'script');
-
-        });
+	//$('#liste_soutiens').DataTable();
 });
-
     </script>
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

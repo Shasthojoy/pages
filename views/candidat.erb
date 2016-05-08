@@ -229,40 +229,34 @@ footer {
 				<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
 				<div id="candidat_name"><%= candidat['name'] %></div>
 				<div id="candidat_programme">
-				<% if candidat['trello'].nil? %>
+				<% if trello.nil? %>
 					<a href="<%= "https://www.google.fr/#q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>
 					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> a été plébiscité pour être candidat sur LaPrimaire.org.</p>
 					<p style="font-size: 13px; font-style:italic;text-align:justify;">Il est important de noter que <%= candidat['name'] %> n'est pas responsable de cette démarche : sa candidature a été proposée par une ou plusieurs personnes qui souhaiteraient <%= gender['le'] %> voir se présenter en tant que <%= gender['candidat'] %> sur <a href="https://laprimaire.org" target="_blank">LaPrimaire.org.</a></p>
 				<% else %>
-					<a href="<%= candidat['trello'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Voir son profil</a>
+					<a href="<%= trello %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Voir son profil</a>
 				<% end %>
 					<div>
-				<% if not candidat['website'].nil? %>
-					<a href="<%= candidat['website'] %>" target="_blank"><i class="fa fa-globe">&nbsp;site web officiel</i></a>
+				<% if not website.nil? %>
+					<a href="<%= website %>" target="_blank"><i class="fa fa-globe">&nbsp;site web officiel</i></a>
 				<% end %>
-				<% if not candidat['facebook'].nil? %>
-					<a href="<%= candidat['facebook'] %>" target="_blank"><i class="fa fa-facebook-square">&nbsp;facebook</i></a>
+				<% if not facebook.nil? %>
+					<a href="<%= facebook %>" target="_blank"><i class="fa fa-facebook-square">&nbsp;facebook</i></a>
 				<% end %>
-				<% if not candidat['twitter'].nil? %>
-					<a href="<%= candidat['twitter'] %>" target="_blank"><i class="fa fa-twitter-square">&nbsp;twitter</i></a>
+				<% if not twitter.nil? %>
+					<a href="<%= twitter %>" target="_blank"><i class="fa fa-twitter-square">&nbsp;twitter</i></a>
 				<% end %>
-				<% if not candidat['youtube'].nil? %>
-					<a href="<%= candidat['youtube'] %>" target="_blank"><i class="fa fa-youtube-square">&nbsp;youtube</i></a>
+				<% if not youtube.nil? %>
+					<a href="<%= youtube %>" target="_blank"><i class="fa fa-youtube-square">&nbsp;youtube</i></a>
 				<% end %>
-				<% if not candidat['linkedin'].nil? %>
-					<a href="<%= candidat['linkedin'] %>" target="_blank"><i class="fa fa-linkedin-square">&nbsp;linkedin</i></a>
+				<% if not linkedin.nil? %>
+					<a href="<%= linkedin %>" target="_blank"><i class="fa fa-linkedin-square">&nbsp;linkedin</i></a>
 				<% end %>
-				<% if not candidat['blog'].nil? %>
-					<a href="<%= candidat['blog'] %>" target="_blank"><i class="fa fa-wordpress">&nbsp;blog</i></a>
+				<% if not blog.nil? %>
+					<a href="<%= blog %>" target="_blank"><i class="fa fa-wordpress">&nbsp;blog</i></a>
 				<% end %>
-				<% if not candidat['tumblr'].nil? %>
-					<a href="<%= candidat['tumblr'] %>" target="_blank"><i class="fa fa-tumblr-square">&nbsp;tumblr</i></a>
-				<% end %>
-				<% if not candidat['medium'].nil? %>
-					<a href="<%= candidat['medium'] %>" target="_blank"><i class="fa fa-medium">&nbsp;medium</i></a>
-				<% end %>
-				<% if not candidat['wikipedia'].nil? %>
-					<a href="<%= candidat['wikipedia'] %>" target="_blank"><i class="fa fa-medium">&nbsp;wikipedia</i></a>
+				<% if not wikipedia.nil? %>
+					<a href="<%= wikipedia %>" target="_blank"><i class="fa fa-medium">&nbsp;wikipedia</i></a>
 				<% end %>
 					</div>
 				</div>
