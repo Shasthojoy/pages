@@ -151,6 +151,7 @@ END
 			begin
 				Candidat.db_init()
 				res=Candidat.db_query("get_candidate_by_key",[params['candidate_key']])
+				return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				candidat=res[0]
 				res1=Candidat.db_query("get_supporters_by_key",[params['candidate_key']])
 				if not res1.num_tuples.zero? then
@@ -164,7 +165,7 @@ END
 						})
 					end
 				end
-			rescue PG::Error => e
+			rescue Exception => e
 				status 500
 				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
@@ -194,6 +195,7 @@ END
 			instagram=html_escape(candidat['instagram'].split('?')[0]) unless candidat['instagram'].nil? or candidat['instagram'].empty?
 			wikipedia=html_escape(candidat['wikipedia'].split('?')[0]) unless candidat['wikipedia'].nil? or candidat['wikipedia'].empty?
 			birthday=Date.parse(candidat['birthday'].split('?')[0]) unless candidat['birthday'].nil?
+			photo_url= candidat['photo'].nil? ? "https://bot.democratech.co/static/images/missing-photo-M.jpg" : AWS_S3_BUCKET_URL+candidat['photo']
 			age=nil
 			unless birthday.nil? then
 				now = Time.now.utc.to_date
@@ -243,7 +245,8 @@ END
 				:wikipedia=>wikipedia,
 				:age=>age,
 				:days_verified=>days_verified,
-				:soutiens=>soutiens
+				:soutiens=>soutiens,
+				:photo_url=>photo_url
 			}
 		end
 
