@@ -18,6 +18,7 @@ db=PG.connect(
 Algolia.init :application_id=>ALGOLIA_ID, :api_key=>ALGOLIA_KEY
 index_candidats=Algolia::Index.new("candidates")
 index_citoyens=Algolia::Index.new("citizens")
+index_search=Algolia::Index.new("search")
 candidates_list=<<END
 SELECT ca.candidate_id,ca.user_id,ca.name,ca.gender,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens, w.nb_soutiens_7j
 FROM candidates as ca
@@ -98,6 +99,13 @@ if not res.num_tuples.zero? then
 				"nb_soutiens_7j"=>r['nb_soutiens_7j'].to_i,
 				"nb_views"=>r['nb_views'].to_i
 			})
+			index_search.save_object({
+				"objectID"=>r['candidate_id'],
+				"candidate_id"=>r['candidate_id'],
+				"name"=>r['name'],
+				"photo"=>r['photo'],
+				"level"=>3
+			})
 			sitemap+=<<END
 <url>
 	<loc>https://laprimaire.org/candidat/#{r['candidate_id']}</loc>
@@ -118,6 +126,13 @@ END
 				"nb_soutiens_7j"=>r['nb_soutiens_7j'].to_i,
 				"nb_views"=>r['nb_views'].to_i
 			})
+			index_search.save_object({
+				"objectID"=>r['candidate_id'],
+				"candidate_id"=>r['candidate_id'],
+				"name"=>r['name'],
+				"photo"=>r['photo'],
+				"level"=>2
+			})
 			sitemap+=<<END
 <url>
 	<loc>https://laprimaire.org/candidat/#{r['candidate_id']}</loc>
@@ -126,6 +141,13 @@ END
 END
 			puts "Added citoyen #{r['name']}"
 		else
+			index_search.save_object({
+				"objectID"=>r['candidate_id'],
+				"candidate_id"=>r['candidate_id'],
+				"name"=>r['name'],
+				"photo"=>r['photo'],
+				"level"=>1
+			})
 			puts "Skipped citoyen #{r['name']}"
 		end
 	end
