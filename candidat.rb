@@ -204,6 +204,7 @@ END
 			date_verified=Date.parse(candidat['date_verified']) unless candidat['date_verified'].nil?
 			days_verified = (Date.today-date_verified).to_i unless date_verified.nil?
 
+			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			m=(candidat['gender']=="M")
 			gender={
 				"le"=>m ? "le":"la",
