@@ -428,29 +428,9 @@ var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s
                 </div>
 
                 <div class="col-lg-4">
-                    <h4 class="section-heading">Mon résumé</h4>
+			<h4 class="section-heading">Mon résumé</h4>
 		    <p style="font-size:12px; color:#777;font-style:italic;text-align:left;">Votre résumé apparaît sur votre fiche dans la page de recherche des candidats.</p>
-		    <div id="wufoo-m1hlvae21v149z7">
-			    Fill out my <a href="https://democratech.wufoo.com/forms/m1hlvae21v149z7">online form</a>.
-		    </div>
-		    <script type="text/javascript">var m1hlvae21v149z7;(function(d, t) {
-	var s = d.createElement(t), options = {
-	'userName':'democratech',
-	'formHash':'m1hlvae21v149z7',
-	'autoResize':true,
-	'height':'496',
-	'async':true,
-	'host':'wufoo.com',
-	'header':'hide',
-	'defaultValues':'<%= prefill['summary'] %>',
-	'ssl':true};
-	s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-	s.onload = s.onreadystatechange = function() {
-	var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-	try { m1hlvae21v149z7 = new WufooForm();m1hlvae21v149z7.initialize(options);m1hlvae21v149z7.display(); } catch (e) {}};
-	var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-	})(document, 'script');</script>
-
+		    <iframe height="616" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="http://democratech.wufoo.com/embed/m1hlvae21v149z7/def/&header=hide&Field1=<%= vision_encoded %>&Field3=<%= prio1_encoded %>&Field2=<%= prio2_encoded %>&Field4=<%= prio3_encoded %>&Field6=<%= candidat['candidate_key'] %>&Field7=<%= email_encoded %>"><a href="https://democratech.wufoo.com/forms/m1hlvae21v149z7/def/header=hide">Fill out my Wufoo form!</a></iframe>
                 </div>
             </div>
 	</div>

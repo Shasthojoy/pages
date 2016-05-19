@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require 'date'
 require 'erb'
+require 'cgi'
 include ERB::Util
 
 module Democratech
@@ -203,6 +204,11 @@ END
 			end
 			date_verified=Date.parse(candidat['date_verified']) unless candidat['date_verified'].nil?
 			days_verified = (Date.today-date_verified).to_i unless date_verified.nil?
+			vision_encoded=CGI.escape(ERB::Util.url_encode(candidat['vision'])) unless candidat['vision'].nil?
+			prio1_encoded=CGI.escape(ERB::Util.url_encode(candidat['prio1'])) unless candidat['prio1'].nil?
+			prio2_encoded=CGI.escape(ERB::Util.url_encode(candidat['prio2'])) unless candidat['prio2'].nil?
+			prio3_encoded=CGI.escape(ERB::Util.url_encode(candidat['prio3'])) unless candidat['prio3'].nil?
+			email_encoded=CGI.escape(ERB::Util.url_encode(email))
 
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			m=(candidat['gender']=="M")
@@ -247,7 +253,12 @@ END
 				:age=>age,
 				:days_verified=>days_verified,
 				:soutiens=>soutiens,
-				:photo_url=>photo_url
+				:photo_url=>photo_url,
+				:vision_encoded=>vision_encoded,
+				:prio1_encoded=>prio1_encoded,
+				:prio2_encoded=>prio2_encoded,
+				:prio3_encoded=>prio3_encoded,
+				:email_encoded=>email_encoded
 			}
 		end
 
