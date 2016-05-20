@@ -344,14 +344,34 @@ span.goalAmount {
     </nav>
 
     <section>
-        <div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<h4 class="section-heading">Nombre de soutiens</h4>
-				<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">500+</div>
-				<div id="fundraising_bar" class="donateurs"></div><br>
-			</div>
+	 <div class="container">
+	 <% if candidat['trello'].nil? or candidat['trello'].empty? %>
+	    <div class="row">
+		    <div class="col-xs-12">
+			    <div class="alert alert-danger">
+				    <!-- <a href="#" class="close" data-dismiss="alert">&times;</a>-->
+				    <strong>Attention votre page candidat n'est pas publique car votre tableau Trello est manquant</strong>. Veuillez créer votre tableau Trello comme indiqué dans le <a href="https://docs.google.com/presentation/d/1e6fxInTa5eBfL9mcMB5EIUIDcgjSalH_sCZRZj7uclc/pub?start=false&loop=false&delayms=3000&slide=id.p" target="_blank">manuel du candidat</a> et renseigner son adresse dans la section "Mes liens" ci-dessous. Dès que vous avez fait cela, <a href="https://laprimaire.org/contact/">contactez-nous</a> pour nous le faire savoir et nous rendrons votre page candidat publique après validation. Si vous avez la moindre question, n'hésitez pas à nous contacter, nous sommes là pour vous aider.
+			    </div>
+		    </div>
+	    </div>
+	 <% elsif candidat['departement'].nil? or candidat['departement'].empty? or candidat['vision'].nil? or candidat['vision'].empty? %>
+	    <div class="row">
+		    <div class="col-xs-12">
+			    <div class="alert alert-warning">
+				    <!-- <a href="#" class="close" data-dismiss="alert">&times;</a>-->
+				    <strong>Attention votre page candidat n'apparait pas dans la recherche car votre profil n'est pas complet</strong>. Veuillez compléter les sections "Mes informations" et "Mon résumé" pour que votre page candidat apparaisse sur la <a href="https://laprimaire.org/candidats/" target="_blank">page de recherche des candidats</a>. La page de recherche des candidats est mise à jour une fois par jour donc ne vous inquiétez pas si vous n'apparaissez pas immédiatement après avoir complété votre profil. Si vous avez la moindre question, n'hésitez pas à <a href="https://laprimaire.org/contact/" target="_blank">nous contacter</a>, nous sommes là pour vous aider.
+			    </div>
+		    </div>
+	    </div>
+	 <% end %>
+
+	    <div class="row">
+		<div class="col-xs-12">
+			<h4 class="section-heading">Nombre de soutiens</h4>
+			<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">500+</div>
+			<div id="fundraising_bar" class="donateurs"></div><br>
 		</div>
+	    </div>
 	    <div class="row">
                 <div class="col-lg-4">
                     <h4 class="section-heading">Aperçu de mon profil</h4>
