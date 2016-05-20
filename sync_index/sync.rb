@@ -70,6 +70,10 @@ if not res.num_tuples.zero? then
 		official= r['official'].to_b ? "official" : "not_official"
 		gender= r['gender']=='M' ? "Homme" : "Femme"
 		birthday=Date.parse(r['birthday'].split('?')[0]) unless r['birthday'].nil?
+		status="incomplete"
+		unless r['vision'].nil? or r['vision'].empty? or r['secteur'].nil? or r['secteur'].empty? then
+			status="complete"
+		end
 		age=nil
 		unless birthday.nil? then
 			now = Time.now.utc.to_date
@@ -112,7 +116,8 @@ if not res.num_tuples.zero? then
 				"date_officializied"=>r['date_officializied'],
 				"nb_soutiens"=>r['nb_soutiens'].to_i,
 				"nb_soutiens_7j"=>r['nb_soutiens_7j'].to_i,
-				"nb_views"=>r['nb_views'].to_i
+				"nb_views"=>r['nb_views'].to_i,
+				"status"=>status
 			})
 			index_search.save_object({
 				"objectID"=>r['candidate_id'],
