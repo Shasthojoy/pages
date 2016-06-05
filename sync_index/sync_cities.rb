@@ -43,7 +43,7 @@ if not res.num_tuples.zero? then
 	res.each do |r|
 		object_ids=eval(r['city_ids'].gsub('{','[').gsub('}',']'))
 		zipcodes=eval(r['zipcodes'].gsub('{','[').gsub('}',']'))
-		zipcodes_text=zipcodes.join(',')
+		zipcodes_text=zipcodes.join(', ')
 		first=object_ids[0]
 		puts "using #{first} as first"
 		object_ids.each do |a|
