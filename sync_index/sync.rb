@@ -133,7 +133,7 @@ if not res.num_tuples.zero? then
 </url>
 END
 			puts "Added candidat #{r['name']}"
-		elsif r['nb_soutiens'].to_i>1
+		elsif (r['nb_soutiens'].to_i>1 and not r['verified'].to_b and not r['accepted'].to_b)
 			index_citoyens.save_object({
 				"objectID"=>r['candidate_id'],
 				"candidate_id"=>r['candidate_id'],
