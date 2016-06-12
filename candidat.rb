@@ -24,6 +24,11 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
   on (s.candidate_id = c.candidate_id)
 WHERE c.candidate_id = $1;
 END
+			@queries['get_citizen_by_key']=<<END
+SELECT c.user_id,c.firstname,c.lastname,c.email,c.registered,c.country,c.citizen_key,c.validation_level,ci.zipcode,ci.name,ci.population,ci.departement
+FROM citizens AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+WHERE c.citizen_key=$1
+END
 			@queries['get_candidate_by_key']=<<END
 SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
   FROM candidates as c
@@ -37,6 +42,12 @@ WHERE c.candidate_key = $1;
 END
 			@queries['get_supporters_by_key']=<<END
 select c.firstname, c.lastname, c.city, ci.departement, s.support_date from citizens as c inner join supporters as s on (s.user_id=c.user_id) inner join candidates as ca on (ca.candidate_id=s.candidate_id) left join cities as ci on (ci.city_id=c.city_id) where ca.candidate_key=$1;
+END
+			@queries['get_supported_candidates_by_key']=<<END
+SELECT ca.name, ca.gender, ca.candidate_id, ca.candidate_key, s.support_date
+FROM citizens AS ci
+INNER JOIN supporters AS s ON (s.user_id=ci.user_id AND ci.citizen_key=$1)
+INNER JOIN candidates AS ca ON (ca.candidate_id=s.candidate_id);
 END
 		end
 		def self.db_init
@@ -262,5 +273,37 @@ END
 			}
 		end
 
+		get '/citizen/:citizen_key' do
+			candidats=[]
+			begin
+				Candidat.db_init()
+				res=Candidat.db_query("get_citizen_by_key",[params['citizen_key']])
+				return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+				citizen=res[0]
+				res1=Candidat.db_query("get_supported_candidates_by_key",[params['citizen_key']])
+				if not res1.num_tuples.zero? then
+					res1.each do |r|
+						candidats.push({
+							'name'=>r['name'],
+							'candidate_key'=>r['candidate_key'],
+							'support_date'=>Date.parse(r['support_date']).to_s
+						})
+					end
+				end
+			rescue Exception => e
+				status 500
+				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+			ensure
+				Candidat.db.close() unless Candidat.db.nil?
+			end
+			if res.num_tuples.zero? then
+				status 404
+				return erb :error, :locals=>{:error=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
+			end
+			erb :citoyen, :locals=>{
+				:citoyen=>citizen,
+				:candidats=>candidats
+			}
+		end
 	end
 end
