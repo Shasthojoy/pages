@@ -71,7 +71,7 @@ if not res.num_tuples.zero? then
 		gender= r['gender']=='M' ? "Homme" : "Femme"
 		birthday=Date.parse(r['birthday'].split('?')[0]) unless r['birthday'].nil?
 		status="incomplete"
-		unless r['vision'].nil? or r['vision'].empty? or r['secteur'].nil? or r['secteur'].empty? then
+		unless r['vision'].nil? or r['vision'].empty? then
 			status="complete"
 		end
 		age=nil
@@ -80,7 +80,7 @@ if not res.num_tuples.zero? then
 			age = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
 		end
 
-		if (r['verified'].to_b) then
+		if (r['verified'].to_b and not r['vision'].nil?) then
 			index_candidats.save_object({
 				"objectID"=>r['candidate_id'],
 				"candidate_id"=>r['candidate_id'],
