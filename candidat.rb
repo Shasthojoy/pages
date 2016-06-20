@@ -87,6 +87,10 @@ END
 				return erb :error, :locals=>{:error=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
 			end
 			candidat=res[0]
+			if ABANDONS.include?(candidat['candidate_id'].to_i) then
+				status 200
+				return erb :error, :locals=>{:error=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}
+			end
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			candidat['qualified']= (candidat['soutiens'].to_i >= 500)
@@ -165,6 +169,10 @@ END
 				res=Candidat.db_query("get_candidate_by_key",[params['candidate_key']])
 				return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				candidat=res[0]
+				if ABANDONS.include?(candidat['candidate_id'].to_i) then
+					status 200
+					return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}}
+				end
 				res1=Candidat.db_query("get_supporters_by_key",[params['candidate_key']])
 				if not res1.num_tuples.zero? then
 					res1.each do |r|
