@@ -302,7 +302,7 @@ END
 				end
 			rescue Exception => e
 				status 500
-				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
 				Candidat.db.close() unless Candidat.db.nil?
 			end
