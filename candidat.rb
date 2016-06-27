@@ -25,9 +25,9 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
 WHERE c.candidate_id = $1;
 END
 			@queries['get_citizen_by_key']=<<END
-SELECT c.user_id,c.firstname,c.lastname,c.email,c.registered,c.country,c.citizen_key,c.validation_level,ci.zipcode,ci.name,ci.population,ci.departement
-FROM citizens AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
-WHERE c.citizen_key=$1
+SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.registered,c.country,c.user_key,c.validation_level,ci.zipcode,ci.name,ci.population,ci.departement
+FROM users AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+WHERE c.user_key=$1
 END
 			@queries['get_candidate_by_key']=<<END
 SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
@@ -45,9 +45,12 @@ select c.firstname, c.lastname, c.city, ci.departement, s.support_date from citi
 END
 			@queries['get_supported_candidates_by_key']=<<END
 SELECT ca.name, ca.gender, ca.candidate_id, ca.candidate_key, s.support_date
-FROM citizens AS ci
-INNER JOIN supporters AS s ON (s.user_id=ci.user_id AND ci.citizen_key=$1)
+FROM users AS u
+INNER JOIN supporters AS s ON (s.email=u.email AND u.user_key=$1)
 INNER JOIN candidates AS ca ON (ca.candidate_id=s.candidate_id);
+END
+			@queries['reset_citizen_email']=<<END
+UPDATE users SET email_status=0, validation_level=(validation_level & 14), email=reset_email, reset_email=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
 END
 		end
 		def self.db_init
@@ -78,18 +81,18 @@ END
 				res=Candidat.db_query("get_candidate",[params['candidate_id']])
 			rescue PG::Error => e
 				status 500
-				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
 				Candidat.db.close() unless Candidat.db.nil?
 			end
 			if res.num_tuples.zero? then
 				status 404
-				return erb :error, :locals=>{:error=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
 			end
 			candidat=res[0]
 			if ABANDONS.include?(candidat['candidate_id'].to_i) then
 				status 200
-				return erb :error, :locals=>{:error=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}
 			end
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
@@ -167,11 +170,11 @@ END
 			begin
 				Candidat.db_init()
 				res=Candidat.db_query("get_candidate_by_key",[params['candidate_key']])
-				return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				candidat=res[0]
 				if ABANDONS.include?(candidat['candidate_id'].to_i) then
 					status 200
-					return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}}
+					return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}}
 				end
 				res1=Candidat.db_query("get_supporters_by_key",[params['candidate_key']])
 				if not res1.num_tuples.zero? then
@@ -187,13 +190,13 @@ END
 				end
 			rescue Exception => e
 				status 500
-				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
 				Candidat.db.close() unless Candidat.db.nil?
 			end
 			if res.num_tuples.zero? then
 				status 404
-				return erb :error, :locals=>{:error=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun citoyen"}}
 			end
 			email=html_escape(candidat['email']) unless candidat['email'].nil?
 			secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
@@ -281,14 +284,42 @@ END
 			}
 		end
 
-		get '/citizen/:citizen_key' do
+		get '/citoyen/:user_key' do
+			email_updated=false
+			begin
+				Candidat.db_init()
+				res=Candidat.db_query("get_citizen_by_key",[params['user_key']])
+				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+				citizen=res[0]
+				email=citizen['email']
+				if not params['reset_email'].nil? then
+					res1=Candidat.db_query("reset_citizen_email",[email])
+					if not res1.num_tuples.zero? then
+						citizen=res1[0]
+						email=citizen['email']
+						email_updated=true
+					end
+				end
+			rescue Exception => e
+				status 500
+				return erb :error, :locals=>{:error=>{"title"=>"Erreur serveur","message"=>e.message}}
+			ensure
+				Candidat.db.close() unless Candidat.db.nil?
+			end
+			if email_updated then
+				erb :success, :locals=>{ :msg=>{ "title"=>"Email validé", "message"=>"Votre nouvel email (#{email}) a été mis à jour avec succès !" } }
+			else
+				status 500
+				erb :error, :locals=>{ :msg=>{ "title"=>"Email inchangé", "message"=>"Votre email (#{email}) est resté inchangé" } }
+			end
+=begin
 			candidats=[]
 			begin
 				Candidat.db_init()
-				res=Candidat.db_query("get_citizen_by_key",[params['citizen_key']])
+				res=Candidat.db_query("get_citizen_by_key",[params['user_key']])
 				return erb :error, :locals=>{:error=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citizen=res[0]
-				res1=Candidat.db_query("get_supported_candidates_by_key",[params['citizen_key']])
+				res1=Candidat.db_query("get_supported_candidates_by_key",[params['user_key']])
 				if not res1.num_tuples.zero? then
 					res1.each do |r|
 						candidats.push({
@@ -312,6 +343,7 @@ END
 				:citoyen=>citizen,
 				:candidats=>candidats
 			}
+=end
 		end
 	end
 end
