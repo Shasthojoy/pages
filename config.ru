@@ -1,5 +1,5 @@
-require './candidat'
-require './config/keys.local.rb'
-require 'pg'
+require File.expand_path('../config/environment', __FILE__)
 
-run Democratech::Candidat
+require './config/keys.local.rb'
+
+run Pages::App

@@ -5,7 +5,6 @@ require 'bundler/setup'
 # http://nebulab.it/blog/monitoring-unicorn-with-monit
 # For complete documentation, see http://unicorn.bogomips.org/Unicorn/Configurator.html
 APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
-require APP_ROOT+'/candidat.rb'
 
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
@@ -63,7 +62,6 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
-  Democratech::Candidat.db_load_queries()
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
