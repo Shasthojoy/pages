@@ -94,9 +94,24 @@ h2 {
 	margin-top:-40px;
 	background-color:white;
 }
+#video-button:hover {
+	background-image: url("https://laprimaire.org/assets/images/buttons/video-button-hover.png");
+	cursor: pointer;
+}
+#video-button {
+	background-image: url("https://laprimaire.org/assets/images/buttons/video-button.png");
+	position:absolute;
+	width:106px;
+	height:60px;
+	left:41%;
+	top:120px;
+	text-align:center;
+}
+#candidat_frame { }
 #candidat_photo {
 	border: 1px solid #5e5e5e;
 	margin:20px;
+	height:300px;
 }
 #candidat_name {
 	font-size: 24px;
@@ -226,7 +241,12 @@ footer {
             <div class="row">
                 <div class="col-lg-6">
 			<div id="candidat_about">
-				<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
+				<div id="candidat_frame">
+				<% unless candidat['video'].nil? %>
+					<a data-toggle="modal" data-target="#Iwatch"><div id="video-button"></div></a>
+				<% end %>
+					<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
+				</div>
 				<div id="candidat_name"><%= candidat['name'] %></div>
 				<div id="candidat_programme">
 				<% if trello.nil? %>
@@ -366,6 +386,18 @@ footer {
 	        </div>
 	      </div>
       </div>
+    <% unless candidat['video'].nil? %>
+    <!-- Modal -->
+    <div class="modal fade" id="Iwatch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+		  <div class="modal-body">
+			  <iframe width="100%" height="315" src="<%= candidat['video'] %>" frameborder="0" allowfullscreen></iframe>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+      <% end %>
     <!-- Modal -->
     <div class="modal fade" id="Iemail" tabindex="-1" role="dialog" aria-labelledby="shareByEmail">
 	      <div class="modal-dialog" role="document">
