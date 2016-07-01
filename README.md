@@ -86,18 +86,13 @@ AWS_S3_BUCKET_URL="https://s3.eu-central-1.amazonaws.com/laprimaire/"
 ABANDONS=[] # You can leave this variable as is
 $ 
 ```
-This will compile your new shining nanoc site and start watching for changes. If you don't want to use guard, you can alternatively run the following command to compile the project:
+
+You are now ready to launch the app and test that everything works fine :
 ```console
-$ bundle exec nanoc compile
+$ bundle exec unicorn -c config/unicorn.conf.rb
 ```
 
-Now let's start a web server to access the website locally:
-
-```console
-$ bundle exec nanoc view
-```
-
-You can now access your local copy of democratech's website at [http://localhost:3000](http://localhost:3000)
+Point your web browser to ```http://localhost:9293/candidat/205289674457``` and you should see a candidate page.
 
 ## Contributing
 
@@ -107,13 +102,11 @@ You can now access your local copy of democratech's website at [http://localhost
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-For development purposes, don't forget to set ```debug: true``` in the nanoc.yaml file otherwise all JS and CSS assets are concatenated and minified.
-
 ## Authors
 
 So far, democratech's website is being developed and maintained by
 * [Thibauld Favre](https://twitter.com/thibauld)
-* Feel free to join us! 
+* Feel free to join us... hmmm... 'me' so far :)
 
 ## Backers
 
@@ -214,8 +207,7 @@ Love our work and community? Help us keep it alive by donating funds to cover pr
 
 ## License
 
-* democratech website is released under the [GNU Affero GPL](https://github.com/democratech/website/blob/master/LICENSE)
-* nanoc-skeleton is released under the [MIT license](https://github.com/alessandro1997/nanoc-skeleton/blob/master/LICENSE.txt).
-* nanoc is released under a [Free Software license] (https://github.com/nanoc/nanoc/blob/master/LICENSE).
+* democratech website is released under the [Apache 2 license](https://github.com/democratech/pages/blob/master/LICENSE)
+* sinatra is released under an [Open Source license](https://github.com/sinatra/sinatra/blob/master/LICENSE).
 * bootstrap is released under the [MIT license](https://github.com/twbs/bootstrap/blob/master/LICENSE).
 
