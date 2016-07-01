@@ -5,7 +5,7 @@
 
 This is the code of LaPrimaire's [individual candidate page](https://laprimaire.org/candidat/482702054584) as well as the citizens and candidates admin page. It uses the [Sinatra](http://www.sinatrarb.com/) lightweight framework and rely on a PostgreSQL database. Pages are served through the [unicorn web server](http://unicorn.bogomips.org/).
 
-## Usage
+## Setup
 
 To install LaPrimaire's pages on your local computer, first clone the repo locally and install the dependencies:
 
@@ -84,7 +84,6 @@ PGNAME="laprimaire_sandbox"
 PGUSER="laprimaire"
 AWS_S3_BUCKET_URL="https://s3.eu-central-1.amazonaws.com/laprimaire/"
 ABANDONS=[] # You can leave this variable as is
-$ 
 ```
 
 You are now ready to launch the app and test that everything works fine :
@@ -96,7 +95,7 @@ Point your web browser to ```http://localhost:9293/candidat/205289674457``` and 
 
 ## Contributing
 
-1. [Fork it](http://github.com/democratech/LaPrimaire/fork)
+1. [Fork it](http://github.com/democratech/pages/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -104,9 +103,9 @@ Point your web browser to ```http://localhost:9293/candidat/205289674457``` and 
 
 ## Authors
 
-So far, democratech's website is being developed and maintained by
+So far, pages is being developed and maintained by
 * [Thibauld Favre](https://twitter.com/thibauld)
-* Feel free to join us... hmmm... 'me' so far :)
+* Feel free to contribute by checking the [issues opened](https://github.com/democratech/pages/issues)... we're waiting for you :)
 
 ## Backers
 
