@@ -1,6 +1,6 @@
 [![OpenCollective](https://opencollective.com/laprimaire/badge/backers.svg)](https://opencollective.com/laprimaire#support)
 
-![democratech logo](https://democratech.co/assets/images/democratech-logo-whitebg-260x64.png)
+![LaPrimaire logo](https://s3.eu-central-1.amazonaws.com/laprimaire/laprimaire-small-logo.png)
 # Pages
 
 This is the code of LaPrimaire's [individual candidate page](https://laprimaire.org/candidat/482702054584) as well as the citizens and candidates admin page. It uses the [Sinatra](http://www.sinatrarb.com/) lightweight framework and rely on a PostgreSQL database. Pages are served through the [unicorn web server](http://unicorn.bogomips.org/).
