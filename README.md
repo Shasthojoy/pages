@@ -25,7 +25,7 @@ $ sudo -s
 $ psql
 postgres=# CREATE USER laprimaire WITH PASSWORD 'yourpassword';
 postgres=# CREATE DATABASE laprimaire_sandbox;
-postgres=# GRANT ALL PRIVILEGES ON laprimaire_sandbox TO laprimaire;
+postgres=# GRANT ALL PRIVILEGES ON DATABASE laprimaire_sandbox TO laprimaire;
 ```
 
 Verify you are able to connect to your newly created database :
