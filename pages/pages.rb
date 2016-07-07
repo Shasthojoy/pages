@@ -24,13 +24,23 @@ module Pages
 	end
 
 	def self.db_init
-		@@db=PG.connect(
-			"dbname"=>PGNAME,
-			"user"=>PGUSER,
-			"password"=>PGPWD,
-			"host"=>PGHOST,
-			"port"=>PGPORT
-		)
+		if ::DEBUG then
+			@@db=PG.connect(
+				"dbname"=>PGNAME_TEST,
+				"user"=>PGUSER_TEST,
+				"password"=>PGPWD_TEST,
+				"host"=>PGHOST,
+				"port"=>PGPORT
+			)
+		else
+			@@db=PG.connect(
+				"dbname"=>PGNAME,
+				"user"=>PGUSER,
+				"password"=>PGPWD,
+				"host"=>PGHOST,
+				"port"=>PGPORT
+			)
+		end
 	end
 
 	def self.db_query(query,params)
