@@ -110,10 +110,14 @@ END
 				status 200
 				return erb :error, :locals=>{:msg=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}
 			end
+			if EXCLUSIONS.include?(candidat['candidate_id'].to_i) then
+				status 200
+				return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org"}}
+			end
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			candidat['qualified']= (candidat['soutiens'].to_i >= 500)
-			candidat['video']=candidat['video'].gsub('watch?v=','embed')
+			candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
 			secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
 			departement_name=candidat['departement'].split(' - ')[1] unless candidat['departement'].nil?
 			departement_name=html_escape(departement_name) unless departement_name.nil?
