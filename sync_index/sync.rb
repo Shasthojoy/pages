@@ -20,7 +20,7 @@ index_candidats=Algolia::Index.new("candidates")
 index_citoyens=Algolia::Index.new("citizens")
 index_search=Algolia::Index.new("search")
 candidates_list=<<END
-SELECT ca.candidate_id,ca.user_id,ca.name,ca.gender,ca.birthday,ca.job,ca.departement,ca.secteur,ca.accepted,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.vision,ca.prio1,ca.prio2,ca.prio3,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens, w.nb_soutiens_7j
+SELECT ca.candidate_id,ca.user_id,ca.name,ca.gender,ca.birthday,ca.job,ca.departement,ca.secteur,ca.accepted,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.vision,ca.prio1,ca.prio2,ca.prio3,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
 FROM candidates as ca
 LEFT JOIN (
 	SELECT y.candidate_id, y.nb_views, count(s.user_id) as nb_soutiens
@@ -55,6 +55,13 @@ LEFT JOIN (
 	GROUP BY y.candidate_id,y.nb_views
 ) as w
 ON (w.candidate_id = ca.candidate_id)
+LEFT JOIN (
+	SELECT s.candidate_id, count(s.user_id) as nb_soutiens_30j
+	FROM supporters as s
+	WHERE s.support_date> (now()::date-30)
+	GROUP BY s.candidate_id
+) as y
+ON (y.candidate_id = ca.candidate_id)
 ORDER BY z.nb_soutiens DESC
 END
 
@@ -80,7 +87,7 @@ if not res.num_tuples.zero? then
 			age = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
 		end
 
-		if (r['verified'].to_b and not r['vision'].nil?) then
+		if (r['verified'].to_b and not r['vision'].nil? and r['nb_soutiens_30j'].to_i>0) then
 			index_candidats.save_object({
 				"objectID"=>r['candidate_id'],
 				"candidate_id"=>r['candidate_id'],
@@ -133,7 +140,7 @@ if not res.num_tuples.zero? then
 </url>
 END
 			puts "Added candidat #{r['name']}"
-		elsif (r['nb_soutiens'].to_i>1 and not r['verified'].to_b and not r['accepted'].to_b)
+		elsif (r['nb_soutiens'].to_i>2 and not r['verified'].to_b and not r['accepted'].to_b)
 			index_citoyens.save_object({
 				"objectID"=>r['candidate_id'],
 				"candidate_id"=>r['candidate_id'],

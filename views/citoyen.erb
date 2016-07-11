@@ -310,25 +310,31 @@ h2 {
 		    <div class="row">
 			    <div class="col-xs-6" style="line-height:30px;"> Téléphone validé: </div>
 			    <% if account['phone_valid'] %>
-			    <div class="col-xs-6"><a class="btn btn-xl green statut" title="telephone validé" id="tel_valide">oui</a></div>
+			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="telephone validé" id="tel_valide">oui</a></div>
+			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
 			    <% else %>
-			    <div class="col-xs-6"><a class="btn btn-xl red statut" title="telephone non validé" id="tel_valide">non</a></div>
+			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_phone" class="btn btn-xl red statut" title="telephone non validé" id="tel_valide">non</a></div>
+			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_phone" href="#">valider</a></div>
 			    <% end %>
 		    </div>
 		    <div class="row">
 			    <div class="col-xs-6" style="line-height:30px;"> Compte facebook validé: </div>
 			    <% if account['facebook_valid'] %>
-			    <div class="col-xs-6"><a class="btn btn-xl green statut" title="facebook validé" id="fb_valide">oui</a></div>
+			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="facebook validé" id="fb_valide">oui</a></div>
+			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
 			    <% else %>
-			    <div class="col-xs-6"><a class="btn btn-xl red statut" title="facebook non validé" id="fb_valide">non</a></div>
+			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_facebook" class="btn btn-xl red statut" title="facebook non validé" id="fb_valide">non</a></div>
+			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_facebook" href="#">valider</a></div>
 			    <% end %>
 		    </div>
 		    <div class="row">
 			    <div class="col-xs-6" style="line-height:30px;"> Adhérent LaPrimaire.org: </div>
 			    <% if account['facebook_valid'] %>
-			    <div class="col-xs-6"><a class="btn btn-xl green statut" title="adhérent" id="membership_valide">oui</a></div>
+			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="adhérent" id="membership_valide">oui</a></div>
+			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
 			    <% else %>
-			    <div class="col-xs-6"><a class="btn btn-xl red statut" title="non adhérent" id="membership_valide">non</a></div>
+			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_membership" class="btn btn-xl red statut" title="non adhérent" id="membership_valide">non</a></div>
+			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_membership" href="#">valider</a></div>
 			    <% end %>
 		    </div>
                 </div>
