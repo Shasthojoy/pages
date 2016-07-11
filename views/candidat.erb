@@ -57,13 +57,18 @@ h2 span {
 h2.green {
 	color:white;
 	background-color:green;
-	margin-left:-10px;
+	margin-left:-20px;
 	width:107%;
 	padding:5px;
 }
 h2.red {
 	color:white;
 	background-color:#d91d1c;
+	padding:5px;
+}
+h2.blue {
+	color:white;
+	background-color:#527bdd;
 	padding:5px;
 }
 h2 {
@@ -107,23 +112,40 @@ h2 {
 	top:120px;
 	text-align:center;
 }
-#candidat_frame { }
+#candidat_frame {}
 #candidat_photo {
 	border: 1px solid #5e5e5e;
 	margin:20px;
+	margin-bottom:0px;
 	height:300px;
 }
 #candidat_name {
 	font-size: 24px;
 	font-weight: bold;
-	margin:20px;
+	margin:0px 20px;
+}
+.candidate_infos {
+	font-size:12px;
+	color:#5e5e5e;
+	text-align:center;
+	margin-bottom:10px;
+}
+#candidat_vision {
+	font-style:italic;
+	margin-top:20px;
+	padding: 0px 20px;
+}
+#candidat_priorites {
+	text-align:left;
+	font-size: 14px;
+	padding: 10px 20px;
 }
 #candidat_programme p {
 	margin-top: 20px;
 	font-size: 14px;
 }
 #candidat_programme {
-	margin: 20px;
+	margin: 5px 20px 20px 20px;
 }
 #candidat_soutiens {
 	font-size: 15px;
@@ -248,6 +270,30 @@ footer {
 					<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
 				</div>
 				<div id="candidat_name"><%= candidat['name'] %></div>
+				<div class="candidate_infos">
+					<% if not age.nil? then %>
+						<%= age %> ans <%= "(#{departement_name})" %>
+					<% end %>
+				</div>
+				<% if not candidat['vision'].nil? %>
+				<h2 class="blue">Sa vision</h2>
+					<div id="candidat_vision">
+						&ldquo;<%= candidat['vision'] %>&rdquo;
+					</div>
+					<% if not candidat['prio1'].nil? %>
+					<div id="candidat_priorites">
+						<ol>
+						<li id="candidat_prio"><%= candidat['prio1'] %></li>
+						<% if not candidat['prio2'].nil? %>
+						<li id="candidat_prio"><%= candidat['prio2'] %></li>
+						<% end %>
+						<% if not candidat['prio3'].nil? %>
+						<li id="candidat_prio"><%= candidat['prio3'] %></li>
+						<% end %>
+						</ol>
+					</div>
+					<% end %>
+				<% end %>
 				<div id="candidat_programme">
 				<% if trello.nil? %>
 					<a href="<%= "https://www.google.fr/#q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>

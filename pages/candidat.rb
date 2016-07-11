@@ -68,7 +68,7 @@ END
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			candidat['qualified']= (candidat['soutiens'].to_i >= 500)
-			candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
+			#candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
 			secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
 			departement_name=candidat['departement'].split(' - ')[1] unless candidat['departement'].nil?
 			departement_name=html_escape(departement_name) unless departement_name.nil?
