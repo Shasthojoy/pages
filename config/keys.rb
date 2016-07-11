@@ -1,0 +1,11 @@
+PGHOST="127.0.0.1"
+PGPORT="5432"
+PGPWD="yourdbpwd"
+PGNAME="yourdbname"
+PGUSER="yourdbuser"
+PGNAME_TEST="yourdbpwd_test"
+PGUSER_TEST="yourdbuser_test"
+PGPWD_TEST="yourdbpwd_test"
+AWS_S3_BUCKET_URL="https://s3.eu-central-1.amazonaws.com/laprimaire/"
+ABANDONS=[]
+EXCLUSIONS=[]

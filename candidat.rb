@@ -117,7 +117,7 @@ END
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			candidat['qualified']= (candidat['soutiens'].to_i >= 500)
-			candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
+			#candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
 			secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
 			departement_name=candidat['departement'].split(' - ')[1] unless candidat['departement'].nil?
 			departement_name=html_escape(departement_name) unless departement_name.nil?
@@ -236,6 +236,7 @@ END
 			linkedin=html_escape(candidat['linkedin'].split('?')[0]) unless candidat['linkedin'].nil? or candidat['linkedin'].empty?
 			blog=html_escape(candidat['blog'].split('?')[0]) unless candidat['blog'].nil? or candidat['blog'].empty?
 			youtube=html_escape(candidat['youtube'].split('?')[0]) unless candidat['youtube'].nil? or candidat['youtube'].empty?
+			video=html_escape(candidat['video'].split('?')[0]) unless candidat['video'].nil? or candidat['video'].empty?
 			instagram=html_escape(candidat['instagram'].split('?')[0]) unless candidat['instagram'].nil? or candidat['instagram'].empty?
 			wikipedia=html_escape(candidat['wikipedia'].split('?')[0]) unless candidat['wikipedia'].nil? or candidat['wikipedia'].empty?
 			birthday=Date.parse(candidat['birthday'].split('?')[0]) unless candidat['birthday'].nil?
@@ -270,7 +271,7 @@ END
 				'photo'=>"Field3=#{candidat['candidate_key']}&Field4=#{candidat['email']}",
 				'about'=>"Field15=#{candidat['candidate_key']}&Field18=#{email}&Field8=#{candidat['birthday']}&Field12=#{secteur}&Field17=#{job}&Field9=#{departement}",
 				'summary'=>"Field6=#{candidat['candidate_key']}&Field7=#{email}&Field1=#{vision}&Field3=#{prio1}&Field2=#{prio2}&Field4=#{prio3}",
-				'links'=>"Field13=#{youtube}&Field8=#{trello}&Field1=#{website}&Field2=#{facebook}&Field3=#{twitter}&Field4=#{linkedin}&Field5=#{blog}&Field6=#{instagram}&Field7=#{wikipedia}&Field9=#{candidat['candidate_key']}&Field11=#{email}"
+				'links'=>"Field13=#{youtube}&Field15=#{video}&Field8=#{trello}&Field1=#{website}&Field2=#{facebook}&Field3=#{twitter}&Field4=#{linkedin}&Field5=#{blog}&Field6=#{instagram}&Field7=#{wikipedia}&Field9=#{candidat['candidate_key']}&Field11=#{email}"
 			}
 			erb :admin, :locals=>{
 				:candidat=>candidat,

@@ -57,13 +57,18 @@ h2 span {
 h2.green {
 	color:white;
 	background-color:green;
-	margin-left:-10px;
+	margin-left:-20px;
 	width:107%;
 	padding:5px;
 }
 h2.red {
 	color:white;
 	background-color:#d91d1c;
+	padding:5px;
+}
+h2.blue {
+	color:white;
+	background-color:#527bdd;
 	padding:5px;
 }
 h2 {
@@ -107,23 +112,40 @@ h2 {
 	top:120px;
 	text-align:center;
 }
-#candidat_frame { }
+#candidat_frame {}
 #candidat_photo {
 	border: 1px solid #5e5e5e;
 	margin:20px;
+	margin-bottom:0px;
 	height:300px;
 }
 #candidat_name {
 	font-size: 24px;
 	font-weight: bold;
-	margin:20px;
+	margin:0px 20px;
+}
+.candidate_infos {
+	font-size:12px;
+	color:#5e5e5e;
+	text-align:center;
+	margin-bottom:10px;
+}
+#candidat_vision {
+	font-style:italic;
+	margin-top:20px;
+	padding: 0px 20px;
+}
+#candidat_priorites {
+	text-align:left;
+	font-size: 14px;
+	padding: 10px 20px;
 }
 #candidat_programme p {
 	margin-top: 20px;
 	font-size: 14px;
 }
 #candidat_programme {
-	margin: 20px;
+	margin: 5px 20px 20px 20px;
 }
 #candidat_soutiens {
 	font-size: 15px;
@@ -248,6 +270,30 @@ footer {
 					<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
 				</div>
 				<div id="candidat_name"><%= candidat['name'] %></div>
+				<div class="candidate_infos">
+					<% if not age.nil? then %>
+						<%= age %> ans <%= "(#{departement_name})" %>
+					<% end %>
+				</div>
+				<% if not candidat['vision'].nil? %>
+				<h2 class="blue">Sa vision</h2>
+					<div id="candidat_vision">
+						&ldquo;<%= candidat['vision'] %>&rdquo;
+					</div>
+					<% if not candidat['prio1'].nil? %>
+					<div id="candidat_priorites">
+						<ol>
+						<li id="candidat_prio"><%= candidat['prio1'] %></li>
+						<% if not candidat['prio2'].nil? %>
+						<li id="candidat_prio"><%= candidat['prio2'] %></li>
+						<% end %>
+						<% if not candidat['prio3'].nil? %>
+						<li id="candidat_prio"><%= candidat['prio3'] %></li>
+						<% end %>
+						</ol>
+					</div>
+					<% end %>
+				<% end %>
 				<div id="candidat_programme">
 				<% if trello.nil? %>
 					<a href="<%= "https://www.google.fr/#q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>
@@ -364,6 +410,7 @@ footer {
     </footer>
 
     <!-- Modal -->
+    <% if candidat['candidate_id'].to_i!=678218775405 %> 
     <div class="modal fade" id="Isupport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	      <div class="modal-dialog" role="document">
 	        <div class="modal-content">
@@ -386,6 +433,40 @@ footer {
 	        </div>
 	      </div>
       </div>
+    <% else %> 
+    <div class="modal fade" id="Isupport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="myModalLabel">Supportez la candidature de <%= candidat['name'] %></h4>
+	          </div>
+		  <div class="modal-body">
+			  <div id="wufoo-qn6q7we0rxn3ix">
+				  Fill out my <a href="https://democratech.wufoo.com/forms/qn6q7we0rxn3ix">online form</a>.
+			  </div>
+			  <script type="text/javascript">var qn6q7we0rxn3ix;(function(d, t) {
+var s = d.createElement(t), options = {
+'userName':'democratech',
+'formHash':'qn6q7we0rxn3ix',
+'autoResize':true,
+'height':'259',
+'async':true,
+'host':'wufoo.com',
+'header':'hide',
+'ssl':true};
+s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+s.onload = s.onreadystatechange = function() {
+var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+try { qn6q7we0rxn3ix = new WufooForm();qn6q7we0rxn3ix.initialize(options);qn6q7we0rxn3ix.display(); } catch (e) {}};
+var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+})(document, 'script');</script>
+
+	          </div>
+	        </div>
+	      </div>
+      </div>
+    <% end %>
     <% unless candidat['video'].nil? %>
     <!-- Modal -->
     <div class="modal fade" id="Iwatch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
