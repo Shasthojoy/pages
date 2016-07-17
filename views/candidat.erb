@@ -61,6 +61,11 @@ h2.green {
 	width:107%;
 	padding:5px;
 }
+h2.grey {
+	color:white;
+	background-color:#bababa;
+	padding:5px;
+}
 h2.red {
 	color:white;
 	background-color:#d91d1c;
@@ -86,6 +91,9 @@ h2 {
 }
 #candidat_support.qualified {
 	border:20px solid green;
+}
+#candidat_support.grey {
+	border:20px solid #bababa;
 }
 #candidat_support {
 	border:20px solid #d91d1c;
@@ -334,13 +342,13 @@ footer {
 					<h2><span>Statut :</span> <%= gender['citoyen'] %> plébiscité</h2>
 				<% else %>
 					<% if not candidat['qualified']  %>
-						<h2><span>Statut :</span> pas encore <%= gender['qualifié'] %></h2>
+						<h2><span>Statut :</span> non <%= gender['qualifié'] %></h2>
 					<% else %>
 						<h2><span>Statut :</span> <%= gender['qualifié'].capitalize %> !</h2>
 					<% end %>
 				<% end %>
 			</div>
-			<div id="candidat_support" <% if candidat['qualified'] %>class="qualified"<% end %>>
+			<div id="candidat_support" <% if candidat['qualified'] %>class="qualified"<% else %>class="grey"<% end %>>
 				<div class="row pledge">
 					<div class="col-xs-12" style="padding-right:0px;padding-left:0px;">
 						<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">500+</div>
@@ -351,14 +359,14 @@ footer {
 					<div id="candidat_soutiens">Si <%= candidat['name'] %> atteint 500 soutiens, nous l'inviterons formellement à se déclarer <%= gender['candidat'] %> sur LaPrimaire.org.</div>
 				<% else %>
 					<% if not candidat['qualified']  %>
-						<div id="candidat_soutiens">Pour se qualifier et pouvoir participer à LaPrimaire.org <%= candidat['name'] %> doit rassembler 500 soutiens citoyens.</div>
+						<div id="candidat_soutiens">Malheureusement, <%= candidat['name'] %> n'est pas parvenu a rassembler 500 soutiens citoyens à temps pour pouvoir se qualifier à LaPrimaire.org pour l'élection présidentielle de 2017.</div>
 					<% else %>
 						<div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 500 soutiens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
 					<% end %>
 				<% end %>
-				<h2 class="<%= candidat['qualified']?"green":"red"%>">Soutenez <%= candidat['name'] %></h2>
+				<h2 class="<%= candidat['qualified']?"green":"grey"%>">Soutenez <%= candidat['name'] %></h2>
 			<% if not candidat['qualified'] %>
-				<div id="candidat_legend">Vous aimeriez que <%= candidat['name'] %> participe à LaPrimaire.org pour y apporter ses idées et participe à la construction de l'avenir du pays&nbsp;?</div>
+				<div id="candidat_legend">Vous aimeriez que <%= candidat['name'] %> puisse porter haut ses idées et participe à la construction de l'avenir du pays&nbsp;?<br>Continuez à <%= gender['le'] %> soutenir, il y aura d'autres élections à venir !</div>
 			<% else %>
 				<div id="candidat_legend"><%= candidat['name'] %> est <%= gender['qualifié'] %> pour LaPrimaire.org, continuez à <%= gender['le'] %> soutenir pour donner un maximum de poids à ses idées&nbsp;:</div>
 			 <% end %>
@@ -385,7 +393,7 @@ footer {
 					</div>
 					<div class="col-lg-4 text-center">
 						<div class="shareitem">
-							<a href="https://twitter.com/intent/tweet?url=<%= URI::encode("https://laprimaire.org/candidat/"+candidat['candidate_id']) %>&text=Pour%202017%2C%20je%20souhaiterai%20que%20<%= URI::encode(candidat['name']) %>%20participe%20%C3%A0%20la%20construction%20de%20l%27avenir%20du%20pays&hashtags=LaPrimaire" target="_blank"><img style="height:90px;border: 4px solid #1c9fef;" src="https://laprimaire.org/assets/images/partage/twitter-share-small.png"></a>
+							<a href="https://twitter.com/intent/tweet?url=<%= URI::encode("https://laprimaire.org/candidat/"+candidat['candidate_id']) %>&text=Pour%202017%2C%20je%20souhaiterais%20que%20<%= URI::encode(candidat['name']) %>%20participe%20%C3%A0%20la%20construction%20de%20l%27avenir%20du%20pays&hashtags=LaPrimaire" target="_blank"><img style="height:90px;border: 4px solid #1c9fef;" src="https://laprimaire.org/assets/images/partage/twitter-share-small.png"></a>
 						</div>
 						<div class="sharetitle">twitter</div>
 					</div>
