@@ -112,7 +112,11 @@ END
 			end
 			if EXCLUSIONS.include?(candidat['candidate_id'].to_i) then
 				status 200
-				return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org"}}
+				if candidat['candidate_id'].to_i==697785064574 then # Droit de réponse
+					return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org.<p>L'intéressé conteste ces accusations fondées sur des statistiques sujettes à caution et non communiquées au public.</p>"}}
+				else
+					return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org"}}
+				end
 			end
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
