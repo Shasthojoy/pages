@@ -50,7 +50,7 @@ END
 				status 500
 				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
-				Pages.db.close() unless Pages.db.nil?
+				Pages.db_close()
 			end
 			if res.num_tuples.zero? then
 				status 404

@@ -47,6 +47,10 @@ module Pages
 		@@db.exec_params(query,params)
 	end
 
+	def self.db_close()
+		@@db.close() unless @@db.nil?
+	end
+
 	class App < Sinatra::Application
 
 		configure :development do
