@@ -272,7 +272,7 @@ footer {
                 <div class="col-lg-6">
 			<div id="candidat_about">
 				<div id="candidat_frame">
-				<% unless candidat['video'].nil? %>
+				<% unless candidat['video'].nil? or candidat['video'].empty? %>
 					<a data-toggle="modal" data-target="#Iwatch"><div id="video-button"></div></a>
 				<% end %>
 					<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
