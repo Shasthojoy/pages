@@ -52,6 +52,10 @@ END
 					status 200
 					return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}}
 				end
+				if EXCLUSIONS.include?(candidat['candidate_id'].to_i) then
+					status 200
+					return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}}
+				end
 				res1=Pages.db_query(@queries["get_supporters_by_key"],[params['candidate_key']])
 				if not res1.num_tuples.zero? then
 					res1.each do |r|
