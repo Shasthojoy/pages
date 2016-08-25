@@ -84,6 +84,7 @@ END
 			departement_name=html_escape(departement_name) unless departement_name.nil?
 			departement=html_escape(candidat['departement']) unless candidat['departement'].nil?
 			job=html_escape(candidat['job']) unless candidat['job'].nil?
+			bio=html_escape(candidat['bio']) unless candidat['bio'].nil?
 			vision=html_escape(candidat['vision']) unless candidat['vision'].nil?
 			prio1=html_escape(candidat['prio1']) unless candidat['prio1'].nil?
 			prio2=html_escape(candidat['prio2']) unless candidat['prio2'].nil?
@@ -107,6 +108,7 @@ END
 			end
 			date_verified=Date.parse(candidat['date_verified']) unless candidat['date_verified'].nil?
 			days_verified = (Date.today-date_verified).to_i unless date_verified.nil?
+			bio_encoded=CGI.escape(ERB::Util.url_encode(candidat['bio'])) unless candidat['bio'].nil?
 			vision_encoded=CGI.escape(ERB::Util.url_encode(candidat['vision'])) unless candidat['vision'].nil?
 			prio1_encoded=CGI.escape(ERB::Util.url_encode(candidat['prio1'])) unless candidat['prio1'].nil?
 			prio2_encoded=CGI.escape(ERB::Util.url_encode(candidat['prio2'])) unless candidat['prio2'].nil?
@@ -128,7 +130,7 @@ END
 			}
 			prefill={
 				'photo'=>"Field3=#{candidat['candidate_key']}&Field4=#{candidat['email']}",
-				'about'=>"Field15=#{candidat['candidate_key']}&Field18=#{email}&Field8=#{candidat['birthday']}&Field12=#{secteur}&Field17=#{job}&Field9=#{departement}",
+				'about'=>"Field15=#{candidat['candidate_key']}&Field18=#{email}&Field8=#{candidat['birthday']}&Field12=#{secteur}&Field17=#{job}&Field9=#{departement}&Field20=#{bio}",
 				'summary'=>"Field6=#{candidat['candidate_key']}&Field7=#{email}&Field1=#{vision}&Field3=#{prio1}&Field2=#{prio2}&Field4=#{prio3}",
 				'links'=>"Field13=#{youtube}&Field15=#{video}&Field8=#{trello}&Field1=#{website}&Field2=#{facebook}&Field3=#{twitter}&Field4=#{linkedin}&Field5=#{blog}&Field6=#{instagram}&Field7=#{wikipedia}&Field9=#{candidat['candidate_key']}&Field11=#{email}"
 			}
@@ -139,6 +141,7 @@ END
 				:secteur=>secteur,
 				:departement_name=>departement_name,
 				:job=>job,
+				:bio=>bio_encoded,
 				:email=>email,
 				:vision=>vision,
 				:prio1=>prio1,
