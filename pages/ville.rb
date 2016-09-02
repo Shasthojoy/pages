@@ -20,9 +20,12 @@ module Pages
 			super(base)
 			@queries={
 				'get_ville'=><<END,
-SELECT c.*
+SELECT c.*, count(users.city_id) as users_nb
 FROM cities c
-WHERE c.slug = $1;
+LEFT OUTER JOIN users ON (c.city_id = users.city_id)
+WHERE c.slug = $1
+GROUP BY c.city_id
+ORDER BY c.zipcode;
 END
 		}
 		end
@@ -48,7 +51,7 @@ END
 			end
 			ville=res[0]
 			erb :ville, :locals=>{
-					:ville => ville  
+					:ville => ville
 			}
 		end
 
