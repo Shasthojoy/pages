@@ -49,9 +49,8 @@ END
 				status 404
 				return erb :error, :locals=>{:msg=>{"title"=>"Page Ville inconnue","message"=>"Cette page ne correspond à aucune ville"}}
 			end
-			ville=res[0]
 			erb :ville, :locals=>{
-					:ville => ville
+					:villes => res
 			}
 		end
 
