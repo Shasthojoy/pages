@@ -20,7 +20,7 @@ index_candidats=Algolia::Index.new("candidates")
 index_citoyens=Algolia::Index.new("citizens")
 index_search=Algolia::Index.new("search")
 candidates_list=<<END
-SELECT ca.candidate_id,ca.user_id,ca.name,ca.gender,ca.birthday,ca.job,ca.departement,ca.secteur,ca.accepted,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.vision,ca.prio1,ca.prio2,ca.prio3,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
+SELECT ca.candidate_id,ca.slug,ca.user_id,ca.name,ca.gender,ca.birthday,ca.job,ca.departement,ca.secteur,ca.accepted,ca.verified,ca.date_added::DATE as date_added,date_part('day',now()-ca.date_added) as nb_days_added,ca.date_verified::DATE as date_verified,date_part('day',now() - ca.date_verified) as nb_days_verified,ca.qualified,ca.date_qualified,ca.official,ca.date_officialized,ca.vision,ca.prio1,ca.prio2,ca.prio3,ca.photo,ca.trello,ca.website,ca.twitter,ca.facebook,ca.youtube,ca.linkedin,ca.tumblr,ca.blog,ca.wikipedia,ca.instagram, z.nb_views, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
 FROM candidates as ca
 LEFT JOIN (
 	SELECT y.candidate_id, y.nb_views, count(s.user_id) as nb_soutiens
@@ -139,6 +139,14 @@ if not res.num_tuples.zero? then
 	<lastmod>#{r['date_verified']}</lastmod>
 </url>
 END
+			if r['qualified'].to_b then
+			sitemap+=<<END
+<url>
+	<loc>https://laprimaire.org/qualifie/#{r['slug']}</loc>
+	<lastmod>#{r['date_verified']}</lastmod>
+</url>
+END
+			end
 			puts "Added candidat #{r['name']}"
 		elsif (r['nb_soutiens'].to_i>2 and not r['verified'].to_b and not r['accepted'].to_b)
 			index_citoyens.save_object({
