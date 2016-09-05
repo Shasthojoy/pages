@@ -30,8 +30,11 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
   on (s.candidate_id = c.candidate_id)
 WHERE c.candidate_key = $1;
 END
-				'get_supporters_by_key'=><<END
+				'get_supporters_by_key'=><<END,
 select c.firstname, c.lastname, c.city, ci.departement, s.support_date from citizens as c inner join supporters as s on (s.user_id=c.user_id) inner join candidates as ca on (ca.candidate_id=s.candidate_id) left join cities as ci on (ci.city_id=c.city_id) where ca.candidate_key=$1;
+END
+				'get_articles_by_key'=><<END,
+select a.*,at.name as theme, at.slug as theme_slug, atp.name as parent_theme, atp.slug as parent_theme_slug from candidates as ca inner join articles as a on (a.candidate_id=ca.candidate_id) inner join articles_themes as at on (at.theme_id=a.theme_id) left join articles_themes as atp on (atp.theme_id=at.parent_theme_id) where ca.candidate_key=$1 order by a.date_published ASC
 END
 			}
 		end
@@ -43,6 +46,7 @@ END
 
 		get '/admin/:candidate_key' do
 			soutiens=[]
+			articles=[]
 			begin
 				Pages.db_init()
 				res=Pages.db_query(@queries["get_candidate_by_key"],[params['candidate_key']])
@@ -65,6 +69,24 @@ END
 							'departement'=>r['departement'],
 							'city'=>r['city'],
 							'support_date'=>Date.parse(r['support_date']).to_s
+						})
+					end
+				end
+				res2=Pages.db_query(@queries["get_articles_by_key"],[params['candidate_key']])
+				if not res2.num_tuples.zero? then
+					res2.each do |r|
+						articles.push({
+							'article_id'=>r['article_id'],
+							'title'=>r['title'],
+							'summary'=>r['summary'],
+							'source_url'=>r['source_url'],
+							'published_url'=>r['published_url'],
+							'theme'=>r['theme'],
+							'theme_slug'=>r['theme_slug'],
+							'parent_theme'=>r['parent_theme'],
+							'parent_theme_slug'=>r['parent_theme_slug'],
+							'date_added'=>Date.parse(r['date_added']).to_s,
+							'date_published'=>Date.parse(r['date_published']).to_s
 						})
 					end
 				end
@@ -132,6 +154,7 @@ END
 				'photo'=>"Field3=#{candidat['candidate_key']}&Field4=#{candidat['email']}",
 				'about'=>"Field15=#{candidat['candidate_key']}&Field18=#{email}&Field8=#{candidat['birthday']}&Field12=#{secteur}&Field17=#{job}&Field9=#{departement}&Field20=#{bio}",
 				'summary'=>"Field6=#{candidat['candidate_key']}&Field7=#{email}&Field1=#{vision}&Field3=#{prio1}&Field2=#{prio2}&Field4=#{prio3}",
+				'articles'=>"Field115=#{candidat['candidate_key']}&Field118=#{candidat['email']}",
 				'links'=>"Field13=#{youtube}&Field15=#{video}&Field8=#{trello}&Field1=#{website}&Field2=#{facebook}&Field3=#{twitter}&Field4=#{linkedin}&Field5=#{blog}&Field6=#{instagram}&Field7=#{wikipedia}&Field9=#{candidat['candidate_key']}&Field11=#{email}"
 			}
 			erb :admin, :locals=>{
@@ -164,7 +187,8 @@ END
 				:prio1_encoded=>prio1_encoded,
 				:prio2_encoded=>prio2_encoded,
 				:prio3_encoded=>prio3_encoded,
-				:email_encoded=>email_encoded
+				:email_encoded=>email_encoded,
+				:articles=>articles
 			}
 		end
 	end
