@@ -34,7 +34,7 @@ if ENV['RACK_ENV']=='production' then
 	stderr_path "%s/logs/candidats.err.log" % [APP_ROOT]
 	stdout_path "%s/logs/candidats.log" % [APP_ROOT]
 	user 'www-data', 'www-data'
-	worker_processes 10
+	worker_processes 20
 else
 	worker_processes 4
 end
