@@ -614,7 +614,7 @@ $(document).ready(function(){
 	$(".delete_article").click(function() {
 		console.log($(this).attr('value'));
 		var article_nb=$(this).attr('value');
-		$.ajax({url:"http://localhost:9292/v1/candidat/article/"+article_nb+"?cid=<%= candidat['candidate_id'] %>",type: 'DELETE',success: function(data){ $('#article_'+article_nb).remove();}
+		$.ajax({url:"https://api.democratech.co/v1/candidat/article/"+article_nb+"?cid=<%= candidat['candidate_id'] %>",type: 'DELETE',success: function(data){ $('#article_'+article_nb).remove();}
 			});
 		});
 });

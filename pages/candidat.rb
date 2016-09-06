@@ -207,8 +207,8 @@ END
 				return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org"}}
 			end
 			candidat['articles']=articles
-			candidat['firstname']=candidat['name'].split(' ',1)[0]
-			candidat['lastname']=candidat['name'].split(' ',1)[1]
+			candidat['firstname']=candidat['name'].split(' ')[0]
+			candidat['lastname']=candidat['name'].split(' ')[1]
 			candidat['encoded_name']=URI::encode(candidat['name'])
 			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
 			candidat['qualified']= (candidat['soutiens'].to_i >= 500)

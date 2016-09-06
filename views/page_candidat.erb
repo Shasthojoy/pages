@@ -166,15 +166,23 @@ h2.section-heading {
 	font-size: 14px;
 	text-align:justify;
 }
-h3.cat_title, h3.subcat_title {
+h3.cat_title {
 	padding:4px;
-	background-color: rgba(255,255,255,0.8);
 	font-weight:bold;
 	position:absolute;
 	top:0px;
 	text-align:left;
 }
+h3.cat_title.planete { background-color: rgba(102,204,0,0.8); }
+h3.cat_title.societe { background-color: rgba(255,102,102,0.8); }
+h3.cat_title.economie { background-color: rgba(204,204,0,0.8); }
+h3.cat_title.institutions { background-color: rgba(51,153,255,0.8); }
 h3.subcat_title {
+	padding:4px;
+	background-color: rgba(255,255,255,0.8);
+	font-weight:bold;
+	position:absolute;
+	text-align:left;
 	color:#444;
 	top:32px;
 	font-size: 14px;
@@ -316,7 +324,9 @@ img.author {
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 text-center">
-				<h2 class="section-heading">Mon projet</h2><br/>
+				<h2 style="margin-bottom: 5px;" class="section-heading">Projet</h2>
+				<p style="font-size:16px;color:white;">Chaque semaine <%= firstname %> publie un nouvel article sur une thématique donnée :</p><br/>
+
 			</div>
 		</div>
 		<% if not articles.keys.empty? then %>
@@ -326,12 +336,12 @@ img.author {
 		     <% articles[v].each do |p| %>
 		    <div class="col-md-3 col-sm-6 hero-feature">
 			    <div class="thumbnail">
-				    <a href="<%= p['published_url'] %>" style="cursor:pointer;">
+				    <a href="<%= p['published_url'] %>" target="_blank" style="cursor:pointer;">
 					    <div class="photo lazy background" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/<%= p['theme_slug'] %>.jpg">
 						    <img class="lazy background" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/<%= p['theme_slug'] %>.jpg" alt="<%= p['theme'] %>">
 					    </div>
 				    </a>
-				    <h3 class="cat_title"><a href="https://laprimaire.org"><%= p['parent_theme'] %></a></h3>
+				    <h3 class="cat_title <%= p['parent_theme_slug'] %>"><a style="color:white;" href="https://laprimaire.org"><%= p['parent_theme'] %></a></h3>
 				    <h3 class="subcat_title"><%= p['theme'] %></h3>
 				    <a href="/qualifie/<%= slug %>" title="<%= name %>"/><img src="<%= photo_square %>" class="img-responsive img-circle author" alt="<%= name %>"></a>
 				    <div class="misenligne">mis en ligne le <%= p['date_published'] %></div>
