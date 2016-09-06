@@ -56,7 +56,7 @@ module Pages
 		configure :development do
 			 register Sinatra::Reloader
 		end
-
+		use Pages::Ville
 		use Pages::Candidat
 		use Pages::AdminCandidat
 		use Pages::AdminCitoyen
