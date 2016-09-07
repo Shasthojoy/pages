@@ -216,6 +216,17 @@ img.author {
 	height:65px;
 	border:5px solid #eee;
 }
+.btn.twitter {
+	border-color:#00aced;
+	color:#fff;
+	background-color:#00aced;
+}
+
+.btn.facebook {
+	border-color:#3b5998;
+	color:#fff;
+	background-color:#3b5998;
+}
 -->
 </style>
     <!-- Header -->
@@ -242,17 +253,21 @@ img.author {
 						    </div>
 					    </div>
 				    </div>
+				    <div class="row" style="margin-bottom:20px;">
+						    <div class="col-md-4 col-sm-12 hero-feature">
+							    <span style="font-weight:bold;color:#527bdd;font-size:20px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><i class="fa fa-circle-o fa-stack-2x rouge"></i><strong class="fa-stack-1x rouge">1</strong></span><br/><span style="font-size:16px;">&ldquo;<i><%= prio1 %></i>&rdquo;</span>
+						    </div>
+						    <div class="col-md-4 col-sm-12 hero-feature">
+							    <span style="font-weight:bold;color:#527bdd;font-size:20px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><i class="fa fa-circle-o fa-stack-2x rouge"></i><strong class="fa-stack-1x rouge">2</strong></span><br/><span style="font-size:16px;">&ldquo;<i><%= prio2 %></i>&rdquo;</span>
+						    </div>
+						    <div class="col-md-4 col-sm-12 hero-feature">
+							    <span style="font-weight:bold;color:#527bdd;font-size:20px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><i class="fa fa-circle-o fa-stack-2x rouge"></i><strong class="fa-stack-1x rouge">3</strong></span><br/><span style="font-size:16px;">&ldquo;<i><%= prio3 %></i>&rdquo;</span>
+						    </div>
+				    </div>
 				    <div class="row">
-					    <div style="min-height:160px;margin-bottom:15px;">
-						    <div class="col-md-4 col-sm-12 hero-feature">
-							    <span style="font-weight:bold;color:#527bdd;font-size:20px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x rouge"><i class="fa fa-circle-o fa-stack-2x rouge"></i><strong class="fa-stack-1x rouge">1</strong></span><br/><span style="font-size:16px;">&ldquo;<i><%= prio1 %></i>&rdquo;</span>
-						    </div>
-						    <div class="col-md-4 col-sm-12 hero-feature">
-							    <span style="font-weight:bold;color:#527bdd;font-size:20px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x rouge"><i class="fa fa-circle-o fa-stack-2x rouge"></i><strong class="fa-stack-1x rouge">2</strong></span><br/><span style="font-size:16px;">&ldquo;<i><%= prio2 %></i>&rdquo;</span>
-						    </div>
-						    <div class="col-md-4 col-sm-12 hero-feature">
-							    <span style="font-weight:bold;color:#527bdd;font-size:20px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x rouge"><i class="fa fa-circle-o fa-stack-2x rouge"></i><strong class="fa-stack-1x rouge">3</strong></span><br/><span style="font-size:16px;">&ldquo;<i><%= prio3 %></i>&rdquo;</span>
-						    </div>
+					    <div style="margin-bottom:20px;">
+						    <p style="font-size:16px;">Pour soutenir <%= firstname %> : inscrivez-vous !</p>
+						    <button data-target="#JoinUsNow" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:150px;">Je m'inscris</button>
 					    </div>
 				    </div>
 			    </div>
@@ -263,14 +278,15 @@ img.author {
 			    </div>
 			    <div class="col-md-9 col-sm-12 hero-feature">
 				    <ul class="social_buttons">
-					    <% if not website.nil? %><li><a href="<%= website %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-globe" aria-hidden="true"></i> site web</a></li><% end %>
-					    <% if not facebook.nil? %><li><a href="<%= facebook %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-facebook-square" aria-hidden="true"></i> facebook</a></li><% end %>
-					    <% if not twitter.nil? %><li><a href="<%= twitter %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-twitter-square" aria-hidden="true"></i> twitter</a></li><% end %>
-					    <% if not youtube.nil? %><li><a href="<%= youtube %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-youtube-square" aria-hidden="true"></i> youtube</a></li><% end %>
-					    <% if not linkedin.nil? %><li><a href="<%= linkedin %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-linkedin-square" aria-hidden="true"></i> linkedin</a></li><% end %>
-					    <% if not blog.nil? %><li><a href="<%= blog %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-rss-square" aria-hidden="true"></i> blog</a></li><% end %>
-					    <% if not instagram.nil? %><li><a href="<%= instagram %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-instagram" aria-hidden="true"></i> instagram</a></li><% end %>
-					    <% if not wikipedia.nil? %><li><a href="<%= wikipedia %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> wikipedia</a></li><% end %>
+					    <% if not (trello.nil? or trello.empty?) %><li><a href="<%= trello %>" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i> Mon programme</a></li><% end %>
+					    <% if not (website.nil? or website.empty?) %><li><a href="<%= website %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-globe" aria-hidden="true"></i> site web</a></li><% end %>
+					    <% if not (facebook.nil? or facebook.empty?) %><li><a href="<%= facebook %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-facebook-square" aria-hidden="true"></i> facebook</a></li><% end %>
+					    <% if not (twitter.nil? or twitter.empty?) %><li><a href="<%= twitter %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-twitter-square" aria-hidden="true"></i> twitter</a></li><% end %>
+					    <% if not (youtube.nil? or youtube.empty?) %><li><a href="<%= youtube %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-youtube-square" aria-hidden="true"></i> youtube</a></li><% end %>
+					    <% if not (linkedin.nil? or linkedin.empty?) %><li><a href="<%= linkedin %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-linkedin-square" aria-hidden="true"></i> linkedin</a></li><% end %>
+					    <% if not (blog.nil? or blog.empty?) %><li><a href="<%= blog %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-rss-square" aria-hidden="true"></i> blog</a></li><% end %>
+					    <% if not (instagram.nil? or instagram.empty?) %><li><a href="<%= instagram %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-instagram" aria-hidden="true"></i> instagram</a></li><% end %>
+					    <% if not (wikipedia.nil? or wikipedia.empty?) %><li><a href="<%= wikipedia %>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> wikipedia</a></li><% end %>
 				    </ul>
 			    </div>
 		    </div>
@@ -324,8 +340,8 @@ img.author {
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 text-center">
-				<h2 style="margin-bottom: 5px;" class="section-heading">Projet</h2>
-				<p style="font-size:16px;color:white;">Chaque semaine <%= firstname %> publie un nouvel article sur une thématique donnée :</p><br/>
+				<h2 style="margin-bottom: 5px;" class="section-heading">Mes articles</h2>
+				<p style="font-size:16px;color:white;">Chaque semaine <%= firstname %> détaille son programme sur une thématique donnée :</p><br/>
 
 			</div>
 		</div>
@@ -358,62 +374,6 @@ img.author {
 		<% else %>
 			<p style="text-align:center;color:white;font-size:16px;">Ce candidat n'a encore publié aucun article, revenez dans quelques temps !</p>
 		<% end %>
-
-                <!--<div class="row">
-		    <div class="col-md-3 col-sm-6 hero-feature">
-			    <div class="thumbnail">
-				    <a href="/candidat/663402096368">
-					    <div class="photo lazy notyet" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/culture.jpg">
-						    <img class="lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/culture.jpg" alt="Culture et Sport">
-					    </div>
-				    </a>
-				    <div class="caption">
-					    <h3>Culture et <span>Sport</span></h3>
-					    <p class="notyet">Mise en ligne le 24 août</p>
-					    <p>&ldquo;<i>Notre démocratie représentative 1.0 bat de l'aile. Ma vision et mon action : mettre en place une démocratie directe (2.0)</i>&rdquo;</p>
-				    </div>
-			    </div>
-		    </div>
-		    <div class="col-md-3 col-sm-6 hero-feature">
-			    <div class="thumbnail">
-				    <a href="/candidat/969866766843">
-					    <div class="photo lazy notyet" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/defense.jpg">
-						    <img class="lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/defense.jpg" alt="Politique Internationale et Défense">
-					    </div>
-				    </a>
-				    <div class="caption">
-					    <h3>Politique internationale et <span>Défense</span></h3>
-					    <p class="notyet">Mise en ligne le 24 août</p>
-				    </div>
-			    </div>
-		    </div>
-		    <div class="col-md-3 col-sm-6 hero-feature">
-			    <div class="thumbnail">
-				    <a href="/candidat/205888341238">
-					    <div class="photo lazy notyet" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/finance.jpg">
-						    <img class="lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/finance.jpg" alt="Finance et Fonction publique">
-					    </div>
-				    </a>
-				    <div class="caption">
-					    <h3>Finances et <span>Fonction publique</span></h3>
-					    <p class="notyet">Mise en ligne le 24 août</p>
-				    </div>
-			    </div>
-		    </div>
-		    <div class="col-md-3 col-sm-6 hero-feature">
-			    <div class="thumbnail">
-				    <a href="/candidat/946111224339">
-					    <div class="photo lazy notyet" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/logement.jpg">
-						    <img class="lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/logement.jpg" alt="Logement et famille">
-					    </div>
-				    </a>
-				    <div class="caption">
-					    <h3>Logement et <span>Famille</span></h3>
-					    <p class="notyet">Mise en ligne le 31 août</p>
-				    </div>
-			    </div>
-		    </div>
-	    </div>-->
         </div>
 	<div style="height:20px;">&nbsp;</div>
     </div>
@@ -425,16 +385,20 @@ img.author {
             <div class="row">
                 <div class="col-lg-12">
 			<div class="row">
-				<div class="col-md-3 col-sm-6">&nbsp;</div>
-				<div class="col-md-3 col-sm-6">
-					<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org" target="_blank"><img src="/assets/images/social/share-facebook.png" width="250px" height="52px"></a>
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<button data-target="#Iemail" data-toggle="modal" class="btn red" style="width:250px;height:52px;"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;<span style="font-variant:small-caps;font-size:18px;font-weight:bold;">Partager par email</span></button>
 				</div>
-				<div class="col-md-3 col-sm-6">
-					<a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flaprimaire.org&text=D%C3%A9couvrez%20les%2016%20candidats%20qualifi%C3%A9s%20%C3%A0%20LaPrimaire.org%2C%20la%20primaire%20citoyenne%20%3A&via=democratech" target="_blank"><img src="/assets/images/social/share-twitter.png" width="250px" height="52px"></a>
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<a type="button" class="btn facebook" style="width:250px;height:52px;padding-top:12px;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org%2Fqualifie%2F<%= slug %>" target="_blank"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;<span style="font-variant:small-caps;font-size:18px;font-weight:bold;">Partager sur Facebook</span></a>
 				</div>
-				<div class="col-md-3 col-sm-6">&nbsp;</div>
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<a type="button" class="btn twitter" style="width:250px;height:52px;padding-top:12px;" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flaprimaire.org%2Fqualifie%2F<%= slug %>&text=Soutenez%20<%= encoded_name %>%2C%20candidat%20%C3%A0%20la%20primaire%20citoyenne%3A&via=democratech&hashtags=Présidentielle2017,LaPrimaire" target="_blank"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;<span style="font-variant:small-caps;font-size:18px;font-weight:bold;">Partager sur Twitter</span></a>
+				</div>
 			</div>
                 </div>
+            </div>
+            <div class="row" style="text-align:center;margin-top:20px;color:#5e5e5e;">
+		    <p style="font-size:13px;"><%= name %> s'est qualifié à LaPrimaire.org en parvenant à <a href="/candidat/<%= candidate_id %>" title="Page de qualification de <%= name %>">rassembler plus de 500 soutiens citoyens</a> lors de la phase de qualification à LaPrimaire.org</p>
             </div>
     </div>
     </div>
@@ -456,15 +420,36 @@ img.author {
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="JoinUsNow" tabindex="-1" role="dialog" aria-labelledby="shareByEmail">
+    <div class="modal fade" id="Iemail" tabindex="-1" role="dialog" aria-labelledby="shareByEmail">
 	      <div class="modal-dialog" role="document">
 	        <div class="modal-content">
 	          <div class="modal-header">
 	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		    <h4 class="modal-title" id="shareByEmail">Je souhaite participer à LaPrimaire.org</h4>
+		    <h4 class="modal-title" id="shareByEmail">Inviter vos contacts à soutenir <%= name %></h4>
 	          </div>
 		  <div class="modal-body">
-			  <p style="font-size:14px;">Merci beaucoup, nous avons besoin de tous les citoyens pour faire émerger une candidature citoyenne forte qui soit capable de changer la donne en 2017 !</p>
+			  <p style="font-size:14px;">Pour vous permettre d'inviter facilement vos contacts à soutenir <%= name %>, nous vous avons préparé un email "prêt à transférer" ! Indiquez-nous votre adresse email et vous le recevrez directement dans votre boîte aux lettres électronique.</p>
+			  <div id="wufoo-z172u35g0xjklqk">
+				  Fill out my <a href="https://democratech.wufoo.com/forms/z172u35g0xjklqk">online form</a>.
+			  </div>
+	          </div>
+	          <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="JoinUsNow" tabindex="-1" role="dialog" aria-labelledby="JoinUsNow">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="shareByEmail">Je souhaite soutenir <%= name %> sur LaPrimaire.org</h4>
+	          </div>
+		  <div class="modal-body">
+			  <p style="font-size:14px;">Merci beaucoup, grâce à vous nous ferons émerger une candidature citoyenne forte qui soit capable de changer la donne en 2017 !</p>
 			  <div id="wufoo-qaj8t6m07xo97p">
 				  Remplissez ce <a href="https://democratech.wufoo.com/forms/qaj8t6m07xo97p">formulaire en ligne</a>.
 			  </div>
@@ -480,6 +465,9 @@ img.author {
 <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+function getURLParameter(name) {
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
+}
 function createCookie(name,value) {
 	var date = new Date();
 	date.setTime(date.getTime()+(5*60*1000)); // 5 minutes
@@ -540,6 +528,7 @@ $(document).ready(function(){
 			'formHash':'qaj8t6m07xo97p',
 			'autoResize':true,
 			'height':'397',
+			'defaultValues':'field14=<%= candidate_id %>&field12='+getURLParameter('ref'),
 			'async':true,
 			'host':'wufoo.com',
 			'header':'hide',
