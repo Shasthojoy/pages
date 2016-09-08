@@ -42,7 +42,7 @@ SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
 WHERE c.slug = $1 and qualified;
 END
 				'get_articles_by_candidate'=><<END,
-SELECT a.*,at.name as theme, at.slug as theme_slug, pat.name as parent_theme, pat.slug as parent_theme_slug FROM articles as a INNER JOIN articles_themes as at ON (at.theme_id=a.theme_id) LEFT JOIN articles_themes as pat ON (pat.theme_id=at.parent_theme_id) WHERE a.candidate_id=$1
+SELECT a.*,at.name as theme, at.slug as theme_slug, pat.name as parent_theme, pat.slug as parent_theme_slug FROM articles as a INNER JOIN articles_themes as at ON (at.theme_id=a.theme_id) LEFT JOIN articles_themes as pat ON (pat.theme_id=at.parent_theme_id) WHERE a.candidate_id=$1 AND now() > a.date_published
 END
 			}
 		end
