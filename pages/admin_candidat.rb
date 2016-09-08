@@ -152,7 +152,7 @@ END
 			}
 			prefill={
 				'photo'=>"Field3=#{candidat['candidate_key']}&Field4=#{candidat['email']}",
-				'about'=>"Field15=#{candidat['candidate_key']}&Field18=#{email}&Field8=#{candidat['birthday']}&Field12=#{secteur}&Field17=#{job}&Field9=#{departement}&Field20=#{bio}",
+				'about'=>"Field15=#{candidat['candidate_key']}&Field18=#{email}&Field8=#{candidat['birthday']}&Field12=#{secteur}&Field17=#{job}&Field9=#{departement}&Field20=#{bio_encoded}",
 				'summary'=>"Field6=#{candidat['candidate_key']}&Field7=#{email}&Field1=#{vision}&Field3=#{prio1}&Field2=#{prio2}&Field4=#{prio3}",
 				'articles'=>"Field115=#{candidat['candidate_key']}&Field118=#{candidat['email']}",
 				'links'=>"Field13=#{youtube}&Field15=#{video}&Field8=#{trello}&Field1=#{website}&Field2=#{facebook}&Field3=#{twitter}&Field4=#{linkedin}&Field5=#{blog}&Field6=#{instagram}&Field7=#{wikipedia}&Field9=#{candidat['candidate_key']}&Field11=#{email}"
@@ -164,7 +164,7 @@ END
 				:secteur=>secteur,
 				:departement_name=>departement_name,
 				:job=>job,
-				:bio=>bio_encoded,
+				:bio=>bio,
 				:email=>email,
 				:vision=>vision,
 				:prio1=>prio1,
@@ -183,6 +183,7 @@ END
 				:days_verified=>days_verified,
 				:soutiens=>soutiens,
 				:photo_url=>photo_url,
+				:bio_encoded=>bio_encoded,
 				:vision_encoded=>vision_encoded,
 				:prio1_encoded=>prio1_encoded,
 				:prio2_encoded=>prio2_encoded,

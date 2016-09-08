@@ -435,6 +435,12 @@ span.goalAmount {
 				<div class="candidate_M_since <%= candidat['gender'] %>">candidat depuis <%= days_verified %> jours</div>
 				<% end %>
 			</div>
+			<% if candidat['qualified'] %>
+			<hr/>
+			<div style="text-align:center;">
+				<p>Voir ma page de <a href="https://laprimaire.org/qualifie/<%= candidat['slug'] %>" target="_blank">candidat qualifié</a></p>
+			</div>
+			<% end %>
 
                 </div>
 
