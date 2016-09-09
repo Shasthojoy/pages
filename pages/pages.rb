@@ -57,6 +57,7 @@ module Pages
 			 register Sinatra::Reloader
 		end
 		use Pages::Ville
+		use Pages::Theme
 		use Pages::Candidat
 		use Pages::AdminCandidat
 		use Pages::AdminCitoyen

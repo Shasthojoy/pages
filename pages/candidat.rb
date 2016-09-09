@@ -146,7 +146,7 @@ END
 			else
 				candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 			end
-			erb :candidat, :locals=>{
+			erb :candidat_declare, :locals=>{
 				:candidat=>candidat,
 				:gender=>gender,
 				:secteur=>secteur,
@@ -257,9 +257,10 @@ END
 			else
 				candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 			end
-			erb :qualifie, :locals=>{
+			erb :index, :locals=>{
 				'page_info'=>page_info(candidat),
-				'body'=>candidat
+				'vars'=>candidat,
+				'template'=>:candidat_qualifie
 			}
 		end
 	end
