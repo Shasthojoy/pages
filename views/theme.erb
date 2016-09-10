@@ -1,5 +1,163 @@
 <style>
+
+/*!
+ * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+ body {
+    overflow-x: hidden;
+ }
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    /*position: fixed;*/
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 0px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    background-color:white;
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+
 <!--
+.lp-cat-active {
+	font-weight: bold;
+	color: #d91d1c !important;
+}
+.lp-cat-count {
+	color: #d91d1c;
+}
+.lp-cat-label {
+	margin-bottom: 0px;
+}
+.lp-cat-checkbox {}
+.lp-cat-item {
+	/*font-variant: small-caps;*/
+	margin: 2px 2px;
+	padding-left:10px;
+	/*display: inline-block;*/
+	font-size: 14px;
+	color: #5e5e5e;
+}
+.lp-cat-header {
+	font-weight:bold;
+	color: #5e5e5e;
+	font-size: 16px;
+	font-variant: small-caps;
+}
 body { padding-bottom: 0px; }
 div.lettre h3 {
 	font-size:20px;
@@ -94,7 +252,6 @@ div.lettre p { font-size:16px; }
 	margin-top:5px;
 	font-size:20px;
 }
-header .intro-text { padding-top: 20px; }
 .intro-heading span {
 	color: #d91d1c;
 	font-weight:bold;
@@ -112,12 +269,8 @@ ul.social_buttons > li{
 	display: inline-block;
 	margin-bottom: 5px;
 }
-#equipe_overlay {
-	background: rgba(82,122,191,0.95);
-	padding-top: 20px;
-}
 #programme_overlay {
-	background: rgba(217,29,28,0.95);
+	background-color: #d91d1c;
 	padding-top: 20px;
 }
 #partager_overlay {
@@ -129,7 +282,6 @@ ul.social_buttons > li{
     background-repeat: repeat;
     padding:0px;
 }
-.equipe { margin-bottom:10px; }
 .programme, .equipe {
     position: relative;
     padding: 0;
@@ -145,25 +297,6 @@ h2.section-heading {
 }
 .fa-stack.bleu { color:#527bdd; }
 .fa-stack.rouge { color:#d91d1c; }
-#video-button:hover {
-	background-image: url("https://laprimaire.org/assets/images/buttons/video-button.png");
-	background-position: center center;
-	background-repeat: no-repeat;
-	opacity:1 ;
-	width:106px;
-	height:60px;
-	margin: 0 auto;
-	cursor: pointer;
-}
-#video-button {
-	background-image: url("https://laprimaire.org/assets/images/buttons/video-button.png");
-	background-position: center center;
-	background-repeat: no-repeat;
-	width:106px;
-	height:60px;
-	opacity:0.5;
-	margin: 0 auto;
-}
 .caption p {
 	font-size: 14px;
 	text-align:justify;
@@ -244,112 +377,58 @@ img.author {
     <!-- Header -->
     <header>
     <div id="fundraising_bar" class="supporteurs"></div>
-    <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
+    <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;padding-bottom:20px;">
 	<div class="container">
 	    <div class="thumbnail" style="margin-top: 15px;">
 		    <div class="row">
-			    <div class="col-md-3 col-sm-12 hero-feature">
-				    <div class="photo lazy background" data-original="<%= image %>">
+			    <div class="col-md-3 col-sm-12 hero-feature" style="padding-left:0px;">
+				    <div style="padding-top:50px;" class="photo lazy background" data-original="<%= image %>">
 					    <img class="lazy background" data-original="<%= image %>" alt="<%= name %>">
-					    <div id="video-button" data-toggle="modal" data-target="#Iwatch"></div>
 				    </div>
 			    </div>
 			    <div class="col-md-9 col-sm-12 hero-feature">
 				    <div class="row">
-					    <div style="min-height:220px;">
+					    <div>
 						    <div class="intro-text">
-							    <div class="intro-heading"><%= name %></span></div>
-							    <div class="intro-lead-in">&ldquo;<i>nada</i>&rdquo;</div>
+							    <div><h2><%= name %></h2></div>
 						    </div>
 					    </div>
 				    </div>
 				    <div class="row">
-					    <div style="margin-bottom:20px;">
-						    <p style="font-size:16px;">Pour suivre et soutenir <%= name %> : <i>inscrivez-vous&nbsp;!</i></p>
+					    <div style="">
+						    <p style="font-size:16px;">Pour contribuer au débat d'idées : <i>inscrivez-vous&nbsp;!</i></p>
 						    <button data-target="#JoinUsNow" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:150px;border-radius:4px;">Je m'inscris</button>
 					    </div>
 				    </div>
-			    </div>
-		    </div>
-		    <div class="row">
-			    <div class="col-md-3 col-sm-12 hero-feature">
-			    </div>
-			    <div class="col-md-9 col-sm-12 hero-feature">
-				    <ul class="social_buttons">
-					    <li><a href="" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i> Mon programme</a></li>
-				    </ul>
 			    </div>
 		    </div>
 	    </div>
     </div>
     </header>
 
-    <section class="programme">
-    <div id="programme_overlay" class="blue" style="border-bottom: 2px solid #d91d1c;">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<h2 style="margin-bottom: 5px;" class="section-heading">Mes articles</h2>
-				<p style="font-size:16px;color:white;">blabla</p><br/>
-
-			</div>
-		</div>
-		<div class="row">
-		<% if not articles.empty? then %>
-		<% articles.each_with_index do |p,i| %>
-		    <div class="col-md-3 col-sm-6 hero-feature">
-			    <div class="thumbnail">
-				    <a href="<%= p['published_url'] %>" target="_blank" style="cursor:pointer;">
-					    <div class="photo lazy background" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/<%= p['theme_slug'] %>.jpg">
-						    <img class="lazy background" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/<%= p['theme_slug'] %>.jpg" alt="<%= p['theme'] %>">
+    <section id="contribute_form" class="programme">
+	    <div style="position:absolute;background-color:#527bdd;width:250px;height:40px;padding:10px 25px;font-size:15px;color:white;top:-41px;"><a style="color:white;cursor:pointer;" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars fa-lg white"></i>&nbsp;FILTRES</a></div>
+	    <div id="programme_overlay" class="blue" style="border-bottom: 2px solid #d91d1c;">
+		    <div class="row" id="wrapper">
+			    <div id="sidebar-wrapper" style="">
+				    <div class="sidebar-nav">
+					    <div style="padding-left:25px;">
+						    <div class="lp-cat-header" style="margin-top:10px;">Date de publication</div>
+						    <div id="nb_days_published" style="margin:10px 0px;"></div>
+						    <div id="theme" style="margin-top:10px;"></div>
+						    <div id="author" style="margin:10px 0px;"></div>
 					    </div>
-				    </a>
-				    <h3 class="cat_title <%= p['parent_theme_slug'] %>"><a style="color:white;" href="https://laprimaire.org"><%= p['parent_theme'] %></a></h3>
-				    <h3 class="subcat_title"><%= p['theme'] %></h3>
-				    <a href="/qualifie/<%= p['slug'] %>" title="<%= p['name'] %>"/><img src="<%= p['photo_square'] %>" class="img-responsive img-circle author" width="65px" height="65px" alt="<%= p['name'] %>"></a>
-				    <a style="color:#5e5e5e;font-style:none;font-decoration:none;" href="<%= p['published_url'] %>" target="_blank"><p class="article_title">&ldquo;<i><%= p['title'] %></i>&rdquo;</p></a>
-				    <div class="misenligne">mis en ligne le <%= p['date_published'] %></div>
+				    </div>
+			    </div>
+			    <div id="page-content-wrapper">
+				    <div class="container-fluid" style="background-color:#d91d1c;">
+					    <div class="row" style="width:95%;margin: 5px auto;">
+					    </div>
+					    <div id="hits-container"></div>
+				    </div>
 			    </div>
 		    </div>
-		    <% if i%1==0 %>
-			    <div class="clearfix visible-xs-block"></div>
-		    <% elsif i%2==0 %>
-			    <div class="clearfix visible-sm-block"></div>
-		    <% elsif i%3==0 %>
-			    <div class="clearfix visible-md-block"></div>
-		    <% elsif i%4==0 %>
-			    <div class="clearfix visible-lg-block"></div>
-		    <% end %>
-		<% end %>
-		<% else %>
-			<p style="text-align:center;color:white;font-size:16px;">Ce candidat n'a encore publié aucun article, revenez dans quelques temps !</p>
-		<% end %>
-		</div>
-        </div>
-	<div style="height:20px;">&nbsp;</div>
-    </div>
-    </section>
-
-    <section class="partager">
-    <div id="partager_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
-    <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-			<div class="row">
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<button data-target="#Iemail" data-toggle="modal" class="btn red" style="width:250px;height:52px;"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;<span style="font-variant:small-caps;font-size:18px;font-weight:bold;">Partager par email</span></button>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<a type="button" class="btn facebook" style="width:250px;height:52px;padding-top:12px;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org%2Fqualifie%2F<%= slug %>" target="_blank"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;<span style="font-variant:small-caps;font-size:18px;font-weight:bold;">Partager sur Facebook</span></a>
-				</div>
-				<div class="col-md-4 col-sm-6 col-xs-12">
-					<a type="button" class="btn twitter" style="width:250px;height:52px;padding-top:12px;" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flaprimaire.org%2Fqualifie%2F<%= slug %>&text=Soutenez%20blabla%2C%20candidat%20%C3%A0%20la%20primaire%20citoyenne%3A&via=democratech&hashtags=Présidentielle2017,LaPrimaire" target="_blank"><i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;<span style="font-variant:small-caps;font-size:18px;font-weight:bold;">Partager sur Twitter</span></a>
-				</div>
-			</div>
-                </div>
-            </div>
-    </div>
-    </div>
+	    </div>
     </section>
 
     <!-- Modal -->
@@ -397,7 +476,13 @@ img.author {
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+<script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
 <script type="text/javascript">
+function shuffle (o){
+	  for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	  return o;
+}
 function getURLParameter(name) {
 	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
 }
@@ -431,25 +516,6 @@ ga('create', 'UA-60977053-1', 'auto');
 ga('send', 'pageview');
 
 $(document).ready(function(){
-	$('#Iemail').on('shown.bs.modal', function () {
-		var z172u35g0xjklqk;(function(d, t) {
-		var s = d.createElement(t), options = {
-		'userName':'democratech',
-		'formHash':'z172u35g0xjklqk',
-		'autoResize':true,
-		'height':'259',
-		'defaultValues':'field5=2', /* field5=<phase> with 1=qualification 2=primary */
-		'async':true,
-		'host':'wufoo.com',
-		'header':'hide',
-		'ssl':true};
-		s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-		s.onload = s.onreadystatechange = function() {
-		var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-		try { z172u35g0xjklqk = new WufooForm();z172u35g0xjklqk.initialize(options);z172u35g0xjklqk.display(); } catch (e) {}};
-		var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-		})(document, 'script');
-	});
 	$("a.joinus_action").click(function() {
 			ga('send','event','button','click','Je participe');
 	});
@@ -461,7 +527,7 @@ $(document).ready(function(){
 			'formHash':'qaj8t6m07xo97p',
 			'autoResize':true,
 			'height':'397',
-			'defaultValues':'field12=planete',
+			'defaultValues':'field12=<%= slug %>',
 			'async':true,
 			'host':'wufoo.com',
 			'header':'hide',
@@ -523,4 +589,115 @@ $(document).ready(function(){
 		});
 	}
 });
+var search = instantsearch({
+	appId: 'D1XVECSSVA',
+	apiKey: '58643f9dff29db9f8da06875479fb290',
+	indexName: 'articles',
+	urlSync: false,
+	searchParameters: {
+		facetsRefinements: {
+			parent_theme: ['<%= name %>']
+			},
+		facets: ['parent_theme']
+	}
+});
+search.addWidget(
+    instantsearch.widgets.numericSelector({
+	container: '#nb_days_published',
+	attributeName: 'nb_days_published',
+	operator: '<=',
+	options: [
+		{label: 'tous les articles', value: 360},
+		{label: '7 derniers jours', value: 7},
+		{label: '15 derniers jours ', value: 14},
+		{label: '30 derniers jours', value: 31}
+	]
+})
+);
+search.addWidget(
+	instantsearch.widgets.refinementList({
+	container: '#theme',
+	attributeName: 'theme',
+	sortBy: ['theme:asc'],
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Thématique',
+	}
+})
+);
+search.addWidget(
+	instantsearch.widgets.refinementList({
+	container: '#author',
+	attributeName: 'name',
+	sortBy: ['name:asc'],
+	limit: 100,
+	autoHideContainer: true,
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Candidats',
+	}
+})
+);
+search.addWidget(
+	instantsearch.widgets.hits({
+		container: '#hits-container',
+		transformData: {
+			allItems: function (content) {
+				return { hits: shuffle(content.hits) };
+			}
+		},
+		templates: {
+			empty: '\
+			<div style="background-color:white;padding:15px;width:320px;margin:0 auto;">\
+			<div style="margin:10px 0px;text-align:justify;">\
+			Encore aucun article n\'a été publié dans cette thématique. Les candidats publient de nouveaux articles chaque semaine.\
+			</div>\
+			<div style="margin:10px 0px;text-align:justify;">\
+			Revenez dans quelques jours, ou inscrivez-vous pour être tenus au courant :\
+			</div>\
+			<div style="width:150px;margin:20px auto;">\
+				<button data-target="#JoinUsNow" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:150px;border-radius:4px;">Je m\'inscris</button>\
+			</div>\
+			</div>',
+			       allItems: '{{#hits}}\
+		       <div class="col-lg-2 col-md-3 col-sm-6 hero-feature">\
+			    <div class="thumbnail">\
+			    <a href="{{published_url}}" target="_blank" style="cursor:pointer;">\
+			    <div class="photo" style="background-image: url(\'https:\/\/s3.eu-central-1.amazonaws.com\/laprimaire\/themes\/{{theme_slug}}.jpg\');">\
+			    <img class="background" src="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/{{theme_slug}}.jpg" alt="{{theme}}">\
+					    </div>\
+				    </a>\
+				    <h3 class="cat_title {{parent_theme_slug}}"><a style="color:white;" href="https://laprimaire.org">{{parent_theme}}</a></h3>\
+				    <h3 class="subcat_title">{{{_highlightResult.theme.value}}}</h3>\
+				    <a href="/qualifie/{{slug}}" title="{{name}}"/><img src="{{photo_square}}" class="img-responsive img-circle author" width="65px" height="65px" alt="{{name}}"></a>\
+				    <a style="color:#5e5e5e;font-style:none;font-decoration:none;" href="{{published_url}}" target="_blank"><p class="article_title">&ldquo;<i>{{{_highlightResult.title.value}}}</i>&rdquo;</p></a>\
+				    <div class="misenligne">mis en ligne le {{date_published}}</div>\
+			    </div>\
+		    </div>\
+{{/hits}}'
+		},
+		hitsPerPage: 200
+	})
+);
+search.start();
+
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
 </script>
