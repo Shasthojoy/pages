@@ -54,19 +54,20 @@ END
 			begin
 				Pages.db_init()
 				res=Pages.db_query(@queries["get_articles_by_theme"],[params["name"]])
-				if res.num_tuples.zero? then
+				if not ['planete','societe','economie','institutions'].include?(params["name"]) then
 					status 404
 					return erb :error, :locals=>{:msg=>{"title"=>"Page thématique inconnue","message"=>"Cette page ne correspond à aucun thème"}}
 				end
 				articles=[]
 				theme={
 					'slug'=>params["name"],
+					'name'=>params["name"].capitalize,
+					'image'=>"#{AWS_S3_BUCKET_URL}themes/#{params['name']}.jpg",
 					'articles'=>[]
 				}
 				if not res.num_tuples.zero? then
 					res.each do |a|
 						theme['name']=a['parent_theme'] if theme['name'].nil?
-						theme['image']="#{AWS_S3_BUCKET_URL}themes/#{a['parent_theme_slug']}.jpg"
 						a['date_published']=Date.parse(a['date_published']).strftime("%d/%m/%Y")
 						a['firstname']=a['name'].split(' ')[0]
 						a['lastname']=a['name'].split(' ')[1]
