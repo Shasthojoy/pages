@@ -166,6 +166,7 @@ h2.section-heading {
 	font-size: 14px;
 	text-align:justify;
 }
+h3.cat_title a { color:white; }
 h3.cat_title {
 	padding:4px;
 	font-weight:bold;
@@ -174,6 +175,7 @@ h3.cat_title {
 	text-align:left;
 }
 h3.cat_title.politique-generale { background-color: rgba(255,255,255,0.8); }
+h3.cat_title.politique-generale a { color: #5e5e5e; }
 h3.cat_title.blog { background-color: rgba(255,153,0,0.8); }
 h3.cat_title.planete { background-color: rgba(102,204,0,0.8); }
 h3.cat_title.societe { background-color: rgba(255,102,102,0.8); }
@@ -369,7 +371,7 @@ img.author {
 						    <img class="lazy background" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/<%= p['theme_slug'] %>.jpg" alt="<%= p['theme'] %>">
 					    </div>
 				    </a>
-				    <h3 class="cat_title <%= p['parent_theme_slug'] %>"><a style="color:white;" href="/theme/<%= p['parent_theme_slug'] %>"><%= p['parent_theme'] %></a></h3>
+				    <h3 class="cat_title <%= p['parent_theme_slug'] %>"><a href="/theme/<%= p['parent_theme_slug'] %>"><%= p['parent_theme'] %></a></h3>
 				    <h3 class="subcat_title"><%= p['theme'] %></h3>
 				    <a href="/qualifie/<%= slug %>" title="<%= name %>"/><img src="<%= photo_square %>" class="img-responsive img-circle author" alt="<%= name %>"></a>
 				    <a style="color:#5e5e5e;font-style:none;font-decoration:none;" href="<%= p['published_url'] %>" target="_blank"><p class="article_title">&ldquo;<i><%= p['title'] %></i>&rdquo;</p></a>
