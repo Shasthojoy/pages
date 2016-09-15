@@ -39,20 +39,19 @@ div.lettre p { font-size:16px; }
 	background-repeat: no-repeat;
 	overflow: hidden;
 }
+.equipe .team-member {float:left; margin:5px;}
 .hero-feature .about { font-size:12px; }
 .hero-feature .bio { text-align:justify; }
-.equipe .hero-feature h3 {
-	margin: 0px;
-}
-.hero-feature h3 {
-	font-size: 22px;
-	margin-top: 10px;
+.equipe .hero-feature .caption {
 	text-align:center;
+	max-width:100px;
 }
-.hero-feature h3 span { color: #d91d1c; font-weight: bold; }
+.equipe .hero-feature a { color: white; font-weight: bold; font-size: 12px; line-height:1;}
 .hero-feature p { font-size: 13px; }
 .hero-feature img.background { height: 250px; }
-.equipe .hero-feature img { height: 150px; }
+.equipe .hero-feature img { height: 90px; width: 90px; }
+.equipe .hero-feature .photo { border: 5px solid white; }
+.equipe .hero-feature .photo.qualifie { border: 5px solid rgba(102,204,0,0.8); }
 .photo img.background {
 	min-height: 100%;
 	min-width: 100%;
@@ -307,41 +306,111 @@ img.author {
 	    </div>
     </div>
     </header>
-<!--
+
+    <!--
     <section class="equipe">
     <div id="equipe_overlay" class="red" style="border-bottom: 2px solid #527bdd;">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12 text-center">
-				<h2 class="section-heading">Mon équipe</h2>
-			</div>
-		</div>
-		<div class="row">
 		    <div class="col-md-3 col-sm-4 col-xs-12 hero-feature">
 			    <div class="thumbnail">
-				    <h3 style="text-align:center;margin:15px 0px;"><span>A propos</span></h3>
-				    <p style="text-align:justify;padding:5px;">LaPrimaire.org favorise les rencontres et les échanges entre les candidats et invite ceux-ci - sans obligation - à collaborer et à travailler en équipe. Le cas échéant, les équipes seront dévoilées le 3 octobre.</p>
+				    <h3 style="text-align:center;margin:15px 0px;"><span>Mes soutiens</span></h3>
+				    <p style="text-align:justify;padding:5px;">Voici les candidats à LaPrimaire.org, qualifiés (en vert) et non-qualifiés, qui m'aident et me soutiennent.</p>
 			    </div>
 		    </div>
-		    <div class="col-md-2 col-sm-3 col-xs-12 hero-feature">
-			    <div class="thumbnail">
-				    <div class="photo lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-150px.jpg">
-					    <img class="lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-150px.jpg" alt="Pas encore connue">
-				    </div>
-				    <div class="caption">
-					    <h3>Candidate <span>1</span></h3>
-				    </div>
-			    </div>
-		    </div>
-		    <div class="col-md-2 col-sm-3 col-xs-12 hero-feature">
-			    <div class="thumbnail">
-				    <div class="photo lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnu-150px.jpg">
-					    <img class="lazy" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnu-150px.jpg" alt="Pas encore connu">
-				    </div>
-				    <div class="caption">
-					    <h3>Candidat <span>2</span></h3>
+		    <div class="col-md-9 col-sm-8 col-xs-12 hero-feature">
+			    
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle qualifie" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
 				    </div>
 			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+			    <div class="team-member">
+				    <div>
+					    <div class="photo lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
+						    <img class="lazy img-circle" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg" alt="Pas encore connue">
+					    </div>
+					    <div class="caption" style="line-height:1em;">
+						    <a style="line-height:1em;">Candidate Dupont</a>
+					    </div>
+				    </div>
+			    </div>
+
 		    </div>
 	    </div>
         </div>
@@ -349,6 +418,7 @@ img.author {
     </div>
     </section>
 -->
+
     <section class="programme">
     <div id="programme_overlay" class="blue" style="border-bottom: 2px solid #d91d1c;">
 	<div class="container">
@@ -532,6 +602,7 @@ $(document).ready(function(){
 	});
 	if ($('#JoinsUsNow')!=null) {
 		$('#JoinUsNow').on('shown.bs.modal', function () {
+			ga('send', 'pageview', '/inscription-popup/');
 			var qaj8t6m07xo97p;(function(d, t) {
 			var s = d.createElement(t), options = {
 			'userName':'democratech',
