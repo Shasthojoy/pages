@@ -545,7 +545,7 @@ function testAPI() {
       <% end %>
 
 
-    <!-- Modal -->
+    <!-- Modal Email -->
       <% if not account['email_valid'] %>
     <div class="modal fade" id="my_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	      <div class="modal-dialog" role="document">
@@ -566,6 +566,28 @@ function testAPI() {
 	      </div>
       </div>
       <% end %>
+
+    <!-- Modal Telephone -->
+    <% if not account['phone_valid'] %>
+    <div class="modal fade" id="my_phone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog" role="document">
+	      <div class="modal-content">
+					<div class="modal-body">
+						<form class="form-inline" id="valid_phone_form">
+						  <div class="form-group">
+							  <label for="valid_phone_input">Mon téléphone à valider:</label>
+							  <input type="text" class="form-control" id="valid_phone_input" placeholder="Mon téléphone" value="1234">
+							  <!--<span class="glyphicon glyphicon-ok form-control-feedback"></span>-->
+						  </div>
+						</form>
+					</div>
+					<div class="modal-footer">
+			  		<button type="submit" class="btn btn-primary">Valider</button>
+					</div>
+				</div>
+	    </div>
+    </div>
+    <% end %>
 
 
     <!-- Modal -->
@@ -595,7 +617,7 @@ var placesAutocomplete = places({
 placesAutocomplete.on('change', function resultSelected(e) {
 		console.log(e);
 		$('#my_city').modal('hide');
-		$.post("https://api.laprimaire.org/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
+		$.post("http://localhost:9292/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
 		.done(function( data ){
 			json=$.parseJSON(data);
 			$('#my_city_show').html('<img src="https://maps.googleapis.com/maps/api/staticmap?size=250x200&maptype=roadmap\&markers=size:mid|color:red|'+json['city']+'+'+json['zipcode']+'+'+json['country']+'&key=AIzaSyBkz-bknBrwrE9RXtqHGu2AuR_95WVNGc8">');
@@ -621,20 +643,31 @@ placesAutocomplete.on('change', function resultSelected(e) {
     </script>
 
     <script type="text/javascript">
-$(document).ready(function(){
-		if ($('#valid_email_form').length) {
-		$('#valid_email_form').submit(function(e) {
-			var email=$('#valid_email_input').value;
-			console.log(email);
-			$.post("https://laprimaire.ngrok.io/v1/citizen/email",{'email':email,'key':'<%= citoyen['user_key'] %>'})
-			.done(function( data ){
-				json=$.parseJSON(data);
-				$('#valid_email_input').html('<img src="https://maps.googleapis.com/maps/api/staticmap?size=250x200&maptype=roadmap\&markers=size:mid|color:red|'+json['city']+'+'+json['zipcode']+'+'+json['country']+'&key=AIzaSyBkz-bknBrwrE9RXtqHGu2AuR_95WVNGc8">');
-		});
-			e.preventDefault();
-			})
-		}
-});
+    	// validation du formulaire email
+			$(document).ready(function(){
+				if ($('#valid_email_form').length) {
+				$('#valid_email_form').submit(function(e) {
+					var email=$('#valid_email_input').val();
+					console.log(email);
+					$.post("https://laprimaire.ngrok.io/v1/citizen/email",{'email':email,'key':'<%= citoyen['user_key'] %>'})
+					.done(function( data ){
+						json=$.parseJSON(data);
+						$('#valid_email_input').html('<img src="https://maps.googleapis.com/maps/api/staticmap?size=250x200&maptype=roadmap\&markers=size:mid|color:red|'+json['city']+'+'+json['zipcode']+'+'+json['country']+'&key=AIzaSyBkz-bknBrwrE9RXtqHGu2AuR_95WVNGc8">');
+				});
+					e.preventDefault();
+					})
+				}
+			});
+
+			// validation du formulaire telephone
+			$(document).ready(function(){
+				if ($('#valid_phone_input').length) {
+					$('#valid_phone_form').submit(function(e) {
+						e.preventDefault();
+						$.post("http://localhost:9292/v1/citizen/tel",{'to':phone,'body':'Laprimaire.org code à saisir: '});
+					});
+				}
+			});
     </script>
 
 </body>
