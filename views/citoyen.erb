@@ -219,6 +219,11 @@ h2 {
 .navbar-default {
 	border-bottom:40px solid #527bdd;
 }
+
+.phone_form_errors {
+	font-size: 16px;
+}
+
 #my_city_show img {
 	border: 4px solid green;
 }
@@ -552,26 +557,26 @@ function testAPI() {
 
 
     <!-- Modal Email -->
-      <% if not account['email_valid'] %>
+    <% if not account['email_valid'] %>
     <div class="modal fade" id="my_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	      <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-			<div class="modal-body">
-			<form class="form-inline" id="valid_email_form">
-			  <div class="form-group">
-				  <label for="valid_email_input">Mon email à valider:</label>
-				  <input type="text" class="form-control" id="valid_email_input" placeholder="Mon email" value="<%= citoyen['email'] %>">
-				  <!--<span class="glyphicon glyphicon-ok form-control-feedback"></span>-->
-			  </div>
-			</form>
-			</div>
-			<div class="modal-footer">
-			  <button type="submit" class="btn btn-primary">Valider</button>
-			</div>
-		</div>
-	      </div>
-      </div>
-      <% end %>
+	    <div class="modal-dialog" role="document">
+				<form class="form-inline" id="valid_email_form">
+	      	<div class="modal-content">
+						<div class="modal-body">
+			  			<div class="form-group">
+							  <label for="valid_email_input">Mon email à valider:</label>
+							  <input type="text" class="form-control" id="valid_email_input" placeholder="Mon email" value="<%= citoyen['email'] %>">
+							  <!--<span class="glyphicon glyphicon-ok form-control-feedback"></span>-->
+						  </div>
+						</div>
+						<div class="modal-footer">
+						  <button type="submit" class="btn btn-primary">Valider</button>
+						</div>
+					</div>
+				</form>
+	    </div>
+    </div>
+    <% end %>
 
     <div class="modal fade" id="vote_roxane_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog vote" role="document">
@@ -583,28 +588,50 @@ function testAPI() {
 	    </div>
     </div>
 
-    <!-- Modal Telephone -->
+    <!-- Modal Telephone number -->
     <% if not account['phone_valid'] %>
     <div class="modal fade" id="my_phone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
-	      <div class="modal-content">
-					<div class="modal-body">
-						<form class="form-inline" id="valid_phone_form">
+				<form class="form-inline" id="valid_phone_form">
+		      <div class="modal-content">
+						<div class="modal-body">
+							<div id="valid_phone_form_errors" class="phone_form_errors"></div>
 						  <div class="form-group">
-							  <label for="valid_phone_input">Mon téléphone à valider:</label>
-							  <input type="text" class="form-control" id="valid_phone_input" placeholder="Mon téléphone" value="1234">
+							  <label for="valid_phone_input">Mon numéro de téléphone mobile à valider :</label>
+							  <input type="text" class="form-control" id="valid_phone_input" placeholder="+33612345678" value="<%= citoyen['telephone'] %>">
 							  <!--<span class="glyphicon glyphicon-ok form-control-feedback"></span>-->
 						  </div>
-						</form>
+						</div>
+						<div class="modal-footer">
+				  		<button type="submit" class="btn btn-primary">Valider</button>
+						</div>
 					</div>
-					<div class="modal-footer">
-			  		<button type="submit" class="btn btn-primary">Valider</button>
-					</div>
-				</div>
+				</form>
 	    </div>
     </div>
     <% end %>
 
+		<!-- Modal Telephone confirm code -->
+    <% if not account['phone_valid'] %>
+    <div class="modal fade" id="my_phone_code" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog" role="document">
+				<form class="form-inline" id="valid_phone_code_form">
+		      <div class="modal-content">
+						<div class="modal-body">
+						  <div class="form-group">
+							  <label for="valid_phone_code_input">Code reçu :</label>
+							  <input type="text" class="form-control" id="valid_phone_code_input" placeholder="1234">
+							  <!--<span class="glyphicon glyphicon-ok form-control-feedback"></span>-->
+						  </div>
+						</div>
+						<div class="modal-footer">
+				  		<button type="submit" class="btn btn-primary">Valider</button>
+						</div>
+					</div>
+				</form>
+	    </div>
+    </div>
+    <% end %>
 
     <!-- Modal -->
       <% if citoyen['city'].nil? %>
@@ -675,16 +702,52 @@ placesAutocomplete.on('change', function resultSelected(e) {
 				}
 			});
 
-			// validation du formulaire telephone
+			// submit du formulaire du numéro de telephone
+			$(document).ready(function() {
+				$('#valid_phone_form').submit(function(e) {
+					e.preventDefault();
+					if (validPhoneNumber($('#valid_phone_input').val())) {
+						tel = $('#valid_phone_input').val();
+						$.post("http://localhost:9292/v1/citizen/tel",{'tel':tel})
+						.done(function(msg){
+							$("#my_phone").modal('toggle');
+							$("#my_phone_code").modal('toggle');
+						})
+    				.fail(function(xhr, status, error) {
+    			    var jsonResponse = JSON.parse(xhr.responseText);
+    			    var errorsHtml = '<div class="alert alert-danger">' + jsonResponse.error + '</div>';
+			        $( '#valid_phone_form_errors' ).html( errorsHtml );
+			      });
+					} else {
+						var errorsHtml = '<div class="alert alert-danger">Le numéro de téléphone saisi n\'est pas valide</div>';
+				     $( '#valid_phone_form_errors' ).html( errorsHtml );
+					}
+				});
+			});
+
+			// submit du formulaire du code de confirmation du telephone
 			$(document).ready(function(){
-				if ($('#valid_phone_input').length) {
-					$('#valid_phone_form').submit(function(e) {
+				if ($('#valid_phone_code_input').length) {
+					$('#valid_phone_code_form').submit(function(e) {
 						e.preventDefault();
-						$.post("http://localhost:9292/v1/citizen/tel",{'to':phone,'body':'Laprimaire.org code à saisir: '});
+						tel = $('#valid_phone_code_input').val();
+						//$.post("http://localhost:9292/v1/citizen/tel",{'tel':tel});
 					});
 				}
 			});
-    </script>
 
+			function validPhoneNumber(phoneNumber) {
+				if (!phoneNumber || 0 === phoneNumber.length) {
+					return false;
+				}
+
+				var reg_mobile = '^\\+33(6|7)[0-9]{8}$';
+
+				if( phoneNumber.match(reg_mobile) ){
+					return true;
+				}
+				return false;
+			}
+    </script>
 </body>
 </html>
