@@ -222,6 +222,9 @@ h2 {
 #my_city_show img {
 	border: 4px solid green;
 }
+.modal-dialog.vote {
+	width:832px;
+}
 @media (min-width: 768px) {
 	#slogan {
 		float: right !important;
@@ -336,6 +339,9 @@ h2 {
 			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_membership" class="btn btn-xl red statut" title="non adhérent" id="membership_valide">non</a></div>
 			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_membership" href="#">valider</a></div>
 			    <% end %>
+		    </div>
+		    <div class="row">
+			<button id="vote_roxane" data-toggle="modal" data-target="#vote_roxane_cc" class="btn red">Voter pour Roxane</button>
 		    </div>
                 </div>
                 <div class="col-lg-4">
@@ -566,6 +572,16 @@ function testAPI() {
 	      </div>
       </div>
       <% end %>
+
+    <div class="modal fade" id="vote_roxane_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog vote" role="document">
+	      <div class="modal-content">
+					<div class="modal-body">
+						<iframe src="https://cocorico.cc/embed/vote-widget/<%= vote_id %>?user=<%= token %>&appId=<%= cc_app_id %>" width="800px" height="490px"></iframe>
+					</div>
+				</div>
+	    </div>
+    </div>
 
     <!-- Modal Telephone -->
     <% if not account['phone_valid'] %>
