@@ -41,6 +41,7 @@ END
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
+=begin
 		get '/citoyen/:user_key' do
 			email_updated=false
 			begin
@@ -70,8 +71,8 @@ END
 				erb :error, :locals=>{ :msg=>{ "title"=>"Email inchangé", "message"=>"Votre email (#{email}) est resté inchangé" } }
 			end
 		end
+=end
 
-=begin
 		get '/citoyen/:user_key' do
 			candidats=[
 				{'photo'=>'soutien-1-dispo.jpg'},
@@ -147,6 +148,5 @@ END
 				'account'=>account
 			}
 		end
-=end
 	end
 end
