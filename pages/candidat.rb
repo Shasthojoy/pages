@@ -198,6 +198,10 @@ END
 			ensure
 				Pages.db_close()
 			end
+			candidat['annonce']=false
+			if RETRAITS.include?(candidat['slug']) then
+				candidat['annonce']=true
+			end
 			if ABANDONS.include?(candidat['candidate_id'].to_i) then
 				status 200
 				return erb :error, :locals=>{:msg=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}

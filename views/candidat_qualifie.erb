@@ -52,6 +52,7 @@ div.lettre p { font-size:16px; }
 .equipe .hero-feature img { height: 90px; width: 90px; }
 .equipe .hero-feature .photo { border: 5px solid white; }
 .equipe .hero-feature .photo.qualifie { border: 5px solid rgba(102,204,0,0.8); }
+.equipe .hero-feature .photo.soutien { border: 5px solid rgba(82,122,191,1); }
 .photo img.background {
 	min-height: 100%;
 	min-width: 100%;
@@ -307,7 +308,7 @@ img.author {
     </div>
     </header>
 
-    <!--
+    <!-- 
     <section class="equipe">
     <div id="equipe_overlay" class="red" style="border-bottom: 2px solid #527bdd;">
 	<div class="container">
@@ -319,7 +320,6 @@ img.author {
 			    </div>
 		    </div>
 		    <div class="col-md-9 col-sm-8 col-xs-12 hero-feature">
-			    
 			    <div class="team-member">
 				    <div>
 					    <div class="photo lazy img-circle qualifie" data-original="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/inconnue-100px.jpg">
@@ -418,7 +418,6 @@ img.author {
     </div>
     </section>
 -->
-
     <section class="programme">
     <div id="programme_overlay" class="blue" style="border-bottom: 2px solid #d91d1c;">
 	<div class="container">
@@ -541,6 +540,85 @@ img.author {
 	      </div>
       </div>
 
+      <% if annonce then %>
+    <!-- Modal -->
+    <div class="modal fade" id="Announce" tabindex="-1" role="dialog" aria-labelledby="announce">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header" style="background-color:#527bdd;">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="shareByEmail">Message de <%= name %></h4>
+	          </div>
+	  <% if slug=='maxime-verner' then %>
+		  <div class="modal-body">
+			  <p style="font-size:14px;">Le 5 octobre 2016, Maxime Verner a pris la décision de se retirer du processus de LaPrimaire.org pour se présenter seul à l'élection présidentielle&nbsp;:</p>
+			  <blockquote style="font-size:14px;font-style:italic;">&laquo;Je me retire aujourd’hui du processus de LaPrimaire.org. Cette primaire citoyenne, ouverte à tous, est une excellente idée. Fondée sur le constat du rejet des partis, elle donne l’occasion à tous les citoyens de se présenter au suffrage de leurs pairs pour faire émerger une candidature citoyenne à l’élection présidentielle. Elle est gérée par des citoyens honnêtes et dévoués depuis le premier jour. Leurs efforts ne seront pas vains.&raquo; <a href="https://medium.com/@maximeverner/les-civic-tech-ne-feront-pas-%C3%A9merger-des-id%C3%A9es-neuves-en-2017-mais-nous-le-pouvons-2e7e67829b9a#.y2zsjglgy" target="_blank">Lire la suite...</a></blockquote> 
+			  <p style="font-size:14px;">Bien que nous regrettons cette décision, nous souhaitons bonne chance à Maxime.</p>
+	          </div>
+	          <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	          </div>
+	  <% elsif slug=='ramin-farhangi' then %>
+		  <div class="modal-body">
+			  <div class="equipe">
+			    <div class="hero-feature">
+				    <div class="team-member" style="float:right;padding-left:10px;">
+					    <div>
+						    <div class="photo img-circle soutien" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/charlotte-marchandise-franquet-mini.jpg">
+							    <a href="/qualifie/charlotte-marchandise-franquet"><img class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/charlotte-marchandise-franquet-mini.jpg" alt="Charlotte Marchandise"></a>
+						    </div>
+						    <div class="caption" style="line-height:1em;">
+							    <a style="line-height:1em;color:#5e5e5e;" href="/qualifie/charlotte-marchandise-franquet">Charlotte Marchandise</a>
+						    </div>
+					    </div>
+				    </div>
+			    </div>
+			  <p style="font-size:14px;text-align:justify;">Après réflexion, Ramïn Farhangi a pris la décision de retirer sa candidature pour apporter son soutien à la candidature de Charlotte Marchandise.&nbsp;</p>
+			  <blockquote style="text-align:justify;font-size:14px;font-style:italic;display:none;">&laquo;Petit (ou grand) message de Ramin pour expliquer sa motivation a soutenir Charlotte Marchandise. Lkjdf kj dfkj dfkj dfkjd fkjd fkjdfk jdfkj dfkljdflkj dflkj wflkjweflkjsd flkj sflkjsflkjsdflkjsd flkj sdf&raquo;</blockquote> 
+			  <div class="clearfix"></div>
+	          </div>
+	          <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	          </div>
+	  <% elsif slug=='alexandre-lecouillard' then %>
+		  <div class="modal-body">
+			  <div class="equipe">
+			    <div class="hero-feature">
+				    <div class="team-member" style="float:right;padding-left:10px;">
+					    <div>
+						    <div class="photo img-circle soutien" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/charlotte-marchandise-franquet-mini.jpg">
+							    <a href="/qualifie/charlotte-marchandise-franquet"><img class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/charlotte-marchandise-franquet-mini.jpg" alt="Charlotte Marchandise"></a>
+						    </div>
+						    <div class="caption" style="line-height:1em;">
+							    <a style="line-height:1em;color:#5e5e5e;" href="/qualifie/charlotte-marchandise-franquet">Charlotte Marchandise</a>
+						    </div>
+					    </div>
+				    </div>
+				    <div class="team-member" style="float:right;padding-left:10px;">
+					    <div>
+						    <div class="photo img-circle soutien" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/roxane-revon-mini.jpg">
+							    <a href="/qualifie/roxane-revon"><img class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/roxane-revon-mini.jpg" alt="Roxane Revon"></a>
+						    </div>
+						    <div class="caption" style="line-height:1em;">
+							    <a style="line-height:1em;color:#5e5e5e;" href="/qualifie/roxane-revon">Roxane Revon</a>
+						    </div>
+					    </div>
+				    </div>
+
+			    </div>
+			  <p style="font-size:14px;text-align:justify;">Après réflexion, Alexandre Lecouillard a pris la décision de retirer sa candidature pour apporter son soutien à Roxane Revon et Charlotte Marchandise.&nbsp;</p>
+			  <blockquote style="text-align:justify;font-size:14px;font-style:italic;">&laquo;J’ai choisi de soutenir Roxane Revon &amp; Charlotte Marchandise avec qui je le souhaite nous allons créer une belle initiative collective. Je tiens à dire MERCI aux personnes qui ont votées pour moi lors de la première qualification. Maintenant si le cœur vous en dit je vous invite à suivre Roxane et Charlotte et la belle équipe qui est en création.&raquo; <a href="http://alexandrelecouillard.fr/pourquoi-je-ne-suis-plus-candidat-pour-2017/" target="_blank">Lire la suite...</a></blockquote> 
+			  <div class="clearfix"></div>
+	          </div>
+	          <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	          </div>
+	  <% end %>
+	        </div>
+	      </div>
+      </div>
+      <% end %>
+
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -576,7 +654,6 @@ function eraseCookie(name) { createCookie(name,"",-1); }
  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-60977053-1', 'auto');
 ga('send', 'pageview');
-
 $(document).ready(function(){
 	$('#Iemail').on('shown.bs.modal', function () {
 		var z172u35g0xjklqk;(function(d, t) {
@@ -597,10 +674,15 @@ $(document).ready(function(){
 		var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
 		})(document, 'script');
 	});
+      <% if annonce then %>
+	if ($('#Announce')!=null) {
+		$('#Announce').modal('show');
+	}
+      <% end %>
 	$("a.joinus_action").click(function() {
 			ga('send','event','button','click','Je participe');
 	});
-	if ($('#JoinsUsNow')!=null) {
+	if ($('#JoinUsNow')!=null) {
 		$('#JoinUsNow').on('shown.bs.modal', function () {
 			ga('send', 'pageview', '/inscription-popup/');
 			var qaj8t6m07xo97p;(function(d, t) {
