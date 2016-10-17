@@ -36,6 +36,20 @@ END
 			}
 		end
 
+		helpers do
+			def page_info(infos)
+				info={
+					'page_description'=>"description",
+					'page_author'=>"Des citoyens ordinaires",
+					'page_image'=>"pas de photo",
+					'page_url'=>"https://laprimaire.org/citoyen/vote/qqqqqqq",
+					'page_title'=>"Votez !",
+					'social_title'=>"Votez !"
+				}
+				return info
+			end
+		end
+
 		configure do
 			set :view, 'views'
 			set :root, File.expand_path('../../',__FILE__)
@@ -146,6 +160,24 @@ END
 				'candidats'=>candidats,
 				'citoyens'=>citoyens,
 				'account'=>account
+			}
+		end
+
+		get '/citoyen/vote/:user_key' do
+			Pages.db_init()
+			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
+			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+			citoyen=res[0]
+			vote={
+				'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
+				'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
+				'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
+				'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
+			}
+			erb :index, :locals=>{
+				'page_info'=>page_info(citoyen),
+				'vars'=>vote,
+				'template'=>:vote_citoyen
 			}
 		end
 	end
