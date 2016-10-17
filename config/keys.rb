@@ -8,5 +8,7 @@ ALGOLIA_KEY="ALGOLIA_KEY"
 AWS_S3_BUCKET_URL="https://s3.eu-central-1.amazonaws.com/laprimaire/"
 TWLSID="KSLFKSDLKFSLFKDSLK" # Twilio SID
 TWLTOKEN="isfdskfjSDFSFsdfsdf" #Twilio Token
+COCORICO_appId="app_id"
+COCORICO_secret="app_secret"
 ABANDONS=[]
 EXCLUSIONS=[]

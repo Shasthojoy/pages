@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 =begin
    Copyright 2016 Telegraph-ai
 
@@ -13,6 +15,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 =end
+
+require 'digest'
 
 module Pages
 	class AdminCitoyen < Sinatra::Application
@@ -109,6 +113,17 @@ END
 				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
+				citoyen_hash=Digest::SHA256.hexdigest(citoyen['email'])
+				puts citoyen_hash
+				payload={
+					:iss=> COCORICO_APPID,
+					:sub=> citoyen_hash,
+					:email=> citoyen['email'],
+					:lastName=> citoyen['lastname'],
+					:firstName=> citoyen['firstname'],
+					:authorizedVotes=> [ "57dd7f6fa18d6654d022a1a9" ]
+				}
+				encoded_token= JWT.encode payload, COCORICO_SECRET, 'HS256'
 				account={
 					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
 					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
@@ -159,7 +174,10 @@ END
 				'citoyen'=>citoyen,
 				'candidats'=>candidats,
 				'citoyens'=>citoyens,
-				'account'=>account
+				'account'=>account,
+				'token'=>encoded_token,
+				'vote_id'=>'57dd7f6fa18d6654d022a1a9',
+				'cc_app_id'=>COCORICO_APPID
 			}
 		end
 
