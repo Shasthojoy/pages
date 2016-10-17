@@ -267,6 +267,19 @@ END
 				'template'=>:candidat_qualifie
 			}
 		end
+		get '/candidat/vote/:name' do
+			title=params["title"]
+			name=params["name"]
+			info={
+				'name'=>name,
+				'title'=>title,
+				'page_description'=>"Votez pour #{name}",
+				'page_author'=>"LaPrimaire.org",
+				'page_url'=>"https://laprimaire.org/candidat/vote/#{name}",
+				'page_title'=>"Votez pour #{name}"
+			}
+			erb :dummy_vote, :locals=>info
+		end
 	end
 end
 
