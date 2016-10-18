@@ -198,6 +198,10 @@ END
 			ensure
 				Pages.db_close()
 			end
+			candidat['annonce']=false
+			if RETRAITS.include?(candidat['slug']) then
+				candidat['annonce']=true
+			end
 			if ABANDONS.include?(candidat['candidate_id'].to_i) then
 				status 200
 				return erb :error, :locals=>{:msg=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}
@@ -262,6 +266,19 @@ END
 				'vars'=>candidat,
 				'template'=>:candidat_qualifie
 			}
+		end
+		get '/candidat/vote/:name' do
+			title=params["title"]
+			name=params["name"]
+			info={
+				'name'=>name,
+				'title'=>title,
+				'page_description'=>"Votez pour #{name}",
+				'page_author'=>"LaPrimaire.org",
+				'page_url'=>"https://laprimaire.org/candidat/vote/#{name}",
+				'page_title'=>"Votez pour #{name}"
+			}
+			erb :dummy_vote, :locals=>info
 		end
 	end
 end

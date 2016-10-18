@@ -12,3 +12,4 @@ COCORICO_appId="app_id"
 COCORICO_secret="app_secret"
 ABANDONS=[]
 EXCLUSIONS=[]
+RETRAITS=[]
