@@ -1,10 +1,20 @@
     <!-- Header -->
     <header>
     <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
-	<div class="container">
-	    <div class="thumbnail" style="margin-top: 15px;">
-		<h3>ca va chier</h3>
+	    <div class="container">
+		    <div class="row">
+			    <button id="vote_roxane" data-toggle="modal" data-target="#vote_roxane_cc" class="btn red">Voter pour Roxane</button>
+		    </div>
 	    </div>
     </div>
     </header>
 
+    <div class="modal fade" id="vote_roxane_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog vote" role="document">
+		    <div class="modal-content">
+			    <div class="modal-body">
+				    <iframe src="https://cocorico.cc/embed/vote-widget/<%= vote_id %>?user=<%= token %>&appId=<%= cc_app_id %>" width="800px" height="490px"></iframe>
+			    </div>
+		    </div>
+	    </div>
+    </div>

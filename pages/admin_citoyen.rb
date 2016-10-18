@@ -37,6 +37,25 @@ END
 				'reset_citizen_email'=><<END,
 UPDATE users SET email_status=2, validation_level=(validation_level & 14), email=reset_email, reset_email=null, reset_code=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
 END
+				'get_ballot_by_email'=><<END,
+SELECT b.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) WHERE email=$1
+END
+				'get_ballots_stats'=><<END,
+SELECT case when cb.ballot_id is null then 1 else count(*) end,c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified GROUP BY c.slug,c.candidate_id,cb.ballot_id ORDER BY c.slug ASC;
+END
+				'create_ballot'=><<END,
+WITH my_ballot AS (
+	INSERT INTO ballots (email) VALUES ($1) RETURNING *
+)
+SELECT c.* FROM candidates AS c INNER JOIN candidates_ballots as cb ON (cb.candidate_id=c.candidate_id) INNER JOIN ballots as b ON (b.ballot_id=cb.ballot_id) INNER JOIN my_ballot as mb ON (mb.ballot_id=b.ballot_id);
+END
+				'populate_ballot'=><<END,
+WITH ballot_candidates AS (
+	INSERT INTO candidates_ballots (ballot_id,candidate_id,position) VALUES ($1,$2,1), ($1,$3,2), ($1,$4,3), ($1,$5,4), ($1,$6,5) RETURNING *
+)
+SELECT bc.ballot_id,bc.completed,bc.date_generated, c.* FROM candidates AS c INNER JOIN ballot_candidates as bc ON (bc.candidate_id,c.candidate_id)
+END
+
 			}
 		end
 
@@ -52,44 +71,45 @@ END
 				}
 				return info
 			end
+
+			def create_ballot(email)
+				set=generate_set()
+				res=Pages.db_query(@queries["create_ballot"],[email])
+				ballot_id=res[0]['ballot_id']
+				set.unshift(ballot_id)
+				res=Pages.db_query(@queries["populate_ballot"],set)
+				raise "error creating ballot : #{res.num_tuples} entries created instead of 5 expected" if res.num_tuples<5
+				return set
+			end
+
+			def generate_set()
+				res=Pages.db_query(@queries["get_ballots_stats"])
+				candidats=[]
+				weights=[]
+				res.each_with_index do |r,i|
+					candidats.push(r['candidate_id'])
+					weights.push(r['count'])
+				end
+				wrs = -> (freq) { freq.max_by { |_, weight| rand ** (1.0 / weight) }.first }
+				probas=weights.map {|w| 1/w.to_f}
+				ps=probas.map {|w| (Float w)/probas.reduce(:+)}
+				wcandidats = candidats.zip(ps).to_h
+				set=[]
+				while set.length<5 do
+					c=wrs[wcandidats]
+					set.push(c) if not set.include?(c)
+				end
+				return set
+			end
+
+			def access_ballot(email,ballot_id)
+			end
 		end
 
 		configure do
 			set :view, 'views'
 			set :root, File.expand_path('../../',__FILE__)
 		end
-
-=begin
-		get '/citoyen/:user_key' do
-			email_updated=false
-			begin
-				Pages.db_init()
-				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
-				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
-				citizen=res[0]
-				email=citizen['email']
-				if not params['reset_email'].nil? then
-					res1=Pages.db_query(@queries["reset_citizen_email"],[email])
-					if not res1.num_tuples.zero? then
-						citizen=res1[0]
-						email=citizen['email']
-						email_updated=true
-					end
-				end
-			rescue PG::Error => e
-				status 500
-				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
-			ensure
-				Pages.db_close()
-			end
-			if email_updated then
-				erb :success, :locals=>{ :msg=>{ "title"=>"Email validé", "message"=>"Votre nouvel email (#{email}) a été mis à jour avec succès !" } }
-			else
-				status 500
-				erb :error, :locals=>{ :msg=>{ "title"=>"Email inchangé", "message"=>"Votre email (#{email}) est resté inchangé" } }
-			end
-		end
-=end
 
 		get '/citoyen/:user_key' do
 			candidats=[
@@ -186,15 +206,26 @@ END
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 			citoyen=res[0]
-			vote={
-				'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
-				'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
-				'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
-				'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
+			#1 We check if a ballot has already been created
+			res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
+			#2 If no pre-existing ballot exist we create one for the citizen
+			ballot=res.num_tuples.zero? ? create_ballot(citoyen['email']) : res[0]
+			#3 We register a new ballot access #LATER
+			# access_ballot(citizen['email'],ballot['ballot_id'],request)
+			candidates=Pages.db_query(@queries["get_candidates])
+			vars={
+				'auth'=>{
+					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
+					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
+					'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
+					'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
+				},
+				'citoyen'=>citoyen,
+				'ballot'=>ballot
 			}
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),
-				'vars'=>vote,
+				'vars'=>vars,
 				'template'=>:vote_citoyen
 			}
 		end

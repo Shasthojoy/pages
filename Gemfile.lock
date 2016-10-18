@@ -11,6 +11,7 @@ GEM
     kgio (2.10.0)
     multi_json (1.11.2)
     pg (0.18.4)
+    pickup (0.0.11)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -33,6 +34,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    useragent (0.16.8)
     wannabe_bool (0.5.0)
 
 PLATFORMS
@@ -42,9 +44,11 @@ DEPENDENCIES
   algoliasearch
   jwt
   pg
+  pickup
   sinatra
   sinatra-contrib
   unicorn
+  useragent
   wannabe_bool
 
 BUNDLED WITH

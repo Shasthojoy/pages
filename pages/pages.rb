@@ -43,8 +43,8 @@ module Pages
 		end
 	end
 
-	def self.db_query(query,params)
-		@@db.exec_params(query,params)
+	def self.db_query(query,params=nil)
+		return params.nil? ? @@db.exec(query) : @@db.exec_params(query,params)
 	end
 
 	def self.db_close()
