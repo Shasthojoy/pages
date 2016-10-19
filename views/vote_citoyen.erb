@@ -1,18 +1,69 @@
-    <!-- Header -->
+<style>
+.photo {
+	max-width: 200px;
+	height: 100%;
+	background-position: center center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+.hero-feature {
+	max-width: 200px;
+}
+.hero-feature h3 {
+	font-size: 22px;
+	margin-top: 10px;
+}
+.hero-feature h3 span { color: #d91d1c; font-weight: bold; }
+.hero-feature p { font-size: 13px; }
+.hero-feature img { height: 250px; }
+.photo img {
+	min-height: 100%;
+	min-width: 100%;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	/* IE 5-7 */
+	filter: alpha(opacity=0);
+	/* modern browsers */
+	opacity: 0;
+}
+.hero-feature .blue:hover { background-color:#d91d1c; border-color:red;}
+.caption h3 { text-align:center; }
+.caption { text-align:justify; }
+@media (min-width:980px) {
+	.modal-dialog {width:820px;}
+}
+</style>
+<!-- Header -->
+            <div class="row" id="candidats">
+
     <header>
     <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
 	    <div class="container">
-		    <% ballot['candidates'].each do |candidate| %>
 		    <div class="row">
-			    <button id="vote_<%= candidate['slug'] %>" data-toggle="modal" data-target="#<%= candidate['slug'] %>_cc" class="btn red">Voter pour <%= candidate['name'] %></button>
+		    <% ballot['candidates'].each do |candidate| %>
+		    <div class="col-md-4 col-sm-4 col-xs-12 hero-feature">
+			    <div class="thumbnail">
+				    <a href="/qualifie/<%= candidate['slug'] %>">
+					    <div class="photo" style="background: url('https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>');">
+						    <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>" alt="<%= candidate['name'] %>">
+					    </div>
+				    </a>
+				    <div class="caption">
+					    <a href="/qualifie/<%= candidate['slug'] %>"><h3><%= candidate['name'] %></h3></a>
+					    <!--<p>&ldquo;<i><%= candidate['summary'] %></i>&rdquo;</p>-->
+					    <button id="vote_<%= candidate['slug'] %>" data-toggle="modal" data-target="#<%= candidate['slug'] %>_cc" class="btn red">Voter pour <%= candidate['name'] %></button>
+				    </div>
+			    </div>
 		    </div>
+
 		    <% end %>
+		    </div>
 	    </div>
     </div>
     </header>
 
     <% ballot['candidates'].each do |candidate| %>
-	    <div class="modal fade" id="<%= candidate['slug']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="<%= candidate['slug']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog vote" role="document">
 		    <div class="modal-content">
 			    <div class="modal-body" id="<%= candidate['slug']%>_iframe"></div>
@@ -27,7 +78,7 @@ $(document).ready(function() {
     <% ballot['candidates'].each do |candidate| %>
 	    if ($('#<%= candidate['slug']%>_cc')!=null) {
 		    $('#<%= candidate['slug']%>_cc').on('shown.bs.modal', function () {
-			    $('#<%= candidate['slug']%>_iframe').html('<iframe src="https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user=<%= candidate['token'] %>&appId=<%= cocorico_app_id %>" width="800px" height="490px"></iframe>');
+			    $('#<%= candidate['slug']%>_iframe').html('<iframe src="https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user=<%= candidate['token'] %>&appId=<%= cocorico_app_id %>" height="480px" width="100%"></iframe>');
 			    console.log('<%= candidate['name']%>');
 		});
 	}

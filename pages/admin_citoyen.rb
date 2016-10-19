@@ -62,7 +62,7 @@ END
 					'page_description'=>"description",
 					'page_author'=>"Des citoyens ordinaires",
 					'page_image'=>"pas de photo",
-					'page_url'=>"https://laprimaire.org/citoyen/vote/qqqqqqq",
+					'page_url'=>"https://laprimaire.org/citoyen/vote/#{infos['user_key']}",
 					'page_title'=>"Votez !",
 					'social_title'=>"Votez !"
 				}
@@ -204,7 +204,6 @@ END
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 			citoyen=res[0]
-			citoyen_hash=Digest::SHA256.hexdigest(citoyen['email'])
 			#1 We check the validation level of the candidate authentication 
 			auth={
 				'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
@@ -225,7 +224,7 @@ END
 			ballot['candidates'].each do |candidate| 
 				token={
 					:iss=> COCORICO_APP_ID,
-					:sub=> citoyen_hash,
+					:sub=> Digest::SHA256.hexdigest(citoyen['email']),
 					:email=> citoyen['email'],
 					:lastName=> citoyen['lastname'],
 					:firstName=> citoyen['firstname'],
