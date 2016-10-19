@@ -38,22 +38,19 @@ END
 UPDATE users SET email_status=2, validation_level=(validation_level & 14), email=reset_email, reset_email=null, reset_code=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
 END
 				'get_ballot_by_email'=><<END,
-SELECT b.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) WHERE email=$1
+SELECT b.ballot_id,b.completed,b.date_generated, c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1
 END
 				'get_ballots_stats'=><<END,
-SELECT case when cb.ballot_id is null then 1 else count(*) end,c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified GROUP BY c.slug,c.candidate_id,cb.ballot_id ORDER BY c.slug ASC;
+SELECT case when cb.ballot_id is null then 1 else count(*) end,c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id,cb.ballot_id ORDER BY c.slug ASC;
 END
 				'create_ballot'=><<END,
-WITH my_ballot AS (
-	INSERT INTO ballots (email) VALUES ($1) RETURNING *
-)
-SELECT c.* FROM candidates AS c INNER JOIN candidates_ballots as cb ON (cb.candidate_id=c.candidate_id) INNER JOIN ballots as b ON (b.ballot_id=cb.ballot_id) INNER JOIN my_ballot as mb ON (mb.ballot_id=b.ballot_id);
+INSERT INTO ballots (email) VALUES ($1) RETURNING *;
 END
 				'populate_ballot'=><<END,
 WITH ballot_candidates AS (
 	INSERT INTO candidates_ballots (ballot_id,candidate_id,position) VALUES ($1,$2,1), ($1,$3,2), ($1,$4,3), ($1,$5,4), ($1,$6,5) RETURNING *
 )
-SELECT bc.ballot_id,bc.completed,bc.date_generated, c.* FROM candidates AS c INNER JOIN ballot_candidates as bc ON (bc.candidate_id,c.candidate_id)
+SELECT b.ballot_id,b.completed,b.date_generated, c.* FROM candidates AS c INNER JOIN ballot_candidates as bc ON (bc.candidate_id=c.candidate_id) INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id) ORDER BY bc.position ASC;
 END
 
 			}
@@ -76,10 +73,12 @@ END
 				set=generate_set()
 				res=Pages.db_query(@queries["create_ballot"],[email])
 				ballot_id=res[0]['ballot_id']
-				set.unshift(ballot_id)
-				res=Pages.db_query(@queries["populate_ballot"],set)
+				params=[ballot_id]+set
+				res=Pages.db_query(@queries["populate_ballot"],params)
+				ballot={'ballot_id'=>ballot_id,'candidates'=>[]}
+				res.each { |r| ballot["candidates"].push(r) }
 				raise "error creating ballot : #{res.num_tuples} entries created instead of 5 expected" if res.num_tuples<5
-				return set
+				return ballot
 			end
 
 			def generate_set()
@@ -134,9 +133,8 @@ END
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
 				citoyen_hash=Digest::SHA256.hexdigest(citoyen['email'])
-				puts citoyen_hash
 				payload={
-					:iss=> COCORICO_APPID,
+					:iss=> COCORICO_APP_ID,
 					:sub=> citoyen_hash,
 					:email=> citoyen['email'],
 					:lastName=> citoyen['lastname'],
@@ -206,26 +204,48 @@ END
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 			citoyen=res[0]
-			#1 We check if a ballot has already been created
+			citoyen_hash=Digest::SHA256.hexdigest(citoyen['email'])
+			#1 We check the validation level of the candidate authentication 
+			auth={
+				'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
+				'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
+				'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
+				'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
+			}
+			#2 We check if a ballot has already been created
 			res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
-			#2 If no pre-existing ballot exist we create one for the citizen
-			ballot=res.num_tuples.zero? ? create_ballot(citoyen['email']) : res[0]
+			if res.num_tuples.zero? then
+				#2bis If no pre-existing ballot exist we create one for the citizen
+				ballot=create_ballot(citoyen['email'])
+			else
+				ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
+				res.each { |r| ballot["candidates"].push(r) }
+			end
+
+			ballot['candidates'].each do |candidate| 
+				token={
+					:iss=> COCORICO_APP_ID,
+					:sub=> citoyen_hash,
+					:email=> citoyen['email'],
+					:lastName=> citoyen['lastname'],
+					:firstName=> citoyen['firstname'],
+					:authorizedVotes=> [candidate['vote_id']]
+				}
+				puts token.inspect
+				candidate['token']=JWT.encode token, COCORICO_SECRET, 'HS256'
+			end
+
 			#3 We register a new ballot access #LATER
 			# access_ballot(citizen['email'],ballot['ballot_id'],request)
-			candidates=Pages.db_query(@queries["get_candidates])
-			vars={
-				'auth'=>{
-					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
-					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
-					'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
-					'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
-				},
-				'citoyen'=>citoyen,
-				'ballot'=>ballot
-			}
+
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),
-				'vars'=>vars,
+				'vars'=>{
+					'auth'=>auth,
+					'cocorico_app_id'=>COCORICO_APP_ID,
+					'citoyen'=>citoyen,
+					'ballot'=>ballot
+				},
 				'template'=>:vote_citoyen
 			}
 		end

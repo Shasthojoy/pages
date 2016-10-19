@@ -2,19 +2,35 @@
     <header>
     <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
 	    <div class="container">
+		    <% ballot['candidates'].each do |candidate| %>
 		    <div class="row">
-			    <button id="vote_roxane" data-toggle="modal" data-target="#vote_roxane_cc" class="btn red">Voter pour Roxane</button>
+			    <button id="vote_<%= candidate['slug'] %>" data-toggle="modal" data-target="#<%= candidate['slug'] %>_cc" class="btn red">Voter pour <%= candidate['name'] %></button>
 		    </div>
+		    <% end %>
 	    </div>
     </div>
     </header>
 
-    <div class="modal fade" id="vote_roxane_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <% ballot['candidates'].each do |candidate| %>
+	    <div class="modal fade" id="<%= candidate['slug']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog vote" role="document">
 		    <div class="modal-content">
-			    <div class="modal-body">
-				    <iframe src="https://cocorico.cc/embed/vote-widget/<%= vote_id %>?user=<%= token %>&appId=<%= cc_app_id %>" width="800px" height="490px"></iframe>
-			    </div>
+			    <div class="modal-body" id="<%= candidate['slug']%>_iframe"></div>
 		    </div>
 	    </div>
     </div>
+    <% end %>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script>
+$(document).ready(function() {
+    <% ballot['candidates'].each do |candidate| %>
+	    if ($('#<%= candidate['slug']%>_cc')!=null) {
+		    $('#<%= candidate['slug']%>_cc').on('shown.bs.modal', function () {
+			    $('#<%= candidate['slug']%>_iframe').html('<iframe src="https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user=<%= candidate['token'] %>&appId=<%= cocorico_app_id %>" width="800px" height="490px"></iframe>');
+			    console.log('<%= candidate['name']%>');
+		});
+	}
+    <% end %>
+});
+    </script>
