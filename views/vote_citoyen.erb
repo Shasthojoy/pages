@@ -1,13 +1,27 @@
 <style>
+ul.social_buttons > li{
+	display: inline-block;
+	margin-bottom: 5px;
+}
+
+.intro-heading span {
+	color: #d91d1c;
+	font-weight:bold;
+}
+.intro-heading {
+	font-size: 24px !important;
+	color: #527bdd;
+}
+.intro-lead-in {
+	font-size: 16px !important;
+	line-height: 20px !important;
+}
 .photo {
 	max-width: 200px;
 	height: 100%;
 	background-position: center center;
 	background-repeat: no-repeat;
 	overflow: hidden;
-}
-.hero-feature {
-	max-width: 200px;
 }
 .hero-feature h3 {
 	font-size: 22px;
@@ -31,6 +45,10 @@
 .caption { text-align:justify; }
 @media (min-width:980px) {
 	.modal-dialog {width:820px;}
+	.intro-text {
+		padding-top:15px !important;
+		padding-bottom:0px !important;
+	}
 }
 </style>
 <!-- Header -->
@@ -39,23 +57,52 @@
     <header>
     <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
 	    <div class="container">
-		    <div class="row">
+		    <div class="row" style="padding-top:10px;">
 		    <% ballot['candidates'].each do |candidate| %>
-		    <div class="col-md-4 col-sm-4 col-xs-12 hero-feature">
-			    <div class="thumbnail">
-				    <a href="/qualifie/<%= candidate['slug'] %>">
-					    <div class="photo" style="background: url('https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>');">
-						    <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>" alt="<%= candidate['name'] %>">
+			    <div class="col-sm-12 col-xs-12 hero-feature">
+				    <div class="thumbnail" style="margin-bottom:5px;">
+					    <div class="row">
+						    <div class="col-md-3 col-sm-12 hero-feature">
+							    <div class="photo background"style="background: url('https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>');">
+								    <img class="background" src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>" alt="<%= candidate['name'] %>">
+								    <div id="video-button" data-toggle="modal" data-target="#Iwatch"></div>
+							    </div>
+						    </div>
+						    <div class="col-md-9 col-sm-12 hero-feature">
+							    <div class="row">
+								    <div>
+									    <div class="intro-text">
+										    <div style="margin-bottom:-17px;" class="intro-heading"><%= candidate['firstname'] %> <span><%= candidate['lastname'] %></span></div>
+										    <p class="about"><%= "#{candidate['age']} ans, #{candidate['job']} (#{candidate['departement']})" %></p>
+										    <div class="intro-lead-in">&ldquo;<i><%= candidate['vision'] %></i>&rdquo;</div>
+									    </div>
+								    </div>
+							    </div>
+							    <div class="row">
+								    <div style="margin-bottom:20px;">
+									    <% if candidate['vote_casted'].to_b then %>
+									    <button id="vote_<%= candidate['slug'] %>" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+									    <% else %>
+									    <button id="vote_<%= candidate['slug'] %>" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:150px;border-radius:4px;">Noter <%= candidate['firstname'] %></button>
+									    <% end %>
+								    </div>
+							    </div>
+							    <div class="row">
+								    <ul class="social_buttons">
+									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i>Présentation</a></li>
+									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-list-ol" aria-hidden="true"></i>Programme</a></li>
+									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-microphone" aria-hidden="true"></i>Interview</a></li>
+									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-video-camera" aria-hidden="true"></i>Direct</a></li>
+									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-picture-o" aria-hidden="true"></i>Illustration</a></li>
+									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-star" aria-hidden="true"></i>Priorités</a></li>
+								    </ul>
+
+							    </div>
+						    </div>
 					    </div>
-				    </a>
-				    <div class="caption">
-					    <a href="/qualifie/<%= candidate['slug'] %>"><h3><%= candidate['name'] %></h3></a>
-					    <!--<p>&ldquo;<i><%= candidate['summary'] %></i>&rdquo;</p>-->
-					    <button id="vote_<%= candidate['slug'] %>" data-toggle="modal" data-target="#<%= candidate['slug'] %>_cc" class="btn red">Voter pour <%= candidate['name'] %></button>
+
 				    </div>
 			    </div>
-		    </div>
-
 		    <% end %>
 		    </div>
 	    </div>
@@ -63,10 +110,20 @@
     </header>
 
     <% ballot['candidates'].each do |candidate| %>
-    <div class="modal fade" id="<%= candidate['slug']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="<%= candidate['vote_id']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog vote" role="document">
 		    <div class="modal-content">
-			    <div class="modal-body" id="<%= candidate['slug']%>_iframe"></div>
+			    <div class="modal-body" >
+				    <div style="margin:0 auto;background:#527bdd;height:100%;" id="<%= candidate['vote_id']%>_loading">
+					    <div style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:300px;color:white;text-align:center;">
+						    <p>Chargement du vote en cours...</p>
+						    <p><i style="width:100px;text-align:center;" class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></p>
+						    <span class="sr-only">Refreshing...</span>
+						    <p>Vous disposez de 10 minutes pour évaluer <%= candidate['name']%>.</p>
+					    </div>
+				    </div>
+				    <iframe id="<%= candidate['vote_id']%>_iframe" width="100%" height="480px" style="display:none;"></iframe>
+			    </div>
 		    </div>
 	    </div>
     </div>
@@ -75,13 +132,29 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
 $(document).ready(function() {
+		window.addEventListener("message",receiveMessage,true);
+		function receiveMessage(e) { 
+			console.log('data received: '+e['data']); 
+		};
     <% ballot['candidates'].each do |candidate| %>
-	    if ($('#<%= candidate['slug']%>_cc')!=null) {
-		    $('#<%= candidate['slug']%>_cc').on('shown.bs.modal', function () {
-			    $('#<%= candidate['slug']%>_iframe').html('<iframe src="https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user=<%= candidate['token'] %>&appId=<%= cocorico_app_id %>" height="480px" width="100%"></iframe>');
-			    console.log('<%= candidate['name']%>');
+	    if ($('#<%= candidate['vote_id']%>_cc')!=null) {
+	    $('#<%= candidate['vote_id']%>_cc').on('hidden.bs.modal', function () {
+			    $('#<%= candidate['vote_id']%>_loading').show(); $('#<%= candidate['vote_id']%>_iframe').hide();
+		    });
+
+		    $('#<%= candidate['vote_id']%>_cc').on('shown.bs.modal', function () {
+			    $('#<%= candidate['vote_id']%>_iframe').load(function() { $('#<%= candidate['vote_id']%>_loading').hide(); $('#<%= candidate['vote_id']%>_iframe').show();});
+			    $.ajax({
+				url: "/citoyen/token/<%= citoyen['user_key'] %>",
+				data: "ballot=<%= ballot['ballot_id'] %>&candidate=<%= candidate['candidate_id'] %>",
+				dataType: "json",
+				success: function(data) {
+				$('#<%= candidate['vote_id']%>_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user='+data['token']+'&appId=<%= cocorico_app_id %>');
+				}
+			    });
 		});
 	}
     <% end %>
 });
     </script>
+    <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>

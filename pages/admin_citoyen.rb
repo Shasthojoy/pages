@@ -37,8 +37,11 @@ END
 				'reset_citizen_email'=><<END,
 UPDATE users SET email_status=2, validation_level=(validation_level & 14), email=reset_email, reset_email=null, reset_code=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
 END
+				'get_ballot_by_id'=><<END,
+SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_casted,c.*,u.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) INNER JOIN users as u ON (u.email=b.email) WHERE b.ballot_id=$1 AND cb.candidate_id=$2 AND u.user_key=$3;
+END
 				'get_ballot_by_email'=><<END,
-SELECT b.ballot_id,b.completed,b.date_generated, c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1
+SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_casted,c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1
 END
 				'get_ballots_stats'=><<END,
 SELECT case when cb.ballot_id is null then 1 else count(*) end,c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id,cb.ballot_id ORDER BY c.slug ASC;
@@ -50,7 +53,11 @@ END
 WITH ballot_candidates AS (
 	INSERT INTO candidates_ballots (ballot_id,candidate_id,position) VALUES ($1,$2,1), ($1,$3,2), ($1,$4,3), ($1,$5,4), ($1,$6,5) RETURNING *
 )
-SELECT b.ballot_id,b.completed,b.date_generated, c.* FROM candidates AS c INNER JOIN ballot_candidates as bc ON (bc.candidate_id=c.candidate_id) INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id) ORDER BY bc.position ASC;
+SELECT b.ballot_id,b.completed,b.date_generated,bc.position,bc.vote_casted,c.* 
+FROM candidates AS c 
+INNER JOIN ballot_candidates as bc ON (bc.candidate_id=c.candidate_id)
+INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id)
+ORDER BY bc.position ASC;
 END
 
 			}
@@ -199,6 +206,31 @@ END
 			}
 		end
 
+		get '/citoyen/token/:user_key' do
+			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
+			return JSON.dump({'param_missing'=>'user_key'}) if params['user_key'].nil?
+			return JSON.dump({'param_missing'=>'candidate'}) if params['candidate'].nil?
+			Pages.db_init()
+			res=Pages.db_query(@queries["get_ballot_by_id"],[params['ballot'],params['candidate'],params['user_key']])
+			ballot=res[0]
+			token={
+				:iss=> COCORICO_APP_ID,
+				:sub=> Digest::SHA256.hexdigest(ballot['email']),
+				:email=> ballot['email'],
+				:lastName=> ballot['lastname'],
+				:firstName=> ballot['firstname'],
+				:authorizedVotes=> [ballot['vote_id']],
+				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
+			}
+			vote_token=JWT.encode token, COCORICO_SECRET, 'HS256'
+			return JSON.dump({'token'=>vote_token})
+		end
+
+		get '/citoyen/dummy/:prout' do
+			puts "OH ?"
+			erb :dummy
+		end
+
 		get '/citoyen/vote/:user_key' do
 			Pages.db_init()
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
@@ -222,15 +254,17 @@ END
 			end
 
 			ballot['candidates'].each do |candidate| 
+				candidate['firstname']=candidate['name'].split(' ')[0]
+				candidate['lastname']=candidate['name'].split(' ')[1]
 				token={
 					:iss=> COCORICO_APP_ID,
 					:sub=> Digest::SHA256.hexdigest(citoyen['email']),
 					:email=> citoyen['email'],
 					:lastName=> citoyen['lastname'],
 					:firstName=> citoyen['firstname'],
-					:authorizedVotes=> [candidate['vote_id']]
+					:authorizedVotes=> [candidate['vote_id']],
+					:exp=>(Time.new.getutc+10).to_i
 				}
-				puts token.inspect
 				candidate['token']=JWT.encode token, COCORICO_SECRET, 'HS256'
 			end
 

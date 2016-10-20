@@ -17,3 +17,4 @@ CC_SECRET_TEST="9iys-emrnhneic4powyhaxk78vnmu1wl"
 ABANDONS=[]
 EXCLUSIONS=[]
 RETRAITS=[]
+VOTING_TIME_ALLOWED=10*600 # in seconds
