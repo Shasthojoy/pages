@@ -19,6 +19,7 @@ ul.social_buttons > li{
 .photo {
 	max-width: 200px;
 	height: 100%;
+	max-height: 310px;
 	background-position: center center;
 	background-repeat: no-repeat;
 	overflow: hidden;
@@ -142,10 +143,8 @@ $(document).ready(function() {
 			if (e.origin!=='https://laprimaire.cocorico.cc') {
 				return;
 			}
-			console.log(e);
 			var data=JSON.parse(e['data']);
-			console.log(data);
-			voteId=data['vote']['id'];
+			var voteId=data['vote']['id'];
 			if (data['message']=='voteComplete') {
 				$('.modal.cocorico').modal('hide');
 				$('#votebtn_'+voteId+'_todo').hide();
@@ -153,7 +152,6 @@ $(document).ready(function() {
 			} else if (data['message']=='voteCanceled') {
 				$('#votebtn_'+voteId+'_todo').hide();
 				$('#votebtn_'+voteId+'_done').show();
-				console.log('#votebtn_'+voteId+'_done');
 				$('.modal.cocorico').modal('hide');
 			}
 		};
