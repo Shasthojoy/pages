@@ -73,7 +73,7 @@ ul.social_buttons > li{
 							    </div>
 						    </div>
 						    <div class="col-md-9 col-sm-12 hero-feature">
-							    <div class="row">
+							    <div class="row" style="margin-right:0px;">
 								    <div>
 									    <div class="intro-text">
 										    <div style="margin-bottom:-7px;" class="intro-heading"><%= candidate['firstname'] %> <span><%= candidate['lastname'] %></span></div>
@@ -143,13 +143,14 @@ $(document).ready(function() {
 				return;
 			}
 			console.log(e);
-			if (e['data']=='voteComplete') {
+			var data=JSON.parse(e['data']);
+			console.log(data);
+			voteId=data['vote']['id'];
+			if (data['message']=='voteComplete') {
 				$('.modal.cocorico').modal('hide');
-				var voteId = e.target.window.document.location.pathname.split('/')[3];
 				$('#votebtn_'+voteId+'_todo').hide();
 				$('#votebtn_'+voteId+'_done').show();
-			} else if (e['data']=='voteCanceled') {
-				var voteId = e.source.window.document.location.pathname.split('/')[3];
+			} else if (data['message']=='voteCanceled') {
 				$('#votebtn_'+voteId+'_todo').hide();
 				$('#votebtn_'+voteId+'_done').show();
 				console.log('#votebtn_'+voteId+'_done');
