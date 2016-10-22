@@ -5,7 +5,7 @@
 </head>
 <body class="index">
 <div id="fb-root"></div>
-      <%= erb :navbar %>
+	<%= erb :navbar unless defined?(no_navbar) %>
       <%= erb template, :locals=>vars %>
   </body>
 </html>

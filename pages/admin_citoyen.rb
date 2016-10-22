@@ -209,6 +209,19 @@ END
 			}
 		end
 
+		get '/citoyen/auth/:user_key' do
+			Pages.db_init()
+			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
+			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+			citoyen=res[0]
+			erb :index, :locals=>{
+				'page_info'=>page_info(citoyen),
+				'vars'=>{'citoyen'=>citoyen},
+				'no_navbar'=>true,
+				'template'=>:authentication
+			}
+		end
+
 		get '/citoyen/token/:user_key' do
 			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
 			return JSON.dump({'param_missing'=>'user_key'}) if params['user_key'].nil?
