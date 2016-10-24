@@ -24,7 +24,7 @@ module Pages
 			super(base)
 			@queries={
 				'get_citizen_by_key'=><<END,
-SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,ci.zipcode,ci.name as city,ci.population,ci.departement
+SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,ci.zipcode,ci.name as city,ci.population,ci.departement
 FROM users AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 WHERE c.user_key=$1
 END
@@ -38,10 +38,10 @@ END
 UPDATE users SET email_status=2, validation_level=(validation_level & 14), email=reset_email, reset_email=null, reset_code=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
 END
 				'get_ballot_by_id'=><<END,
-SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_casted,c.*,u.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) INNER JOIN users as u ON (u.email=b.email) WHERE b.ballot_id=$1 AND cb.candidate_id=$2 AND u.user_key=$3 ORDER BY cb.position ASC;
+SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_status,c.*,u.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) INNER JOIN users as u ON (u.email=b.email) WHERE b.ballot_id=$1 AND cb.candidate_id=$2 AND u.user_key=$3 ORDER BY cb.position ASC;
 END
 				'get_ballot_by_email'=><<END,
-SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_casted,c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1 ORDER BY cb.position ASC;
+SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_status,c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1 ORDER BY cb.position ASC;
 END
 				'get_ballots_stats'=><<END,
 SELECT case when cb.ballot_id is null then 1 else count(*) end,c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id,cb.ballot_id ORDER BY c.slug ASC;
@@ -56,7 +56,7 @@ END
 WITH ballot_candidates AS (
 	INSERT INTO candidates_ballots (ballot_id,candidate_id,position) VALUES ($1,$2,1), ($1,$3,2), ($1,$4,3), ($1,$5,4), ($1,$6,5) RETURNING *
 )
-SELECT b.ballot_id,b.completed,b.date_generated,bc.position,bc.vote_casted,c.* 
+SELECT b.ballot_id,b.completed,b.date_generated,bc.position,bc.vote_status,c.* 
 FROM candidates AS c 
 INNER JOIN ballot_candidates as bc ON (bc.candidate_id=c.candidate_id)
 INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id)
@@ -209,11 +209,19 @@ END
 			}
 		end
 
+		get '/citoyen/vote/tutorial' do
+			erb :vote_tutorial
+		end
+
 		get '/citoyen/auth/:user_key' do
+			puts params.inspect
+			
 			Pages.db_init()
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 			citoyen=res[0]
+			citoyen['location']=citoyen['city'].nil? ? '' : citoyen['city']+' '+citoyen['zipcode']+' '+citoyen['country']
+			citoyen['birthday']=citoyen['birthday'].nil? ? '01/12/2016' : citoyen['birthday']
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),
 				'vars'=>{'citoyen'=>citoyen},

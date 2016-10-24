@@ -34,19 +34,48 @@ input[type=text]:focus, input[type=search]:focus, input[type=date]:focus, input[
 	margin: 5px 1px 3px 0px;
 	border: 1px solid rgba(200, 200, 200, 1);
 }
-button.non:hover { background-color:#d91d1c !important; color:white !important; }
-button.oui:hover { background-color:#4ae54a !important; color:white !important;}
+button.non:hover { background-color:#d91d1c !important; border-color:#d91d1c !important;color:white !important; }
+button.oui:hover { background-color:#4ae54a !important; border-color:#4ae54a !important;color:white !important;}
 .form-inline .form-control { vertical-align: bottom; }
+.mention_email.title {
+	top:30px;
+	font-size:18px;
+}
+.mention_logo {
+	position: absolute;
+	width:180;
+	top:10px;
+	left:10px;
+}
+.mention_email {
+	font-size:10px;
+	position: absolute;
+	text-align:right;
+	width:100%;
+	top:20px;
+	right:25px;
+	color:white;
+}
+.mention_cnil {
+	position: absolute;
+	width:100%;
+	bottom:-10px;
+}
 .btn_bottom {
 	position: absolute;
 	width:100%;
 	bottom:40px;
+}
+.btn_bottom .btn {
+	background-color:white;
+	color:#5e5e5e;
 }
 .btn-xl {
 	padding:2px;
 	font-size: 26px;
 	width:150px;
 }
+h3 { color:white; }
 .ap-dropdown-menu { text-align:left; }
 .ap-name {color:#5e5e5e;}
 </style>
@@ -64,24 +93,35 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 		    <div class="modal-content">
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;">
-					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:300px;color:white;text-align:center;display:none;">
-						    <p>Chargement du vote en cours...</p>
-						    <p><i style="width:100px;text-align:center;" class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></p>
-						    <span class="sr-only">Refreshing...</span>
-						    <p>Vous disposez de 10 minutes pour évaluer.</p>
-						    <button id="auth_0_btn" class="btn btn-xl" style="background-color:#fec503;">Commencer</button>
+					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:65px;padding-bottom:100px;width:100%;color:white;text-align:center;">
+						    <div class="mention_email title">
+							    <p><%= citoyen['email'] %></p>
+						    </div>
+						    <div class="mention_logo">
+							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
+						    </div>
+						    <h3><i class="fa fa-user" aria-hidden="true"></i>Authentification</h3>
+						    <p style="font-size:15px;">Pour pouvoir voter, vous devez vous identifier au préalable.</p>
+						    <p style="font-size:15px;">En vous idenfiant, vous déclarez sur l'honneur que l'ensemble des déclarations formulées dans le cadre de ce vote sont sincères et vérifiables.</p>
+						    <p style="font-size:15px;">Cette procédure a fait l'objet d'une déclaration auprès de la CNIL<br/>déclaration normale n°1996018.</p>
+						    <div class="btn_bottom">
+							    <button id="auth_0_yes" style="width:230px;" class="btn btn-xl oui">Commencer</button>
+						    </div>
 					    </div>
-					    <div id="auth_1" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;">
+					    <div id="auth_1" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_1_input">Votre prénom est :</label>
-								    <input style="" id="auth_1_input" type="text" class="form-control" placeholder="Votre prénom" value="Thibauld">
+								    <input style="" id="auth_1_input" type="text" class="form-control" placeholder="Votre prénom" value="<%= citoyen['firstname'] %>">
 								    <input style="" id="auth_1_orig" type="hidden" class="form-control" value="Thibauld">
 								    <br/>
 							    </div>
 							    <div class="btn_bottom">
-								    <button id="auth_1_no" class="btn btn-xl non" style="background-color:#fec503;color:#5e5e5e;">Non</button>&nbsp;&nbsp;
-								    <button id="auth_1_yes" class="btn btn-xl oui" style="background-color:#fec503;color:#5e5e5e;">Oui</button>
+								    <button id="auth_1_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
+								    <button id="auth_1_yes" class="btn btn-xl oui">Oui</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
 							    </div>
 						    </form>
 					    </div>
@@ -89,12 +129,15 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_2_input">Votre nom est :</label>
-								    <input id="auth_2_input" type="text" class="form-control" placeholder="Text input" value="Fabre">
-								    <input id="auth_2_orig" type="hidden" class="form-control" value="Fabre">
+								    <input id="auth_2_input" type="text" class="form-control" placeholder="Text input" value="<%= citoyen['lastname'] %>">
+								    <input id="auth_2_orig" type="hidden" class="form-control" value="<%= citoyen['lastname'] %>">
 							    </div>
 							    <div class="btn_bottom">
-								    <button id="auth_2_no" class="btn btn-xl non" style="background-color:#fec503;color:#5e5e5e;">Non</button>&nbsp;&nbsp;
-								    <button id="auth_2_yes" class="btn btn-xl oui" style="background-color:#fec503;color:#5e5e5e;">Oui</button>
+								    <button id="auth_2_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
+								    <button id="auth_2_yes" class="btn btn-xl oui">Oui</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
 							    </div>
 						    </form>
 					    </div>
@@ -102,11 +145,14 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_3_input">Vous habitez à :</label>
-								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="Obernai, 67210 France"/>
+								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="<%= citoyen['location'] %>"/>
 							    </div>
 							    <div class="btn_bottom">
-								    <button id="auth_3_no" class="btn btn-xl non" style="background-color:#fec503;color:#5e5e5e;">Non</button>&nbsp;&nbsp;
-								    <button id="auth_3_yes" class="btn btn-xl oui" style="background-color:#fec503;color:#5e5e5e;">Oui</button>
+								    <button id="auth_3_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
+								    <button id="auth_3_yes" class="btn btn-xl oui">Oui</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
 							    </div>
 						    </form>
 					    </div>
@@ -114,13 +160,16 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_4_input">Vous êtes né le :</label>
-								    <input id="auth_4_input" type="text" class="form-control" placeholder="30/01/1970" value="01/04/1981">
-								    <input id="auth_4_orig" type="hidden" class="form-control" value="Fabre">
+								    <input id="auth_4_input" type="text" class="form-control" placeholder="30/01/1970" value="<%= citoyen['birthday'] %>">
+								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
 							    </div><br/>
-							    <p style="font-size:16px;">seuls les citoyens de plus de 18 ans peuvent voter</p>
+							    <p style="font-size:16px;">Seuls les citoyens qui auront plus de 18 ans au 23 avril 2017 peuvent voter.</p>
 							    <div class="btn_bottom">
-								    <button id="auth_4_no" class="btn btn-xl non" style="background-color:#fec503;color:#5e5e5e;">Non</button>&nbsp;&nbsp;
-								    <button id="auth_4_yes" class="btn btn-xl oui" style="background-color:#fec503;color:#5e5e5e;">Oui</button>
+								    <button id="auth_4_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
+								    <button id="auth_4_yes" class="btn btn-xl oui">Oui</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
 							    </div>
 						    </form>
 					    </div>
@@ -128,8 +177,8 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_5_input">Votre numéro de téléphone :</label>
-								    <input id="auth_5_input" type="tel" class="form-control" placeholder="0612345678 ou +33 612345678" value="0616752798">
-								    <input id="auth_5_orig" type="hidden" class="form-control" value="">
+								    <input id="auth_5_input" type="tel" class="form-control" placeholder="0612345678 ou +33 612345678" value="<%= citoyen['telephone'] %>">
+								    <input id="auth_5_orig" type="hidden" class="form-control" value="<%= citoyen['telephone'] %>">
 							    </div>
 							    <div class="radio" style="font-size:16px;">
 								    <label>
@@ -142,11 +191,14 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 									    <input type="radio" name="optionsRadios" id="radioFixe" value="fixe">
 									    C'est un téléphone fixe
 								    </label>
-							    </div><br/>
+							    </div>
 							    <p style="font-size:16px;" id="tel_portable_label">Pour pouvoir voter, nous allons vous envoyer un code SMS.</p>
-							    <p style="font-size:16px;display:none;" id="tel_fixe_label">Pour pouvoir voter, nous allons vous appeler pour vous donner un code SMS.</p>
+							    <p style="font-size:16px;display:none;" id="tel_fixe_label">Pour pouvoir voter, vous recevrez un appel automatique avec un code personnel.</p>
 							    <div class="btn_bottom">
-								    <button id="auth_5_yes" class="btn btn-xl oui" style="background-color:#fec503;color:#5e5e5e;">Continuer</button>
+								    <button id="auth_5_yes" class="btn btn-xl oui">Continuer</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
 							    </div>
 						    </form>
 					    </div>
@@ -154,11 +206,29 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_6_input">Code reçu :</label>
-								    <input id="auth_6_input" type="number" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e;">
+								    <input id="auth_6_input" type="text" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e; background-color: white;">
 							    </div>
 							    <br/>
 							    <div class="btn_bottom">
-								    <button id="auth_6_yes" class="btn btn-xl oui" style="background-color:#fec503;color:#5e5e5e;">OK</button>
+								    <button id="auth_6_yes" class="btn btn-xl oui">OK</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
+							    </div>
+						    </form>
+					    </div>
+					    <div id="auth_7" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
+						    <form onsubmit="return false;">
+							    <div class="form-group" style="width:90%;margin: 0 auto;">
+								    <label for="auth_7_input">Merci de vous connecter avec Facebook pour terminer l'authentification.</label><br/>
+								    <a id="auth_fb" type="button" class="btn facebook" style="width:250px;height:52px;padding-top:12px;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org%2Fqualifie%2Fariane-vitalis" target="_blank"><i class="fa fa-facebook" style="color:white;" aria-hidden="true"></i>&nbsp;<span style="color:white;font-variant:small-caps;font-size:18px;font-weight:bold;">Connexion Facebook</span></a>
+							    </div><br/>
+							    <p style="font-size:16px;">Cette connexion nous permet de nous assurer de la validité de votre compte.</p>
+							    <div class="btn_bottom">
+								    <!--<button id="auth_7_yes" class="btn btn-xl oui">OK</button>-->
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
 							    </div>
 						    </form>
 					    </div>
@@ -170,36 +240,34 @@ button.oui:hover { background-color:#4ae54a !important; color:white !important;}
     <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/places.js/1/places.min.js"></script>
+    <script src="https:////s3.eu-central-1.amazonaws.com/laprimaire/scripts/jquery.fblogin.min.js"></script>
     <script>
-var placesAutocomplete = places({
-	container: document.querySelector('#auth_3_input'),
-	type: 'city',
-	language: 'fr',
-	useDeviceLocation: true,
-	templates: {
-		value: function(suggestion) {
-			return suggestion.name;
-		}
-	}
-	});
-placesAutocomplete.on('change', function resultSelected(e) {
-		console.log(e);
-		$('#my_city').modal('hide');
-		$.post("http://localhost:9292/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
-		.done(function( data ){
-			json=$.parseJSON(data);
-			$('#my_city_show').html('<img src="https://maps.googleapis.com/maps/api/staticmap?size=250x200&maptype=roadmap\&markers=size:mid|color:red|'+json['city']+'+'+json['zipcode']+'+'+json['country']+'&key=AIzaSyBkz-bknBrwrE9RXtqHGu2AuR_95WVNGc8">');
-		});
-});
-    </script>
-    <script>
+/* google analytics */
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-60977053-1', 'auto');
+ga('send', 'pageview');
+
 $(document).ready(function() {
+	$.ajaxSetup({ cache: true });
+	$.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+		FB.init({
+			appId: '115809635110050',
+			version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+		});     
+		$('#loginbutton,#feedbutton').removeAttr('disabled');
+		FB.getLoginStatus(updateStatusCallback);
+	});
 	if ($('#Authentication')!=null) {
 		$('#Authentication').modal({backdrop:'static', keyboard: false});
 		$('#Authentication').modal('show');
 	}
-	$('#auth_0_btn').click(function() { });
+	$('#auth_0_yes').click(function() {
+		$('#auth_0').hide();
+		$('#auth_1').show();
+	});
 	$('#auth_1_no').click(function() { $('#auth_1_input').focus(); });
 	$('#auth_1_yes').click(function() {
 		$('#auth_1').hide();
@@ -207,8 +275,29 @@ $(document).ready(function() {
 	});
 	$('#auth_2_no').click(function() { $('#auth_2_input').focus(); });
 	$('#auth_2_yes').click(function() {
-		$('#auth_2').hide();
-		$('#auth_3').show();
+		$.getScript('//cdn.jsdelivr.net/places.js/1/places.min.js', function(){
+			var placesAutocomplete = places({
+				container: document.querySelector('#auth_3_input'),
+				type: 'city',
+				language: 'fr',
+				useDeviceLocation: true,
+				templates: {
+					value: function(suggestion) {
+						return suggestion.name;
+					}
+				}
+			});
+			placesAutocomplete.on('change', function resultSelected(e) {
+				$('#my_city').modal('hide');
+				$.post("http://localhost:9292/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
+				.done(function( data ){
+					json=$.parseJSON(data);
+					$('#my_city_show').html('<img src="https://maps.googleapis.com/maps/api/staticmap?size=250x200&maptype=roadmap\&markers=size:mid|color:red|'+json['city']+'+'+json['zipcode']+'+'+json['country']+'&key=AIzaSyBkz-bknBrwrE9RXtqHGu2AuR_95WVNGc8">');
+				});
+			});
+			$('#auth_2').hide();
+			$('#auth_3').show();
+		});
 	});
 	$('#auth_3_no').click(function() { $('#auth_3_input').focus(); });
 	$('#auth_3_yes').click(function() {
@@ -227,10 +316,26 @@ $(document).ready(function() {
 	$('#auth_5_yes').click(function() {
 		$('#auth_5').hide();
 		$('#auth_6').show();
+		$('#auth_6_input').focus();
 	});
 	$('#auth_6_yes').click(function() {
 		$('#auth_6').hide();
 		$('#auth_7').show();
+	});
+	$('#auth_fb').click(function() {
+		$.fblogin({
+		    fbId: '115809635110050',
+			success: function (data) {
+				console.log('Basic public user data returned by Facebook', data);
+				var loc=window.location;
+				console.log(loc);
+				loc=loc.replace("auth","vote");
+				window.location=loc;
+			    },
+			error: function (error) {
+				console.log('An error occurred.', error);
+			    }
+		    });
 	});
 
 });

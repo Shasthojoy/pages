@@ -33,7 +33,6 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    useragent (0.16.8)
     wannabe_bool (0.5.0)
 
 PLATFORMS
@@ -46,7 +45,6 @@ DEPENDENCIES
   sinatra
   sinatra-contrib
   unicorn
-  useragent
   wannabe_bool
 
 BUNDLED WITH

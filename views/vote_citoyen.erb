@@ -55,12 +55,42 @@ ul.social_buttons > li{
 	border-color:#fec503;
 	background-color:#fec503;
 }
+.btn.candidat {
+	font-size:14px;
+	padding:2px 8px;
+}
+.thumbnail.red {
+	border-color:#red;
+	background-color:#ffe4e1;
+}
+.thumbnail.green {
+	border-color:#90ee90;
+	background-color:#ccffcc;
+}
 </style>
 <!-- Header -->
 
     <header>
     <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
 	    <div class="container">
+		    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px;">
+				    <div class="thumbnail red" style="margin-bottom:5px;">
+					    <div class="row">
+						    <div class="col-xs-2">
+							    <i class="fa fa-check-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
+							    <i class="fa fa-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
+							    votre vote n'est pas pris en compte
+						    </div>
+				    <% ballot['candidates'].each do |candidate| %>
+						    <div class="col-xs-2">
+							    <i class="fa fa-check-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
+							    <i class="fa fa-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
+							    votre vote n'est pas pris en compte
+						    </div>
+				    <% end %>
+					    </div>
+				    </div>
+		    </div>
 		    <div class="row" style="padding-top:10px;">
 		    <% ballot['candidates'].each do |candidate| %>
 			    <div class="col-sm-12 col-xs-12 hero-feature">
@@ -83,26 +113,32 @@ ul.social_buttons > li{
 								    </div>
 							    </div>
 							    <div class="row">
-								    <div style="margin-bottom:20px;">
-									    <% if candidate['vote_casted'].to_b then %>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-									    <% else %>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;">Evaluer <%= candidate['firstname'] %></button>
-									    <% end %>
-								    </div>
-							    </div>
-							    <div class="row">
 								    <ul class="social_buttons">
-									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i>Présentation</a></li>
-									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-list-ol" aria-hidden="true"></i>Programme</a></li>
-									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-microphone" aria-hidden="true"></i>Interview</a></li>
-									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-video-camera" aria-hidden="true"></i>Direct</a></li>
-									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-picture-o" aria-hidden="true"></i>Illustration</a></li>
-									    <li><a href="test.com" target="_blank" class="btn btn-default btn-xs blue"><i class="fa fa-star" aria-hidden="true"></i>Priorités</a></li>
+									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i>Présentation</a></li>
+									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-star" aria-hidden="true"></i>Priorités</a></li>
+									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-list-ol" aria-hidden="true"></i>Programme</a></li>
+									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-microphone" aria-hidden="true"></i>Interview</a></li>
+									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-picture-o" aria-hidden="true"></i>Illustration</a></li>
+									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-video-camera" aria-hidden="true"></i>Direct</a></li>
 								    </ul>
 
 							    </div>
+							    <div class="row">
+								    <div style="margin-bottom:20px;margin-top: 20px;">
+								    <% if candidate['vote_status']=='complete' then %>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+								    <% elsif candidate['vote_status']=='pending' then %>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-cog" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;display:none;">Evaluer <%= candidate['firstname'] %></button>
+								    <% else %>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-cog" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;">Evaluer <%= candidate['firstname'] %></button>
+								    <% end %>
+								    </div>
+							    </div>
+
 						    </div>
 					    </div>
 
@@ -136,9 +172,18 @@ ul.social_buttons > li{
     <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
+/* google analytics */
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-60977053-1', 'auto');
+ga('send', 'pageview');
+
 $(document).ready(function() {
 		window.addEventListener("message",receiveMessage,true);
 		function receiveMessage(e) { 
+			console.log(e);
 			if (e.origin!=='https://laprimaire.cocorico.cc') {
 				return;
 			}
@@ -149,8 +194,6 @@ $(document).ready(function() {
 				$('#votebtn_'+voteId+'_todo').hide();
 				$('#votebtn_'+voteId+'_done').show();
 			} else if (data['message']=='voteCanceled') {
-				$('#votebtn_'+voteId+'_todo').hide();
-				$('#votebtn_'+voteId+'_done').show();
 				$('.modal.cocorico').modal('hide');
 			}
 		};
