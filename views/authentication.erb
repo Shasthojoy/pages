@@ -162,7 +162,7 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_4_input">Vous êtes né le :</label>
-								    <input id="auth_4_input" size="20" type="text" class="form-control" placeholder="30/01/1970" value="<%= citoyen['birthday'] %>">
+								    <input id="auth_4_input" type="text" class="form-control" placeholder="30/01/1970" value="<%= citoyen['birthday'] %>">
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
 								    <br/>
 								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date mal formée</div>
