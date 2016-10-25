@@ -1,3 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Page de vote personnelle de <%= citoyen['email']%>">
+    <meta name="author" content="LaPrimaire.org">
+    <title>Page de vote personnelle de <%= citoyen['email']%> - LaPrimaire.org"</title>
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="https://s3.eu-central-1.amazonaws.com/laprimaire/styles/application-cbbc745bd85.css">
+    <link rel="canonical" href="https://laprimaire.org/citoyen/vote/<%= citoyen['url_key'] %>">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 <style>
 ul.social_buttons > li{
 	display: inline-block;
@@ -17,7 +35,8 @@ ul.social_buttons > li{
 	line-height: 20px !important;
 }
 .photo {
-	max-width: 200px;
+	max-width: 230px;
+	margin:0 auto;
 	height: 100%;
 	max-height: 310px;
 	background-position: center center;
@@ -59,47 +78,184 @@ ul.social_buttons > li{
 	font-size:14px;
 	padding:2px 8px;
 }
-.thumbnail.red {
-	border-color:#red;
+.thumbnail.pending {
+	border:0px;
+	background-color:#ffdab9;
+}
+.thumbnail.absent {
+	border:0px;
 	background-color:#ffe4e1;
 }
-.thumbnail.green {
-	border-color:#90ee90;
+.thumbnail.error {
+	border:0px;
+	background-color:#ffcccc;
+}
+.thumbnail.success {
+	border:0px;
 	background-color:#ccffcc;
 }
+#no-missing-vote {
+	font-weight:bold;
+	font-size: 20px;
+	color:#70cc70;
+}
+#nb-missing-votes {
+	font-weight:bold;
+	font-size: 20px;
+	color:#d91d1c;
+}
+.nohover:hover {
+	background:none !important;
+}
 </style>
+</head>
+
+
 <!-- Header -->
+<body class="index" style="padding-bottom:0px;">
+<div id="fb-root"></div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" style="margin-bottom:0px;">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Changer la navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+		<a class="navbar-brand" href="/"><img src="https://s3.eu-central-1.amazonaws.com/laprimaire/laprimaire-185x60.jpg" width="185" height="60" srcset="https://s3.eu-central-1.amazonaws.com/laprimaire/laprimaire-185x60.jpg 1x, /assets/images/logos/laprimaire-370x120.png 2x" alt="logo LaPrimaire.org"></a>
+            </div>
+
+	<% unless defined?(no_menu) then %>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+		    <li>
+			    <a class="nohover" style="color:#d91d1c;">tfavre@gmail.com</a>
+                    </li>
+		    <li class="dropdown">
+			<a tabindex="0" data-toggle="dropdown">
+				La Primaire<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a tabindex="0" href="/qualifies/">Les candidats qualifiés</a></li>
+				<li><a tabindex="0" href="/candidats/">Les candidats déclarés</a></li>
+				<li><a tabindex="0" href="/citoyens/">Les citoyens plébiscités</a></li>
+				<li class="divider"></li>
+				<li><a tabindex="0" href="/inscription-candidat/">Être candidat(e)</a></li>
+				<li><a tabindex="0" href="/charte/">Charte du candidat</a></li>
+				<li class="divider"></li>
+				<li><a tabindex="0" href="/manifeste/">Manifeste</a></li>
+				<li><a tabindex="0" href="/deroulement/">Déroulement</a></li>
+				<li><a tabindex="0" href="/calendrier/">Evènements</a></li>
+				<li><a tabindex="0" href="/actus/">Blog</a></li>
+				<li><a tabindex="0" href="/presse/">Presse</a></li>
+			</ul>
+		    </li>
+		    <li class="dropdown">
+			<a tabindex="0" data-toggle="dropdown">
+				L'association<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a tabindex="0" href="/transparence/">Transparence</a></li>
+				<li><a tabindex="0" href="/equipe/">L'équipe</a></li>
+				<li><a tabindex="0" href="/contact/">Nous contacter</a></li>
+				<li class="divider"></li>
+				<li><a tabindex="0" href="/statuts/">Statuts</a></li>
+				<li><a tabindex="0" href="/reglement/">Règlement Intérieur</a></li>
+				<li><a tabindex="0" href="/legal/">Mentions légales</a></li>
+			</ul>
+		    </li>
+		    <li class="active">
+			    <a tabindex="0" href="/financer/" class="donate-link" style="cursor:pointer;background-color:#527bdd;">Faire un don</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+    <% end %>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
 
     <header>
-    <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
+    <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;padding-top:0px;padding-bottom:20px;">
 	    <div class="container">
 		    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px;">
-				    <div class="thumbnail red" style="margin-bottom:5px;">
+				    <div class="thumbnail" style="margin-bottom:5px;padding:20px;">
 					    <div class="row">
-						    <div class="col-xs-2">
-							    <i class="fa fa-check-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
-							    <i class="fa fa-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
-							    votre vote n'est pas pris en compte
+						    <div class="col-xs-12 col-md-8" style="text-align:justify;">
+							    <h3 style="margin-top:0px;">Bienvenue sur votre page de vote personnelle</h3>
+							    <h4>Comment se déroule le vote ?</h4>
+							    <p style="font-size:14px;">Afin d'assurer une vraie égalité démocratique entre les candidats et d'obtenir les résultats les plus représentatifs possible, LaPrimaire.org utilise un système de vote plus évolué que celui dont vous avez l'habitude.<br/>3 règles principales&nbsp;:</p>
+							    <ul>
+								    <li>Un lot aléatoire de 5 candidat-e-s (sur les 12 en lice) vous a été attribué</li>
+								    <li>Vous devez obligatoirement vous exprimer sur vos 5 candidat-e-s pour que votre vote soit validé</li>
+								    <li>Vous attribuez à chaque candidat une mention allant de "Insuffisant" à "Très bien"</li>
+								    <li>Chaque vote est final et ne peut pas être modifié après envoi</li>
+							    </ul>
+							    <p style="font-size:14px;">Pour en savoir plus, nous vous invitons à consulter la bande dessinée ci-contre créée spécialement pour l'occasion. Nous vous rappelons également que cette page est personnelle et ne doit pas être partagée.</p>
 						    </div>
-				    <% ballot['candidates'].each do |candidate| %>
-						    <div class="col-xs-2">
-							    <i class="fa fa-check-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
-							    <i class="fa fa-square-o" aria-hidden="true" style="font-size:70px;padding:0px;color:#70ee70;"></i>
-							    votre vote n'est pas pris en compte
+						    <div class="col-xs-12 col-md-4">
+							    <br/>
+							    <img data-toggle="modal" data-target="#vote_tutorial" src="https://s3.eu-central-1.amazonaws.com/laprimaire/bd/01.jpg" width="100%" style="border: 2px solid #9e9e9e;border-radius: 15px;cursor:pointer;">
 						    </div>
-				    <% end %>
+					    </div>
+					    <h4 style="text-align:left;">Votre lot de 5 candidat-e-s</h4>
+					    <div class="row">
+						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
+					    <% ballot['candidates'].each do |candidate| %>
+						    <div class="col-md-2 col-xs-12">
+							    <div id="<%= candidate['vote_id']%>_mini" class="thumbnail <%= candidate['vote_status'] %>" style="margin-bottom:5px;max-height:125px;overflow:hidden;">
+								    <% if candidate['vote_status']=='success' then %>
+								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#70ee70;float:left;"></i>
+								    <% elsif candidate['vote_status']=='error' %>
+								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:40px;padding:0px;color:#ff1a1a;float:left"></i>
+								    <% elsif candidate['vote_status']=='pending' %>
+								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#70ee70;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:40px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:50px;padding:0px;color:#ffa07a;float:left;"></i>
+								    <% else %>
+								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:40px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#70ee70;display:none;float:left;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:50px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_absent" class="fa fa-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#d91d1c;float:left"></i>
+								    <% end %>
+								    <a href="#<%= candidate['vote_id'] %>_lnk">
+									    <img style="overflow:auto;" class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/<%= candidate['slug'] %>-mini.jpg">
+								    </a>
+								    <div><a href="#<%= candidate['vote_id'] %>_lnk"><%= candidate['name'] %></a></div>
+							    </div>
+						    </div>
+					    <% end %>
+						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
+					    </div>
+					    <div class="row">
+						    <div id="missing-votes" style="margin-top:10px;margin-bottom:0px;">
+							    <% if ballot['votes_left']==0 %>
+							    <span style="font-size:20px;" id="no-missing-vote">Votre vote est validé, merci pour votre participation !</span>
+							    <% else %>
+							    <span style="font-size:20px;display:none;" id="no-missing-vote">Votre vote est validé, merci pour votre participation !</span>
+							    <span style="font-size:20px;" id="missing-votes-txt">Encore <span id="nb-missing-votes"><%= ballot['votes_left'] %> vote<% if ballot['votes_left']>1 %>s<% end %></span> sont nécessaires pour que votre vote soit validé !</span>
+							    <span style="display:none;" id="votes_left"><%= ballot['votes_left']%></span>
+							    <% end %>
+						    </div>
 					    </div>
 				    </div>
+
 		    </div>
 		    <div class="row" style="padding-top:10px;">
 		    <% ballot['candidates'].each do |candidate| %>
-			    <div class="col-sm-12 col-xs-12 hero-feature">
+			    <div id="<%= candidate['vote_id'] %>_lnk" class="col-sm-12 col-xs-12 hero-feature">
 				    <div class="thumbnail" style="margin-bottom:5px;">
 					    <div class="row">
 						    <div class="col-md-3 col-sm-12 hero-feature">
-							    <div class="photo background"style="background-image: url('https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>');">
+							    <div class="photo background" style="background-image: url('https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>');">
 								    <img class="background" src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>" alt="<%= candidate['name'] %>">
-								    <div id="video-button" data-toggle="modal" data-target="#Iwatch"></div>
 							    </div>
 						    </div>
 						    <div class="col-md-9 col-sm-12 hero-feature">
@@ -125,15 +281,19 @@ ul.social_buttons > li{
 							    </div>
 							    <div class="row">
 								    <div style="margin-bottom:20px;margin-top: 20px;">
-								    <% if candidate['vote_status']=='complete' then %>
+								    <% if candidate['vote_status']=='success' then %>
 									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+								    <% elsif candidate['vote_status']=='error' then %>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_error" data-toggle="modal" class="btn btn-danger" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
 								    <% elsif candidate['vote_status']=='pending' then %>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_error" data-toggle="modal" class="btn btn-danger" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
 									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-cog" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
 									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;display:none;">Evaluer <%= candidate['firstname'] %></button>
 								    <% else %>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_error" data-toggle="modal" class="btn btn-danger" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
 									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-cog" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
+									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
 									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;">Evaluer <%= candidate['firstname'] %></button>
 								    <% end %>
 								    </div>
@@ -150,6 +310,20 @@ ul.social_buttons > li{
     </div>
     </header>
 
+    <div class="modal fade" id="vote_tutorial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog vote" role="document">
+		    <div class="modal-content">
+			    <div class="modal-header" style="background-color:#527bdd;height:50px;">
+				    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				    <h4 class="modal-title">Voter sur LaPrimaire.org</h4>
+			    </div>
+			    <div class="modal-body" >
+				    <iframe id="vote_tutorial_iframe" width="100%" height="480" frameborder="0"></iframe>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+
     <% ballot['candidates'].each do |candidate| %>
     <div class="modal fade cocorico" id="<%= candidate['vote_id']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog vote" role="document">
@@ -161,9 +335,10 @@ ul.social_buttons > li{
 						    <p><i style="width:100px;text-align:center;" class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></p>
 						    <span class="sr-only">Refreshing...</span>
 						    <p>Vous disposez de 10 minutes pour évaluer <%= candidate['name']%>.</p>
+						    <p style="font-style:italic;">(Vous pouvez à tout moment fermer cette fenêtre et revenir plus tard)</p>
 					    </div>
 				    </div>
-				    <iframe name="prout" id="<%= candidate['vote_id']%>_iframe" width="100%" height="480px" style="display:none;" frameborder="0"></iframe>
+				    <iframe id="<%= candidate['vote_id']%>_iframe" width="100%" height="480px" style="display:none;" frameborder="0"></iframe>
 			    </div>
 		    </div>
 	    </div>
@@ -172,6 +347,10 @@ ul.social_buttons > li{
     <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
+function resizeIframe(obj){
+	obj.style.height = 0;
+	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
 /* google analytics */
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -191,12 +370,45 @@ $(document).ready(function() {
 			var voteId=data['vote']['id'];
 			if (data['message']=='voteComplete') {
 				$('.modal.cocorico').modal('hide');
+			} else if (data['message']=='voteSuccess') {
+				$('#'+voteId+'_mini').attr("class","thumbnail success");
+				$('#'+voteId+'_mini_success').show();
+				$('#'+voteId+'_mini_error').hide();
+				$('#'+voteId+'_mini_pending').hide();
+				$('#'+voteId+'_mini_absent').hide();
 				$('#votebtn_'+voteId+'_todo').hide();
+				$('#votebtn_'+voteId+'_pending').hide();
+				$('#votebtn_'+voteId+'_error').hide();
 				$('#votebtn_'+voteId+'_done').show();
+				var votes_left=parseInt($('#votes_left').html());
+				votes_left=votes_left-1;
+				if (votes_left==0) {
+					$('#missing-votes-txt').hide();
+					$('#no-missing-vote').show();
+				} else if (votes_left==1) {
+					$('#nb-missing-votes').html("1 vote");
+				} else {
+					$('#nb-missing-votes').html(votes_left+" votes");
+				}
+			} else if (data['message']=='voteError') {
+				$('.modal.cocorico').modal('hide');
+				$('#'+voteId+'_mini').attr("class","thumbnail error");
+				$('#'+voteId+'_mini_success').hide();
+				$('#'+voteId+'_mini_error').show();
+				$('#'+voteId+'_mini_pending').hide();
+				$('#'+voteId+'_mini_absent').hide();
+				$('#votebtn_'+voteId+'_todo').hide();
+				$('#votebtn_'+voteId+'_pending').hide();
+				$('#votebtn_'+voteId+'_done').hide();
+				$('#votebtn_'+voteId+'_error').show();
 			} else if (data['message']=='voteCanceled') {
 				$('.modal.cocorico').modal('hide');
 			}
 		};
+		$('#vote_tutorial').on('show.bs.modal', function () {
+			$('#vote_tutorial_iframe').attr("src",'/citoyen/vote/tutorial');
+			$('#vote_tutorial_iframe').show();
+		});
     <% ballot['candidates'].each do |candidate| %>
 	    if ($('#<%= candidate['vote_id']%>_cc')!=null) {
 	    $('#<%= candidate['vote_id']%>_cc').on('hidden.bs.modal', function () {
@@ -219,3 +431,6 @@ $(document).ready(function() {
 });
     </script>
     <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
+
+  </body>
+</html>

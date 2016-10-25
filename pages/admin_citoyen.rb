@@ -243,6 +243,7 @@ END
 				:email=> ballot['email'],
 				:lastName=> ballot['lastname'],
 				:firstName=> ballot['firstname'],
+				:birthdate=> '1981-04-01',
 				:authorizedVotes=> [ballot['vote_id']],
 				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
 			}
@@ -272,10 +273,12 @@ END
 				ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
 				res.each { |r| ballot["candidates"].push(r) }
 			end
-
+			votes_left_to_cast=5
 			ballot['candidates'].each do |candidate| 
 				candidate['firstname']=candidate['name'].split(' ')[0]
 				candidate['lastname']=candidate['name'].split(' ')[1]
+				candidate['vote_status']="absent" if candidate['vote_status'].nil?
+				votes_left_to_cast-=1 if candidate['vote_status']=='success'
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
 				age=nil
 				unless birthday.nil? then
@@ -284,19 +287,16 @@ END
 				end
 				candidate['age']=age
 			end
+			ballot['votes_left']=votes_left_to_cast
 
 			#3 We register a new ballot access #LATER
 			# access_ballot(citizen['email'],ballot['ballot_id'],request)
 
-			erb :index, :locals=>{
-				'page_info'=>page_info(citoyen),
-				'vars'=>{
-					'auth'=>auth,
-					'cocorico_app_id'=>COCORICO_APP_ID,
-					'citoyen'=>citoyen,
-					'ballot'=>ballot
-				},
-				'template'=>:vote_citoyen
+			erb :vote_citoyen, :locals=>{
+				'auth'=>auth,
+				'cocorico_app_id'=>COCORICO_APP_ID,
+				'citoyen'=>citoyen,
+				'ballot'=>ballot
 			}
 		end
 	end
