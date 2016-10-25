@@ -17,6 +17,7 @@
 =end
 
 require 'digest'
+require 'date'
 
 module Pages
 	class AdminCitoyen < Sinatra::Application
@@ -214,14 +215,12 @@ END
 		end
 
 		get '/citoyen/auth/:user_key' do
-			puts params.inspect
-			
 			Pages.db_init()
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 			citoyen=res[0]
-			citoyen['location']=citoyen['city'].nil? ? '' : citoyen['city']+' '+citoyen['zipcode']+' '+citoyen['country']
-			citoyen['birthday']=citoyen['birthday'].nil? ? '01/12/2016' : citoyen['birthday']
+			# citoyen['location']=citoyen['city'].nil? ? '' : citoyen['city']+' '+citoyen['zipcode']+' '+citoyen['country']
+			citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),
 				'vars'=>{'citoyen'=>citoyen},

@@ -7,7 +7,7 @@ header {
 }
 #header_overlay { height:100%; }
 .modal-content {
-	height:400px;
+	height:430px;
 }
 .modal-body { height:100%;}
 input[type=text], input[type=search], input[type=date], input[type=tel] {
@@ -62,9 +62,8 @@ button.oui:hover { background-color:#4ae54a !important; border-color:#4ae54a !im
 	bottom:-10px;
 }
 .btn_bottom {
-	position: absolute;
+	margin-top:20px;
 	width:100%;
-	bottom:40px;
 }
 .btn_bottom .btn {
 	background-color:white;
@@ -93,14 +92,12 @@ h3 { color:white; }
 		    <div class="modal-content">
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;">
-					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:65px;padding-bottom:100px;width:100%;color:white;text-align:center;">
-						    <div class="mention_email title">
-							    <p><%= citoyen['email'] %></p>
-						    </div>
+					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;">
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
 						    <h3><i class="fa fa-user" aria-hidden="true"></i>Authentification</h3>
+						    <div style="margin-bottom:20px;background-color: white;border-radius: 10px;color:#5e5e5e;padding:10px;width:300px;margin:0px auto 20px auto;font-size:16px;"><%= citoyen['email'] %></div>
 						    <p style="font-size:15px;">Pour pouvoir voter, vous devez vous identifier au préalable.</p>
 						    <p style="font-size:15px;">En vous idenfiant, vous déclarez sur l'honneur que l'ensemble des déclarations formulées dans le cadre de ce vote sont sincères et vérifiables.</p>
 						    <p style="font-size:15px;">Cette procédure a fait l'objet d'une déclaration auprès de la CNIL<br/>déclaration normale n°1996018.</p>
@@ -112,9 +109,10 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_1_input">Votre prénom est :</label>
-								    <input style="" id="auth_1_input" type="text" class="form-control" placeholder="Votre prénom" value="<%= citoyen['firstname'] %>">
-								    <input style="" id="auth_1_orig" type="hidden" class="form-control" value="Thibauld">
+								    <input id="auth_1_input" type="text" class="form-control" placeholder="Votre prénom" value="<%= citoyen['firstname'] %>">
+								    <input id="auth_1_orig" type="hidden" class="form-control" value="<%= citoyen['firstname'] %>">
 								    <br/>
+								    <div id="auth_1_error_val" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> prénom manquant</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_1_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -130,7 +128,8 @@ h3 { color:white; }
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_2_input">Votre nom est :</label>
 								    <input id="auth_2_input" type="text" class="form-control" placeholder="Text input" value="<%= citoyen['lastname'] %>">
-								    <input id="auth_2_orig" type="hidden" class="form-control" value="<%= citoyen['lastname'] %>">
+								    <input id="auth_2_orig" type="hidden" class="form-control" value="<%= citoyen['lastname'] %>"><br/>
+								    <div id="auth_2_error_val" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> nom manquant</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_2_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -144,8 +143,11 @@ h3 { color:white; }
 					    <div id="auth_3" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
-								    <label for="auth_3_input">Vous habitez à :</label>
-								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="<%= citoyen['location'] %>"/>
+								    <label for="auth_3_input">Vous habitez à :</label><br/>
+								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="<%= citoyen['city'] %>"/>
+								    <input type="hidden" id="auth_3_orig" placeholder="Votre ville" value="<%= citoyen['city'] %>"/>
+								    <br/>
+								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> ville manquante</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_3_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -160,8 +162,11 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_4_input">Vous êtes né le :</label>
-								    <input id="auth_4_input" type="text" class="form-control" placeholder="30/01/1970" value="<%= citoyen['birthday'] %>">
+								    <input id="auth_4_input" size="20" type="text" class="form-control" placeholder="30/01/1970" value="<%= citoyen['birthday'] %>">
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
+								    <br/>
+								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date mal formée</div>
+								    <div id="auth_4_error_age" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:270px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> vous êtes trop jeune :/</div>
 							    </div><br/>
 							    <p style="font-size:16px;">Seuls les citoyens qui auront plus de 18 ans au 23 avril 2017 peuvent voter.</p>
 							    <div class="btn_bottom">
@@ -177,18 +182,22 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_5_input">Votre numéro de téléphone :</label>
-								    <input id="auth_5_input" type="tel" class="form-control" placeholder="0612345678 ou +33 612345678" value="<%= citoyen['telephone'] %>">
+								    <input id="auth_5_input" type="tel" class="form-control" placeholder="0612345678" value="<%= citoyen['telephone'] %>">
+								    <div id="auth_5_error_phone" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> numéro déjà utilisé par un autre citoyen</div>
+								    <div id="auth_5_error_tel" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> numéro invalide</div>
+								    <div id="auth_5_error_type" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> fixe ou portable ?</div>
+								    <div id="auth_5_msg_sent" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> patientez...</div>
 								    <input id="auth_5_orig" type="hidden" class="form-control" value="<%= citoyen['telephone'] %>">
 							    </div>
 							    <div class="radio" style="font-size:16px;">
 								    <label>
-									    <input type="radio" name="optionsRadios" id="radioPortable" value="portable" checked>
+									    <input type="radio" name="typeTel" id="radioPortable" value="sms" checked>
 									    C'est un téléphone portable
 								    </label>
 							    </div>
 							    <div class="radio" style="font-size:16px;">
 								    <label>
-									    <input type="radio" name="optionsRadios" id="radioFixe" value="fixe">
+									    <input type="radio" name="typeTel" id="radioFixe" value="call">
 									    C'est un téléphone fixe
 								    </label>
 							    </div>
@@ -206,7 +215,9 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_6_input">Code reçu :</label>
-								    <input id="auth_6_input" type="text" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e; background-color: white;">
+								    <input id="auth_6_input" type="text" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e; background-color: white;"><br/>
+								    <div id="auth_6_error_code" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> code erroné</div>
+								    <div id="auth_6_msg_sent" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> vérification...</div>
 							    </div>
 							    <br/>
 							    <div class="btn_bottom">
@@ -225,7 +236,7 @@ h3 { color:white; }
 							    </div><br/>
 							    <p style="font-size:16px;">Cette connexion nous permet de nous assurer de la validité de votre compte.</p>
 							    <div class="btn_bottom">
-								    <!--<button id="auth_7_yes" class="btn btn-xl oui">OK</button>-->
+								    <button id="auth_7_yes" class="btn btn-xl oui">OK</button>
 							    </div>
 							    <div class="mention_cnil">
 								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
@@ -242,6 +253,11 @@ h3 { color:white; }
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="https:////s3.eu-central-1.amazonaws.com/laprimaire/scripts/jquery.fblogin.min.js"></script>
     <script>
+function resizeIframe(obj){
+	obj.style.height = 0;
+	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
+
 /* google analytics */
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -264,64 +280,217 @@ $(document).ready(function() {
 		$('#Authentication').modal({backdrop:'static', keyboard: false});
 		$('#Authentication').modal('show');
 	}
+	$.get("<%= API_HOST %>/v1/auth/email/verif/<%= citoyen['user_key'] %>")
+	.done(function( data ){ console.log(data); })
+	.error(function(data) { console.log(data); });
+	
 	$('#auth_0_yes').click(function() {
+		$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'verif_email'})
+		.done(function( data ){ console.log(data); })
+		.error(function(data) { console.log(data); });
 		$('#auth_0').hide();
 		$('#auth_1').show();
 	});
 	$('#auth_1_no').click(function() { $('#auth_1_input').focus(); });
 	$('#auth_1_yes').click(function() {
-		$('#auth_1').hide();
-		$('#auth_2').show();
+			$('.auth_1_msg').hide();
+			var fname_orig=$('#auth_1_orig').val();
+			var fname=$('#auth_1_input').val();
+			if (fname==null || fname=="") {
+				$('.auth_1_msg').hide();
+				$('#auth_1_error_val').show();
+				$('#auth_1_input').focus();
+				return;
+			} else if (fname_orig!=fname) {
+				$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'firstname','val':fname})
+				.done(function( data ){ console.log(data); })
+				.error(function(data) { console.log(data); });
+			}
+			$('#auth_1').hide();
+			$('#auth_2').show();
+			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'firstname'})
+			.done(function( data ){ console.log(data); })
+			.error(function(data) { console.log(data); });
 	});
 	$('#auth_2_no').click(function() { $('#auth_2_input').focus(); });
 	$('#auth_2_yes').click(function() {
-		$.getScript('//cdn.jsdelivr.net/places.js/1/places.min.js', function(){
-			var placesAutocomplete = places({
-				container: document.querySelector('#auth_3_input'),
-				type: 'city',
-				language: 'fr',
-				useDeviceLocation: true,
-				templates: {
-					value: function(suggestion) {
-						return suggestion.name;
+			$('.auth_2_msg').hide();
+			var lname_orig=$('#auth_2_orig').val();
+			var lname=$('#auth_2_input').val();
+			if (lname==null || lname=="") {
+				$('.auth_2_msg').hide();
+				$('#auth_2_error_val').show();
+				$('#auth_2_input').focus();
+				return;
+			} else if (lname_orig!=lname) {
+				$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'lastname','val':lname})
+				.done(function( data ){ console.log(data); })
+				.error(function(data) { console.log(data); });
+			}
+			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'lastname'})
+			.done(function( data ){ console.log(data); })
+			.error(function(data) { console.log(data); });
+			$.getScript('//cdn.jsdelivr.net/places.js/1/places.min.js', function(){
+				var placesAutocomplete = places({
+					container: document.querySelector('#auth_3_input'),
+					type: 'city',
+					language: 'fr',
+					useDeviceLocation: true,
+					templates: {
+						value: function(suggestion) {
+							return suggestion.name;
+						}
 					}
-				}
-			});
-			placesAutocomplete.on('change', function resultSelected(e) {
-				$('#my_city').modal('hide');
-				$.post("http://localhost:9292/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
-				.done(function( data ){
-					json=$.parseJSON(data);
-					$('#my_city_show').html('<img src="https://maps.googleapis.com/maps/api/staticmap?size=250x200&maptype=roadmap\&markers=size:mid|color:red|'+json['city']+'+'+json['zipcode']+'+'+json['country']+'&key=AIzaSyBkz-bknBrwrE9RXtqHGu2AuR_95WVNGc8">');
 				});
+				placesAutocomplete.on('change', function resultSelected(e) {
+					$.post("<%= API_HOST %>/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
+					.done(function( data ){ console.log(data['city']) });
+				});
+				$('#auth_2').hide();
+				$('#auth_3').show();
 			});
-			$('#auth_2').hide();
-			$('#auth_3').show();
-		});
 	});
 	$('#auth_3_no').click(function() { $('#auth_3_input').focus(); });
 	$('#auth_3_yes').click(function() {
-		$('#auth_3').hide();
-		$('#auth_4').show();
+			$('.auth_3_msg').hide();
+			var ville=$('#auth_3_input').val();
+			if (ville==null || ville=="") {
+				$('.auth_3_msg').hide();
+				$('#auth_3_error_val').show();
+				$('#auth_3_input').focus();
+				return;
+			}
+			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'city'})
+			.done(function( data ){ console.log(data); })
+			.error(function(data) { console.log(data); });
+			$('#auth_3').hide();
+			$('#auth_4').show();
 	});
-	$('#auth_4_input').datepicker({"dateFormat":"dd/mm/yy"});
+	$('#auth_4_input').datepicker({
+			"dateFormat":"dd/mm/yy",
+			changeMonth:true,
+			changeYear:true,
+			yearRange:"1916:2000",
+			defaultDate:"01/01/1980",
+			showOn:"button",
+			buttonText:"Choisir une date",
+			buttonImageOnly:true,
+			buttonImage:'https://s3.eu-central-1.amazonaws.com/laprimaire/icons/icon-calendar.gif'
+			});
 	$('#auth_4_no').click(function() { $('#auth_4_input').focus(); });
 	$('#auth_4_yes').click(function() {
-		$('#auth_4').hide();
-		$('#auth_5').show();
+			$('.auth_4_msg').hide();
+			var birthday=$('#auth_4_input').val();
+			if (birthday==null || birthday=="") {
+				$('.auth_4_msg').hide();
+				$('#auth_4_error_val').show();
+				$('#auth_4_input').focus();
+				return;
+			}
+			$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'birthday','val':birthday})
+			.done(function( data ){ 
+				console.log(data); 
+				$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'birthday'})
+				.done(function( data ){ console.log(data); })
+				.error(function(data) { console.log(data); });
+				$('#auth_4').hide();
+				$('#auth_5').show();
+			})
+			.error(function(data) {
+				console.log(data);
+				$('.auth_4_msg').hide();
+				$('#auth_4_error_val').show();
+				$('#auth_4_input').focus();
+				return;
+			});
 	});
 	$('#radioFixe').click(function() { $('#tel_fixe_label').show(); $('#tel_portable_label').hide();});
 	$('#radioPortable').click(function() { $('#tel_portable_label').show(); $('#tel_fixe_label').hide();});
-	$('#auth_5_no').click(function() { $('#auth_5_input').focus(); });
 	$('#auth_5_yes').click(function() {
-		$('#auth_5').hide();
-		$('#auth_6').show();
-		$('#auth_6_input').focus();
+			$('.auth_5_msg').hide();
+			var tel=$('#auth_5_input').val();
+			var type=$('input[name=typeTel]:checked').val();
+			if (tel==null || tel=="") {
+				$('.auth_5_msg').hide();
+				$('#auth_5_error_tel').show();
+				$('#auth_5_input').focus();
+				return;
+			} else if (!tel.trim().startsWith('+')) {
+				tel='+33'+tel;
+			}
+			$('#auth_5_yes').prop('disabled',true);
+			$('#auth_5_msg_sent').show();
+			$.get("<%= API_HOST %>/v1/auth/phone/lookup/<%= citoyen['user_key'] %>",{'tel':tel,'type':type})
+			.done(function( data ){
+				console.log(data);
+				if (data['error']=='phone_already_used') {
+					$('.auth_5_msg').hide();
+					$('#auth_5_error_phone').show();
+					$('#auth_5_input').focus();
+					$('#auth_5_yes').prop('disabled',false);
+				} else {
+					$('#auth_5').hide();
+					$('#auth_6').show();
+					$('#auth_6_input').focus();
+					$('#auth_5_yes').prop('disabled',false);
+					$('.auth_5_msg').hide();
+					$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'phone'})
+					.done(function( data ){ console.log(data); })
+					.error(function(data) { console.log(data); });
+				}
+				})
+			.error(function(data) {
+				$('.auth_5_msg').hide();
+				$('#auth_5_error_tel').show();
+				$('#auth_5_input').focus();
+				$('#auth_5_yes').prop('disabled',false);
+			});
 	});
 	$('#auth_6_yes').click(function() {
-		$('#auth_6').hide();
-		$('#auth_7').show();
+			$('.auth_6_msg').hide();
+			var code=$('#auth_6_input').val();
+			if (code==null || code=="") {
+				$('.auth_6_msg').hide();
+				$('#auth_6_error_code').show();
+				$('#auth_6_input').focus();
+			}
+			$('#auth_6_yes').prop('disabled',true);
+			$('#auth_6_msg_sent').show();
+			$.get("<%= API_HOST %>/v1/auth/phone/verif/<%= citoyen['user_key'] %>",{'code':code})
+			.done(function( data ){
+				console.log(data);
+				if (data['verified']=="yes") {
+					$('#auth_6').hide();
+					//$('#auth_7').show();
+					$('#auth_6_input').focus();
+					$('#auth_6_yes').prop('disabled',false);
+					$('.auth_6_msg').hide();
+					$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'verif_phone'})
+					.done(function( data ){ console.log(data); })
+					.error(function(data) { console.log(data); });
+					var loc=window.location.href;
+					loc=loc.replace("auth","vote");
+					window.location=loc;
+				} else {
+					$('.auth_6_msg').hide();
+					$('#auth_6_error_code').show();
+					$('#auth_6_input').focus();
+					$('#auth_6_yes').prop('disabled',false);
+				}
+			})
+			.error(function(data) {
+				$('.auth_6_msg').hide();
+				$('#auth_6_error_code').show();
+				$('#auth_6_input').focus();
+				$('#auth_6_yes').prop('disabled',false);
+			});
 	});
+	$('#auth_7_yes').click(function() {
+			var loc=window.location.href;
+			console.log(loc.href);
+			loc=loc.replace("auth","vote");
+			window.location=loc;
+			});
 	$('#auth_fb').click(function() {
 		$.fblogin({
 		    fbId: '115809635110050',
