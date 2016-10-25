@@ -189,12 +189,12 @@ ul.social_buttons > li{
 				    <div class="thumbnail" style="margin-bottom:5px;padding:20px;">
 					    <div class="row">
 						    <div class="col-xs-12 col-md-8" style="text-align:justify;">
-							    <h3 style="margin-top:0px;">Bienvenue sur votre page de vote personnelle</h3>
+							    <h3 style="margin-top:0px;">Bienvenue sur votre page personnelle de vote</h3>
 							    <h4>Comment se déroule le vote ?</h4>
-							    <p style="font-size:14px;">Afin d'assurer une vraie égalité démocratique entre les candidats et d'obtenir les résultats les plus représentatifs possible, LaPrimaire.org utilise un système de vote plus évolué que celui dont vous avez l'habitude.<br/>3 règles principales&nbsp;:</p>
+							    <p style="font-size:14px;">Afin d'assurer une vraie égalité démocratique entre les candidats et obtenir les résultats les plus représentatifs possible, LaPrimaire.org utilise un système de vote plus évolué que celui dont vous avez l'habitude.<br/>3 règles principales&nbsp;:</p>
 							    <ul>
 								    <li>Un lot aléatoire de 5 candidat-e-s (sur les 12 en lice) vous a été attribué</li>
-								    <li>Vous devez obligatoirement vous exprimer sur vos 5 candidat-e-s pour que votre vote soit validé</li>
+								    <li>Vous devez obligatoirement vous exprimer sur vos 5 candidat-e-s pour que votre participation soit validée</li>
 								    <li>Vous attribuez à chaque candidat une mention allant de "Insuffisant" à "Très bien"</li>
 								    <li>Chaque vote est final et ne peut pas être modifié après envoi</li>
 							    </ul>
@@ -237,10 +237,10 @@ ul.social_buttons > li{
 					    <div class="row">
 						    <div id="missing-votes" style="margin-top:10px;margin-bottom:0px;">
 							    <% if ballot['votes_left']==0 %>
-							    <span style="font-size:20px;" id="no-missing-vote">Votre vote est validé, merci pour votre participation !</span>
+							    <span style="font-size:20px;" id="no-missing-vote">Votre participation est validée, merci pour ce geste citoyen !</span>
 							    <% else %>
 							    <span style="font-size:20px;display:none;" id="no-missing-vote">Votre vote est validé, merci pour votre participation !</span>
-							    <span style="font-size:20px;" id="missing-votes-txt">Encore <span id="nb-missing-votes"><%= ballot['votes_left'] %> vote<% if ballot['votes_left']>1 %>s<% end %></span> sont nécessaires pour que votre vote soit validé !</span>
+							    <span style="font-size:20px;" id="missing-votes-txt"><span id="nb-missing-votes"><%= ballot['votes_left'] %> vote<% if ballot['votes_left']>1 %>s<% end %></span> sont encore nécessaires pour que votre participation soit validée !</span>
 							    <span style="display:none;" id="votes_left"><%= ballot['votes_left']%></span>
 							    <% end %>
 						    </div>
