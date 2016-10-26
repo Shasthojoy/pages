@@ -75,7 +75,7 @@ ul.social_buttons > li{
 	background-color:#fec503;
 }
 .btn.candidat {
-	font-size:14px;
+	font-size:13px;
 	padding:2px 8px;
 }
 .thumbnail.pending {
@@ -106,6 +106,35 @@ ul.social_buttons > li{
 }
 .nohover:hover {
 	background:none !important;
+}
+.fa-stack-2x {
+	font-size: 42px;
+	padding:5px;
+}
+.fa-stack-1x {
+	font-size: 24px;
+	top: -2px;
+}
+.fa-stack.bleu { 
+	color:#527bdd;
+	line-height:10px;
+	height:12px;
+}
+.fa-stack.rouge { color:#d91d1c; }
+.row {
+	margin-right:0px;
+	margin-left:0px;
+}
+.soutien {
+	height:80px !important;
+	width:80px !important;
+	border:4px solid #527bdd;
+	position:absolute;
+	bottom:-5px;
+	left:10px;
+}
+.soutien.deux {
+	left:80px;
 }
 </style>
 </head>
@@ -254,33 +283,95 @@ ul.social_buttons > li{
 				    <div class="thumbnail" style="margin-bottom:5px;">
 					    <div class="row">
 						    <div class="col-md-3 col-sm-12 hero-feature">
+							    <a href="/qualifie/<%= candidate['slug'] %>" target="_blank">
 							    <div class="photo background" style="background-image: url('https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>');">
 								    <img class="background" src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>" alt="<%= candidate['name'] %>">
 							    </div>
+							    </a>
+							    <% if candidate['slug']=='charlotte-marchandise-franquet' %>
+								    <a href="/qualifie/alexandre-lecouillard" target="_blank">
+									    <img class="img-circle soutien" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/alexandre-lecouillard-mini.jpg" title="Alexandre Lecouillard soutient Charlotte Marchandise">
+								    </a>
+								    <a href="/qualifie/ramin-farhangi" target="_blank">
+									    <img class="img-circle soutien deux" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/ramin-farhangi-mini.jpg" title="Ramin Farhangi soutient Charlotte Marchandise">
+								    </a>
+							    <% elsif candidate['slug']=='roxane-revon' %>
+								    <a href="/qualifie/alexandre-lecouillard" target="_blank">
+									    <img class="img-circle soutien" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/alexandre-lecouillard-mini.jpg" title="Alexandre Lecouillard soutient Roxane Revon">
+								    </a>
+						    	    <% end %>
 						    </div>
+
 						    <div class="col-md-9 col-sm-12 hero-feature">
 							    <div class="row" style="margin-right:0px;">
 								    <div>
-									    <div class="intro-text">
-										    <div style="margin-bottom:-7px;" class="intro-heading"><%= candidate['firstname'] %> <span><%= candidate['lastname'] %></span></div>
+									    <div class="intro-text" style="padding-top:5px !important;">
+										    <div style="margin-bottom:-14px;" class="intro-heading"><a href="/qualifie/<%= candidate['slug'] %>" target="_blank"><%= candidate['firstname'] %> <span><%= candidate['lastname'] %></span></a></div>
 										    <p class="about"><%= "#{candidate['age']} ans, #{candidate['job']} (#{candidate['departement']})" %></p>
-										    <div class="intro-lead-in">&ldquo;<i><%= candidate['vision'] %></i>&rdquo;</div>
+										    <div class="intro-lead-in" style="margin-bottom:10px;">&ldquo;<i><%= candidate['vision'] %></i>&rdquo;</div>
 									    </div>
 								    </div>
 							    </div>
+							    <div class="row" style="margin-bottom:10px;">
+									    <div class="col-md-4 col-sm-12 hero-feature">
+										    <span style="font-weight:bold;color:#527bdd;font-size:18px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><strong class="fa-stack-1x rouge">1</strong></span><br/><span style="font-size:14px;">&ldquo;<i><%= candidate['prio1'] %></i>&rdquo;</span>
+									    </div>
+									    <div class="col-md-4 col-sm-12 hero-feature">
+										    <span style="font-weight:bold;color:#527bdd;font-size:18px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><strong class="fa-stack-1x rouge">2</strong></span><br/><span style="font-size:14px;">&ldquo;<i><%= candidate['prio2'] %></i>&rdquo;</span>
+									    </div>
+									    <div class="col-md-4 col-sm-12 hero-feature">
+										    <span style="font-weight:bold;color:#527bdd;font-size:18px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><strong class="fa-stack-1x rouge">3</strong></span><br/><span style="font-size:14px;">&ldquo;<i><%= candidate['prio3'] %></i>&rdquo;</span>
+									    </div>
+							    </div>
+
 							    <div class="row">
 								    <ul class="social_buttons">
-									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i>Présentation</a></li>
-									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-star" aria-hidden="true"></i>Priorités</a></li>
-									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-list-ol" aria-hidden="true"></i>Programme</a></li>
-									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-microphone" aria-hidden="true"></i>Interview</a></li>
-									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-picture-o" aria-hidden="true"></i>Illustration</a></li>
-									    <li><a href="test.com" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-video-camera" aria-hidden="true"></i>Direct</a></li>
+									    <li><a href="<%= candidate['main_article'] %>" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i>Présentation</a></li>
+									    <li><a href="<%= candidate['trello'] %>" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-list-ol" aria-hidden="true"></i>Programme</a></li>
+									    <li><a href="https://laprimaire.org/qualifie/<%= candidate['slug'] %>#articles" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Articles</a></li>
+									    <li>
+									    <% if candidate['illustration'].nil? %>
+										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas pu être illustré" disabled>
+
+									    <% else %>
+										    <a href="https://s3.eu-central-1.amazonaws.com/laprimaire/illustrations/<%= candidate['slug'] %>.jpg" target="_blank" class="btn candidat btn-default btn-xs blue">
+									    <% end %>
+										    <i class="fa fa-picture-o" aria-hidden="true"></i>Illustration</a>
+									    </li>
+									    <li>
+									    <% if candidate['interview'].nil? %>
+										    <% if candidate['slug']=="jean-michel-billaut" %>
+										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas pu réaliser d'interview" disabled>
+										    <% else %>
+										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas souhaité mettre en ligne son interview" disabled>
+										    <% end %>
+
+									    <% else %>
+										    <a href="<%= candidate['interview'] %>" target="_blank" class="btn candidat btn-default btn-xs blue">
+									    <% end %>
+										    <i class="fa fa-microphone" aria-hidden="true"></i>Interview</a>
+									    </li>
+									    <li>
+									    <% if candidate['direct'].nil? %>
+										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas souhaité faire de Facebook Live" disabled>
+									    <% else %>
+										    <a href="<%= candidate['direct'] %>" target="_blank" class="btn candidat btn-default btn-xs blue">
+									    <% end %>
+										    <i class="fa fa-video-camera" aria-hidden="true"></i>Direct</a>
+									    </li>
+									    <li>
+									    <% if candidate['video'].nil? %>
+										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas souhaité mettre en ligne de vidéo" disabled>
+									    <% else %>
+										    <a href="<%= candidate['video'] %>" target="_blank" class="btn candidat btn-default btn-xs blue">
+									    <% end %>
+										    <i class="fa fa-film" aria-hidden="true"></i>Video</a>
+									    </li>
 								    </ul>
 
 							    </div>
 							    <div class="row">
-								    <div style="margin-bottom:20px;margin-top: 20px;">
+								    <div style="margin-bottom:10px;margin-top: 10px;">
 								    <% if candidate['vote_status']=='success' then %>
 									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
 								    <% elsif candidate['vote_status']=='error' then %>
