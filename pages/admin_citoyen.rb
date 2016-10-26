@@ -242,7 +242,7 @@ END
 				:email=> ballot['email'],
 				:lastName=> ballot['lastname'],
 				:firstName=> ballot['firstname'],
-				:birthdate=> '1981-04-01',
+				:birthdate=> ballot['birthday'],
 				:authorizedVotes=> [ballot['vote_id']],
 				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
 			}
