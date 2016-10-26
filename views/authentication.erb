@@ -127,7 +127,7 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_2_input">Votre nom est :</label>
-								    <input id="auth_2_input" type="text" class="form-control" placeholder="Text input" value="<%= citoyen['lastname'] %>">
+								    <input id="auth_2_input" type="text" class="form-control" placeholder="Votre nom de famille" value="<%= citoyen['lastname'] %>">
 								    <input id="auth_2_orig" type="hidden" class="form-control" value="<%= citoyen['lastname'] %>"><br/>
 								    <div id="auth_2_error_val" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> nom manquant</div>
 							    </div>
@@ -145,7 +145,7 @@ h3 { color:white; }
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_3_input">Vous habitez à :</label><br/>
 								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="<%= citoyen['city'] %>"/>
-								    <input type="hidden" id="auth_3_orig" placeholder="Votre ville" value="<%= citoyen['city'] %>"/>
+								    <input type="hidden" id="auth_3_orig" placeholder="" value="<%= citoyen['city'] %>"/>
 								    <br/>
 								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> ville manquante</div>
 							    </div>
@@ -162,7 +162,7 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_4_input">Vous êtes né le :</label>
-								    <input id="auth_4_input" type="text" class="form-control" placeholder="30/01/1970" value="<%= citoyen['birthday'] %>">
+								    <input id="auth_4_input" type="text" class="form-control" placeholder="" value="<%= citoyen['birthday'] %>">
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
 								    <br/>
 								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date mal formée</div>
@@ -181,8 +181,8 @@ h3 { color:white; }
 					    <div id="auth_5" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
-								    <label for="auth_5_input">Votre numéro de téléphone :</label>
-								    <input id="auth_5_input" type="tel" class="form-control" placeholder="0612345678" value="<%= citoyen['telephone'] %>">
+								    <label for="auth_5_input">Votre numéro de téléphone :<br/><span style="font-size:12px;font-weight:normal;">(avec indicatif international +XX si numéro étranger)</span></label>
+								    <input id="auth_5_input" type="tel" class="form-control" placeholder="" value="<%= citoyen['telephone'] %>">
 								    <div id="auth_5_error_phone" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> numéro déjà utilisé par un autre citoyen</div>
 								    <div id="auth_5_error_tel" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> numéro invalide</div>
 								    <div id="auth_5_error_type" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> fixe ou portable ?</div>
@@ -290,6 +290,7 @@ $(document).ready(function() {
 		.error(function(data) { console.log(data); });
 		$('#auth_0').hide();
 		$('#auth_1').show();
+		if ($('#auth_1_input').val()=="") { $('#auth_1_input').focus(); }
 	});
 	$('#auth_1_no').click(function() { $('#auth_1_input').focus(); });
 	$('#auth_1_yes').click(function() {
@@ -308,6 +309,7 @@ $(document).ready(function() {
 			}
 			$('#auth_1').hide();
 			$('#auth_2').show();
+			if ($('#auth_2_input').val()=="") { $('#auth_2_input').focus(); }
 			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'firstname'})
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
@@ -348,6 +350,7 @@ $(document).ready(function() {
 				});
 				$('#auth_2').hide();
 				$('#auth_3').show();
+				if ($('#auth_3_input').val()=="") { $('#auth_3_input').focus(); }
 			});
 	});
 	$('#auth_3_no').click(function() { $('#auth_3_input').focus(); });
@@ -365,6 +368,7 @@ $(document).ready(function() {
 			.error(function(data) { console.log(data); });
 			$('#auth_3').hide();
 			$('#auth_4').show();
+			if ($('#auth_4_input').val()=="") { $('#auth_4_input').focus(); }
 	});
 	$('#auth_4_input').datepicker({
 			"dateFormat":"dd/mm/yy",
@@ -395,6 +399,7 @@ $(document).ready(function() {
 				.error(function(data) { console.log(data); });
 				$('#auth_4').hide();
 				$('#auth_5').show();
+				if ($('#auth_5_input').val()=="") { $('#auth_5_input').focus(); }
 			})
 			.error(function(data) {
 				console.log(data);
