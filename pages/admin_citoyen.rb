@@ -277,6 +277,8 @@ END
 				candidate['firstname']=candidate['name'].split(' ')[0]
 				candidate['lastname']=candidate['name'].split(' ')[1]
 				candidate['vote_status']="absent" if candidate['vote_status'].nil?
+				candidate['vote_status']="success" if candidate['vote_status']=='complete' #FIX following Jean-Marc webhook changes
+				candidate['vote_status']="pending" if (candidate['vote_status']!='complete' && candidate['vote_status']!='absent') #FIX following Jean-Marc webhook changes
 				votes_left_to_cast-=1 if candidate['vote_status']=='success'
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
 				age=nil
