@@ -219,6 +219,7 @@ END
 			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 			citoyen=res[0]
+			redirect "/citoyen/vote/#{params['user_key']}" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
 			# citoyen['location']=citoyen['city'].nil? ? '' : citoyen['city']+' '+citoyen['zipcode']+' '+citoyen['country']
 			citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
 			erb :index, :locals=>{
@@ -259,10 +260,9 @@ END
 			#1 We check the validation level of the candidate authentication 
 			auth={
 				'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
-				'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
-				'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
-				'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
+				'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0
 			}
+			redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
 			#2 We check if a ballot has already been created
 			res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
 			if res.num_tuples.zero? then
@@ -277,7 +277,8 @@ END
 				candidate['firstname']=candidate['name'].split(' ')[0]
 				candidate['lastname']=candidate['name'].split(' ')[1]
 				vote_status=candidate['vote_status']
-				candidate['vote_status']="pending"
+				candidate['vote_status']="absent"
+				candidate['vote_status']="pending" if (!vote_status.nil? && vote_status!="complete") #FIX following Jean-Marc webhook changes
 				candidate['vote_status']="success" if vote_status=="complete" #FIX following Jean-Marc webhook changes
 				votes_left_to_cast-=1 if candidate['vote_status']=='success'
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?

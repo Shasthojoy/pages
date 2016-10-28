@@ -246,18 +246,18 @@ ul.social_buttons > li{
 						    <div class="col-md-2 col-xs-12">
 							    <div id="<%= candidate['vote_id']%>_mini" class="thumbnail <%= candidate['vote_status'] %>" style="margin-bottom:5px;max-height:125px;overflow:hidden;">
 								    <% if candidate['vote_status']=='success' then %>
-								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#70ee70;float:left;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;"></i>
 								    <% elsif candidate['vote_status']=='error' %>
-								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:40px;padding:0px;color:#ff1a1a;float:left"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left"></i>
 								    <% elsif candidate['vote_status']=='pending' %>
-								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#70ee70;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:40px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:50px;padding:0px;color:#ffa07a;float:left;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;"></i>
 								    <% else %>
-								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:40px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#70ee70;display:none;float:left;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:50px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_absent" class="fa fa-square-o" aria-hidden="true" style="font-size:50px;padding:0px;color:#d91d1c;float:left"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;display:none;float:left;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
+								    <i id="<%= candidate['vote_id']%>_mini_absent" class="fa fa-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#d91d1c;float:left"></i>
 								    <% end %>
 								    <a href="#<%= candidate['vote_id'] %>_lnk">
 									    <img style="overflow:auto;" class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/<%= candidate['slug'] %>-mini.jpg">
@@ -316,7 +316,7 @@ ul.social_buttons > li{
 								    <div>
 									    <div class="intro-text" style="padding-top:5px !important;">
 										    <div style="margin-bottom:-14px;" class="intro-heading"><a href="/qualifie/<%= candidate['slug'] %>" target="_blank"><%= candidate['firstname'] %> <span><%= candidate['lastname'] %></span></a></div>
-										    <p class="about"><%= "#{candidate['age']} ans, #{candidate['job']} (#{candidate['departement']})" %></p>
+										    <p class="about"><%= "#{candidate['age']} ans, #{candidate['job']} (#{candidate['departement']})" %> - <a href="<%= candidate['bio_article']%>" target="_blank">Lire ma biographie</a></p>
 										    <div class="intro-lead-in" style="margin-bottom:10px;">&ldquo;<i><%= candidate['vision'] %></i>&rdquo;</div>
 									    </div>
 								    </div>
@@ -492,8 +492,10 @@ $(document).ready(function() {
 					$('#no-missing-vote').show();
 				} else if (votes_left==1) {
 					$('#nb-missing-votes').html("1 vote");
+					$('#votes_left').html(votes_left.toString())
 				} else {
 					$('#nb-missing-votes').html(votes_left+" votes");
+					$('#votes_left').html(votes_left.toString())
 				}
 			} else if (data['message']=='voteError') {
 				$('.modal.cocorico').modal('hide');
