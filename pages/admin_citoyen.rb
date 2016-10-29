@@ -195,7 +195,7 @@ END
 				status 500
 				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
-				Pages.db.close() unless Pages.db.nil?
+				Pages.db_close()
 			end
 			erb :citoyen, :locals=>{
 				'success'=>success,
@@ -215,12 +215,19 @@ END
 		end
 
 		get '/citoyen/auth/:user_key' do
-			Pages.db_init()
-			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
-			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
-			citoyen=res[0]
+			begin
+				Pages.db_init()
+				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
+				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+				citoyen=res[0]
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/auth DB Error #{params}\n#{e.message}"
+				status 500
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
+			ensure
+				Pages.db_close()
+			end
 			redirect "/citoyen/vote/#{params['user_key']}" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
-			# citoyen['location']=citoyen['city'].nil? ? '' : citoyen['city']+' '+citoyen['zipcode']+' '+citoyen['country']
 			citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),
@@ -234,43 +241,59 @@ END
 			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
 			return JSON.dump({'param_missing'=>'user_key'}) if params['user_key'].nil?
 			return JSON.dump({'param_missing'=>'candidate'}) if params['candidate'].nil?
-			Pages.db_init()
-			res=Pages.db_query(@queries["get_ballot_by_id"],[params['ballot'],params['candidate'],params['user_key']])
-			ballot=res[0]
-			token={
-				:iss=> COCORICO_APP_ID,
-				:sub=> Digest::SHA256.hexdigest(ballot['email']),
-				:email=> ballot['email'],
-				:lastName=> ballot['lastname'],
-				:firstName=> ballot['firstname'],
-				:birthdate=> ballot['birthday'],
-				:authorizedVotes=> [ballot['vote_id']],
-				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
-			}
-			vote_token=JWT.encode token, COCORICO_SECRET, 'HS256'
-			res=Pages.db_query(@queries["update_citizen_hash"],[token[:sub],ballot['email']])
+			begin
+				Pages.db_init()
+				res=Pages.db_query(@queries["get_ballot_by_id"],[params['ballot'],params['candidate'],params['user_key']])
+				ballot=res[0]
+				token={
+					:iss=> COCORICO_APP_ID,
+					:sub=> Digest::SHA256.hexdigest(ballot['email']),
+					:email=> ballot['email'],
+					:lastName=> ballot['lastname'],
+					:firstName=> ballot['firstname'],
+					:birthdate=> ballot['birthday'],
+					:authorizedVotes=> [ballot['vote_id']],
+					:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
+				}
+				vote_token=JWT.encode token, COCORICO_SECRET, 'HS256'
+				res=Pages.db_query(@queries["update_citizen_hash"],[token[:sub],ballot['email']])
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/token DB Error #{params}\n#{e.message}"
+				status 500
+				return JSON.dump({"title"=>"Erreur serveur","message"=>e.message})
+			ensure
+				Pages.db_close()
+			end
 			return JSON.dump({'token'=>vote_token})
 		end
 
 		get '/citoyen/vote/:user_key' do
-			Pages.db_init()
-			res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
-			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
-			citoyen=res[0]
-			#1 We check the validation level of the candidate authentication 
-			auth={
-				'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
-				'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0
-			}
-			redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
-			#2 We check if a ballot has already been created
-			res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
-			if res.num_tuples.zero? then
-				#2bis If no pre-existing ballot exist we create one for the citizen
-				ballot=create_ballot(citoyen['email'])
-			else
-				ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
-				res.each { |r| ballot["candidates"].push(r) }
+			begin
+				Pages.db_init()
+				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
+				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+				citoyen=res[0]
+				#1 We check the validation level of the candidate authentication 
+				auth={
+					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
+					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0
+				}
+				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
+				#2 We check if a ballot has already been created
+				res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
+				if res.num_tuples.zero? then
+					#2bis If no pre-existing ballot exist we create one for the citizen
+					ballot=create_ballot(citoyen['email'])
+				else
+					ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
+					res.each { |r| ballot["candidates"].push(r) }
+				end
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/vote DB Error #{params}\n#{e.message}"
+				status 500
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
+			ensure
+				Pages.db_close()
 			end
 			votes_left_to_cast=5
 			ballot['candidates'].each do |candidate| 
