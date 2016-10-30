@@ -166,10 +166,11 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_4_input">Vous êtes né le :</label>
-								    <input id="auth_4_input" type="text" class="form-control" placeholder="" value="<%= citoyen['birthday'] %>">
+								    <input id="auth_4_input" type="text" class="form-control" placeholder="JJ/MM/AAAA" value="<%= citoyen['birthday'] %>">
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
 								    <br/>
 								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date mal formée</div>
+								    <div id="auth_4_error_missing" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date manquante</div>
 								    <div id="auth_4_info_msg" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre date de naissance : JJ/MM/AAAA</div>
 								    <div id="auth_4_error_age" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:270px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> vous êtes trop jeune :/</div>
 							    </div><br/>
@@ -408,7 +409,7 @@ $(document).ready(function() {
 			var birthday=$('#auth_4_input').val();
 			if (birthday==null || birthday.trim()=='') {
 				$('.auth_4_msg').hide();
-				$('#auth_4_error_val').show();
+				$('#auth_4_error_missing').show();
 				$('#auth_4_input').focus();
 				return;
 			}
