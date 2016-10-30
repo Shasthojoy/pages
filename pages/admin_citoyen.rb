@@ -45,7 +45,7 @@ END
 SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_status,c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1 ORDER BY cb.position ASC;
 END
 				'get_ballots_stats'=><<END,
-SELECT case when cb.ballot_id is null then 1 else count(*) end,c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id,cb.ballot_id ORDER BY c.slug ASC;
+SELECT count(*),c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id ORDER BY c.slug ASC;
 END
 				'create_ballot'=><<END,
 INSERT INTO ballots (email) VALUES ($1) RETURNING *;

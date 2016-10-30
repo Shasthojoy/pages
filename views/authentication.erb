@@ -454,7 +454,7 @@ $(document).ready(function() {
 	$('#auth_6_yes').click(function() {
 			$('.auth_6_msg').hide();
 			var code=$('#auth_6_input').val();
-			if (code==null || code=="") {
+			if (code==null || code.trim()=="") {
 				$('.auth_6_msg').hide();
 				$('#auth_6_error_code').show();
 				$('#auth_6_input').focus();
