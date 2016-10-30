@@ -97,8 +97,10 @@ END
 				candidats=[]
 				weights=[]
 				res.each_with_index do |r,i|
-					candidats.push(r['candidate_id'])
-					weights.push(r['count'])
+					if r['candidate_id']!='229637488290' then
+						candidats.push(r['candidate_id'])
+						weights.push(r['count'])
+					end
 				end
 				wrs = -> (freq) { freq.max_by { |_, weight| rand ** (1.0 / weight) }.first }
 				probas=weights.map {|w| 1/w.to_f}
@@ -107,7 +109,8 @@ END
 				set=[]
 				while set.length<5 do
 					c=wrs[wcandidats]
-					set.push(c) if not set.include?(c)
+					set.push(c)
+					wcandidats.delete(c)
 				end
 				return set
 			end

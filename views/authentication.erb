@@ -25,11 +25,12 @@ input[type=text], input[type=search], input[type=date], input[type=tel] {
 	font-size:30px;
 	border:0px;
 	text-align:center;
+	border: 1px solid rgba(200, 200, 200, 1);
 }
 input::selection { background: white; }
 input::-moz-selection { background: white; }
 input[type=text]:focus, input[type=search]:focus, input[type=date]:focus, input[type=tel]:focus {
-	box-shadow: 0 0 5px rgba(200, 200, 200, 1);
+	box-shadow: 0 0 20px rgba(200, 200, 200, 1);
 	padding: 3px 0px 3px 3px;
 	margin: 5px 1px 3px 0px;
 	border: 1px solid rgba(200, 200, 200, 1);
@@ -112,6 +113,7 @@ h3 { color:white; }
 								    <input id="auth_1_input" type="text" class="form-control" placeholder="Votre prénom" value="<%= citoyen['firstname'] %>">
 								    <input id="auth_1_orig" type="hidden" class="form-control" value="<%= citoyen['firstname'] %>">
 								    <br/>
+								    <div id="auth_1_info_msg" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre prénom</div>
 								    <div id="auth_1_error_val" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> prénom manquant</div>
 							    </div>
 							    <div class="btn_bottom">
@@ -129,6 +131,7 @@ h3 { color:white; }
 								    <label for="auth_2_input">Votre nom est :</label>
 								    <input id="auth_2_input" type="text" class="form-control" placeholder="Votre nom de famille" value="<%= citoyen['lastname'] %>">
 								    <input id="auth_2_orig" type="hidden" class="form-control" value="<%= citoyen['lastname'] %>"><br/>
+								    <div id="auth_2_info_msg" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre nom</div>
 								    <div id="auth_2_error_val" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> nom manquant</div>
 							    </div>
 							    <div class="btn_bottom">
@@ -148,6 +151,7 @@ h3 { color:white; }
 								    <input type="hidden" id="auth_3_orig" placeholder="" value="<%= citoyen['city'] %>"/>
 								    <br/>
 								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> ville manquante</div>
+								    <div id="auth_3_info_msg" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre ville</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_3_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -166,6 +170,7 @@ h3 { color:white; }
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
 								    <br/>
 								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date mal formée</div>
+								    <div id="auth_4_info_msg" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre date de naissance : JJ/MM/AAAA</div>
 								    <div id="auth_4_error_age" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:270px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> vous êtes trop jeune :/</div>
 							    </div><br/>
 							    <p style="font-size:16px;">Seuls les citoyens qui auront plus de 18 ans au 23 avril 2017 peuvent voter.</p>
@@ -292,7 +297,11 @@ $(document).ready(function() {
 		$('#auth_1').show();
 		if ($('#auth_1_input').val()=="") { $('#auth_1_input').focus(); }
 	});
-	$('#auth_1_no').click(function() { $('#auth_1_input').focus(); });
+	$('#auth_1_no').click(function() { 
+			$('.auth_1_msg').hide();
+			$('#auth_1_info_msg').show();
+			$('#auth_1_input').focus(); 
+			});
 	$('#auth_1_yes').click(function() {
 			$('.auth_1_msg').hide();
 			var fname_orig=$('#auth_1_orig').val();
@@ -314,7 +323,11 @@ $(document).ready(function() {
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
 	});
-	$('#auth_2_no').click(function() { $('#auth_2_input').focus(); });
+	$('#auth_2_no').click(function() { 
+			$('.auth_2_msg').hide();
+			$('#auth_2_info_msg').show();
+			$('#auth_2_input').focus(); 
+			});
 	$('#auth_2_yes').click(function() {
 			$('.auth_2_msg').hide();
 			var lname_orig=$('#auth_2_orig').val();
@@ -353,7 +366,11 @@ $(document).ready(function() {
 				if ($('#auth_3_input').val()=="") { $('#auth_3_input').focus(); }
 			});
 	});
-	$('#auth_3_no').click(function() { $('#auth_3_input').focus(); });
+	$('#auth_3_no').click(function() {
+			$('.auth_3_msg').hide();
+			$('#auth_3_info_msg').show();
+			$('#auth_3_input').focus(); 
+			});
 	$('#auth_3_yes').click(function() {
 			$('.auth_3_msg').hide();
 			var ville=$('#auth_3_input').val();
@@ -381,11 +398,15 @@ $(document).ready(function() {
 			buttonImageOnly:true,
 			buttonImage:'https://s3.eu-central-1.amazonaws.com/laprimaire/icons/icon-calendar.gif'
 			});
-	$('#auth_4_no').click(function() { $('#auth_4_input').focus(); });
+	$('#auth_4_no').click(function() { 
+			$('.auth_4_msg').hide();
+			$('#auth_4_info_msg').show();
+			$('#auth_4_input').focus();
+			});
 	$('#auth_4_yes').click(function() {
 			$('.auth_4_msg').hide();
 			var birthday=$('#auth_4_input').val();
-			if (birthday==null || birthday=="") {
+			if (birthday==null || birthday.trim()=='') {
 				$('.auth_4_msg').hide();
 				$('#auth_4_error_val').show();
 				$('#auth_4_input').focus();
@@ -415,7 +436,7 @@ $(document).ready(function() {
 			$('.auth_5_msg').hide();
 			var tel=$('#auth_5_input').val();
 			var type=$('input[name=typeTel]:checked').val();
-			if (tel==null || tel=="") {
+			if (tel==null || tel.trim()=='') {
 				$('.auth_5_msg').hide();
 				$('#auth_5_error_tel').show();
 				$('#auth_5_input').focus();
@@ -454,7 +475,7 @@ $(document).ready(function() {
 	$('#auth_6_yes').click(function() {
 			$('.auth_6_msg').hide();
 			var code=$('#auth_6_input').val();
-			if (code==null || code.trim()=="") {
+			if (code==null || code.trim()=='') {
 				$('.auth_6_msg').hide();
 				$('#auth_6_error_code').show();
 				$('#auth_6_input').focus();
