@@ -518,21 +518,23 @@ $(document).ready(function() {
 		});
     <% ballot['candidates'].each do |candidate| %>
 	    if ($('#<%= candidate['vote_id']%>_cc')!=null) {
-	    $('#<%= candidate['vote_id']%>_cc').on('hidden.bs.modal', function () {
-			    $('#<%= candidate['vote_id']%>_loading').show(); $('#<%= candidate['vote_id']%>_iframe').hide();
-		    });
+		    $('#<%= candidate['vote_id']%>_cc').on('hidden.bs.modal', function () {
+				    $('#<%= candidate['vote_id']%>_loading').show();
+				    $('#<%= candidate['vote_id']%>_iframe').hide();
+				    $('#<%= candidate['vote_id']%>_iframe').attr("src",'about:blank');
+				    });
 
 		    $('#<%= candidate['vote_id']%>_cc').on('shown.bs.modal', function () {
-			    $('#<%= candidate['vote_id']%>_iframe').load(function() { $('#<%= candidate['vote_id']%>_loading').hide(); $('#<%= candidate['vote_id']%>_iframe').show();});
-			    $.ajax({
-				url: "/citoyen/token/<%= citoyen['user_key'] %>",
-				data: "ballot=<%= ballot['ballot_id'] %>&candidate=<%= candidate['candidate_id'] %>",
-				dataType: "json",
-				success: function(data) {
-				$('#<%= candidate['vote_id']%>_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&lang=fr-FR');
-				}
-			    });
-		});
+				    $('#<%= candidate['vote_id']%>_iframe').load(function() { $('#<%= candidate['vote_id']%>_loading').hide(); $('#<%= candidate['vote_id']%>_iframe').show();});
+				    $.ajax({
+					url: "/citoyen/token/<%= citoyen['user_key'] %>",
+					data: "ballot=<%= ballot['ballot_id'] %>&candidate=<%= candidate['candidate_id'] %>",
+					dataType: "json",
+					success: function(data) {
+						$('#<%= candidate['vote_id']%>_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&lang=fr-FR');
+						}
+					});
+		    });
 	}
     <% end %>
 });

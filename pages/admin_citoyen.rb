@@ -97,10 +97,8 @@ END
 				candidats=[]
 				weights=[]
 				res.each_with_index do |r,i|
-					if r['candidate_id']!='229637488290' then
-						candidats.push(r['candidate_id'])
-						weights.push(r['count'])
-					end
+					candidats.push(r['candidate_id'])
+					weights.push(r['count'])
 				end
 				wrs = -> (freq) { freq.max_by { |_, weight| rand ** (1.0 / weight) }.first }
 				probas=weights.map {|w| 1/w.to_f}
