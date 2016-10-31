@@ -241,6 +241,7 @@ h3 { color:white; }
 								    <label for="auth_6_input">Code reçu :</label>
 								    <input id="auth_6_input" type="text" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e; background-color: white;"><br/>
 								    <div id="auth_6_error_code" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> code erroné</div>
+								    <div id="auth_6_error_authmsg" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:14px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> AUTHMSG n'est pas le code, ouvrez le SMS recu pour voir le code à 4 chiffres :)</div>
 								    <div id="auth_6_msg_sent" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> vérification...</div>
 							    </div>
 							    <br/>
@@ -508,6 +509,13 @@ $(document).ready(function() {
 			if (code==null || code.trim()=='') {
 				$('.auth_6_msg').hide();
 				$('#auth_6_error_code').show();
+				$('#auth_6_input').focus();
+				return;
+			}
+			code=code.trim();
+			if (code=='AUTHMSG') {
+				$('.auth_6_msg').hide();
+				$('#auth_6_error_authmsg').show();
 				$('#auth_6_input').focus();
 				return;
 			}
