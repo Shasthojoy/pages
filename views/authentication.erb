@@ -463,8 +463,15 @@ $(document).ready(function() {
 				$('#auth_5_error_tel').show();
 				$('#auth_5_input').focus();
 				return;
-			} else if (!tel.trim().startsWith('+')) {
+			}
+			if (tel.lastIndexOf("00",0)===0) {
+				while (tel.charAt(0) === '0') { tel = tel.substr(1); }
+				tel='+'+tel;
+				console.log("phone number reformatted: "+tel);
+			} else if (!tel.trim().charAt(0)==='+') {
+				while (tel.charAt(0) === '0') { tel = tel.substr(1); }
 				tel='+33'+tel;
+				console.log("phone number reformatted: "+tel);
 			}
 			$('#auth_5_yes').prop('disabled',true);
 			$('#auth_5_msg_sent').show();
