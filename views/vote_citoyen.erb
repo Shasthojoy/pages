@@ -244,7 +244,7 @@ ul.social_buttons > li{
 						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
 					    <% ballot['candidates'].each do |candidate| %>
 						    <div class="col-md-2 col-xs-12">
-							    <div id="<%= candidate['vote_id']%>_mini" class="thumbnail <%= candidate['vote_status'] %>" style="margin-bottom:5px;max-height:125px;overflow:hidden;">
+							    <div id="<%= candidate['vote_id']%>_mini" class="thumbnail <%= candidate['vote_status'] %>" style="margin-bottom:5px;max-height:125px;overflow:hidden;min-width:155px;">
 								    <% if candidate['vote_status']=='success' then %>
 								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;"></i>
 								    <% elsif candidate['vote_status']=='error' %>
