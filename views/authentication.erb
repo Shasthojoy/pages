@@ -116,8 +116,8 @@ h3 { color:white; }
 								    <input id="auth_1_input" type="text" class="form-control" placeholder="Votre prénom" value="<%= citoyen['firstname'] %>">
 								    <input id="auth_1_orig" type="hidden" class="form-control" value="<%= citoyen['firstname'] %>">
 								    <br/>
-								    <div id="auth_1_info_msg" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre prénom</div>
-								    <div id="auth_1_error_val" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> prénom manquant</div>
+								    <div id="auth_1_info_msg" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre prénom</div>
+								    <div id="auth_1_error_val" class="auth_1_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> prénom manquant</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_1_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -137,8 +137,8 @@ h3 { color:white; }
 								    <label for="auth_2_input">Votre nom est :</label>
 								    <input id="auth_2_input" type="text" class="form-control" placeholder="Votre nom de famille" value="<%= citoyen['lastname'] %>">
 								    <input id="auth_2_orig" type="hidden" class="form-control" value="<%= citoyen['lastname'] %>"><br/>
-								    <div id="auth_2_info_msg" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre nom</div>
-								    <div id="auth_2_error_val" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> nom manquant</div>
+								    <div id="auth_2_info_msg" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre nom</div>
+								    <div id="auth_2_error_val" class="auth_2_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> nom manquant</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_2_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -159,8 +159,8 @@ h3 { color:white; }
 								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="<%= citoyen['city'] %>"/>
 								    <input type="hidden" id="auth_3_orig" placeholder="" value="<%= citoyen['city'] %>"/>
 								    <br/>
-								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> ville manquante</div>
-								    <div id="auth_3_info_msg" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre ville</div>
+								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> ville manquante</div>
+								    <div id="auth_3_info_msg" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre ville</div>
 							    </div>
 							    <div class="btn_bottom">
 								    <button id="auth_3_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
@@ -181,10 +181,10 @@ h3 { color:white; }
 								    <input id="auth_4_input" type="text" class="form-control" placeholder="JJ/MM/AAAA" value="<%= citoyen['birthday'] %>">
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
 								    <br/>
-								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> Merci d'utiliser le format JJ/MM/AAAA pour écrire la date</div>
-								    <div id="auth_4_error_missing" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> date manquante</div>
-								    <div id="auth_4_info_msg" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd" id="tel_ok"></i> Entrez votre date de naissance : JJ/MM/AAAA</div>
-								    <div id="auth_4_error_age" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:270px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> vous êtes trop jeune :/</div>
+								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Merci d'utiliser le format JJ/MM/AAAA pour écrire la date</div>
+								    <div id="auth_4_error_missing" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> date manquante</div>
+								    <div id="auth_4_info_msg" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre date de naissance : JJ/MM/AAAA</div>
+								    <div id="auth_4_error_age" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:270px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> vous êtes trop jeune :/</div>
 							    </div><br/>
 							    <p style="font-size:16px;">Seuls les citoyens qui auront plus de 18 ans au 23 avril 2017 peuvent voter.</p>
 							    <div class="btn_bottom">
@@ -204,9 +204,9 @@ h3 { color:white; }
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_5_input">Votre numéro de téléphone :<br/><span style="font-size:12px;font-weight:normal;">(avec indicatif international +XX si numéro étranger)</span></label>
 								    <input id="auth_5_input" type="tel" class="form-control" placeholder="" value="<%= citoyen['telephone'] %>">
-								    <div id="auth_5_error_phone" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> numéro déjà utilisé par un autre citoyen</div>
-								    <div id="auth_5_error_tel" class="auth_5_msg" style="display:none;padding:4px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:13px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> Numéro invalide. Pour un numéro francais, ecrivez votre numéro à 10 chiffres. Pour un numéro étranger, entrez-le au <a href="https://fr.wikipedia.org/wiki/Numéro_de_téléphone" target="_blank">format international</a>.</div>
-								    <div id="auth_5_error_type" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> fixe ou portable ?</div>
+								    <div id="auth_5_error_phone" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> numéro déjà utilisé par un autre citoyen</div>
+								    <div id="auth_5_error_tel" class="auth_5_msg" style="display:none;padding:4px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:13px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Numéro invalide. Pour un numéro francais, ecrivez votre numéro à 10 chiffres. Pour un numéro étranger, entrez-le au <a href="https://fr.wikipedia.org/wiki/Numéro_de_téléphone" target="_blank">format international</a>.</div>
+								    <div id="auth_5_error_type" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> fixe ou portable ?</div>
 								    <div id="auth_5_msg_sent" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> patientez...</div>
 								    <input id="auth_5_orig" type="hidden" class="form-control" value="<%= citoyen['telephone'] %>">
 							    </div>
@@ -240,8 +240,8 @@ h3 { color:white; }
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_6_input">Code reçu :</label>
 								    <input id="auth_6_input" type="text" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e; background-color: white;"><br/>
-								    <div id="auth_6_error_code" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> code erroné</div>
-								    <div id="auth_6_error_authmsg" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:14px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c" id="tel_ok"></i> AUTHMSG n'est pas le code, ouvrez le SMS recu pour voir le code à 4 chiffres :)</div>
+								    <div id="auth_6_error_code" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> code erroné</div>
+								    <div id="auth_6_error_authmsg" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:14px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> AUTHMSG n'est pas le code, ouvrez le SMS recu pour voir le code à 4 chiffres :)</div>
 								    <div id="auth_6_msg_sent" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> vérification...</div>
 							    </div>
 							    <br/>
@@ -435,6 +435,7 @@ $(document).ready(function() {
 				$('#auth_4_input').focus();
 				return;
 			}
+			birthday=birthday.trim();
 			$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'birthday','val':birthday})
 			.done(function( data ){ 
 				console.log(data); 
@@ -468,6 +469,9 @@ $(document).ready(function() {
 			tel=tel.trim();
 			if (tel.lastIndexOf("00",0)===0) {
 				while (tel.charAt(0) === '0') { tel = tel.substr(1); }
+				tel='+'+tel;
+				console.log("phone number reformatted: "+tel);
+			} else if (tel.lastIndexOf("33",0)===0) {
 				tel='+'+tel;
 				console.log("phone number reformatted: "+tel);
 			} else if (tel.charAt(0)!=='+') {
