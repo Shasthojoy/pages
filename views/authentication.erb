@@ -38,6 +38,7 @@ input[type=text]:focus, input[type=search]:focus, input[type=date]:focus, input[
 button.non:hover { background-color:#d91d1c !important; border-color:#d91d1c !important;color:white !important; }
 button.oui:hover { background-color:#4ae54a !important; border-color:#4ae54a !important;color:white !important;}
 .form-inline .form-control { vertical-align: bottom; }
+.form-control {height: 40px;}
 .mention_email.title {
 	top:30px;
 	font-size:18px;
@@ -90,10 +91,10 @@ h3 { color:white; }
 
     <div class="modal fade" id="Authentication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
-		    <div class="modal-content">
+		    <div class="modal-content" style="height:460px;">
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;">
-					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;">
+					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;display:visible;">
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
@@ -156,7 +157,7 @@ h3 { color:white; }
 						    <form onsubmit="return false;">
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_3_input">Vous habitez à :</label><br/>
-								    <input type="search" id="auth_3_input" placeholder="Votre ville" value="<%= citoyen['city'] %>"/>
+								    <input type="search" id="auth_3_input" placeholder="Votre ville" value=""/>
 								    <input type="hidden" id="auth_3_orig" placeholder="" value="<%= citoyen['city'] %>"/>
 								    <br/>
 								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> ville manquante</div>
@@ -237,10 +238,13 @@ h3 { color:white; }
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
 						    <form onsubmit="return false;">
+							    <p style="font-size:16px;display:none;" id="code_sent_sms">Un code à 4 chiffres vient de vous être envoyé par SMS au<br/><span class="num_tel"></span>.</p>
+							    <p style="font-size:16px;display:none;" id="code_sent_call">Nous vous appelons au <span class="num_tel"></span> pour vous donner un code à 4 chiffres.</p>
 							    <div class="form-group" style="width:90%;margin: 0 auto;">
 								    <label for="auth_6_input">Code reçu :</label>
 								    <input id="auth_6_input" type="text" class="form-control" placeholder="XXXX" value="" style="width:150px;margin:0 auto;color:#5e5e5e; background-color: white;"><br/>
-								    <div id="auth_6_error_code" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> code erroné</div>
+								    <div id="auth_6_error_code" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:14px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> code erroné. Ce n'est pas le code que nous vous avons transmis.</div>
+								    <div id="auth_6_error_missing" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:14px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> code manquant. Entrez le code que vous avez reçu par téléphone.</div>
 								    <div id="auth_6_error_authmsg" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:14px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> AUTHMSG n'est pas le code, ouvrez le SMS recu pour voir le code à 4 chiffres :)</div>
 								    <div id="auth_6_msg_sent" class="auth_6_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> vérification...</div>
 							    </div>
@@ -380,6 +384,7 @@ $(document).ready(function() {
 						}
 					}
 				});
+				placesAutocomplete.setVal("<%= citoyen['city'] %>");
 				placesAutocomplete.on('change', function resultSelected(e) {
 					$.post("<%= API_HOST %>/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
 					.done(function( data ){ console.log(data['city']) });
@@ -490,6 +495,14 @@ $(document).ready(function() {
 					$('#auth_5_input').focus();
 					$('#auth_5_yes').prop('disabled',false);
 				} else {
+					$('.num_tel').html(tel);
+					if (type=='sms') {
+						$('#code_sent_sms').show();
+						$('#code_sent_call').hide();
+					} else {
+						$('#code_sent_sms').hide();
+						$('#code_sent_call').show();
+					}
 					$('#auth_5').hide();
 					$('#auth_6').show();
 					$('#auth_6_input').focus();
@@ -512,7 +525,7 @@ $(document).ready(function() {
 			var code=$('#auth_6_input').val();
 			if (code==null || code.trim()=='') {
 				$('.auth_6_msg').hide();
-				$('#auth_6_error_code').show();
+				$('#auth_6_error_missing').show();
 				$('#auth_6_input').focus();
 				return;
 			}
