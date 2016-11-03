@@ -222,7 +222,7 @@ h3 { color:white; }
 									    C'est un téléphone fixe
 								    </label>
 							    </div>
-							    <p style="font-size:16px;" id="tel_portable_label">Pour pouvoir voter, nous allons vous envoyer un code SMS.</p>
+							    <p style="font-size:16px;" id="tel_portable_label">Pour pouvoir voter, nous allons vous envoyer un code par SMS.</p>
 							    <p style="font-size:16px;display:none;" id="tel_fixe_label">Pour pouvoir voter, vous recevrez un appel automatique avec un code personnel.</p>
 							    <div class="btn_bottom">
 								    <button id="auth_5_yes" class="btn btn-xl oui">Continuer</button>
@@ -355,12 +355,12 @@ $(document).ready(function() {
 			$('.auth_2_msg').hide();
 			var lname_orig=$('#auth_2_orig').val();
 			var lname=$('#auth_2_input').val();
-			if (lname==null || lname=="") {
+			if (lname==null || lname.trim()=="") {
 				$('.auth_2_msg').hide();
 				$('#auth_2_error_val').show();
 				$('#auth_2_input').focus();
 				return;
-			} else if (lname_orig!=lname) {
+			} else if (lname_orig!=lname.trim()) {
 				$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'lastname','val':lname})
 				.done(function( data ){ console.log(data); })
 				.error(function(data) { console.log(data); });
