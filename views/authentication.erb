@@ -76,6 +76,9 @@ button.oui:hover { background-color:#4ae54a !important; border-color:#4ae54a !im
 	font-size: 26px;
 	width:150px;
 }
+.num_tel {
+	font-size:28px;
+}
 h3 { color:white; }
 .ap-dropdown-menu { text-align:left; }
 .ap-name {color:#5e5e5e;}
@@ -233,7 +236,7 @@ h3 { color:white; }
 							    </div>
 						    </form>
 					    </div>
-					    <div id="auth_6" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
+					    <div id="auth_6" class="auth_step" style="margin:0 auto;padding-top:75px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
@@ -251,24 +254,6 @@ h3 { color:white; }
 							    <br/>
 							    <div class="btn_bottom">
 								    <button id="auth_6_yes" class="btn btn-xl oui">OK</button>
-							    </div>
-							    <div class="mention_cnil">
-								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
-							    </div>
-						    </form>
-					    </div>
-					    <div id="auth_7" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
-						    <div class="mention_logo">
-							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
-						    </div>
-						    <form onsubmit="return false;">
-							    <div class="form-group" style="width:90%;margin: 0 auto;">
-								    <label for="auth_7_input">Merci de vous connecter avec Facebook pour terminer l'authentification.</label><br/>
-								    <a id="auth_fb" type="button" class="btn facebook" style="width:250px;height:52px;padding-top:12px;" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org%2Fqualifie%2Fariane-vitalis" target="_blank"><i class="fa fa-facebook" style="color:white;" aria-hidden="true"></i>&nbsp;<span style="color:white;font-variant:small-caps;font-size:18px;font-weight:bold;">Connexion Facebook</span></a>
-							    </div><br/>
-							    <p style="font-size:16px;">Cette connexion nous permet de nous assurer de la validité de votre compte.</p>
-							    <div class="btn_bottom">
-								    <button id="auth_7_yes" class="btn btn-xl oui">OK</button>
 							    </div>
 							    <div class="mention_cnil">
 								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
@@ -299,15 +284,6 @@ ga('create', 'UA-60977053-1', 'auto');
 ga('send', 'pageview');
 
 $(document).ready(function() {
-	$.ajaxSetup({ cache: true });
-	$.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-		FB.init({
-			appId: '115809635110050',
-			version: 'v2.7' // or v2.1, v2.2, v2.3, ...
-		});     
-		$('#loginbutton,#feedbutton').removeAttr('disabled');
-		FB.getLoginStatus(updateStatusCallback);
-	});
 	if ($('#Authentication')!=null) {
 		$('#Authentication').modal({backdrop:'static', keyboard: false});
 		$('#Authentication').modal('show');
@@ -426,6 +402,20 @@ $(document).ready(function() {
 			buttonImageOnly:true,
 			buttonImage:'https://s3.eu-central-1.amazonaws.com/laprimaire/icons/icon-calendar.gif'
 			});
+
+	/* to prevent a bug on Datepicker on Firefox */
+	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+	$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+	try{
+		$confModal.on('hidden', function() {
+				$.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
+				});
+		$confModal.modal({ backdrop : false });
+	}
+	catch (error) {
+		    if(error.name != 'ReferenceError')
+			    throw error;
+	}
 	$('#auth_4_no').click(function() { 
 			$('.auth_4_msg').hide();
 			$('#auth_4_info_msg').show();
@@ -567,28 +557,6 @@ $(document).ready(function() {
 				$('#auth_6_yes').prop('disabled',false);
 			});
 	});
-	$('#auth_7_yes').click(function() {
-			var loc=window.location.href;
-			console.log(loc.href);
-			loc=loc.replace("auth","vote");
-			window.location=loc;
-			});
-	$('#auth_fb').click(function() {
-		$.fblogin({
-		    fbId: '115809635110050',
-			success: function (data) {
-				console.log('Basic public user data returned by Facebook', data);
-				var loc=window.location;
-				console.log(loc);
-				loc=loc.replace("auth","vote");
-				window.location=loc;
-			    },
-			error: function (error) {
-				console.log('An error occurred.', error);
-			    }
-		    });
-	});
-
 });
 </script>
 <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
