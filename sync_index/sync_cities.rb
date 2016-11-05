@@ -28,7 +28,7 @@ res=db.exec(all_cities_list)
 if not res.num_tuples.zero? then
 	res.each do |r|
 		updates.push({
-			"_geoloc"=>{"lat"=>r['lat_deg'],"lng"=>r['lon_deg']},
+			"_geoloc"=>{"lat"=>r['lat_deg'].to_f,"lng"=>r['lon_deg'].to_f},
 			"nb_supporters"=>r['nb_supporters'],
 			"taux"=>r['taux'],
 			"objectID"=>r['city_id']
@@ -52,7 +52,7 @@ if not res.num_tuples.zero? then
 		end
 		updates.push({
 			"zipcode"=>zipcodes_text,
-			"_geoloc"=>{"lat"=>r['lat_deg'],"lng"=>r['lon_deg']},
+			"_geoloc"=>{"lat"=>r['lat_deg'].to_f,"lng"=>r['lon_deg'].to_f},
 			"nb_supporters"=>r['nb_supporters'],
 			"taux"=>r['taux'],
 			"objectID"=>first.to_s
