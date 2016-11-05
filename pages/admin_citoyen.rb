@@ -242,6 +242,10 @@ END
 			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
 			return JSON.dump({'param_missing'=>'user_key'}) if params['user_key'].nil?
 			return JSON.dump({'param_missing'=>'candidate'}) if params['candidate'].nil?
+			if VOTE_PAUSED then
+				status 404
+				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
+			end
 			begin
 				Pages.db_init()
 				res=Pages.db_query(@queries["get_ballot_by_id"],[params['ballot'],params['candidate'],params['user_key']])

@@ -529,6 +529,10 @@ $(document).ready(function() {
 					dataType: "json",
 					success: function(data) {
 						$('#<%= candidate['vote_id']%>_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&lang=fr-FR');
+						},
+					error: function(data) {
+						console.log("votes are paused. reloading page...");
+						window.location.reload(true);
 						}
 					});
 		    });
