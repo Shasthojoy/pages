@@ -341,7 +341,7 @@ $(document).ready(function() {
 				$('#auth_2_input').focus();
 				return;
 			} else if (lname_orig!=lname.trim()) {
-				$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'lastname','val':lname})
+				$.get("<%= API_HOST %>/v1/auth/update/<%= citoyen['user_key'] %>",{'key':'lastname','val':lname.trim()})
 				.done(function( data ){ console.log(data); })
 				.error(function(data) { console.log(data); });
 			}
@@ -353,7 +353,7 @@ $(document).ready(function() {
 					container: document.querySelector('#auth_3_input'),
 					type: 'city',
 					language: 'fr',
-					useDeviceLocation: true,
+					useDeviceLocation: false,
 					templates: {
 						value: function(suggestion) {
 							return suggestion.name;
