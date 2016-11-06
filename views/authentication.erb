@@ -538,11 +538,12 @@ $(document).ready(function() {
 					$('#auth_6_yes').prop('disabled',false);
 					$('.auth_6_msg').hide();
 					$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'verif_phone'})
-					.done(function( data ){ console.log(data); })
-					.error(function(data) { console.log(data); });
-					var loc=window.location.href;
-					loc=loc.replace("auth","vote");
-					window.location=loc;
+					.always(function( data ){ 
+						console.log(data);
+						var loc=window.location.href;
+						loc=loc.replace("auth","vote");
+						window.location=loc;
+					});
 				} else {
 					$('.auth_6_msg').hide();
 					$('#auth_6_error_code').show();
