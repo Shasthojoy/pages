@@ -307,6 +307,7 @@ END
 				vote_status=candidate['vote_status']
 				candidate['vote_status']="absent"
 				candidate['vote_status']="pending" if (!vote_status.nil? && vote_status!="complete") #FIX following Jean-Marc webhook changes
+				candidate['vote_status']="absent" if (!vote_status.nil? && vote_status=="retry") #FIX following Jean-Marc webhook changes
 				candidate['vote_status']="success" if vote_status=="complete" #FIX following Jean-Marc webhook changes
 				votes_left_to_cast-=1 if candidate['vote_status']=='success'
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
