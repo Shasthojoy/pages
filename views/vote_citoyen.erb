@@ -216,7 +216,7 @@ ul.social_buttons > li{
 	    <div class="container">
 		<% if VOTE_PAUSED %>
 		    <div class="row" style="padding-top:10px;">
-			    <div class="alert alert-info" role="alert">Du fait d'un nombre de votes très important en ce moment, nous avons du mettre en pause le vote pour permettre aux votes en attente de s'écouler et au serveur de souffler :) Merci de revenir un peu plus tard. Merci beaucoup pour votre compréhension !</div>
+			    <div class="alert alert-info" role="alert"><%= VOTE_PAUSED_MSG %></div>
 		    </div>
 	    <% end %>
 		    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px;">
@@ -224,11 +224,10 @@ ul.social_buttons > li{
 					    <div class="row">
 						    <div class="col-xs-12 col-md-8" style="text-align:justify;">
 							    <h3 style="margin-top:0px;">Bienvenue sur votre page personnelle de vote</h3>
-							    <h4>Comment se déroule le vote ?</h4>
-							    <p style="font-size:14px;">Afin d'assurer une vraie égalité démocratique entre les candidats et obtenir les résultats les plus représentatifs possible, LaPrimaire.org utilise un système de vote plus évolué que celui dont vous avez l'habitude.<br/>3 règles principales&nbsp;:</p>
+							    <h4>Comment se déroulera le vote ?</h4>
+							    <p style="font-size:14px;">Afin d'assurer une vraie égalité démocratique entre les candidats et obtenir les résultats les plus représentatifs, LaPrimaire.org utilise un système de vote plus évolué que celui dont vous avez l'habitude.<br/>3 règles principales&nbsp;:</p>
 							    <ul>
-								    <li>Un lot aléatoire de 5 candidat-e-s (sur les 12 en lice) vous a été attribué</li>
-								    <li>Vous devez obligatoirement vous exprimer sur vos 5 candidat-e-s pour que votre participation soit validée</li>
+								    <li>Vous devez <b>obligatoirement</b> vous exprimer sur vos 5 candidat-e-s pour que votre participation soit validée</li>
 								    <li>Vous attribuez à chaque candidat une mention allant de "Insuffisant" à "Très bien"</li>
 								    <li>Chaque vote est final et ne peut pas être modifié après envoi</li>
 							    </ul>
@@ -239,7 +238,7 @@ ul.social_buttons > li{
 							    <img data-toggle="modal" data-target="#vote_tutorial" src="https://s3.eu-central-1.amazonaws.com/laprimaire/bd/01.jpg" width="100%" style="border: 2px solid #9e9e9e;border-radius: 15px;cursor:pointer;">
 						    </div>
 					    </div>
-					    <h4 style="text-align:left;">Votre lot de 5 candidat-e-s</h4>
+					    <h4 style="text-align:left;">Les 5 candidat(e)s finalistes</h4>
 					    <div class="row">
 						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
 					    <% ballot['candidates'].each do |candidate| %>
@@ -259,10 +258,10 @@ ul.social_buttons > li{
 								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
 								    <i id="<%= candidate['vote_id']%>_mini_absent" class="fa fa-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#d91d1c;float:left"></i>
 								    <% end %>
-								    <a href="#<%= candidate['vote_id'] %>_lnk">
+								    <a target="_blank" href="/qualifie/<%= candidate['slug'] %>">
 									    <img style="overflow:auto;" class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/<%= candidate['slug'] %>-mini.jpg">
 								    </a>
-								    <div><a href="#<%= candidate['vote_id'] %>_lnk"><%= candidate['name'] %></a></div>
+								    <div><a target="_blank" href="/qualifie/<%= candidate['slug'] %>"><%= candidate['name'] %></a></div>
 							    </div>
 						    </div>
 					    <% end %>
@@ -405,7 +404,7 @@ ul.social_buttons > li{
 		    </div>
 	    <%else%>
 		    <div class="row" style="padding-top:10px;">
-			    <div class="alert alert-info" role="alert">Du fait d'un nombre de votes très important en ce moment, nous avons du mettre en pause le vote pour permettre aux votes en attente de s'écouler et au serveur de souffler :) Merci de revenir un peu plus tard. Merci beaucoup pour votre compréhension !</div>
+			    <div class="alert alert-info" role="alert"><%= VOTE_PAUSED_MSG %></div>
 		    </div>
 	    <%end%>
 	    </div>

@@ -45,7 +45,7 @@ END
 SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_status,c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1 ORDER BY cb.position ASC;
 END
 				'get_ballots_stats'=><<END,
-SELECT count(*),c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON cb.candidate_id=c.candidate_id WHERE cb.vote_status='complete' AND c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id ORDER BY c.slug ASC;
+SELECT count(*),c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON (cb.candidate_id=c.candidate_id AND cb.vote_status='complete') WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id ORDER BY c.slug ASC;
 END
 				'create_ballot'=><<END,
 INSERT INTO ballots (email) VALUES ($1) RETURNING *;
@@ -80,8 +80,9 @@ END
 				return info
 			end
 
-			def create_ballot(email)
-				set=generate_set()
+			def create_ballot(email,set=[])
+				puts "SET #{set}"
+				set=generate_set() if set.empty?
 				res=Pages.db_query(@queries["create_ballot"],[email])
 				ballot_id=res[0]['ballot_id']
 				params=[ballot_id]+set
@@ -123,20 +124,6 @@ END
 		end
 
 		get '/citoyen/:user_key' do
-			candidats=[
-				{'photo'=>'soutien-1-dispo.jpg'},
-				{'photo'=>'soutien-2-dispo.jpg'},
-				{'photo'=>'soutien-3-dispo.jpg'},
-				{'photo'=>'soutien-4-dispo.jpg'},
-				{'photo'=>'soutien-5-dispo.jpg'}
-			]
-			citoyens=[
-				{'photo'=>'plebiscite-1-dispo.jpg'},
-				{'photo'=>'plebiscite-2-dispo.jpg'},
-				{'photo'=>'plebiscite-3-dispo.jpg'},
-				{'photo'=>'plebiscite-4-dispo.jpg'},
-				{'photo'=>'plebiscite-5-dispo.jpg'},
-			]
 			errors=[]
 			success=[]
 			begin
@@ -144,25 +131,6 @@ END
 				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
-				citoyen_hash=Digest::SHA256.hexdigest(citoyen['email'])
-				payload={
-					:iss=> COCORICO_APP_ID,
-					:sub=> citoyen_hash,
-					:email=> citoyen['email'],
-					:lastName=> citoyen['lastname'],
-					:firstName=> citoyen['firstname'],
-					:authorizedVotes=> [ "57dd7f6fa18d6654d022a1a9" ]
-				}
-				encoded_token= JWT.encode payload, COCORICO_SECRET, 'HS256'
-				account={
-					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
-					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0,
-					'facebook_valid'=>(citoyen['validation_level'].to_i&4)!=0,
-					'membership_valid'=>(citoyen['validation_level'].to_i&8)!=0
-				}
-				validations=0
-				account.each { |k,v| validations+=1 if v }
-				account['valid']=(validations>1)
 				email=citoyen['email']
 				if not params['reset_email'].nil? then
 					if not params['reset_code'].nil? and params['reset_code']==citoyen['reset_code'] then
@@ -178,37 +146,18 @@ END
 						errors.push("Impossible de mettre à jour votre email : le code fourni est erroné.")
 					end
 				end
-				res1=Pages.db_query(@queries["get_supported_candidates_by_key"],[params['user_key']])
-				idx_candidat=0
-				idx_citoyen=0
-				if not res1.num_tuples.zero? then
-					res1.each do |r|
-						if (r['verified'].to_b) then
-							candidats[idx_candidat]=r
-							idx_candidat+=1
-						else
-							citoyens[idx_citoyen]=r
-							idx_citoyen+=1
-						end
-					end
-				end
 			rescue PG::Error => e
 				status 500
 				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
 			ensure
 				Pages.db_close()
 			end
-			erb :citoyen, :locals=>{
-				'success'=>success,
-				'errors'=>errors,
-				'citoyen'=>citoyen,
-				'candidats'=>candidats,
-				'citoyens'=>citoyens,
-				'account'=>account,
-				'token'=>encoded_token,
-				'vote_id'=>'57dd7f6fa18d6654d022a1a9',
-				'cc_app_id'=>COCORICO_APPID
-			}
+			if !success.empty() then
+				return erb :success, :locals=>{:msg=>{"title"=>"Email mis à jour","message"=>success[0]}}
+			elsif !errors.empty() then
+				return erb :error, :locals=>{:msg=>{"title"=>"Email non mis à jour","message"=>errors[0]}}
+			end
+			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 		end
 
 		get '/citoyen/vote/tutorial' do
@@ -288,7 +237,10 @@ END
 				res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
 				if res.num_tuples.zero? then
 					#2bis If no pre-existing ballot exist we create one for the citizen
-					ballot=create_ballot(citoyen['email'])
+					res=Pages.db_query("SELECT candidate_id FROM candidates WHERE finalist")
+					finalists=[]
+					res.each { |f| finalists.push(f['candidate_id']) } if !res.num_tuples.zero?
+					ballot=create_ballot(citoyen['email'],finalists.shuffle)
 				else
 					ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
 					res.each { |r| ballot["candidates"].push(r) }
