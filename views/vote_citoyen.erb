@@ -267,6 +267,7 @@ ul.social_buttons > li{
 					    <% end %>
 						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
 					    </div>
+					    <% if not VOTE_PAUSED %>
 					    <div class="row">
 						    <div id="missing-votes" style="margin-top:10px;margin-bottom:0px;">
 							    <% if ballot['votes_left']==0 %>
@@ -278,6 +279,7 @@ ul.social_buttons > li{
 							    <% end %>
 						    </div>
 					    </div>
+					    <% end %>
 				    </div>
 
 		    </div>

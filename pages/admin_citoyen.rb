@@ -234,17 +234,22 @@ END
 				}
 				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
 				#2 We check if a ballot has already been created
-				res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
-				if res.num_tuples.zero? then
+				#res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
+				#if res.num_tuples.zero? then
 					#2bis If no pre-existing ballot exist we create one for the citizen
-					res=Pages.db_query("SELECT candidate_id FROM candidates WHERE finalist")
-					finalists=[]
-					res.each { |f| finalists.push(f['candidate_id']) } if !res.num_tuples.zero?
-					ballot=create_ballot(citoyen['email'],finalists.shuffle)
-				else
-					ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
-					res.each { |r| ballot["candidates"].push(r) }
-				end
+				#	res=Pages.db_query("SELECT candidate_id FROM candidates WHERE finalist")
+				#	finalists=[]
+				#	res.each { |f| finalists.push(f['candidate_id']) } if !res.num_tuples.zero?
+				#	ballot=create_ballot(citoyen['email'],finalists.shuffle)
+				#else
+				#	ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
+				#	res.each { |r| ballot["candidates"].push(r) }
+				#end
+				ballot={'ballot_id'=>0,'candidates'=>[]}
+				res=Pages.db_query("SELECT * FROM candidates WHERE finalist")
+				finalists=[]
+				res.each { |f| finalists.push(f) } if !res.num_tuples.zero?
+				finalists.shuffle.each { |r| ballot["candidates"].push(r) }
 			rescue PG::Error => e
 				Pages.log.error "/citoyen/vote DB Error #{params}\n#{e.message}"
 				status 500
