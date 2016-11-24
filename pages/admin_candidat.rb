@@ -39,6 +39,12 @@ END
 			}
 		end
 
+		helpers do
+			def strip_tags(text)
+				return text.gsub(/<\/?[^>]*>/, "")
+			end
+		end
+
 		configure do
 			set :view, 'views'
 			set :root, File.expand_path('../../',__FILE__)
@@ -92,7 +98,7 @@ END
 				end
 			rescue Exception => e
 				status 500
-				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>strip_tags(e.message)}}
 			ensure
 				Pages.db_close()
 			end

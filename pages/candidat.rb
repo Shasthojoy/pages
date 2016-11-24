@@ -60,6 +60,10 @@ END
 				}
 				return info
 			end
+
+			def strip_tags(text)
+				return text.gsub(/<\/?[^>]*>/, "")
+			end
 		end
 
 		configure do
@@ -77,7 +81,7 @@ END
 				res=Pages.db_query(@queries["get_candidate"],[params['candidate_id']])
 			rescue PG::Error => e
 				status 500
-				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>e.message}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>strip_tags(e.message)}}
 			ensure
 				Pages.db_close()
 			end
@@ -194,7 +198,7 @@ END
 				end
 			rescue PG::Error => e
 				status 500
-				return erb :error, :locals=>{:msg=>{"title"=>"Erreur de base de données","message"=>e.message}}
+				return erb :error, :locals=>{:msg=>{"title"=>"Erreur de base de données","message"=>strip_tags(e.message)}}
 			ensure
 				Pages.db_close()
 			end
