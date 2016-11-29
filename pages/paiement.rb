@@ -34,7 +34,7 @@ module Pages
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
-		get '/paiement/retour' do
+		post '/paiement/retour' do
 			status=params['vads_trans_status']
 			email=params['vads_cust_email']
 			if (status!="AUTHORISED" && status!="CAPTURED") then
