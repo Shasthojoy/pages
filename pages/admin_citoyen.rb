@@ -276,10 +276,23 @@ END
 				candidate['age']=age
 			end
 			ballot['votes_left']=votes_left_to_cast
-
 			#3 We register a new ballot access #LATER
 			# access_ballot(citizen['email'],ballot['ballot_id'],request)
-
+			tmp={
+				'e'=>citoyen['email'],
+				'f'=>citoyen['firstname'],
+				'l'=>citoyen['lastname'],
+				'a'=>citoyen['address'],
+				'z'=>citoyen['zipcode'],
+				'v'=>citoyen['city']
+			}
+			donation_params=""
+			tmp.each do |k,v|
+				donation_params+="#{k}="+CGI.escape(v) if !v.nil?
+				donation_params+="&" if k!='v'
+			end
+			donation_params="?"+donation_params if !donation_params.empty?
+			citoyen['donation_params']=donation_params
 			erb :vote_citoyen, :locals=>{
 				'auth'=>auth,
 				'cocorico_app_id'=>COCORICO_APP_ID,
