@@ -164,6 +164,15 @@ END
 			erb :vote_tutorial
 		end
 
+		get '/citoyen/vote/tutorial_final' do
+			erb :vote_tutorial2
+		end
+
+		get '/citoyen/vote/100k' do
+			erb :illustration_100k
+		end
+
+
 		get '/citoyen/auth/:user_key' do
 			begin
 				Pages.db_init()
