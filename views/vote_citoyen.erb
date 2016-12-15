@@ -178,12 +178,16 @@ ul.social_buttons > li{
 				<li><a tabindex="0" href="/inscription-candidat/">Être candidat(e)</a></li>
 				<li><a tabindex="0" href="/charte/">Charte du candidat</a></li>
 				<li class="divider"></li>
+				<li><a tabindex="0" href="https://articles.laprimaire.org" target="_blank">Actualités</a></li>
 				<li><a tabindex="0" href="/manifeste/">Manifeste</a></li>
 				<li><a tabindex="0" href="/deroulement/">Déroulement</a></li>
-				<li><a tabindex="0" href="/calendrier/">Evènements</a></li>
-				<li><a tabindex="0" href="/actus/">Blog</a></li>
-				<li><a tabindex="0" href="/presse/">Presse</a></li>
+				<li><a tabindex="0" href="/equipe/">L'équipe</a></li>
+				<li><a tabindex="0" href="/contact/">Nous contacter</a></li>
+				<li><a tabindex="0" href="/presse/">Accès presse</a></li>
+				<li class="divider"></li>
 				<li><a tabindex="0" href="/legal/">Mentions légales</a></li>
+				<li><a tabindex="0" href="https://s3.eu-central-1.amazonaws.com/laprimaire/documents/LaPrimaire.org+-+Statuts+-+2016.12.01.pdf" target="_blank">Statuts</a></li>
+				<li><a tabindex="0" href="https://s3.eu-central-1.amazonaws.com/laprimaire/documents/LaPrimaire.org+-+RI+-+2016.12.01.pdf" target="_blank">Règlement Intérieur</a></li>
 			</ul>
 		    </li>
 		   <!-- <li class="dropdown">
@@ -242,46 +246,55 @@ ul.social_buttons > li{
 						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
 					    <% ballot['candidates'].each do |candidate| %>
 						    <div class="col-md-2 col-xs-12">
-							    <div id="<%= candidate['vote_id']%>_mini" class="thumbnail <%= candidate['vote_status'] %>" style="margin-bottom:5px;max-height:125px;overflow:hidden;min-width:155px;">
-								    <% if candidate['vote_status']=='success' then %>
-								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;"></i>
-								    <% elsif candidate['vote_status']=='error' %>
-								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left"></i>
-								    <% elsif candidate['vote_status']=='pending' %>
-								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;"></i>
+							    <div class="<%= vote['cc_vote_id']%>_mini thumbnail <%= ballot['vote_status'] %>" style="margin-bottom:5px;max-height:125px;overflow:hidden;min-width:155px;">
+								    <% if ballot['vote_status']=='success' then %>
+								    <i class="<%= vote['cc_vote_id']%>_mini_success fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;"></i>
+								    <% elsif ballot['vote_status']=='error' %>
+								    <i class="<%= vote['cc_vote_id']%>_mini_error fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left"></i>
+								    <% elsif ballot['vote_status']=='pending' %>
+								    <i class="<%= vote['cc_vote_id']%>_mini_success fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;float:left;display:none;"></i>
+								    <i class="<%= vote['cc_vote_id']%>_mini_error fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
+								    <i class="<%= vote['cc_vote_id']%>_mini_pending fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;"></i>
 								    <% else %>
-								    <i id="<%= candidate['vote_id']%>_mini_error" class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_success" class="fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;display:none;float:left;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_pending" class="fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
-								    <i id="<%= candidate['vote_id']%>_mini_absent" class="fa fa-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#d91d1c;float:left"></i>
+								    <i class="<%= vote['cc_vote_id']%>_mini_error fa fa-exclamation-triangle" aria-hidden="true" style="font-size:45px;padding:0px;color:#ff1a1a;float:left;display:none;"></i>
+								    <i class="<%= vote['cc_vote_id']%>_mini_success fa fa-check-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#70ee70;display:none;float:left;"></i>
+								    <i class="<%= vote['cc_vote_id']%>_mini_pending fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
+								    <i class="<%= vote['cc_vote_id']%>_mini_absent fa fa-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#d91d1c;float:left"></i>
 								    <% end %>
-								    <a target="_blank" href="/qualifie/<%= candidate['slug'] %>">
+								    <a href="#<%= candidate['vote_id'] %>_lnk">
 									    <img style="overflow:auto;" class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/<%= candidate['slug'] %>-mini.jpg">
 								    </a>
-								    <div><a target="_blank" href="/qualifie/<%= candidate['slug'] %>"><%= candidate['name'] %></a></div>
+								    <div><a href="#<%= candidate['vote_id'] %>_lnk"><%= candidate['name'] %></a></div>
 							    </div>
 						    </div>
 					    <% end %>
 						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
 					    </div>
+					    <% if not VOTE_PAUSED %>
+					    <div class="row">
+						    <div style="margin-bottom:10px;margin-top: 10px;">
+								    <% if ballot['vote_status']=='success' then %>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_done" data-toggle="modal" class="btn btn-xl btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+								    <% elsif ballot['vote_status']=='error' then %>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_error" data-toggle="modal" class="btn btn-xl btn-danger disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
+								    <% elsif ballot['vote_status']=='pending' then %>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_error" data-toggle="modal" class="btn btn-xl btn-danger disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_done" data-toggle="modal" class="btn btn-xl btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_pending" data-toggle="modal" class="btn btn-xl btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_todo" data-toggle="modal" data-target="#<%= vote['vote_id'] %>_cc" class="btn btn-xl red" style="font-size:18px;width:250px;border-radius:4px;display:none;">VOTER</button>
+								    <% else %>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_error" data-toggle="modal" class="btn btn-xl btn-danger disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_done" data-toggle="modal" class="btn btn-xl btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_pending" data-toggle="modal" class="btn btn-xl btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
+									    <button id="votebtn_<%= vote['cc_vote_id'] %>_todo" data-toggle="modal" data-target="#<%= vote['vote_id'] %>_cc" class="btn btn-xl red" style="font-size:18px;width:250px;border-radius:4px;">VOTER</button>
+								    <% end %>
+						    </div>
+					    </div>
+					    <% else %>
 					    <h4 style="text-align:left;">Donnez à LaPrimaire.org les moyens de changer la donne en 2017</h4>
 					    <div class="row">
 						    <p style="font-size:14px; text-align:left;">Afin de rendre LaPrimaire.org accessible au plus grand nombre, il était important à nos yeux que la participation soit gratuite. Cependant, pour accompagner le ou la candidat(e) qui sera issu(e) de LaPrimaire.org dans sa campagne électorale et son financement ainsi que pour l'organisation à venir de <b>577 primaires pour les prochaines législatives</b>, nous avons besoin de votre soutien ! Si vous êtes en capacité de soutenir financièrement LaPrimaire.org, n'hésitez pas à <a href="/adherer/<%= citoyen['donation_params'] %>">adhérer et/ou faire un don</a> : Chaque don compte !</p>
 						    <a type="button" class="btn blue btn-xl" style="font-size:20px;" href="/adherer/<%= citoyen['donation_params'] %>">Faire un don</a>
-					    </div>
-					    <% if not VOTE_PAUSED %>
-					    <div class="row">
-						    <div id="missing-votes" style="margin-top:10px;margin-bottom:0px;">
-							    <% if ballot['votes_left']==0 %>
-							    <span style="font-size:20px;" id="no-missing-vote">Votre participation est validée, merci pour ce geste citoyen !</span>
-							    <% else %>
-							    <span style="font-size:20px;display:none;" id="no-missing-vote">Votre vote est validé, merci pour votre participation !</span>
-							    <span style="font-size:20px;" id="missing-votes-txt"><span id="nb-missing-votes"><%= ballot['votes_left'] %> vote<% if ballot['votes_left']>1 %>s<% end %></span> sont encore nécessaires pour que votre participation soit validée !</span>
-							    <span style="display:none;" id="votes_left"><%= ballot['votes_left']%></span>
-							    <% end %>
-						    </div>
 					    </div>
 					    <% end %>
 				    </div>
@@ -299,18 +312,6 @@ ul.social_buttons > li{
 								    <img class="background" src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidate['photo'] %>" alt="<%= candidate['name'] %>">
 							    </div>
 							    </a>
-							    <% if candidate['slug']=='charlotte-marchandise-franquet' %>
-								    <a href="/qualifie/ramin-farhangi" target="_blank">
-									    <img class="img-circle soutien deux" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/ramin-farhangi-mini.jpg" title="Ramin Farhangi soutient Charlotte Marchandise">
-								    </a>
-								    <a href="/qualifie/pauline-lejeune" target="_blank">
-									    <img class="img-circle soutien trois" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/pauline-lejeune-mini.jpg" title="Pauline Lejeune soutient Charlotte Marchandise">
-								    </a>
-							    <% elsif candidate['slug']=='roxane-revon' %>
-								    <a href="/qualifie/alexandre-lecouillard" target="_blank">
-									    <img class="img-circle soutien" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/alexandre-lecouillard-mini.jpg" title="Alexandre Lecouillard soutient Roxane Revon">
-								    </a>
-						    	    <% end %>
 						    </div>
 
 						    <div class="col-md-9 col-sm-12 hero-feature">
@@ -323,7 +324,7 @@ ul.social_buttons > li{
 									    </div>
 								    </div>
 							    </div>
-							    <div class="row" style="margin-bottom:10px;">
+							    <div class="row" style="margin-bottom:35px;">
 									    <div class="col-md-4 col-sm-12 hero-feature">
 										    <span style="font-weight:bold;color:#527bdd;font-size:18px;">Priorité</span>&nbsp;<span class="fa-stack fa-2x bleu"><strong class="fa-stack-1x rouge">1</strong></span><br/><span style="font-size:14px;">&ldquo;<i><%= candidate['prio1'] %></i>&rdquo;</span>
 									    </div>
@@ -381,26 +382,6 @@ ul.social_buttons > li{
 								    </ul>
 
 							    </div>
-							    <div class="row">
-								    <div style="margin-bottom:10px;margin-top: 10px;">
-								    <% if candidate['vote_status']=='success' then %>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-								    <% elsif candidate['vote_status']=='error' then %>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_error" data-toggle="modal" class="btn btn-danger" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
-								    <% elsif candidate['vote_status']=='pending' then %>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_error" data-toggle="modal" class="btn btn-danger" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;display:none;">Evaluer <%= candidate['firstname'] %></button>
-								    <% else %>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_error" data-toggle="modal" class="btn btn-danger" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="padding:0px;"></i> Vote en erreur</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_done" data-toggle="modal" class="btn btn-success disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-check" aria-hidden="true" style="padding:0px;"></i> Vote enregistré</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_pending" data-toggle="modal" class="btn btn-warning disabled" style="font-size:18px;width:180px;border-radius:4px;display:none;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="padding:0px;"></i> Vote envoyé</button>
-									    <button id="votebtn_<%= candidate['vote_id'] %>_todo" data-toggle="modal" data-target="#<%= candidate['vote_id'] %>_cc" class="btn red" style="font-size:18px;width:250px;border-radius:4px;">Evaluer <%= candidate['firstname'] %></button>
-								    <% end %>
-								    </div>
-							    </div>
-
 						    </div>
 					    </div>
 
@@ -431,26 +412,384 @@ ul.social_buttons > li{
 	    </div>
     </div>
 
-    <% ballot['candidates'].each do |candidate| %>
-    <div class="modal fade cocorico" id="<%= candidate['vote_id']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade cocorico" id="<%= vote['vote_id']%>_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog vote" role="document">
 		    <div class="modal-content">
 			    <div class="modal-body" >
-				    <div style="margin:0 auto;background:#527bdd;height:100%;" id="<%= candidate['vote_id']%>_loading">
+				    <div style="margin:0 auto;background:#527bdd;height:100%;" id="<%= vote['vote_id']%>_loading">
 					    <div style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:300px;color:white;text-align:center;">
 						    <p>Chargement du vote en cours...</p>
 						    <p><i style="width:100px;text-align:center;" class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></p>
 						    <span class="sr-only">Refreshing...</span>
-						    <p>Vous disposez de 10 minutes pour évaluer <%= candidate['name']%>.</p>
+						    <p>Vous disposez de 10 minutes pour voter.</p>
 						    <p style="font-style:italic;">(Vous pouvez à tout moment fermer cette fenêtre et revenir plus tard)</p>
 					    </div>
 				    </div>
-				    <iframe id="<%= candidate['vote_id']%>_iframe" width="100%" height="480px" style="display:none;" frameborder="0"></iframe>
+				    <iframe id="<%= vote['vote_id']%>_iframe" width="100%" height="550px" style="display:none;" frameborder="0"></iframe>
 			    </div>
 		    </div>
 	    </div>
     </div>
-    <% end %>
+
+    <div class="modal fade" id="my_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="shareByEmail">Informations pour votre reçu fiscal</h4>
+			</div>
+			<div class="modal-body">
+				<p style="font-size:14px;">Merci beaucoup ! Pour que nous puissions vous faire parvenir votre reçu fiscal, merci de compléter les informations suivantes :</p>
+				<form action="https://secure.payzen.eu/vads-payment/" id="payment_page" method="POST" class="form-horizontal" role="form" data-toggle="validator">
+					<div class="form-group has-feedback">
+						<label for="firstname" class="col-sm-2 control-label">Prénom</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="vads_cust_first_name" id="vads_cust_first_name" placeholder="Votre prénom" value="<%= citoyen['firstname'] %>" required>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="lastname" class="col-sm-2 control-label">Nom</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="vads_cust_last_name" id="vads_cust_last_name" placeholder="Votre nom" value="<%= citoyen['lastname'] %>" required>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="vads_cust_email" class="col-sm-2 control-label">Email</label>
+						<div class="col-sm-10">
+							<input type="email" class="form-control" name="vads_cust_email" id="vads_cust_email" placeholder="Votre email" value="<%= citoyen['email'] %>" required>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="vads_cust_address" class="col-sm-2 control-label">Adresse postale</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="vads_cust_address" name="vads_cust_address" placeholder="Nom et numéro de votre rue" required>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="vads_cust_zip" class="col-sm-2 control-label">Code postal</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="vads_cust_zip" name="vads_cust_zip" placeholder="Code postal" value="<%= citoyen['zipcode'] %>" required>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="vads_cust_city" class="col-sm-2 control-label">Ville</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="vads_cust_city" name="vads_cust_city" placeholder="Ville" value="<%= citoyen['city'] %>" required>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="vads_cust_state" class="col-sm-2 control-label">Région</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="vads_cust_state" name="vads_cust_state" placeholder="(optionnel)" value="">
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback">
+						<label for="vads_cust_country" class="col-sm-2 control-label">Pays</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="vads_cust_country" name="vads_cust_country">
+								<option value="FR">FRANCE</option>
+								<option value="MQ">MARTINIQUE</option>
+								<option value="GP">GUADELOUPE</option>
+								<option value="RE">LA REUNION</option>
+								<option value="PF">POLYNESIE FRANCAISE</option>
+								<option value="NC">NOUVELLE-CALEDONIE</option>
+								<option value="PM">SAINT-PIERRE-ET-MIQUELON</option>
+<option value="AF">AFGHANISTAN</option>
+<option value="ZA">AFRIQUE DU SUD</option>
+<option value="AL">ALBANIE</option>
+<option value="DZ">ALGERIE</option>
+<option value="DE">ALLEMAGNE</option>
+<option value="AD">ANDORRE</option>
+<option value="AO">ANGOLA</option>
+<option value="AI">ANGUILLA</option>
+<option value="AG">ANTIGUA-ET-BARBUDA</option>
+<option value="AN">ANTILLES NEERLANDAISES</option>
+<option value="SA">ARABIE SAOUDITE</option>
+<option value="AR">ARGENTINE</option>
+<option value="AM">ARMENIE</option>
+<option value="AW">ARUBA</option>
+<option value="AU">AUSTRALIE</option>
+<option value="AT">AUTRICHE</option>
+<option value="AZ">AZERBAIDJAN</option>
+<option value="BS">BAHAMAS</option>
+<option value="BH">BAHREIN</option>
+<option value="BD">BANGLADESH</option>
+<option value="BB">BARBADE</option>
+<option value="BE">BELGIQUE</option>
+<option value="BZ">BELIZE</option>
+<option value="BJ">BENIN</option>
+<option value="BM">BERMUDES</option>
+<option value="BT">BHOUTAN</option>
+<option value="BY">BIELORUSSIE</option>
+<option value="MM">BIRMANIE</option>
+<option value="BO">BOLIVIE</option>
+<option value="BA">BOSNIE-HERZEGOVINE</option>
+<option value="BW">BOTSWANA</option>
+<option value="BV">BOUVET (ILE)</option>
+<option value="BR">BRESIL</option>
+<option value="BN">BRUNEI</option>
+<option value="BG">BULGARIE</option>
+<option value="BF">BURKINA</option>
+<option value="BI">BURUNDI</option>
+<option value="KY">CAIMANES (ILES)</option>
+<option value="KH">CAMBODGE</option>
+<option value="CM">CAMEROUN</option>
+<option value="CA">CANADA</option>
+<option value="CV">CAP-VERT</option>
+<option value="CF">CENTRAFRICAINE (REPUBLIQUE)</option>
+<option value="CL">CHILI</option>
+<option value="CN">CHINE</option>
+<option value="CX">CHRISTMAS (ILE)</option>
+<option value="CY">CHYPRE</option>
+<option value="CC">COCOS ou KEELING (ILES)</option>
+<option value="CO">COLOMBIE</option>
+<option value="KM">COMORES</option>
+<option value="CG">CONGO</option>
+<option value="CD">CONGO (REPUBLIQUE DEMOCRATIQUE)</option>
+<option value="CK">COOK (ILES)</option>
+<option value="KR">COREE (REPUBLIQUE DE)</option>
+<option value="KP">COREE (REPUBLIQUE POPULAIRE DEMOCRATIQUE DE)</option>
+<option value="CR">COSTA RICA</option>
+<option value="CI">COTE D'IVOIRE</option>
+<option value="HR">CROATIE</option>
+<option value="CU">CUBA</option>
+<option value="DK">DANEMARK</option>
+<option value="DJ">DJIBOUTI</option>
+<option value="DO">DOMINICAINE (REPUBLIQUE)</option>
+<option value="DM">DOMINIQUE</option>
+<option value="EG">EGYPTE</option>
+<option value="SV">EL SALVADOR</option>
+<option value="AE">EMIRATS ARABES UNIS</option>
+<option value="EC">EQUATEUR</option>
+<option value="ER">ERYTHREE</option>
+<option value="ES">ESPAGNE</option>
+<option value="EE">ESTONIE</option>
+<option value="US">ETATS-UNIS</option>
+<option value="ET">ETHIOPIE</option>
+<option value="MK">EX-REPUBLIQUE YOUGOSLAVE DE MACEDOINE</option>
+<option value="FO">FEROE (ILES)</option>
+<option value="FJ">FIDJI</option>
+<option value="FI">FINLANDE</option>
+<option value="FR">FRANCE</option>
+<option value="GA">GABON</option>
+<option value="GM">GAMBIE</option>
+<option value="GE">GEORGIE</option>
+<option value="GS">GEORGIE DU SUD ET LES ILES SANDWICH DU SUD</option>
+<option value="GH">GHANA</option>
+<option value="GI">GIBRALTAR</option>
+<option value="GR">GRECE</option>
+<option value="GD">GRENADE</option>
+<option value="GL">GROENLAND</option>
+<option value="GP">GUADELOUPE</option>
+<option value="GU">GUAM</option>
+<option value="GT">GUATEMALA</option>
+<option value="GN">GUINEE</option>
+<option value="GW">GUINEE-BISSAU</option>
+<option value="GQ">GUINEE EQUATORIALE</option>
+<option value="GY">GUYANA</option>
+<option value="GF">GUYANE</option>
+<option value="HT">HAITI</option>
+<option value="HM">HEARD ET MACDONALD (ILES)</option>
+<option value="HN">HONDURAS</option>
+<option value="HK">HONG-KONG</option>
+<option value="HU">HONGRIE</option>
+<option value="IN">INDE</option>
+<option value="ID">INDONESIE</option>
+<option value="IR">IRAN</option>
+<option value="IQ">IRAQ</option>
+<option value="IE">IRLANDE, OU EIRE</option>
+<option value="IS">ISLANDE</option>
+<option value="IL">ISRAEL</option>
+<option value="IT">ITALIE</option>
+<option value="JM">JAMAIQUE</option>
+<option value="JP">JAPON</option>
+<option value="JO">JORDANIE</option>
+<option value="KZ">KAZAKHSTAN</option>
+<option value="KE">KENYA</option>
+<option value="KG">KIRGHIZISTAN</option>
+<option value="KI">KIRIBATI</option>
+<option value="KW">KOWEIT</option>
+<option value="LA">LAOS</option>
+<option value="RE">LA REUNION</option>
+<option value="LS">LESOTHO</option>
+<option value="LV">LETTONIE</option>
+<option value="LB">LIBAN</option>
+<option value="LR">LIBERIA</option>
+<option value="LY">LIBYE</option>
+<option value="LI">LIECHTENSTEIN</option>
+<option value="LT">LITUANIE</option>
+<option value="LU">LUXEMBOURG</option>
+<option value="MO">MACAO</option>
+<option value="MG">MADAGASCAR</option>
+<option value="MY">MALAISIE</option>
+<option value="MW">MALAWI</option>
+<option value="MV">MALDIVES</option>
+<option value="ML">MALI</option>
+<option value="FK">MALOUINES, OU FALKLAND (ILES)</option>
+<option value="MT">MALTE</option>
+<option value="MP">MARIANNES DU NORD (ILES)</option>
+<option value="MA">MAROC</option>
+<option value="MH">MARSHALL (ILES)</option>
+<option value="MQ">MARTINIQUE</option>
+<option value="MU">MAURICE</option>
+<option value="MR">MAURITANIE</option>
+<option value="YT">MAYOTTE</option>
+<option value="MX">MEXIQUE</option>
+<option value="FM">MICRONESIE (ETATS FEDERES DE)</option>
+<option value="MD">MOLDAVIE</option>
+<option value="MC">MONACO</option>
+<option value="MN">MONGOLIE</option>
+<option value="ME">MONTENEGRO</option>
+<option value="MS">MONTSERRAT</option>
+<option value="MZ">MOZAMBIQUE</option>
+<option value="NA">NAMIBIE</option>
+<option value="NR">NAURU</option>
+<option value="NP">NEPAL</option>
+<option value="NI">NICARAGUA</option>
+<option value="NE">NIGER</option>
+<option value="NG">NIGERIA</option>
+<option value="NU">NIUE</option>
+<option value="NF">NORFOLK (ILE)</option>
+<option value="NO">NORVEGE</option>
+<option value="NC">NOUVELLE-CALEDONIE</option>
+<option value="NZ">NOUVELLE-ZELANDE</option>
+<option value="IO">OCEAN INDIEN (TERRITOIRE BRITANNIQUE DE L')</option>
+<option value="OM">OMAN</option>
+<option value="UG">OUGANDA</option>
+<option value="UZ">OUZBEKISTAN</option>
+<option value="PK">PAKISTAN</option>
+<option value="PW">PALAOS (ILES)</option>
+<option value="PS">PALESTINE (Etat de)</option>
+<option value="PA">PANAMA</option>
+<option value="PG">PAPOUASIE-NOUVELLE-GUINEE</option>
+<option value="PY">PARAGUAY</option>
+<option value="NL">PAYS-BAS</option>
+<option value="PE">PEROU</option>
+<option value="PH">PHILIPPINES</option>
+<option value="PL">POLOGNE</option>
+<option value="PF">POLYNESIE FRANCAISE</option>
+<option value="PR">PORTO RICO</option>
+<option value="PT">PORTUGAL</option>
+<option value="QA">QATAR</option>
+<option value="RO">ROUMANIE</option>
+<option value="GB">ROYAUME-UNI</option>
+<option value="RU">RUSSIE</option>
+<option value="RW">RWANDA</option>
+<option value="EH">SAHARA OCCIDENTAL</option>
+<option value="KN">SAINT-CHRISTOPHE-ET-NIEVES</option>
+<option value="SH">SAINTE HELENE, ASCENSION ET TRISTAN DA CUNHA</option>
+<option value="LC">SAINTE-LUCIE</option>
+<option value="SM">SAINT-MARIN</option>
+<option value="PM">SAINT-PIERRE-ET-MIQUELON</option>
+<option value="VC">SAINT-VINCENT-ET-LES GRENADINES</option>
+<option value="SB">SALOMON (ILES)</option>
+<option value="AS">SAMOA AMERICAINES</option>
+<option value="WS">SAMOA OCCIDENTALES</option>
+<option value="ST">SAO TOME-ET-PRINCIPE</option>
+<option value="SN">SENEGAL</option>
+<option value="RS">SERBIE</option>
+<option value="SC">SEYCHELLES</option>
+<option value="SL">SIERRA LEONE</option>
+<option value="SG">SINGAPOUR</option>
+<option value="SK">SLOVAQUIE</option>
+<option value="SI">SLOVENIE</option>
+<option value="SO">SOMALIE</option>
+<option value="SD">SOUDAN</option>
+<option value="LK">SRI LANKA</option>
+<option value="SE">SUEDE</option>
+<option value="CH">SUISSE</option>
+<option value="SR">SURINAME</option>
+<option value="SJ">SVALBARD et ILE JAN MAYEN</option>
+<option value="SZ">SWAZILAND</option>
+<option value="SY">SYRIE</option>
+<option value="TJ">TADJIKISTAN</option>
+<option value="TW">TAIWAN</option>
+<option value="TZ">TANZANIE</option>
+<option value="TD">TCHAD</option>
+<option value="CZ">TCHEQUE (REPUBLIQUE)</option>
+<option value="TF">TERRES AUSTRALES FRANCAISES</option>
+<option value="TH">THAILANDE</option>
+<option value="TG">TOGO</option>
+<option value="TK">TOKELAU</option>
+<option value="TO">TONGA</option>
+<option value="TT">TRINITE-ET-TOBAGO</option>
+<option value="TN">TUNISIE</option>
+<option value="TM">TURKMENISTAN</option>
+<option value="TC">TURKS ET CAIQUES (ILES)</option>
+<option value="TR">TURQUIE</option>
+<option value="TV">TUVALU</option>
+<option value="UA">UKRAINE</option>
+<option value="UY">URUGUAY</option>
+<option value="VU">VANUATU</option>
+<option value="VA">VATICAN, ou SAINT-SIEGE</option>
+<option value="VE">VENEZUELA</option>
+<option value="VG">VIERGES BRITANNIQUES (ILES)</option>
+<option value="VI">VIERGES DES ETATS-UNIS (ILES)</option>
+<option value="VN">VIET NAM</option>
+<option value="WF">WALLIS-ET-FUTUNA</option>
+<option value="YE">YEMEN</option>
+<option value="ZM">ZAMBIE</option>
+<option value="ZW">ZIMBABWE</option>
+							</select>
+							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+						</div>
+					</div>
+					<div class="form-group" id="question_adhesion" style="display:none;">
+						<label for="adherer" class="col-sm-2 control-label">&nbsp;</label>
+						<div class="col-sm-10" style="font-size:14px;color:#5e5e5e;">
+							<div class="radio">
+								<label><input type="radio" name="adherer" id="adherer_oui" value="1">Je souhaite adhérer à LaPrimaire.org</label>
+							</div>
+							<div class="radio">
+								<label><input type="radio" name="adherer" id="adherer_non" value="0" checked>Je ne souhaite pas adhérer, simplement faire un don</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" name="adherer" class="btn btn-primary blue">Procéder au paiement</button>
+						</div>
+					</div>
+					<input type="hidden" id="vads_action_mode" name="vads_action_mode" value="INTERACTIVE" />
+					<input type="hidden" id="vads_amount" name="vads_amount" value="1524" />
+					<input type="hidden" id="vads_ctx_mode" name="vads_ctx_mode" value="PRODUCTION" />
+					<input type="hidden" id="vads_currency" name="vads_currency" value="978" />
+					<input type="hidden" id="vads_page_action" name="vads_page_action" value="PAYMENT" />
+					<input type="hidden" id="vads_payment_config" name="vads_payment_config" value="SINGLE" />
+					<input type="hidden" id="vads_redirect_error_message" name="vads_redirect_error_message" value="La transaction a échouée :( Dans quelques secondes vous serez redirigé vers la page d'adhésion pour pouvoir reessayer." />
+					<input type="hidden" id="vads_redirect_error_timeout" name="vads_redirect_error_timeout" value="0" />
+					<input type="hidden" id="vads_redirect_success_message" name="vads_redirect_success_message" value="Merci pour votre soutien ! Dans quelques secondes, vous serez redirigé automatiquement vers LaPrimaire.org pour confirmer l'adresse que ferons figurer sur votre reçu fiscal." />
+					<input type="hidden" id="vads_redirect_success_timeout" name="vads_redirect_success_timeout" value="0" />
+					<input type="hidden" id="vads_return_mode" name="vads_return_mode" value="GET" />
+					<input type="hidden" id="vads_url_success" name="vads_url_success" value="https://laprimaire.org/merci/" />
+					<input type="hidden" id="vads_url_error" name="vads_url_error" value="https://laprimaire.org/error/" />
+					<input type="hidden" id="vads_url_cancel" name="vads_url_cancel" value="https://laprimaire.org/adherer/" />
+					<input type="hidden" id="vads_url_refused" name="vads_url_refused" value="https://laprimaire.org/refused/" />
+					<input type="hidden" id="vads_site_id" name="vads_site_id" value="82502532" />
+					<input type="hidden" id="vads_trans_date" name="vads_trans_date" value="" />
+					<input type="hidden" id="vads_trans_id" name="vads_trans_id" value="" />
+					<input type="hidden" id="vads_version" name="vads_version" value="V2" />
+					<input type="hidden" id="vads_validation_mode" name="vads_validation_mode" value="0" />
+					<input type="hidden" id="vads_capture_delay" name="vads_capture_delay" value="0" />
+					<input type="hidden" id="vads_language" name="vads_language" value="fr" />
+					<input type="hidden" id="vads_theme_config" name="vads_theme_config" value="CANCEL_FOOTER_MSG_RETURN=Annuler;SUCCESS_FOOTER_MSG_RETURN=Retour" />
+					<input type="hidden" id="vads_order_id" name="vads_order_id" value="" />
+					<input type="hidden" id="vads_threeds_mpi" name="vads_threeds_mpi" value="0" />
+					<input type="hidden" id="signature" name="signature" value=""/>
+				</form>
+			  </div>
+		    </div>
+	      </div>
+      </div>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
@@ -478,34 +817,22 @@ $(document).ready(function() {
 			if (data['message']=='voteComplete') {
 				$('.modal.cocorico').modal('hide');
 			} else if (data['message']=='voteSuccess') {
-				$('#'+voteId+'_mini').attr("class","thumbnail success");
-				$('#'+voteId+'_mini_success').show();
-				$('#'+voteId+'_mini_error').hide();
-				$('#'+voteId+'_mini_pending').hide();
-				$('#'+voteId+'_mini_absent').hide();
+				$('.'+voteId+'_mini').attr("class","thumbnail success");
+				$('.'+voteId+'_mini_success').show();
+				$('.'+voteId+'_mini_error').hide();
+				$('.'+voteId+'_mini_pending').hide();
+				$('.'+voteId+'_mini_absent').hide();
 				$('#votebtn_'+voteId+'_todo').hide();
 				$('#votebtn_'+voteId+'_pending').hide();
 				$('#votebtn_'+voteId+'_error').hide();
 				$('#votebtn_'+voteId+'_done').show();
-				var votes_left=parseInt($('#votes_left').html());
-				votes_left=votes_left-1;
-				if (votes_left==0) {
-					$('#missing-votes-txt').hide();
-					$('#no-missing-vote').show();
-				} else if (votes_left==1) {
-					$('#nb-missing-votes').html("1 vote");
-					$('#votes_left').html(votes_left.toString())
-				} else {
-					$('#nb-missing-votes').html(votes_left+" votes");
-					$('#votes_left').html(votes_left.toString())
-				}
 			} else if (data['message']=='voteError') {
 				$('.modal.cocorico').modal('hide');
-				$('#'+voteId+'_mini').attr("class","thumbnail error");
-				$('#'+voteId+'_mini_success').hide();
-				$('#'+voteId+'_mini_error').show();
-				$('#'+voteId+'_mini_pending').hide();
-				$('#'+voteId+'_mini_absent').hide();
+				$('.'+voteId+'_mini').attr("class","thumbnail error");
+				$('.'+voteId+'_mini_success').hide();
+				$('.'+voteId+'_mini_error').show();
+				$('.'+voteId+'_mini_pending').hide();
+				$('.'+voteId+'_mini_absent').hide();
 				$('#votebtn_'+voteId+'_todo').hide();
 				$('#votebtn_'+voteId+'_pending').hide();
 				$('#votebtn_'+voteId+'_done').hide();
@@ -519,22 +846,21 @@ $(document).ready(function() {
 			$('#vote_tutorial_iframe').attr("src",'/citoyen/vote/tutorial_final'); // 2nd TOUR
 			$('#vote_tutorial_iframe').show();
 		});
-    <% ballot['candidates'].each do |candidate| %>
-	    if ($('#<%= candidate['vote_id']%>_cc')!=null) {
-		    $('#<%= candidate['vote_id']%>_cc').on('hidden.bs.modal', function () {
-				    $('#<%= candidate['vote_id']%>_loading').show();
-				    $('#<%= candidate['vote_id']%>_iframe').hide();
-				    $('#<%= candidate['vote_id']%>_iframe').attr("src",'about:blank');
+	    if ($('#<%= vote['vote_id']%>_cc')!=null) {
+		    $('#<%= vote['vote_id']%>_cc').on('hidden.bs.modal', function () {
+				    $('#<%= vote['vote_id']%>_loading').show();
+				    $('#<%= vote['vote_id']%>_iframe').hide();
+				    $('#<%= vote['vote_id']%>_iframe').attr("src",'about:blank');
 				    });
 
-		    $('#<%= candidate['vote_id']%>_cc').on('shown.bs.modal', function () {
-				    $('#<%= candidate['vote_id']%>_iframe').load(function() { $('#<%= candidate['vote_id']%>_loading').hide(); $('#<%= candidate['vote_id']%>_iframe').show();});
+		    $('#<%= vote['vote_id']%>_cc').on('shown.bs.modal', function () {
+				    $('#<%= vote['vote_id']%>_iframe').load(function() { $('#<%= vote['vote_id']%>_loading').hide(); $('#<%= vote['vote_id']%>_iframe').show();});
 				    $.ajax({
 					url: "/citoyen/token/<%= citoyen['user_key'] %>",
-					data: "ballot=<%= ballot['ballot_id'] %>&candidate=<%= candidate['candidate_id'] %>",
+					data: "ballot=<%= ballot['ballot_id'] %>&vote_id=<%= vote['vote_id'] %>",
 					dataType: "json",
 					success: function(data) {
-						$('#<%= candidate['vote_id']%>_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= candidate['vote_id'] %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&lang=fr-FR');
+						$('#<%= vote['vote_id']%>_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= vote['cc_vote_id'] %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
 						},
 					error: function(data) {
 						console.log("votes are paused. reloading page...");
@@ -543,7 +869,6 @@ $(document).ready(function() {
 					});
 		    });
 	}
-    <% end %>
 });
     </script>
     <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>

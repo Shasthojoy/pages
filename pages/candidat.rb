@@ -271,6 +271,7 @@ END
 				'template'=>:candidat_qualifie
 			}
 		end
+
 		get '/candidat/vote/:name' do
 			title=params["title"]
 			name=params["name"]

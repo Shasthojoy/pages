@@ -39,16 +39,19 @@ END
 UPDATE users SET email_status=2, validation_level=(validation_level & 14), email=reset_email, reset_email=null, reset_code=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
 END
 				'get_ballot_by_id'=><<END,
-SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_status,c.*,u.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) INNER JOIN users as u ON (u.email=b.email) WHERE b.ballot_id=$1 AND cb.candidate_id=$2 AND u.user_key=$3 ORDER BY cb.position ASC;
+SELECT b.ballot_id,b.vote_id,b.date_generated,b.vote_status,v.cc_vote_id,u.* FROM ballots as b INNER JOIN users as u ON (u.email=b.email) INNER JOIN votes as v ON (v.vote_id=b.vote_id) WHERE b.ballot_id=$1 AND u.user_key=$2;
+END
+				'get_vote_by_id'=><<END,
+SELECT * FROM votes WHERE vote_id=$1
 END
 				'get_ballot_by_email'=><<END,
-SELECT b.ballot_id,b.completed,b.date_generated,cb.position,cb.vote_status,c.* FROM ballots as b INNER JOIN candidates_ballots as cb ON (cb.ballot_id=b.ballot_id) INNER JOIN candidates as c ON (c.candidate_id=cb.candidate_id) WHERE b.email=$1 ORDER BY cb.position ASC;
+SELECT b.ballot_id,b.vote_status,b.date_generated FROM ballots as b WHERE b.email=$1 and b.vote_id=$2;
 END
 				'get_ballots_stats'=><<END,
 SELECT count(*),c.slug,c.candidate_id FROM candidates as c LEFT JOIN candidates_ballots as cb ON (cb.candidate_id=c.candidate_id AND cb.vote_status='complete') WHERE c.qualified AND NOT c.abandonned GROUP BY c.slug,c.candidate_id ORDER BY c.slug ASC;
 END
 				'create_ballot'=><<END,
-INSERT INTO ballots (email) VALUES ($1) RETURNING *;
+INSERT INTO ballots (email,vote_id) VALUES ($1,$2) RETURNING *;
 END
 				'update_citizen_hash'=><<END,
 UPDATE users SET hash=$1 WHERE email=$2 RETURNING *;
@@ -80,17 +83,10 @@ END
 				return info
 			end
 
-			def create_ballot(email,set=[])
-				puts "SET #{set}"
-				set=generate_set() if set.empty?
-				res=Pages.db_query(@queries["create_ballot"],[email])
+			def create_ballot(email,vote_id)
+				res=Pages.db_query(@queries["create_ballot"],[email,vote_id])
 				ballot_id=res[0]['ballot_id']
-				params=[ballot_id]+set
-				res=Pages.db_query(@queries["populate_ballot"],params)
-				ballot={'ballot_id'=>ballot_id,'candidates'=>[]}
-				res.each { |r| ballot["candidates"].push(r) }
-				raise "error creating ballot : #{res.num_tuples} entries created instead of 5 expected" if res.num_tuples<5
-				return ballot
+				return {'ballot_id'=>ballot_id,'vote_status'=>"absent",'candidates'=>[]}
 			end
 
 			def generate_set()
@@ -172,6 +168,13 @@ END
 			erb :illustration_100k
 		end
 
+		get '/citoyen/vote/comparateur' do
+			erb :index, :locals=>{
+				'page_info'=>page_info({}),
+				'template'=>:comparateur,
+				'vars'=>{}
+			}
+		end
 
 		get '/citoyen/auth/:user_key' do
 			begin
@@ -186,7 +189,7 @@ END
 			ensure
 				Pages.db_close()
 			end
-			redirect "/citoyen/vote/#{params['user_key']}" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
+			redirect "/citoyen/vote/#{params['user_key']}/1" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
 			citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),
@@ -198,15 +201,15 @@ END
 
 		get '/citoyen/token/:user_key' do
 			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
-			return JSON.dump({'param_missing'=>'user_key'}) if params['user_key'].nil?
-			return JSON.dump({'param_missing'=>'candidate'}) if params['candidate'].nil?
+			return JSON.dump({'param_missing'=>'user key'}) if params['user_key'].nil?
+			return JSON.dump({'param_missing'=>'vote id'}) if params['vote_id'].nil?
 			if VOTE_PAUSED then
 				status 404
 				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
 			end
 			begin
 				Pages.db_init()
-				res=Pages.db_query(@queries["get_ballot_by_id"],[params['ballot'],params['candidate'],params['user_key']])
+				res=Pages.db_query(@queries["get_ballot_by_id"],[params['ballot'],params['user_key']])
 				ballot=res[0]
 				token={
 					:iss=> COCORICO_APP_ID,
@@ -215,7 +218,7 @@ END
 					:lastName=> ballot['lastname'],
 					:firstName=> ballot['firstname'],
 					:birthdate=> ballot['birthday'],
-					:authorizedVotes=> [ballot['vote_id']],
+					:authorizedVotes=> [ballot['cc_vote_id']],
 					:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
 				}
 				vote_token=JWT.encode token, COCORICO_SECRET, 'HS256'
@@ -231,33 +234,36 @@ END
 		end
 
 		get '/citoyen/vote/:user_key' do
+				redirect "/citoyen/vote/#{params['user_key']}/1"
+		end
+
+		get '/citoyen/vote/:user_key/:vote_id' do
 			begin
 				Pages.db_init()
 				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
+				res=Pages.db_query(@queries["get_vote_by_id"],[params['vote_id']])
+				return erb :error, :locals=>{:msg=>{"title"=>"Vote inconnu","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+				vote=res[0]
 				#1 We check the validation level of the candidate authentication 
 				auth={
 					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
 					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0
 				}
 				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
-				#2 We check if a ballot has already been created
-				#res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email']])
-				#if res.num_tuples.zero? then
-					#2bis If no pre-existing ballot exist we create one for the citizen
-				#	res=Pages.db_query("SELECT candidate_id FROM candidates WHERE finalist")
-				#	finalists=[]
-				#	res.each { |f| finalists.push(f['candidate_id']) } if !res.num_tuples.zero?
-				#	ballot=create_ballot(citoyen['email'],finalists.shuffle)
-				#else
-				#	ballot={'ballot_id'=>res[0]['ballot_id'],'candidates'=>[]}
-				#	res.each { |r| ballot["candidates"].push(r) }
-				#end
-				ballot={'ballot_id'=>0,'candidates'=>[]}
 				res=Pages.db_query("SELECT * FROM candidates WHERE finalist")
 				finalists=[]
-				res.each { |f| finalists.push(f) } if !res.num_tuples.zero?
+				res.each { |f| finalists.push(f.clone) } if !res.num_tuples.zero?
+				#2 We check if a ballot has already been created
+				res=Pages.db_query(@queries["get_ballot_by_email"],[citoyen['email'],vote['vote_id']])
+				if res.num_tuples.zero? then
+					#2bis If no pre-existing ballot exist we create one for the citizen
+					ballot=create_ballot(citoyen['email'],vote['vote_id'])
+				else
+					vote_status=res[0]['vote_status'].nil? ? "absent" : res[0]['vote_status']
+					ballot={'ballot_id'=>res[0]['ballot_id'],'vote_status'=>vote_status,'candidates'=>[]}
+				end
 				finalists.shuffle.each { |r| ballot["candidates"].push(r) }
 			rescue PG::Error => e
 				Pages.log.error "/citoyen/vote DB Error #{params}\n#{e.message}"
@@ -266,16 +272,10 @@ END
 			ensure
 				Pages.db_close()
 			end
-			votes_left_to_cast=5
 			ballot['candidates'].each do |candidate| 
 				candidate['firstname']=candidate['name'].split(' ')[0]
 				candidate['lastname']=candidate['name'].split(' ')[1]
-				vote_status=candidate['vote_status']
-				candidate['vote_status']="absent"
-				candidate['vote_status']="pending" if (!vote_status.nil? && vote_status!="complete") #FIX following Jean-Marc webhook changes
-				candidate['vote_status']="absent" if (!vote_status.nil? && vote_status=="retry") #FIX following Jean-Marc webhook changes
-				candidate['vote_status']="success" if vote_status=="complete" #FIX following Jean-Marc webhook changes
-				votes_left_to_cast-=1 if candidate['vote_status']=='success'
+				candidate['vote_status']= vote['vote_status'].nil? ? "absent" : vote['vote_status']
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
 				age=nil
 				unless birthday.nil? then
@@ -284,9 +284,6 @@ END
 				end
 				candidate['age']=age
 			end
-			ballot['votes_left']=votes_left_to_cast
-			#3 We register a new ballot access #LATER
-			# access_ballot(citizen['email'],ballot['ballot_id'],request)
 			tmp={
 				'e'=>citoyen['email'],
 				'f'=>citoyen['firstname'],
@@ -306,7 +303,8 @@ END
 				'auth'=>auth,
 				'cocorico_app_id'=>COCORICO_APP_ID,
 				'citoyen'=>citoyen,
-				'ballot'=>ballot
+				'ballot'=>ballot,
+				'vote'=>vote
 			}
 		end
 	end

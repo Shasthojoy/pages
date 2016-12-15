@@ -1,0 +1,673 @@
+<style>
+
+/*!
+ * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+ body {
+    overflow-x: hidden;
+ }
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 235px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    /*position: fixed;*/
+    left: 235px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 235px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 0px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -235px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    background-color:white;
+    position: absolute;
+    top: 0;
+    width: 235px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 235px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 235px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+
+<!--
+.lp-cat-active {
+	font-weight: bold;
+	color: #d91d1c !important;
+}
+.lp-cat-count {
+	color: #d91d1c;
+}
+.lp-cat-label {
+	margin-bottom: 0px;
+}
+.lp-cat-checkbox {}
+.lp-cat-item {
+	/*font-variant: small-caps;*/
+	margin: 2px 2px;
+	padding-left:10px;
+	/*display: inline-block;*/
+	font-size: 14px;
+	color: #5e5e5e;
+}
+.lp-cat-header {
+	font-weight:bold;
+	color: #5e5e5e;
+	font-size: 16px;
+	font-variant: small-caps;
+}
+body { padding-bottom: 0px; }
+div.lettre h3 {
+	font-size:20px;
+	margin-top:0px;
+}
+.row {
+	margin-right:0px;
+	margin-left:0px;
+}
+div.lettre p { font-size:16px; }
+.press-logo { margin-bottom:5px; }
+.supporteurs .goalProgress {
+	background: white;
+	width: 98%;
+	margin: 0 auto;
+	height:35px;
+}
+.supporteurs div.progressBar {
+	background: #56d840;
+	overflow:visible;
+	color: #5e5e5e;
+	height:35px;
+	text-align:center;
+	font-size: 17px;
+	letter-spacing: -1px;
+	font-weight: 400;
+	padding: 7px;
+	display: block;
+	width: 20px;
+}
+.thumbnail { 
+	min-height: 260px;
+	margin-bottom: 40px;
+}
+.photo {
+	width: 100%;
+	height: 100%;
+	background-position: center center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+.hero-feature .about { font-size:12px; }
+.hero-feature .bio { text-align:justify; }
+.equipe .hero-feature h3 {
+	margin: 0px;
+}
+.hero-feature h3 {
+	font-size: 22px;
+	margin-top: 10px;
+	text-align:center;
+}
+.hero-feature h3 span { color: #d91d1c; font-weight: bold; }
+.hero-feature p { font-size: 13px; }
+.hero-feature img.background { height: 250px; }
+.equipe .hero-feature img { height: 150px; }
+.photo img.background {
+	min-height: 100%;
+	min-width: 100%;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	/* IE 5-7 */
+	filter: alpha(opacity=0);
+	/* modern browsers */
+	opacity: 0;
+}
+.hero-feature .blue:hover { background-color:#d91d1c; border-color:red;}
+#fundraising_bar {
+	margin-top:70px;
+	padding:2px 0px;
+	/*background-color: #d91d1c;*/
+	background-color: #527bdd;
+}
+.supporteurs .goalProgress {
+	width: 100%;
+	background-color: #ddd;
+}
+.supporteurs div.progressBar {
+	/*background-image: linear-gradient(to right, white,#56d840) !important;*/
+	background-image: linear-gradient(to right,#83abfd,#527bdd) !important;
+	/*background-image: linear-gradient(to right, white,#d91d1c) !important;*/
+	text-align:right;
+	font-weight: normal;
+	font-size:18px;
+	color:white;
+}
+#header_overlay { padding-top:0px; }
+.nb_citizens_fig {
+	font-weight:bold;
+	color: #527bdd;
+}
+#nb_citoyens_app {
+	margin-top:5px;
+	font-size:20px;
+}
+.intro-heading span {
+	color: #d91d1c;
+	font-weight:bold;
+}
+.intro-heading {
+	font-size: 42px !important;
+	color: #527bdd;
+}
+.intro-lead-in { font-size: 26px !important; }
+.fa {
+	font-size: 1.5em;
+	padding:0.1em;
+}
+ul.social_buttons > li{
+	display: inline-block;
+	margin-bottom: 5px;
+}
+#programme_overlay {
+	background-color: #d91d1c;
+	padding-top: 20px;
+}
+#partager_overlay {
+	background: rgba(255,255,255,0.95);
+	padding: 20px 0px;
+}
+.partager {
+    background-image: url(https://s3.eu-central-1.amazonaws.com/laprimaire/crowd-700x250.jpg);
+    background-repeat: repeat;
+    padding:0px;
+}
+.programme, .equipe {
+    position: relative;
+    padding: 0;
+    list-style: none;
+}
+h2.section-heading {
+	color:white;
+	font-size: 40px;
+}
+.fa-stack-1x {
+	font-size: 24px;
+	top: -2px;
+}
+.fa-stack.bleu { color:#527bdd; }
+.fa-stack.rouge { color:#d91d1c; }
+.caption p {
+	font-size: 14px;
+	text-align:justify;
+}
+h3.cat_title a { color:white; }
+h3.cat_title {
+	padding:4px;
+	font-weight:bold;
+	position:absolute;
+	top:0px;
+	text-align:left;
+}
+h3.cat_title.politique-generale { background-color: rgba(255,255,255,0.8); }
+h3.cat_title.politique-generale a { color: #5e5e5e; }
+h3.cat_title.blog { background-color: rgba(255,153,0,0.8); }
+h3.cat_title.planete { background-color: rgba(102,204,0,0.8); }
+h3.cat_title.societe { background-color: rgba(255,102,102,0.8); }
+h3.cat_title.economie { background-color: rgba(204,204,0,0.8); }
+h3.cat_title.institutions { background-color: rgba(51,153,255,0.8); }
+p.article_title {
+	padding:4px;
+	width:65%;
+	background-color: rgba(255,255,255,0.8);
+	position:absolute;
+	text-align:justify;
+	color:#444;
+	max-width:436px;
+	top:81px;
+	font-size: 13px;
+}
+h3.subcat_title {
+	padding:4px;
+	background-color: rgba(255,255,255,0.8);
+	font-weight:bold;
+	position:absolute;
+	text-align:left;
+	color:#444;
+	top:32px;
+	font-size: 14px;
+}
+div.notyet { opacity: 0.4; }
+p.notyet {
+	font-size: 34px;
+	color:white;
+	font-weight:bold;
+	position:absolute;
+	top:86px;
+	text-align:center;
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-moz-transform:rotate(-45deg);
+	-ms- transform: rotate(-45deg);
+}
+div.misenligne.priority0 {
+	display:none;
+}
+div.misenligne .fa-star {
+	color:#f3d50a;
+}
+div.misenligne {
+	font-size:12px;
+	font-style:italic;
+	text-align:right;
+	margin:0px;
+	margin-top:-22px;
+	background-color:rgba(255,255,255,0.7);
+}
+img.author {
+	position:absolute;
+	top:-20px;
+	right:0px;
+	width:65px;
+	height:65px;
+	border:5px solid #eee;
+}
+.btn.twitter {
+	border-color:#00aced;
+	color:#fff;
+	background-color:#00aced;
+}
+
+.btn.facebook {
+	border-color:#3b5998;
+	color:#fff;
+	background-color:#3b5998;
+}
+-->
+</style>
+	<!-- Header -->
+    <header>
+	    <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;padding-bottom:0px;margin-top:120px;">
+	    </div>
+    </header>
+    <section id="contribute_form" class="programme">
+	    <div style="position:absolute;background-color:#527bdd;width:221px;height:40px;padding:10px 25px;font-size:15px;color:white;top:-41px;"><a style="color:white;cursor:pointer;" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars fa-lg white"></i>&nbsp;FILTRES</a></div>
+	    <div id="programme_overlay" class="blue" style="border-bottom: 2px solid #d91d1c;">
+		    <div class="row">
+		      <div style="width:300px;padding:5px;margin: 0 auto;">
+			<div class="input-group">
+			  <input id="searchbox" type="text" class="form-control" placeholder="Recherchez...">
+			  <span class="input-group-btn">
+			    <button class="btn btn-default" type="button">Go!</button>
+			  </span>
+			</div><!-- /input-group -->
+		      </div><!-- /.col-lg-6 -->
+		    </div><!-- /.row -->
+
+		    <div class="row" id="wrapper">
+			    <div id="sidebar-wrapper" style="">
+				    <div class="sidebar-nav">
+					    <div style="padding-left:25px;">
+						    <div id="priorities" style="margin:10px 0px;"></div>
+						    <div id="author" style="margin:10px 0px;"></div>
+						    <div id="parent_theme" style="margin-top:10px;"></div>
+						    <div id="theme" style="margin-top:10px;"></div>
+					    </div>
+				    </div>
+			    </div>
+			    <div id="page-content-wrapper">
+				    <div class="container-fluid" style="background-color:#d91d1c;">
+					    <div class="row" style="width:95%;margin: 5px auto;">
+					    </div>
+					    <div id="hits-container"></div>
+				    </div>
+			    </div>
+		    </div>
+	    </div>
+    </section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+<script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+<script type="text/javascript">
+function shuffle (o){
+	  for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	  return o;
+}
+function getURLParameter(name) {
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
+}
+function createCookie(name,value) {
+	var date = new Date();
+	date.setTime(date.getTime()+(5*60*1000)); // 5 minutes
+	var expires = "; expires="+date.toGMTString();
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+function eraseCookie(name) { createCookie(name,"",-1); }
+/* device.js */
+(function($){$.fn.extend({goalProgress:function(options){var defaults={goalAmount:100,currentAmount:50,speed:1E3,textBefore:"",textAfter:""};var options=$.extend(defaults,options);return this.each(function(){var obj=$(this);var goalAmountParsed=parseInt(defaults.goalAmount);var currentAmountParsed=parseInt(defaults.currentAmount);var percentage=currentAmountParsed/goalAmountParsed*100;var progressBar='<div class="progressBar">'+defaults.textBefore+currentAmountParsed+defaults.textAfter+"</div>";var progressBarWrapped=
+'<div class="goalProgress">'+progressBar+"</div>";obj.append(progressBarWrapped);var rendered=obj.find("div.progressBar");rendered.each(function(){$(this).html($(this).text().replace(/\s/g,"&nbsp;"))});rendered.animate({width:percentage+"%"},defaults.speed)})}})})(jQuery);
+
+/* google analytics */
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-60977053-1', 'auto');
+ga('send', 'pageview');
+
+$(document).ready(function(){
+	$("a.joinus_action").click(function() {
+			ga('send','event','button','click','Je participe');
+	});
+	if ($('#JoinsUsNow')!=null) {
+		$('#JoinUsNow').on('shown.bs.modal', function () {
+			var qaj8t6m07xo97p;(function(d, t) {
+			var s = d.createElement(t), options = {
+			'userName':'democratech',
+			'formHash':'qaj8t6m07xo97p',
+			'autoResize':true,
+			'height':'397',
+			'async':true,
+			'host':'wufoo.com',
+			'header':'hide',
+			'ssl':true};
+			s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+			s.onload = s.onreadystatechange = function() {
+			var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+			try { qaj8t6m07xo97p = new WufooForm();qaj8t6m07xo97p.initialize(options);qaj8t6m07xo97p.display(); } catch (e) {}};
+			var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+			})(document, 'script');
+		});
+	}
+	if ($('#fundraising_bar')!=null) {
+		var app_stats=readCookie('app_stats');
+		if (app_stats==null) {
+			$.get("https://api.democratech.co/v1/app/stats", function( data ){
+				var nb_candidates=data['nb_candidates'];
+				var nb_citizens=data['nb_citizens'];
+				var nb_plebiscites=data['nb_plebiscites'];
+				createCookie('app_stats',JSON.stringify({nb_candidates: nb_candidates, nb_citizens: nb_citizens, nb_plebiscites: nb_plebiscites}));
+				$('#nb_citoyens_app').html("<span class='nb_citizens_fig'>"+nb_citizens+"</span> citoyens participent... et vous ?");
+				$('#nb_candidates').html("<a href='/candidats/'>"+nb_candidates+" candidats</a>");
+				$('#nb_plebiscites').html("<a href='/citoyens/'>"+nb_plebiscites+" citoyens</a>");
+				var supporteurs=nb_citizens;
+				var percentage = supporteurs / 1000;
+				var percentage_str = Math.round(percentage);
+				$('#fundraising_bar').goalProgress({
+					goalAmount: 100,
+					currentAmount: percentage,
+					textBefore: '',
+					textAfter: " % de l'objectif de 100.000 citoyens atteint"
+				});
+
+
+			});
+		} else {
+			data=JSON.parse(app_stats);
+			var nb_candidates=data['nb_candidates'];
+			var nb_citizens=data['nb_citizens'];
+			var nb_plebiscites=data['nb_plebiscites'];
+			$('#nb_citoyens_app').html("<span class='nb_citizens_fig'>"+nb_citizens+"</span> citoyens participent... et vous ?");
+			$('#nb_candidates').html("<a href='/candidats/'>"+nb_candidates+" candidats</a>");
+			$('#nb_plebiscites').html("<a href='/citoyens/'>"+nb_plebiscites+" citoyens</a>");
+			var supporteurs=nb_citizens;
+			var percentage = supporteurs / 1000;
+			var percentage_str = Math.round(percentage);
+			$('#fundraising_bar').goalProgress({
+				goalAmount: 100,
+				currentAmount: percentage,
+				textBefore: '',
+				textAfter: " % de l'objectif de 100.000 citoyens atteint"
+			});
+		}
+	}
+	if ($('img.lazy')!=null || $('div.lazy')!=null) {
+		$.getScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js', function() {
+				$("img.lazy").lazyload({effect:"fadeIn"});
+				$("div.lazy").lazyload({effect:"fadeIn"});
+		});
+	}
+});
+var search = instantsearch({
+	appId: 'D1XVECSSVA',
+	apiKey: '58643f9dff29db9f8da06875479fb290',
+	indexName: 'programmes',
+	urlSync: false
+});
+search.addWidget(
+	instantsearch.widgets.toggle({
+		container: '#priorities',
+		attributeName: 'priority',
+		label: 'Priorité',
+		values: {
+			on: '1'
+		},
+		cssClasses: {
+			header:'lp-cat-header',
+			item:'lp-cat-item',
+			checkbox:'lp-cat-checkbox',
+			label:'lp-cat-label',
+			active:'lp-cat-active',
+			count:'lp-cat-count'
+		},
+		templates: {
+			header: 'Priorité'
+		}
+	})
+);
+search.addWidget(
+	instantsearch.widgets.refinementList({
+	container: '#parent_theme',
+	attributeName: 'parent_theme',
+	sortBy: ['parent_theme:asc'],
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Catégorie',
+	}
+})
+);
+
+search.addWidget(
+	instantsearch.widgets.refinementList({
+	container: '#theme',
+	attributeName: 'theme',
+	sortBy: ['theme:asc'],
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Thématique',
+	}
+})
+);
+search.addWidget(
+	instantsearch.widgets.refinementList({
+	container: '#author',
+	attributeName: 'candidat',
+	sortBy: ['candidat:asc'],
+	limit: 100,
+	autoHideContainer: true,
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Candidats',
+	}
+})
+);
+search.addWidget(
+	instantsearch.widgets.hits({
+		container: '#hits-container',
+		templates: {
+			empty: '\
+			<div style="background-color:white;padding:15px;width:320px;margin:0 auto;">\
+			<div style="margin:10px 0px;text-align:justify;">\
+			Encore aucun article n\'a été publié dans cette thématique. Les candidats publient de nouveaux articles chaque semaine.\
+			</div>\
+			<div style="margin:10px 0px;text-align:justify;">\
+			Revenez dans quelques jours, ou inscrivez-vous pour être tenus au courant :\
+			</div>\
+			<div style="width:150px;margin:20px auto;">\
+				<button data-target="#JoinUsNow" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:150px;border-radius:4px;">Je m\'inscris</button>\
+			</div>\
+			</div>',
+			       allItems: '{{#hits}}\
+		       <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 hero-feature">\
+			    <div class="thumbnail" style="max-width:436px;float:right;">\
+			    <a href="{{link}}" target="_blank" style="cursor:pointer;">\
+			    <div class="photo" style="background-image: url(\'https:\/\/s3.eu-central-1.amazonaws.com\/laprimaire\/themes\/{{theme_slug}}.jpg\');">\
+			    <img class="background" src="https://s3.eu-central-1.amazonaws.com/laprimaire/themes/{{theme_slug}}.jpg" alt="{{theme}}">\
+					    </div>\
+				    </a>\
+				    <h3 class="cat_title {{parent_theme_slug}}"><a style="color:white;" href="https://laprimaire.org">{{parent_theme}}</a></h3>\
+				    <h3 class="subcat_title">{{{_highlightResult.theme.value}}}</h3>\
+				    <a href="/qualifie/{{candidat_slug}}" title="{{candidat}}"/><img src="{{candidat_photo}}" class="img-responsive img-circle author" width="65px" height="65px" alt="{{candidat}}"></a>\
+				    <div style="max-width:436px;">\
+				    <a style="color:#5e5e5e;font-style:none;font-decoration:none;" href="{{link}}" target="_blank"><p class="article_title">&ldquo;<i>{{{_highlightResult.proposition.value}}}</i>&rdquo;</p></a>\
+				    </div>\
+				    <div class="misenligne priority{{priority}}">Mesure prioritaire <i class="fa fa-star fa-2" aria-hidden="true" title="Mesure prioritaire" alt="Mesure prioritaire"></i></div>\
+			    </div>\
+		    </div>\
+{{/hits}}'
+		},
+		hitsPerPage: 200
+	})
+);
+search.start();
+
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+</script>
