@@ -103,12 +103,18 @@ h3 { color:white; }
 						    </div>
 						    <h3><i class="fa fa-user" aria-hidden="true"></i>Authentification</h3>
 						    <div style="margin-bottom:20px;background-color: white;border-radius: 10px;color:#5e5e5e;padding:10px;width:300px;margin:0px auto 20px auto;font-size:16px;"><%= citoyen['email'] %></div>
+						    <% if citoyen['forbidden']==1 %>
+						    <div id="auth_0_forbidden" class="auth_0_msg" style="font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> cet email est invalide</div>
+						    <% elsif citoyen['fraud_suspected_clones']==1 %>
+							    <div id="auth_0_fraud_clones" class="auth_0_msg" style="font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Fraude suspectée. Merci de nous <a href="/contact/?topic=Fraude%20suspectée" target="_blank">contacter</a> pour vous authentifier.</div>
+						    <% else %>
 						    <p style="font-size:15px;">Pour pouvoir voter, vous devez vous identifier au préalable.</p>
 						    <p style="font-size:15px;">En vous idenfiant, vous déclarez sur l'honneur que l'ensemble des déclarations formulées dans le cadre de ce vote sont sincères et vérifiables.</p>
 						    <p style="font-size:15px;">Cette procédure a fait l'objet d'une déclaration auprès de la CNIL<br/>déclaration normale n°1996018.</p>
 						    <div class="btn_bottom">
 							    <button id="auth_0_yes" style="width:230px;" class="btn btn-xl oui">Commencer</button>
 						    </div>
+						    <% end %>
 					    </div>
 					    <div id="auth_1" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
 						    <div class="mention_logo">
@@ -289,6 +295,9 @@ $(document).ready(function() {
 		$('#Authentication').modal('show');
 	}
 	$.get("<%= API_HOST %>/v1/auth/email/verif/<%= citoyen['user_key'] %>")
+	.done(function( data ){ console.log(data); })
+	.error(function(data) { console.log(data); });
+	$.get("<%= API_HOST %>/v1/auth/geodata/lookup")
 	.done(function( data ){ console.log(data); })
 	.error(function(data) { console.log(data); });
 	

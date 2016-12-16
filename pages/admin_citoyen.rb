@@ -110,7 +110,16 @@ END
 				return set
 			end
 
-			def access_ballot(email,ballot_id)
+			def email_domain_valid(email)
+				check="SELECT domain FROM forbidden_domains as fd WHERE fd.domain=substring($1 from '@(.*)$')"
+				res=Pages.db_query(check,[email])
+				return res.num_tuples.zero?
+			end
+
+			def clones_count()
+				check="SELECT count(*),ip_address,useragent_raw FROM (SELECT ip_address,email,ua.useragent_raw FROM auth_history AS a INNER JOIN user_agents AS ua ON (ua.useragent_id=a.useragent_id) GROUP BY ip_address,email,useragent_raw) as a where ip_address=$1 and useragent_raw=$2 group by ip_address,useragent_raw order by count desc"
+				res=Pages.db_query(check,[request.ip,request.user_agent])
+				return res.num_tuples.zero? ? 0 : res[0]['count']
 			end
 		end
 
@@ -182,6 +191,17 @@ END
 				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
+				if !email_domain_valid(citoyen['email']) then
+					status 403
+					citoyen['forbidden']=1
+					Pages.log.error "Forbidden email domain name : #{citoyen['email']}"
+				end
+				clones=clones_count()
+				if clones>FRAUD_THRESHOLD_CLONES then
+					status 403
+					citoyen['fraud_suspected']=1
+					Pages.log.error "Fraud suspected : #{citoyen['email']} [#{clones} clones]"
+				end
 			rescue PG::Error => e
 				Pages.log.error "/citoyen/auth DB Error #{params}\n#{e.message}"
 				status 500

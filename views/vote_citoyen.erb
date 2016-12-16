@@ -261,10 +261,10 @@ ul.social_buttons > li{
 								    <i class="<%= vote['cc_vote_id']%>_mini_pending fa fa-cog fa-spin" aria-hidden="true" style="font-size:45px;padding:0px;color:#ffa07a;float:left;display:none;"></i>
 								    <i class="<%= vote['cc_vote_id']%>_mini_absent fa fa-square-o" aria-hidden="true" style="font-size:45px;padding:0px;color:#d91d1c;float:left"></i>
 								    <% end %>
-								    <a href="#<%= candidate['vote_id'] %>_lnk">
+								    <a href="#<%= candidate['candidate_id'] %>_lnk">
 									    <img style="overflow:auto;" class="img-circle" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/<%= candidate['slug'] %>-mini.jpg">
 								    </a>
-								    <div><a href="#<%= candidate['vote_id'] %>_lnk"><%= candidate['name'] %></a></div>
+								    <div><a href="#<%= candidate['candidate_id'] %>_lnk"><%= candidate['name'] %></a></div>
 							    </div>
 						    </div>
 					    <% end %>
@@ -303,7 +303,7 @@ ul.social_buttons > li{
 		    <% if not VOTE_PAUSED %>
 		    <div class="row" style="padding-top:10px;">
 		    <% ballot['candidates'].each do |candidate| %>
-			    <div id="<%= candidate['vote_id'] %>_lnk" class="col-sm-12 col-xs-12 hero-feature">
+			    <div id="<%= candidate['candidate_id'] %>_lnk" class="col-sm-12 col-xs-12 hero-feature">
 				    <div class="thumbnail" style="margin-bottom:5px;">
 					    <div class="row">
 						    <div class="col-md-3 col-sm-12 hero-feature">
@@ -341,15 +341,6 @@ ul.social_buttons > li{
 									    <li><a href="<%= candidate['main_article'] %>" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-trello" aria-hidden="true"></i>Présentation</a></li>
 									    <li><a href="<%= candidate['trello'] %>" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-list-ol" aria-hidden="true"></i>Programme</a></li>
 									    <li><a href="https://laprimaire.org/qualifie/<%= candidate['slug'] %>#articles" target="_blank" class="btn candidat btn-default btn-xs blue"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Articles</a></li>
-									    <li>
-									    <% if candidate['illustration'].nil? %>
-										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas pu être illustré" disabled>
-
-									    <% else %>
-										    <a href="https://s3.eu-central-1.amazonaws.com/laprimaire/illustrations/<%= candidate['slug'] %>.jpg" target="_blank" class="btn candidat btn-default btn-xs blue">
-									    <% end %>
-										    <i class="fa fa-picture-o" aria-hidden="true"></i>Illustration</a>
-									    </li>
 									    <li>
 									    <% if candidate['interview'].nil? %>
 										    <% if candidate['slug']=="jean-michel-billaut" %>
