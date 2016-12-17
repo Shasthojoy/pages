@@ -10,7 +10,7 @@ require 'wannabe_bool'
 
 Algolia.init :application_id=>ALGOLIA_ID, :api_key=>ALGOLIA_KEY
 index_programme=Algolia::Index.new("programmes")
-file=CSV.read('programme.csv')
+file=CSV.read(ARGV[0])
 file.each_with_index do |p,i|
 	index_programme.save_object({
 		"objectID"=>i.to_s,

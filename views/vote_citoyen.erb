@@ -205,7 +205,7 @@ ul.social_buttons > li{
 			</ul>
 		    </li>-->
 		    <li class="active">
-			    <a tabindex="0" href="/financer/" class="donate-link" style="cursor:pointer;background-color:#527bdd;">Faire un don</a>
+			    <a tabindex="0" href="/adherer/" class="donate-link" style="cursor:pointer;background-color:#527bdd;">Faire un don</a>
                     </li>
                 </ul>
             </div>
@@ -224,13 +224,12 @@ ul.social_buttons > li{
 		    </div>
 	    <% end %>
 		    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px;">
-				    <div class="thumbnail" style="margin-bottom:5px;padding:20px;">
+				    <div class="thumbnail" style="margin-bottom:5px;padding:20px;margin: 0px 15px;">
 					    <div class="row">
 						    <div class="col-xs-12 col-md-8" style="text-align:justify;">
 							    <h3 style="margin-top:0px;">Bienvenue sur votre page personnelle de vote</h3>
 							    <p style="font-size:14px;">Afin d'assurer une vraie égalité démocratique entre les candidat(e)s et obtenir les résultats les plus représentatifs, LaPrimaire.org utilise un système de vote plus évolué que celui dont vous avez l'habitude.<br/>3 règles principales&nbsp;:</p>
 							    <ul>
-								    <li>Vous devez <b>obligatoirement</b> vous exprimer sur les 5 candidat(e)s pour que votre participation soit validée</li>
 								    <li>Vous attribuez à chaque candidat une mention allant de "Insuffisant" à "Très bien"</li>
 								    <li>Chaque vote est final et ne peut pas être modifié après envoi</li>
 							    </ul>
@@ -270,6 +269,12 @@ ul.social_buttons > li{
 					    <% end %>
 						    <div class="col-md-1 col-xs-hidden">&nbsp;</div>
 					    </div>
+		    <div class="row" style="padding-top:10px;">
+			    <a type="button" class="btn blue" style="width:200px;margin-bottom:5px;" href="#liste_candidats">Voir les candidats</a>&nbsp;&nbsp; 
+			    <a target="_blank" type="button" class="btn blue" style="width:200px;margin-bottom:5px;" href="/citoyen/vote/comparateur">Explorer les propositions</a>&nbsp;&nbsp; 
+			    <a target="_blank" type="button" class="btn blue" style="width:200px;margin-bottom:5px;" href="http://elections.voxe.org/iframe2/?country=france&elections=57f426fa5917fc8d100001f8">Comparer 2 candidats</a>&nbsp;&nbsp; 
+			    <div style="margin-top:10px;">Votre opinion est faite ? Parfait, vous pouvez désormais voter :</div>
+		    </div>
 					    <% if not VOTE_PAUSED %>
 					    <div class="row">
 						    <div style="margin-bottom:10px;margin-top: 10px;">
@@ -301,7 +306,7 @@ ul.social_buttons > li{
 
 		    </div>
 		    <% if not VOTE_PAUSED %>
-		    <div class="row" style="padding-top:10px;">
+		    <div class="row" style="padding-top:10px;" id="liste_candidats">
 		    <% ballot['candidates'].each do |candidate| %>
 			    <div id="<%= candidate['candidate_id'] %>_lnk" class="col-sm-12 col-xs-12 hero-feature">
 				    <div class="thumbnail" style="margin-bottom:5px;">
@@ -369,6 +374,14 @@ ul.social_buttons > li{
 										    <a href="<%= candidate['video'] %>" target="_blank" class="btn candidat btn-default btn-xs blue">
 									    <% end %>
 										    <i class="fa fa-film" aria-hidden="true"></i>Video</a>
+									    </li>
+									    <li>
+									    <% if candidate['website'].nil? %>
+										    <a class="btn candidat btn-default btn-xs blue" title="<%= candidate['name']%> n'a pas souhaité mettre en ligne son site web" disabled>
+									    <% else %>
+										    <a href="<%= candidate['website'] %>" target="_blank" class="btn candidat btn-default btn-xs blue">
+									    <% end %>
+										    <i class="fa fa-globe" aria-hidden="true"></i>Site web</a>
 									    </li>
 								    </ul>
 
