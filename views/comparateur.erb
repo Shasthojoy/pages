@@ -658,8 +658,7 @@ search.addWidget(
 		container: '#hits-container',
 		transformData: {
 			allItems: function (content) {
-				//return { hits: shuffle(content.hits) };
-				return { hits: content.hits };
+				return { hits: shuffle(content.hits) };
 			}
 		},
 		templates: {
