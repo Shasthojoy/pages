@@ -253,8 +253,12 @@ END
 			return JSON.dump({'token'=>vote_token})
 		end
 
+		get '/citoyen/vote/:user_key/1' do
+				redirect "/citoyen/vote/#{params['user_key']}/2"
+		end
+
 		get '/citoyen/vote/:user_key' do
-				redirect "/citoyen/vote/#{params['user_key']}/1"
+				redirect "/citoyen/vote/#{params['user_key']}/2"
 		end
 
 		get '/citoyen/vote/:user_key/:vote_id' do
