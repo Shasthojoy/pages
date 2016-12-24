@@ -220,20 +220,19 @@ h3 { color:white; }
 								    <div id="auth_5_msg_sent" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> patientez...</div>
 								    <input id="auth_5_orig" type="hidden" class="form-control" value="<%= citoyen['telephone'] %>">
 							    </div>
+							    <p style="font-size:16px;">Pour pouvoir voter, nous allons vous envoyer un code.<br/>Comment souhaitez-vous recevoir ce code ?</p>
 							    <div class="radio" style="font-size:16px;">
 								    <label>
 									    <input type="radio" name="typeTel" id="radioPortable" value="sms" checked>
-									    C'est un téléphone portable
+									    Envoyez-moi un SMS avec le code
 								    </label>
 							    </div>
 							    <div class="radio" style="font-size:16px;">
 								    <label>
 									    <input type="radio" name="typeTel" id="radioFixe" value="call">
-									    C'est un téléphone fixe
+									    Appelez-moi pour me donner le code
 								    </label>
 							    </div>
-							    <p style="font-size:16px;" id="tel_portable_label">Pour pouvoir voter, nous allons vous envoyer un code par SMS.</p>
-							    <p style="font-size:16px;display:none;" id="tel_fixe_label">Pour pouvoir voter, vous recevrez un appel automatique avec un code personnel.</p>
 							    <div class="btn_bottom">
 								    <button id="auth_5_yes" class="btn btn-xl oui">Continuer</button>
 							    </div>
@@ -458,8 +457,8 @@ $(document).ready(function() {
 				return;
 			});
 	});
-	$('#radioFixe').click(function() { $('#tel_fixe_label').show(); $('#tel_portable_label').hide();});
-	$('#radioPortable').click(function() { $('#tel_portable_label').show(); $('#tel_fixe_label').hide();});
+	//$('#radioFixe').click(function() { $('#tel_fixe_label').show(); $('#tel_portable_label').hide();});
+	//$('#radioPortable').click(function() { $('#tel_portable_label').show(); $('#tel_fixe_label').hide();});
 	$('#auth_5_yes').click(function() {
 			$('.auth_5_msg').hide();
 			var tel=$('#auth_5_input').val();

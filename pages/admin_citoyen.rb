@@ -179,7 +179,14 @@ END
 
 		get '/citoyen/vote/comparateur' do
 			erb :index, :locals=>{
-				'page_info'=>page_info({}),
+				'page_info'=>{
+					'page_description'=>"Explorez et comparez les propositions des 5 citoyen(ne)s candidat(e)s finalistes à LaPrimaire.org.",
+					'page_author'=>"Les citoyen(ne)s candidat(e)s à LaPrimaire.org",
+					'page_image'=>"https://s3.eu-central-1.amazonaws.com/laprimaire/images/comparateur.jpg",
+					'page_url'=>"https://laprimaire.org/citoyen/vote/comparateur",
+					'page_title'=>"Explorez et comparez les propositions des citoyen(ne)s candidat(e)s à LaPrimaire.org !",
+					'social_title'=>"Explorez et comparez les propositions des citoyen(ne)s candidat(e)s à LaPrimaire.org !"
+				},
 				'template'=>:comparateur,
 				'vars'=>{}
 			}
