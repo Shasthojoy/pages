@@ -320,9 +320,9 @@ p.notyet {
 	-moz-transform:rotate(-45deg);
 	-ms- transform: rotate(-45deg);
 }
-div.misenligne.priority0 {
-	display:none;
-}
+div.misenligne.priority1 { display:visible; }
+div.misenligne.priority { display:none; }
+div.misenligne.priority0 { display:none; }
 div.misenligne .fa-star {
 	color:#f3d50a;
 }
@@ -557,7 +557,7 @@ var search = instantsearch({
 	appId: 'D1XVECSSVA',
 	apiKey: '58643f9dff29db9f8da06875479fb290',
 	indexName: 'programmes',
-	urlSync: false
+	urlSync: true
 	});
 search.addWidget(
 	instantsearch.widgets.searchBox({
