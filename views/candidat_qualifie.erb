@@ -283,8 +283,10 @@ img.author {
 					    <div style="margin-bottom:20px;">
 						    <!--<p style="font-size:16px;">Pour suivre et soutenir <%= firstname %> : <i>inscrivez-vous&nbsp;!</i></p>
 						    <button data-target="#JoinUsNow" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:150px;border-radius:4px;">Je m'inscris</button>-->
-						    <p style="font-size:16px;">Pour pouvoir suivre et soutenir <%= firstname %> : <i>Votez&nbsp;!</i></p>
-						    <button data-target="#JoinUsNow" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:150px;border-radius:4px;">Je vote</button>
+						    <% if slug=='charlotte-marchandise-franquet' %>
+						    <p style="font-size:16px;">Pour soutenir la campagne de <%= firstname %> : <i>Faites un don&nbsp;!</i></p>
+						    <a type="button" class="joinus_action btn btn-xl red" data-toggle="modal" style="font-size:22px;width:200px;border-radius:4px;" href="/don-charlotte-marchandise/">FAIRE UN DON</a>
+						    <% end %>
 					    </div>
 				    </div>
 			    </div>
