@@ -16,9 +16,37 @@
 
 module Pages
 	class Candidat < Sinatra::Application
+        register Sinatra::Subdomain
+        
 		def initialize(base)
 			super(base)
 			@queries={
+                'get_candidate_by_slug'=><<END,
+SELECT u.*, ce.fields->>'circonscription' as circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
+    FROM users as u
+    INNER JOIN candidates_elections as ce ON (ce.email=u.email)
+    INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.hostname=$2)
+    LEFT JOIN (
+	    SELECT candidate,election_id,count(supporter) as soutiens
+	    FROM supporters
+	    GROUP BY candidate,election_id
+      ) as s
+  on (s.candidate = u.email AND s.election_id=e.election_id)
+WHERE u.slug = $1;
+END
+                'get_candidate_by_circo'=><<END,
+SELECT (row_to_json(u.*)::jsonb||('{"circonscription": "'::text||(ce.fields->>'circonscription')::text||'"}')::jsonb)::jsonb
+    FROM users as u
+    INNER JOIN candidates_elections as ce ON (ce.email=u.email)
+    INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.hostname=$2)
+    LEFT JOIN (
+     SELECT candidate,election_id,count(supporter) as soutiens
+     FROM supporters
+     GROUP BY candidate,election_id
+      ) as s
+  on (s.candidate = u.email AND s.election_id=e.election_id) 
+WHERE ce.accepted;
+END
 				'get_candidate'=><<END,
 SELECT c.*, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
   FROM candidates as c
@@ -47,7 +75,7 @@ END
 			}
 		end
 
-		helpers do
+		helpers do            
 			def page_info(infos)
 				gender=infos['gender']
 				info={
@@ -67,18 +95,146 @@ END
 		end
 
 		configure do
-			set :view, 'views'
+#            if !subdomain.nil? then
+#                set :view, "views/#{subdomain}"
+#            else
+#                set :view, 'views'
+#            end
+            set :view, 'views'
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
+        subdomain do
+            get '/departement/:dept/circonscription/:circo/list' do
+            end
+            
+            get '/candidat/:slug' do
+                	if params['candidate_id']=='sitemap.xml' then
+                        content_type 'text/xml'
+                        return File.read(File.expand_path(File.dirname(__FILE__))+'/sitemap.xml') 
+                    end
+                    begin
+                        Pages.db_init()
+                        res=Pages.db_query(@queries["get_candidate_by_slug"],[params['slug'],request.host])
+                    rescue PG::Error => e
+                        status 500
+                        return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>strip_tags(e.message)}}
+                    ensure
+                        Pages.db_close()
+                    end
+                    if res.num_tuples.zero? then
+                        status 404
+                        return erb :error, :locals=>{:msg=>{"title"=>"Page candidat inconnue","message"=>"Cette page ne correspond à aucun candidat"}}
+                    end
+                    candidat=res[0]
+                    if ABANDONS.include?(candidat['candidate_id'].to_i) then
+                        status 200
+                        return erb :error, :locals=>{:msg=>{"title"=>"Candidat retiré","message"=>"Ce candidat a souhaité retirer sa candidature"}}
+                    end
+                    if EXCLUSIONS.include?(candidat['candidate_id'].to_i) then
+                        status 200
+                        if candidat['candidate_id'].to_i==697785064574 then # Droit de réponse
+                            return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org.<p><b>droit de réponse&nbsp;:</b> L'intéressé conteste ces accusations fondées sur des statistiques sujettes à caution et non communiquées au public.</p><p><b>notre réponse&nbsp;:</b> Voici l'<a href=\"https://docs.google.com/document/d/1N71aDm8IhpWX92Y-Ub3rOjTTOEpu9tdJoK8QkCrDug4/edit?usp=sharing\" target=\"_blank\">analyse des soutiens du candidat</a> sur laquelle nous avons basé notre décision de disqualification."}}
+                        else
+                            return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org"}}
+                        end
+                    end
+                    candidat['name']=candidat['firstname'].to_s+' '+candidat['lastname'].to_s
+                    candidat['encoded_name']=URI::encode(candidat['name'])
+                    candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
+                    candidat['qualified']= (candidat['soutiens'].to_i >= 500)
+                    candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
+                    secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
+                    circonscription=candidat['circonscription']
+                    departement_name=candidat['departement'].split(' - ')[1] unless candidat['departement'].nil?
+                    departement_name=html_escape(departement_name) unless departement_name.nil?
+                    departement=html_escape(candidat['departement']) unless candidat['departement'].nil?
+                    job=html_escape(candidat['job']) unless candidat['job'].nil?
+                    vision=html_escape(candidat['vision']) unless candidat['vision'].nil?
+                    prio1=html_escape(candidat['prio1']) unless candidat['prio1'].nil?
+                    prio2=html_escape(candidat['prio2']) unless candidat['prio2'].nil?
+                    prio3=html_escape(candidat['prio3']) unless candidat['prio3'].nil?
+                    website=html_escape(candidat['website'].split('?')[0]) unless candidat['website'].nil? or candidat['website'].empty?
+                    facebook=html_escape(candidat['facebook'].split('?')[0]) unless candidat['facebook'].nil? or candidat['facebook'].empty?
+                    twitter=html_escape(candidat['twitter'].split('?')[0]) unless candidat['twitter'].nil? or candidat['twitter'].empty?
+                    linkedin=html_escape(candidat['linkedin'].split('?')[0]) unless candidat['linkedin'].nil? or candidat['linkedin'].empty?
+                    blog=html_escape(candidat['blog'].split('?')[0]) unless candidat['blog'].nil? or candidat['blog'].empty?
+                    youtube=html_escape(candidat['youtube'].split('?')[0]) unless candidat['youtube'].nil? or candidat['youtube'].empty?
+                    instagram=html_escape(candidat['instagram'].split('?')[0]) unless candidat['instagram'].nil? or candidat['instagram'].empty?
+                    wikipedia=html_escape(candidat['wikipedia'].split('?')[0]) unless candidat['wikipedia'].nil? or candidat['wikipedia'].empty?
+                    birthday=Date.parse(candidat['birthday'].split('?')[0]) unless candidat['birthday'].nil?
+                    age=nil
+                    unless birthday.nil? then
+                        now = Time.now.utc.to_date
+                        age = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+                    end
+                    date_verified=Date.parse(candidat['date_verified']) unless candidat['date_verified'].nil?
+                    days_verified = (Date.today-date_verified).to_i unless date_verified.nil?
+
+                    m=(candidat['gender']=="M")
+                    gender={
+                        "le"=>m ? "le":"la",
+                        "il"=>m ? "il":"elle",
+                        "ce"=>m ? "ce":"cette",
+                        "citoyen"=>m ? "citoyen":"citoyenne",
+                        "citoyens"=>m ? "citoyens":"citoyennes",
+                        "candidat"=>m ? "candidat":"candidate",
+                        "candidats"=>m ? "candidats":"candidates",
+                        "qualifié"=>m ? "qualifié":"qualifiée",
+                        "proposé"=>m ? "proposé":"proposée",
+                        "son"=>m ? "son":"sa"
+                    }
+                    if candidat['photo'] then
+                        candidat['photo']="#{AWS_S3_BUCKET_URL}%s" % [candidat['photo']]
+                    else
+                        candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
+                    end
+#                    erb :index, :locals=>{
+#                        'page_info'=>page_info(candidat),
+#                        'vars'=>candidat,
+#                        'template'=>:candidat_qualifie
+#			        }
+                    erb :candidat_declare,
+                        :views=>"views/#{subdomain}",
+                        :locals=>{
+                            :candidat=>candidat,
+                            :gender=>gender,
+                            :secteur=>secteur,
+                            :departement_name=>departement_name,
+                            :job=>job,
+                            :vision=>vision,
+                            :prio1=>prio1,
+                            :prio2=>prio2,
+                            :prio3=>prio3,
+                            :trello=>nil,
+                            :website=>website,
+                            :facebook=>facebook,
+                            :twitter=>twitter,
+                            :linkedin=>linkedin,
+                            :blog=>blog,
+                            :youtube=>youtube,
+                            :instagram=>instagram,
+                            :wikipedia=>wikipedia,
+                            :circonscription=>circonscription,
+                            :age=>age,
+                            :days_verified=>days_verified,
+                    }
+            end
+        end
+        
 		get '/candidat/:candidate_id' do
 			if params['candidate_id']=='sitemap.xml' then
 				content_type 'text/xml'
 				return File.read(File.expand_path(File.dirname(__FILE__))+'/sitemap.xml') 
-			end
+            end
 			begin
-				Pages.db_init()
-				res=Pages.db_query(@queries["get_candidate"],[params['candidate_id']])
+                Pages.db_init()
+                if params['candidate_id'].to_i==0 then # new version with slug
+                    res=Pages.db_query(@queries["get_candidate_by_slug"],[params['candidate_id']])
+                else # old version with id
+                    res=Pages.db_query(@queries["get_candidate"],[params['candidate_id']])
+                end
+				
 			rescue PG::Error => e
 				status 500
 				return erb :error, :locals=>{:msg=>{"title"=>"Erreur serveur","message"=>strip_tags(e.message)}}
@@ -103,7 +259,7 @@ END
 				end
 			end
 			candidat['encoded_name']=URI::encode(candidat['name'])
-			candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
+			candidat['goal']=candidat['soutiens'].to_i<=200 ? 200 : candidat['soutiens']
 			candidat['qualified']= (candidat['soutiens'].to_i >= 500)
 			candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
 			secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?

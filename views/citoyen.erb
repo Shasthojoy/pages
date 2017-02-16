@@ -71,14 +71,11 @@ h2 {
 .candidate_pic:hover .nb_soutiens { display:none; }
 /* .candidate_pic:hover .nb_soutiens_total { display:inline; } */
 .candidate_oldpic.complete { display:none; }
-.candidate_oldpic.citoyen {
-	border: 8px solid #d91d1c;
-}
 .candidate_oldpic {
 	overflow: hidden;
 	position: relative;
 	margin: 0 auto;
-	width: 100%;
+	width: 60%;
 	border: 8px solid #527bdd;
 	min-height: 300px;
 	padding:0px;
@@ -105,6 +102,26 @@ h2 {
 	border-left: 2px solid #7e7e7e;
 	height: 300px;
 	padding:0px;
+}
+.badge_dept {
+	position:absolute;
+	color:white;
+	font-size:12px;
+	background-color:#d91d1c;
+	padding:5px;
+	top:0px;
+	z-index: 1;
+}  
+.badge_circo a:visited { color:white;}
+.badge_circo a { color:white;}
+.badge_circo {
+	position:absolute;
+	color:white;
+	font-size:12px;
+	background-color:limegreen;
+	padding:5px;
+	top:27px;
+	z-index: 1;
 }
 .badge_soutiens {
 	position:absolute;
@@ -280,8 +297,9 @@ h2 {
         <!-- /.container-fluid -->
     </nav>
 
-    <section>
+    <section style="padding-top:0px;">
 	    <div class="container">
+            <h2>A propos de moi</h2>
 	    <% errors.each do |e| %>
 	    <div class="row">
 		    <div class="col-xs-12">
@@ -303,53 +321,40 @@ h2 {
 	    </div>
 	    <% end %>
 	    <div class="row">
-                <div class="col-lg-4">
-			<h3 class="section-heading">Compte validé : <% if account['valid'] %><span style="color:green;">OUI</span><% else %><span style="color:red;">NON</span><% end %></h3>
-			<p style="font-size:12px; color:#777;font-style:italic;text-align:left;">Votre compte doit être validé pour que vos soutiens et votes soient pris en compte. Pour valider votre compte, vous devez valider <b>AU MOINS DEUX</b> des éléments ci-dessous :</p>
-		    <div class="row">
-			    <div class="col-xs-6" style="line-height:30px;"> Email validé: </div>
-			    <% if account['email_valid'] %>
-			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="email validé" id="email_valide">oui</a></div>
-			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
-			    <% else %>
-			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_email" class="btn btn-xl red statut" title="email non validé" id="email_valide">non</a></div>
-			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_email" href="#">valider</a></div>
-			    <% end %>
-		    </div>
-		    <div class="row">
-			    <div class="col-xs-6" style="line-height:30px;"> Téléphone validé: </div>
-			    <% if account['phone_valid'] %>
-			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="telephone validé" id="tel_valide">oui</a></div>
-			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
-			    <% else %>
-			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_phone" class="btn btn-xl red statut" title="telephone non validé" id="tel_valide">non</a></div>
-			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_phone" href="#">valider</a></div>
-			    <% end %>
-		    </div>
-		    <div class="row">
-			    <div class="col-xs-6" style="line-height:30px;"> Compte facebook validé: </div>
-			    <% if account['facebook_valid'] %>
-			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="facebook validé" id="fb_valide">oui</a></div>
-			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
-			    <% else %>
-			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_facebook" class="btn btn-xl red statut" title="facebook non validé" id="fb_valide">non</a></div>
-			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_facebook" href="#">valider</a></div>
-			    <% end %>
-		    </div>
-		    <div class="row">
-			    <div class="col-xs-6" style="line-height:30px;"> Adhérent LaPrimaire.org: </div>
-			    <% if account['facebook_valid'] %>
-			    <div class="col-xs-2"><a class="btn btn-xl green statut" title="adhérent" id="membership_valide">oui</a></div>
-			    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
-			    <% else %>
-			    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_membership" class="btn btn-xl red statut" title="non adhérent" id="membership_valide">non</a></div>
-			    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_membership" href="#">valider</a></div>
-			    <% end %>
-		    </div>
-		    <div class="row">
-			<button id="vote_roxane" data-toggle="modal" data-target="#vote_roxane_cc" class="btn red">Voter pour Roxane</button>
-		    </div>
+            <div class="col-lg-4">
+                <h3 class="section-heading">Compte validé : <% if citoyen['validation_level']==3 %><span style="color:green;">OUI</span><% else %><span style="color:red;">NON</span><% end %></h3>
+                <p style="font-size:12px; color:#777;font-style:italic;text-align:left;">Votre compte doit être validé pour que vos soutiens et votes soient pris en compte. Pour valider votre compte, vous devez valider <b>AU MOINS DEUX</b> des éléments ci-dessous :</p>
+                <div class="row">
+                    <div class="col-xs-6" style="line-height:30px;"> Email validé: </div>
+                    <% if (citoyen['validation_level'].to_i&1)==1 %>
+                    <div class="col-xs-2"><a class="btn btn-xl green statut" title="email validé" id="email_valide">oui</a></div>
+                    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
+                    <% else %>
+                    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_email" class="btn btn-xl red statut" title="email non validé" id="email_valide">non</a></div>
+                    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_email" href="#">valider</a></div>
+                    <% end %>
                 </div>
+                <div class="row">
+                    <div class="col-xs-6" style="line-height:30px;"> Téléphone validé: </div>
+                    <% if (citoyen['validation_level'].to_i&2)==2 %>
+                    <div class="col-xs-2"><a class="btn btn-xl green statut" title="telephone validé" id="tel_valide">oui</a></div>
+                    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
+                    <% else %>
+                    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_phone" class="btn btn-xl red statut" title="telephone non validé" id="tel_valide">non</a></div>
+                    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_phone" href="#">valider</a></div>
+                    <% end %>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6" style="line-height:30px;"> Adhérent LaPrimaire.org: </div>
+                    <% if citoyen['facebook'] %>
+                    <div class="col-xs-2"><a class="btn btn-xl green statut" title="adhérent" id="membership_valide">oui</a></div>
+                    <div class="col-xs-4" style="line-height:30px;">&nbsp;</div>
+                    <% else %>
+                    <div class="col-xs-2"><a data-toggle="modal" data-target="#my_membership" class="btn btn-xl red statut" title="non adhérent" id="membership_valide">non</a></div>
+                    <div class="col-xs-4" style="line-height:30px;"><a data-toggle="modal" data-target="#my_membership" href="#">valider</a></div>
+                    <% end %>
+                </div>
+            </div>
                 <div class="col-lg-4">
                     <h3 class="section-heading">Ma ville</h3>
 		    <div id="my_city_show">
@@ -365,7 +370,7 @@ h2 {
                 <div class="col-lg-4">
 		    <h3 class="section-heading">Mes informations</h3>
 		    <p style="font-size:12px; color:#777;font-style:italic;text-align:left;"></p>
-		    <p>
+		    
 		    <ul>
 			    <li><i>Nom:</i> <%= citoyen['lastname'] %></li>
 			    <li><i>Prénom:</i> <%= citoyen['firstname'] %></li>
@@ -373,8 +378,8 @@ h2 {
 			    <li><i>Code postal:</i> <%= citoyen['zipcode'] %></li>
 			    <li><i>Ville:</i> <%= citoyen['city'] %></li>
 			    <li><i>Pays:</i> <%= citoyen['country'] %></li>
-			
-		    </p>
+            </ul>
+		    
                 </div>
             </div>
 	</div>
@@ -382,183 +387,26 @@ h2 {
 
     <section>
 	    <div class="container">
+            <h2>Elections législatives</h2>
+            <input type="hidden" id="my_circonscription" value="<%= citoyen['num_circonscription'] %>">
+            <input type="hidden" id="my_departement" value="<%= citoyen['num_departement'] %>">
 		    <div class="row">
 			    <div>
-				    <h3 class="section-heading">Les candidats que je soutiens</h3>
-				    <p style="font-size:12px; color:#777;font-style:italic;">Vous pouvez apporter votre soutien jusqu'à 5 candidats</p>
-				    <div class="row">
-					    <% 5.times do |i| %>
-						    <div class="col-lg-2 col-sm-3">
-							    <div class="candidate_box">
-								    <div class="candidate_oldpic {{status}}" style="margin: 0 auto;">
-									    <div class="badge_soutiens">{{nb_soutiens}} soutiens</div>
-									    <div class="nb_soutiens_total">{{nb_soutiens}} soutiens au total</div>
-									    <div class="badge_qualified <%= candidats[i]['qualified'] ? 'oui' : 'non' %>">Qualifié</div>
-									    <% if candidats[i]['candidate_id'].nil? %>
-									    <a href="https://laprimaire.org/candidats/">
-										    <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidats[i]['photo'] %>" height="300px">
-									    </a>
-									    <% else %>
-									    <a href="https://laprimaire.org/candidat/<%= candidats[i]['candidate_id'] %>">
-										    <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= candidats[i]['photo'] %>" height="300px">
-									    </a>
-									    <% end %>
-								    </div>
-							    </div>
-							    <div class="candidate_name"><a href="https://laprimaire.org/candidat/<%= candidats[i]['candidate_id'] %>"><%= candidats[i]['name'] %></a></div>
-						    </div>
-					    <% end %>
-				    </div>
+				    <h3 class="section-heading">Les candidats de votre circonscription:</h3>
+				    <p style="font-size:12px; color:#777;font-style:italic;">Vous pouvez apporter votre soutien jusqu'à 3 candidats</p>
+                    <div id="hits-container"></div>
+                    
 			    </div>
-		    </div>
-	    </div>
-    </section>
-
-    <section>
-	    <div class="container">
-		    <div class="row">
-			    <div>
-				    <h3 class="section-heading">Les citoyens que j'ai plébiscité</h3>
-				    <p style="font-size:12px; color:#777;font-style:italic;">Vous pouvez plébisciter jusqu'à 5 citoyens</p>
-				    <div class="row">
-					    <% 5.times do |i| %>
-						    <div class="col-lg-2 col-sm-3">
-							    <div class="candidate_box">
-								    <div class="candidate_oldpic {{status}} citoyen" style="margin: 0 auto;">
-									    <div class="badge_soutiens">{{nb_soutiens}} soutiens</div>
-									    <div class="nb_soutiens_total">{{nb_soutiens}} soutiens au total</div>
-									    <div class="badge_qualified <%= citoyens[i]['qualified'] ? 'oui' : 'non' %>">Qualifié</div>
-									    <% if citoyens[i]['candidate_id'].nil? %>
-									    <a href="https://laprimaire.org/citoyens/">
-										    <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= citoyens[i]['photo'] %>" height="300px">
-									    </a>
-									    <% else %>
-									    <a href="https://laprimaire.org/candidat/<%= citoyens[i]['candidate_id'] %>">
-										    <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/<%= citoyens[i]['photo'] %>" height="300px">
-									    </a>
-									    <% end %>
-								    </div>
-							    </div>
-							    <div class="candidate_name"><a href="https://laprimaire.org/candidat/<%= citoyens[i]['candidate_id'] %>"><%= citoyens[i]['name'] %></a></div>
-						    </div>
-					    <% end %>
-				    </div>
-			    </div>
+                <div id="num_departement" style="display:none;"></div>
+                <div id="num_circonscription" style="display:none;"></div>
 		    </div>
 	    </div>
     </section>
 
     <!-- Modal -->
-      <% if not account['facebook_valid'] %>
-    <div class="modal fade" id="my_facebook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	      <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-			<div class="modal-body">
-				<script>
-
-			 	// This is called with the results from from FB.getLoginStatus().
-				function statusChangeCallback(response) {
-					console.log('statusChangeCallback');
-					console.log(response);
-					// The response object is returned with a status field that lets the
-					// app know the current login status of the person.
-					// Full docs on the response object can be found in the documentation
-					// for FB.getLoginStatus().
-					if (response.status === 'connected') {
-						// Logged into your app and Facebook.
-						testAPI();
-					} else if (response.status === 'not_authorized') {
-						// The person is logged into Facebook, but not your app.
-						document.getElementById('status').innerHTML = 'Please log ' +
-							'into this app.';
-					} else {
-						// The person is not logged into Facebook, so we're not sure if
-						// they are logged into this app or not.
-						document.getElementById('status').innerHTML = 'Please log ' +
-							'into Facebook.';
-					}
-				}
-
-// This function is called when someone finishes with the Login
-// Button.  See the onlogin handler attached to it in the sample
-// code below.
-function checkLoginState() {
-	FB.getLoginStatus(function(response) {
-			statusChangeCallback(response);
-			});
-}
-
-window.fbAsyncInit = function() {
-	FB.init({
-appId      : '1043917165646774',
-cookie     : true,  // enable cookies to allow the server to access 
-// the session
-xfbml      : true,  // parse social plugins on this page
-version    : 'v2.5' // use graph api version 2.5
-});
-
-	      // Now that we've initialized the JavaScript SDK, we call 
-	      // FB.getLoginStatus().  This function gets the state of the
-	      // person visiting this page and can return one of three states to
-	      // the callback you provide.  They can be:
-	      //
-	      // 1. Logged into your app ('connected')
-	      // 2. Logged into Facebook, but not your app ('not_authorized')
-	      // 3. Not logged into Facebook and can't tell if they are logged into
-	      //    your app or not.
-	      //
-	      // These three cases are handled in the callback function.
-
-FB.getLoginStatus(function(response) {
-		statusChangeCallback(response);
-		});
-
-};
-
-  // Load the SDK asynchronously
-(function(d, s, id) {
- var js, fjs = d.getElementsByTagName(s)[0];
- if (d.getElementById(id)) return;
- js = d.createElement(s); js.id = id;
- js.src = "//connect.facebook.net/en_US/sdk.js";
- fjs.parentNode.insertBefore(js, fjs);
- }(document, 'script', 'facebook-jssdk'));
-
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-function testAPI() {
-	console.log('Welcome!  Fetching your information.... ');
-	FB.api('/me', function(response) {
-			console.log('Successful login for: ' + response.name);
-			document.getElementById('status').innerHTML =
-			'Thanks for logging in, ' + response.name + '!';
-			});
-}
-				</script>
-
-				<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-				<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-				</fb:login-button>
-
-				<div id="status">
-				</div>
-
-
-
-	          </div>
-	        </div>
-	      </div>
-      </div>
-      <% end %>
-
 
     <!-- Modal Email -->
-    <% if not account['email_valid'] %>
+    <% if (citoyen['validation_level'].to_i&1)==1 %>
     <div class="modal fade" id="my_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
 				<form class="form-inline" id="valid_email_form">
@@ -579,18 +427,8 @@ function testAPI() {
     </div>
     <% end %>
 
-    <div class="modal fade" id="vote_roxane_cc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	    <div class="modal-dialog vote" role="document">
-	      <div class="modal-content">
-					<div class="modal-body">
-						<iframe src="https://cocorico.cc/embed/vote-widget/<%= vote_id %>?user=<%= token %>&appId=<%= cc_app_id %>" width="800px" height="490px"></iframe>
-					</div>
-				</div>
-	    </div>
-    </div>
-
     <!-- Modal Telephone number -->
-    <% if not account['phone_valid'] %>
+    <% if (citoyen['validation_level'].to_i&2)==2 %>
     <div class="modal fade" id="my_phone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
 				<form class="form-inline" id="valid_phone_form">
@@ -613,7 +451,7 @@ function testAPI() {
     <% end %>
 
 		<!-- Modal Telephone confirm code -->
-    <% if not account['phone_valid'] %>
+    <% if (citoyen['validation_level'].to_i&2)==2 %>
     <div class="modal fade" id="my_phone_code" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
 				<form class="form-inline" id="valid_phone_code_form">
@@ -741,7 +579,6 @@ placesAutocomplete.on('change', function resultSelected(e) {
 				if (!phoneNumber || 0 === phoneNumber.length) {
 					return false;
 				}
-
 				var reg_mobile = '^\\+33(6|7)[0-9]{8}$';
 
 				if( phoneNumber.match(reg_mobile) ){
@@ -749,6 +586,142 @@ placesAutocomplete.on('change', function resultSelected(e) {
 				}
 				return false;
 			}
+    </script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+<script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script>
+function shuffle (o){
+	  for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	    return o;
+}
+var search = instantsearch({
+	appId: 'D1XVECSSVA',
+	apiKey: '58643f9dff29db9f8da06875479fb290',
+	indexName: 'candidats_legislatives',
+	urlSync: false
+});
+search.addWidget(
+	instantsearch.widgets.menu({
+	container: '#num_departement',
+	attributeName: 'num_departement',
+	sortBy: ['num_departement:asc'],
+    autoHideContainer: false,
+    collapsible: true,
+	limit: 105,
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Département',
+		item: 'département {{name}} ({{count}})'
+	}
+
+})
+);
+search.addWidget(
+	instantsearch.widgets.menu({
+	container: '#num_circonscription',
+	attributeName: 'num_circonscription',
+	sortBy: ['num_circonscription:asc'],
+	limit: 105,
+    autoHideContainer: false,
+    collapsible: true,
+	cssClasses: {
+		header:'lp-cat-header',
+		item:'lp-cat-item',
+		checkbox:'lp-cat-checkbox',
+		label:'lp-cat-label',
+		active:'lp-cat-active',
+		count:'lp-cat-count'
+	},
+	templates: {
+		header: 'Circonscription',
+		item: 'circonscription {{name}} ({{count}})'
+	}
+})
+);
+search.addWidget(
+	instantsearch.widgets.hits({
+		container: '#hits-container',
+		transformData: {
+			allItems: function (content) {
+				return { hits: shuffle(content.hits) };
+			}
+		},
+		templates: {
+			empty: '\
+			<div style="width:320px;margin:0px auto 20px auto;">\
+			Aucun candidat trouvé avec ce nom... peut-être souhaitez-vous plébisciter un citoyen pour l&#39;inviter à devenir candidat ?\
+			</div>\
+			<div style="width:320px;margin:20px auto;">\
+			En tant qu&#39;organisateurs de LaPrimaire.org, nous démarcherons activement tous les citoyens qui recueillent au moins 500 soutiens pour les inviter à être officiellement candidat sur LaPrimaire.org.\
+			</div>\
+			<div style="width:250px;margin:20px auto;">\
+			    <a style="font-size:18px;width:250px !important;font-variant:small-caps;font-weight:bold;" href="/citoyens/" class="btn btn-xl red" title="Plébisciter un citoyen">Les citoyens plébiscités</a>\
+			</div>\
+			<div style="width:320px;margin:20px auto;">\
+			Personne ne vous convient ? <a href="/inscription-candidat/" target="_blank">Soyez candidat</a> !\
+			</div>',
+			       allItems: '{{#hits}}\
+<div class="col-sm-6 col-md-6 col-lg-4">\
+<div class="candidate_box">\
+<div class="candidate_oldpic {{status}}" style="margin: 0 auto;">\
+		<div class="badge_soutiens">{{nb_soutiens}} soutiens</div>\
+		<div class="nb_soutiens_total">{{nb_soutiens}} soutiens au total</div>\
+		<div class="badge_qualified {{qualified}}">Qualifié</div>\
+        <div class="badge_dept">dept {{num_departement}}</div>\
+        <div class="badge_circo">circo {{num_circonscription}}</a></div>\
+		<div class="nb_soutiens">+{{nb_soutiens_7j}} soutiens / 7 derniers jours</div>\
+		<a href="/candidat/{{slug}}">\
+		<img src="https://s3.eu-central-1.amazonaws.com/{{photo}}" height="300px">\
+		</a>\
+	</div>\
+	<div class="candidate_pic {{status}} col-xs-6" style="margin: 0 auto;">\
+		<div class="badge_soutiens">{{nb_soutiens}} soutiens</div>\
+		<div class="nb_soutiens_total">{{nb_soutiens}} soutiens au total</div>\
+		<div class="badge_qualified {{qualified}}">Qualifié</div>\
+		<div class="nb_soutiens">+{{nb_soutiens_7j}} soutiens / 7 derniers jours</div>\
+		<a href="/candidat/{{slug}}">\
+		<img src="https://s3.eu-central-1.amazonaws.com/{{photo}}" height="300px">\
+		</a>\
+	</div>\
+	<div class="candidate_bio {{status}} col-xs-6" style="margin: 0 auto;">\
+		<div class="vision_title">Ma vision</div>\
+		<div class="vision"><q>{{{_highlightResult.vision.value}}}</q></div>\
+		<div class="priorite_title">Mes priorités</div>\
+		<ol>\
+		<li class="priorite">{{{_highlightResult.prio1.value}}}</li>\
+		<li class="priorite">{{{_highlightResult.prio2.value}}}</li>\
+		<li class="priorite">{{{_highlightResult.prio3.value}}}</li>\
+		</ol>\
+	</div>\
+</div>\
+<div class="candidate_name"><a href="/candidat/{{slug}}">{{{_highlightResult.name.value}}}</a></div>\
+<div class="candidate_infos">\
+	<div class="age_job {{status}}">{{age}} ans, {{{_highlightResult.job.value}}}</div>\
+	<div class="dept {{status}}">habite le département {{{_highlightResult.departement.value}}}</div>\
+	<div class="candidate_M_since {{gender}}">candidat depuis {{nb_days_verified}} jours</div>\
+	<div class="candidate_F_since {{gender}}">candidate depuis {{nb_days_verified}} jours</div>\
+</div>\
+</div>{{/hits}}'
+		},
+		hitsPerPage: 200
+	})
+);
+var num_dept='75';
+if (!!num_dept) {
+    search.searchParameters={
+            hierarchicalFacetsRefinements: { // menu is implemented as a hierarchicalFacetsRefinements
+                num_departement: [num_dept]
+        }
+    }
+}
+search.start();
     </script>
 </body>
 </html>

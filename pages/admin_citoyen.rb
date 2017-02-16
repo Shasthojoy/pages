@@ -133,9 +133,15 @@ END
 			success=[]
 			begin
 				Pages.db_init()
-				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
+                res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
+				#1 We check the validation level of the candidate authentication 
+				auth={
+					'email_valid'=>(citoyen['validation_level'].to_i&1)!=0,
+					'phone_valid'=>(citoyen['validation_level'].to_i&2)!=0
+				}
+				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
 				email=citoyen['email']
 				if not params['reset_email'].nil? then
 					if not params['reset_code'].nil? and params['reset_code']==citoyen['reset_code'] then
@@ -157,12 +163,28 @@ END
 			ensure
 				Pages.db_close()
 			end
-			if !success.empty() then
+			if !success.empty?() then
 				return erb :success, :locals=>{:msg=>{"title"=>"Email mis à jour","message"=>success[0]}}
-			elsif !errors.empty() then
+			elsif !errors.empty?() then
 				return erb :error, :locals=>{:msg=>{"title"=>"Email non mis à jour","message"=>errors[0]}}
 			end
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
+            return erb :index, :locals=>{
+				'page_info'=>{
+					'page_description'=>"Explorez et comparez les propositions des 5 citoyen(ne)s candidat(e)s finalistes à LaPrimaire.org.",
+					'page_author'=>"Les citoyen(ne)s candidat(e)s à LaPrimaire.org",
+					'page_image'=>"https://s3.eu-central-1.amazonaws.com/laprimaire/images/comparateur.jpg",
+					'page_url'=>"https://laprimaire.org/citoyen/vote/comparateur",
+					'page_title'=>"Explorez et comparez les propositions des citoyen(ne)s candidat(e)s à LaPrimaire.org !",
+					'social_title'=>"Explorez et comparez les propositions des citoyen(ne)s candidat(e)s à LaPrimaire.org !"
+				},
+				'template'=>:citoyen,
+				'vars'=>{
+                    'citoyen'=>citoyen,
+                    'errors'=>errors,
+                    'success'=>success
+                }
+			}
 		end
 
 		get '/citoyen/vote/tutorial' do

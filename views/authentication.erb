@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.5.1/css/pikaday.min.css">
 <style>
 header {
 	position:absolute;
@@ -82,6 +83,34 @@ button.oui:hover { background-color:#4ae54a !important; border-color:#4ae54a !im
 h3 { color:white; }
 .ap-dropdown-menu { text-align:left; }
 .ap-name {color:#5e5e5e;}
+    
+ .algolia-autocomplete {
+    width: 100%;
+  }
+  .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+    width: 100%;
+  }
+  .algolia-autocomplete .aa-hint {
+    color: #999;
+  }
+  .algolia-autocomplete .aa-dropdown-menu {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-top: none;
+    color: #777;
+  }
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer;
+    padding: 5px 4px;
+  }
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: #B2D7FF;
+  }
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+    font-weight: bold;
+    font-style: normal;
+  }
 </style>
     <header>
     <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
@@ -153,6 +182,50 @@ h3 { color:white; }
 							    <div class="btn_bottom">
 								    <button id="auth_2_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
 								    <button id="auth_2_yes" class="btn btn-xl oui">Oui</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
+							    </div>
+						    </form>
+					    </div>
+                        <div id="auth_3" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
+						    <div class="mention_logo">
+							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
+						    </div>
+						    <form onsubmit="return false;">
+							    <div class="form-group" style="width:90%;margin: 0 auto;">
+								    <label for="auth_3_input">Vous habitez en :</label><br/>
+								    <input type="search" id="auth_3_input" placeholder="FRANCE, MARTINIQUE, REUNION..." value=""/>
+								    <input type="hidden" id="auth_3_orig" placeholder="" value="<%= citoyen['country'] %>"/>
+								    <br/>
+								    <div id="auth_3_error_val" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> pays manquant</div>
+								    <div id="auth_3_info_msg" class="auth_3_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre pays ou DOM-TOM</div>
+							    </div>
+							    <div class="btn_bottom">
+								    <button id="auth_3_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
+								    <button id="auth_3_yes" class="btn btn-xl oui">Oui</button>
+							    </div>
+							    <div class="mention_cnil">
+								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
+							    </div>
+						    </form>
+					    </div>
+                        <div id="auth_3a" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
+						    <div class="mention_logo">
+							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
+						    </div>
+						    <form onsubmit="return false;">
+							    <div class="form-group" style="width:90%;margin: 0 auto;">
+								    <label for="auth_3a_input">Vous habitez à :</label><br/>
+								    <input type="search" id="auth_3a_input" placeholder="Londres, Bruxelles, Genève..." value=""/>
+								    <input type="hidden" id="auth_3a_orig" placeholder="" value="<%= citoyen['city'] %>"/>
+								    <br/>
+								    <div id="auth_3a_error_val" class="auth_3a_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> ville manquante</div>
+								    <div id="auth_3a_info_msg" class="auth_3a_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre ville</div>
+							    </div>
+							    <div class="btn_bottom">
+								    <button id="auth_3a_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
+								    <button id="auth_3a_yes" class="btn btn-xl oui">Oui</button>
 							    </div>
 							    <div class="mention_cnil">
 								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
@@ -273,6 +346,9 @@ h3 { color:white; }
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.5.1/pikaday.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="https://s3.eu-central-1.amazonaws.com/laprimaire/scripts/jquery.fblogin.min.js"></script>
     <script>
@@ -300,7 +376,22 @@ $(document).ready(function() {
 	$.get("<%= API_HOST %>/v1/auth/geodata/lookup")
 	.done(function( data ){ console.log(data); })
 	.error(function(data) { console.log(data); });
-	
+	var client = algoliasearch('D1XVECSSVA', '58643f9dff29db9f8da06875479fb290');
+    var index_countries = client.initIndex('countries');
+    var index_circos = client.initIndex('circonscriptions');
+    $('#auth_3_input').autocomplete({ hint: false, autoselect: true }, [
+    {
+      source: $.fn.autocomplete.sources.hits(index_countries, { hitsPerPage: 5 }),
+      displayKey: 'name',
+      templates: {
+        suggestion: function(suggestion) {
+          return suggestion._highlightResult.name.value;
+        }
+      }
+    }
+      ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+        console.log(suggestion, dataset);
+      });
 	$('#auth_0_yes').click(function() {
 		$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'verif_email'})
 		.done(function( data ){ console.log(data); })
@@ -354,32 +445,40 @@ $(document).ready(function() {
 				.done(function( data ){ console.log(data); })
 				.error(function(data) { console.log(data); });
 			}
+//            $.getScript('//cdn.jsdelivr.net/places.js/1/places.min.js', function(){
+//                   var placesAutocomplete = places({
+//                           container: document.querySelector('#auth_3_input'),
+//                           type: 'city',
+//                           language: 'fr',
+//                           appId: 'plCTJKLQMW7U',
+//                           apiKey: '4db9f636e9d58af425f74d3063081cf5',
+//                           useDeviceLocation: false,
+//                           templates: {
+//                               value: function(suggestion) {
+//                                           return suggestion.name;
+//                                   }
+//                           }
+//                   });
+//                   placesAutocomplete.setVal("<%= citoyen['city'] %>");
+//                   placesAutocomplete.on('change', function resultSelected(e) {
+//                           $.post("<%= API_HOST %>/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
+//                           .done(function( data ){ console.log(data['city']) });
+//                   });
+//                   $('#auth_2').hide();
+//                   $('#auth_3').show();
+//                   if ($('#auth_3_input').val()=="") { $('#auth_3_input').focus(); }
+//            });
 			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'lastname'})
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
-			$.getScript('//cdn.jsdelivr.net/places.js/1/places.min.js', function(){
-				var placesAutocomplete = places({
-					container: document.querySelector('#auth_3_input'),
-					type: 'city',
-					language: 'fr',
-					appId: 'plCTJKLQMW7U',
-					apiKey: '4db9f636e9d58af425f74d3063081cf5',
-					useDeviceLocation: false,
-					templates: {
-						value: function(suggestion) {
-							return suggestion.name;
-						}
-					}
-				});
-				placesAutocomplete.setVal("<%= citoyen['city'] %>");
-				placesAutocomplete.on('change', function resultSelected(e) {
-					$.post("<%= API_HOST %>/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
-					.done(function( data ){ console.log(data['city']) });
-				});
-				$('#auth_2').hide();
-				$('#auth_3').show();
-				if ($('#auth_3_input').val()=="") { $('#auth_3_input').focus(); }
-			});
+            $('#auth_3_input').on('change',function resultSelected(e) {
+				$.post("<%= API_HOST %>/v1/citizen/city",{'suggestion':e,'key':'<%= citoyen['user_key'] %>'})
+				.done(function( data ){ console.log(data['city']) })
+                .error(function(data) { console.log(data); });
+            });
+            $('#auth_2').hide();
+            $('#auth_3').show();
+            if ($('#auth_3_input').val()=="") { $('#auth_3_input').focus(); }
 	});
 	$('#auth_3_no').click(function() {
 			$('.auth_3_msg').hide();
