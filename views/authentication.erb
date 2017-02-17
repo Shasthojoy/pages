@@ -125,7 +125,7 @@ h3 { color:white; }
 
     <div class="modal fade" id="Authentication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
-		    <div class="modal-content" style="height:500px;">
+		    <div class="modal-content" style="height:560px;">
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;">
 					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
@@ -270,17 +270,17 @@ h3 { color:white; }
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
 						    <form onsubmit="return false;">
-							    <div class="form-group" style="width:90%;margin: 0 auto;">
+							    <div class="form-group" style="width:90%;margin: 0 auto;margin-top:-40px;">
 								    <label for="auth_4_input">Vous êtes né le :</label>
 								    <input id="auth_4_input" type="text" class="form-control" placeholder="JJ/MM/AAAA" value="<%= citoyen['birthday'] %>">
 								    <input id="auth_4_orig" type="hidden" class="form-control" value="<%= citoyen['birthday'] %>">
-								    <br/>
+                                    <div id="auth_4_calendar" style="margin:0 auto;width:259px;"></div>
 								    <div id="auth_4_error_val" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Merci d'utiliser le format JJ/MM/AAAA pour écrire la date</div>
 								    <div id="auth_4_error_missing" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> date manquante</div>
 								    <div id="auth_4_info_msg" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-info-circle" aria-hidden="true" style="color:#527bdd"></i> Entrez votre date de naissance : JJ/MM/AAAA</div>
 								    <div id="auth_4_error_age" class="auth_4_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:270px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> vous êtes trop jeune :/</div>
 							    </div><br/>
-							    <p style="font-size:16px;">Seuls les citoyens qui auront plus de 18 ans au 23 avril 2017 peuvent voter.</p>
+							    <p style="font-size:14px;">Seuls les citoyens qui auront plus de 18 ans au 11 juin 2017 peuvent voter.</p>
 							    <div class="btn_bottom">
 								    <button id="auth_4_no" class="btn btn-xl non">Non</button>&nbsp;&nbsp;
 								    <button id="auth_4_yes" class="btn btn-xl oui">Oui</button>
@@ -360,9 +360,12 @@ h3 { color:white; }
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.5.1/pikaday.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="https://s3.eu-central-1.amazonaws.com/laprimaire/scripts/jquery.fblogin.min.js"></script>
+    <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBku3jR-QCBX_v2-uXvE-dT8id-nGJqHR4&libraries=places&callback=initAutocomplete" async defer></script>
     <script>
 function resizeIframe(obj){
 	obj.style.height = 0;
@@ -423,11 +426,11 @@ $(document).ready(function() {
 		$('#auth_0').hide();
 		$('#auth_1').show();
 		if ($('#auth_1_input').val()=="") { $('#auth_1_input').focus(); }
-        $('#auth_1_input').on('keypress',function(e) {
-            if (e.which==13) {
-                $('#auth_1_yes').click();
-            }
-        });
+//        $('#auth_1_input').on('keypress',function(e) {
+//            if (e.which==13) {
+//                $('#auth_1_yes').click();
+//            }
+//        });
 	});
 	$('#auth_1_no').click(function() { 
 			$('.auth_1_msg').hide();
@@ -451,11 +454,11 @@ $(document).ready(function() {
 			$('#auth_1').hide();
 			$('#auth_2').show();
 			if ($('#auth_2_input').val()=="") { $('#auth_2_input').focus(); }
-            $('#auth_2_input').on('keypress',function(e) {
-                if (e.which==13) {
-                    $('#auth_2_yes').click();
-                }
-            });
+//            $('#auth_2_input').on('keypress',function(e) {
+//                if (e.which==13) {
+//                    $('#auth_2_yes').click();
+//                }
+//            });
 			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'firstname'})
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
@@ -485,17 +488,17 @@ $(document).ready(function() {
               displayKey: 'name',
               templates: {
                 suggestion: function(suggestion) {
-                  return suggestion._highlightResult.name.value;
+                  return suggestion.name+'<br/><span style="font-size:11px;line-height:10px;padding:0px;">'+suggestion.name_circonscription+'</span><br/><span style="font-size:11px;">Député(e) sortant(e): '+suggestion.deputy_name+' ('+suggestion.deputy_party+')</span>';
                 }
               }
             }]).on('autocomplete:selected', function(event, suggestion, dataset) {
                 $('#auth_3_yes').click();
             });
-            $('#auth_3_input').on('keypress',function(e) {
-                if (e.which==13) {
-                    $('#auth_3_yes').click();
-                }
-            });
+//            $('#auth_3_input').on('keypress',function(e) {
+//                if (e.which==13) {
+//                    $('#auth_3_yes').click();
+//                }
+//            });
 			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'lastname'})
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
@@ -509,7 +512,6 @@ $(document).ready(function() {
 			$('#auth_3_input').focus(); 
 			});
 	$('#auth_3_yes').click(function() {
-            console.log('auth_3_yes');
 			$('.auth_3_msg').hide();
 			var country=$('#auth_3_input').val();
 			if (country==null || country=="") {
@@ -546,11 +548,11 @@ $(document).ready(function() {
                 if ($('#auth_3b_input').val()=="") { $('#auth_3b_input').focus(); }
             } else {
                 // le citoyen n'habite pas en France
-                $('#auth_3a_input').on('keypress',function(e) {
-                    if (e.which==13) {
-                        $('#auth_3a_yes').click();
-                    }
-                });
+//                $('#auth_3a_input').on('keypress',function(e) {
+//                    if (e.which==13) {
+//                        $('#auth_3a_yes').click();
+//                    }
+//                });
                 $('#auth_3a').show();
                 if ($('#auth_3a_input').val()=="") { $('#auth_3a_input').focus(); }
             }
@@ -631,31 +633,21 @@ $(document).ready(function() {
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
 	});
-	$('#auth_4_input').datepicker({
-			"dateFormat":"dd/mm/yy",
-			changeMonth:true,
-			changeYear:true,
-			yearRange:"1916:2000",
-			defaultDate:"01/01/1980",
-			showOn:"button",
-			buttonText:"Choisir une date",
-			buttonImageOnly:true,
-			buttonImage:'https://s3.eu-central-1.amazonaws.com/laprimaire/icons/icon-calendar.gif'
-			});
-
-	/* to prevent a bug on Datepicker on Firefox */
-	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
-	$.fn.modal.Constructor.prototype.enforceFocus = function() {};
-	try{
-		$confModal.on('hidden', function() {
-				$.fn.modal.Constructor.prototype.enforceFocus = enforceModalFocusFn;
-				});
-		$confModal.modal({ backdrop : false });
-	}
-	catch (error) {
-		    if(error.name != 'ReferenceError')
-			    throw error;
-	}
+    var picker = new Pikaday({ 
+        field: $('#auth_4_input')[0],
+        container: $('#auth_4_calendar')[0],
+        format: 'DD/MM/YY',
+        minDate: new Date(1920,0,1),
+        maxDate: new Date(2000,0,1),
+        yearRange: [1900,2000],
+        onSelect: function() {
+            var date = this.getMoment().format('DD/MM/YYYY');
+            $('#auth_4_input').val(date);
+        },
+        defaultDate:'01/01/1980',
+        bound:false
+    });
+    picker.gotoDate(new Date(moment($('#auth_4_input').val(),"DD/MM/YYYY").format("MM/DD/YYYY")));
 	$('#auth_4_no').click(function() { 
 			$('.auth_4_msg').hide();
 			$('#auth_4_info_msg').show();
@@ -801,9 +793,4 @@ $(document).ready(function() {
 	});
     $('#auth_3b_yes').click(); // FIXME
 });
-</script>
-<script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBku3jR-QCBX_v2-uXvE-dT8id-nGJqHR4&libraries=places&callback=initAutocomplete" async defer></script>
-<script>
-
 </script>
