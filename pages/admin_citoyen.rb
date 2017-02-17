@@ -25,13 +25,17 @@ module Pages
 			super(base)
 			@queries={
 				'get_citizen_by_key'=><<END,
-SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement
-FROM users AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
+FROM users AS c 
+LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.user_key=$1
 END
                 'get_citizen_by_email'=><<END,
-SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement
-FROM users AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
+FROM users AS c 
+LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.email=$1
 END
 				'get_supported_candidates_by_key'=><<END,
@@ -232,7 +236,7 @@ END
             return erb :error, :locals=>{:msg=>{"title"=>"Mauvais email","message"=>"Votre email n'est pas valide"}} if email.match(/\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/).nil?
             erb :index, :locals=>{
 				'page_info'=>page_info(),
-				'vars'=>{'email'=>params['email']},
+				'vars'=>{'email'=>params['email'],'newcitizen'=>params['newcitizen']},
 				'no_navbar'=>true,
 				'template'=>:email_verification
 			}

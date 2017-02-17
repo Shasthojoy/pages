@@ -125,11 +125,11 @@ h3 { color:white; }
 		    <div class="modal-content" style="height:500px;">
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;">
-                        <div id="auth_A" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;display:visible;">
+                        <div id="auth_A" class="auth_step" style="margin:0 auto;padding-top:50px;padding-bottom:100px;width:100%;color:white;text-align:center;display:visible;">
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
-                            <h3>Bienvenue !</h3><br/>
+                            <h3><% if newcitizen=='1' then %>Bienvenue !<% else %>Heureux de vous revoir !<% end %></h3><br/>
                             <p style="font-size:15px;">Nous venons de vous envoyer un email à l'adresse suivante :</p>
                             <div style="margin-bottom:20px;background-color: white;border-radius: 10px;color:#5e5e5e;padding:10px;width:300px;margin:0px auto 20px auto;font-size:16px;"><%= email %></div>
                             <p style="font-size:15px;">Pour continuer et vous authentifier, merci de <b>cliquer sur le lien présent dans l'email qui vient de vous être envoyé</b> et que vous devriez recevoir d'ici quelques secondes, ou quelques minutes tout au plus.</p><br/>

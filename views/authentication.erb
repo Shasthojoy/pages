@@ -128,7 +128,7 @@ h3 { color:white; }
 		    <div class="modal-content" style="height:560px;">
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;">
-					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
+					    <div id="auth_0" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;display:visible;">
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
@@ -137,7 +137,7 @@ h3 { color:white; }
 						    <% if citoyen['forbidden']==1 %>
 						    <div id="auth_0_forbidden" class="auth_0_msg" style="font-size:14px;padding:5px;background-color: white;border-radius:10px;width:250px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> cet email est invalide</div>
 						    <% elsif citoyen['fraud_suspected_clones']==1 %>
-							    <div id="auth_0_fraud_clones" class="auth_0_msg" style="font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Fraude suspectée. Merci de nous <a href="/contact/?topic=Fraude%20suspectée" target="_blank">contacter</a> pour vous authentifier.</div>
+							    <div id="auth_0_fraud_clones" class="auth_0_msg" style="font-size:14px;padding:5px;background-color: white;border-radius:10px;width:320px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Fraude suspectée. Merci de nous <a href="https://laprimaire.org/contact/?topic=Fraude%20suspectée" target="_blank">contacter</a> pour vous authentifier.</div>
 						    <% else %>
 						    <p style="font-size:15px;">Pour pouvoir voter, vous devez vous identifier au préalable.</p>
 						    <p style="font-size:15px;">En vous idenfiant, vous déclarez sur l'honneur que l'ensemble des déclarations formulées dans le cadre de ce vote sont sincères et vérifiables.</p>
@@ -265,7 +265,7 @@ h3 { color:white; }
 							    </div>
 						    </form>
 					    </div>
-					    <div id="auth_4" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:visible;">
+					    <div id="auth_4" class="auth_step" style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:100%;color:white;text-align:center;display:none;">
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
@@ -294,27 +294,285 @@ h3 { color:white; }
 						    <div class="mention_logo">
 							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
 						    </div>
+                            <div>Votre numéro de téléphone :<br/></div>
 						    <form onsubmit="return false;">
-							    <div class="form-group" style="width:90%;margin: 0 auto;">
-								    <label for="auth_5_input">Votre numéro de téléphone :<br/><span style="font-size:12px;font-weight:normal;">(avec indicatif international +XX si numéro étranger)</span></label>
-								    <input id="auth_5_input" type="tel" class="form-control" placeholder="" value="<%= citoyen['telephone'] %>">
-                                    <input id="dial_code" type="hidden" value="">
-								    <!--<input id="auth_5_country" type="hidden" class="form-control" value="FR">-->
-								    <div id="auth_5_error_phone" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> numéro déjà utilisé par un autre citoyen</div>
-								    <div id="auth_5_error_tel" class="auth_5_msg" style="display:none;padding:4px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:13px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Numéro invalide. Pour un numéro francais, ecrivez votre numéro à 10 chiffres. Pour un numéro étranger, entrez-le au <a href="https://fr.wikipedia.org/wiki/Numéro_de_téléphone" target="_blank">format international</a>.</div>
-								    <div id="auth_5_error_type" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> fixe ou portable ?</div>
-								    <div id="auth_5_msg_sent" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> patientez...</div>
-								    <input id="auth_5_orig" type="hidden" class="form-control" value="<%= citoyen['telephone'] %>">
-							    </div>
-							    <p style="font-size:16px;">Pour pouvoir voter, nous allons vous envoyer un code.<br/>Comment souhaitez-vous recevoir ce code ?</p>
-							    <div class="radio" style="font-size:16px;">
+                                
+                                <div class="form-group">
+                                    <input id="auth_5_input" type="tel"  title="numéro de téléphone" style="width:240px;margin:0 auto;" class="form-control" placeholder="" value="<%= citoyen['telephone_national'] %>">
+                                    <input id="auth_5_orig" type="hidden" class="form-control" value="<%= citoyen['telephone_national'] %>">
+                                </div>
+                                <div>Indicatif pays :<br/></div>
+                                <div class="form-group">
+                                    <select name="dial_country_code" id="dial_country_code" style="color:#777;width:240px;margin:0 auto;">
+                                        <option value="33">FRANCE (+33)</option>
+                                        <option value="590">GUADELOUPE (+590)</option>
+                                        <option value="596">MARTINIQUE (+596)</option>
+                                        <option value="262">LA REUNION (+262)</option>
+                                        <option value="689">POLYNESIE FRANCAISE (+689)</option>
+                                        <option value="262">MAYOTTE (+262)</option>
+                                        <option value="687">NOUVELLE-CALEDONIE (+687)</option>
+                                        <option value="508">SAINT-PIERRE-ET-MIQUELON (+508)</option>
+                                        <option value="681">WALLIS-ET-FUTUNA (+681)</option>
+                                        <option disabled="disabled">-------------</option>
+                                        <option value="49">ALLEMAGNE (+49)</option>
+                                        <option value="32">BELGIQUE (+32)</option>
+                                        <option value="39">ITALIE (+39)</option>
+                                        <option value="352">LUXEMBOURG (+352)</option>
+                                        <option value="44">ROYAUME-UNI (+44)</option>
+                                        <option value="41">SUISSE (+41)</option>
+                                        <option value="1">ETATS-UNIS (+1)</option>
+                                        <option disabled="disabled">-------------</option>
+                                        <option value="93">AFGHANISTAN (+93)</option>
+                                        <option value="27">AFRIQUE DU SUD (+27)</option>
+                                        <option value="355">ALBANIE (+355)</option>
+                                        <option value="213">ALGERIE (+213)</option>
+                                        <option value="49">ALLEMAGNE (+49)</option>
+                                        <option value="376">ANDORRE (+376)</option>
+                                        <option value="244">ANGOLA (+244)</option>
+                                        <option value="1-264">ANGUILLA (+1-264)</option>
+                                        <option value="1-268">ANTIGUA-ET-BARBUDA (+1-268)</option>
+                                        <option value="966">ARABIE SAOUDITE (+966)</option>
+                                        <option value="54">ARGENTINE (+54)</option>
+                                        <option value="374">ARMENIE (+374)</option>
+                                        <option value="297">ARUBA (+297)</option>
+                                        <option value="61">AUSTRALIE (+61)</option>
+                                        <option value="43">AUTRICHE (+43)</option>
+                                        <option value="994">AZERBAIDJAN (+994)</option>
+                                        <option value="1-242">BAHAMAS (+1-242)</option>
+                                        <option value="973">BAHREIN (+973)</option>
+                                        <option value="880">BANGLADESH (+880)</option>
+                                        <option value="1-246">BARBADE (+1-246)</option>
+                                        <option value="32">BELGIQUE (+32)</option>
+                                        <option value="501">BELIZE (+501)</option>
+                                        <option value="229">BENIN (+229)</option>
+                                        <option value="1-441">BERMUDES (+1-441)</option>
+                                        <option value="975">BHOUTAN (+975)</option>
+                                        <option value="375">BIELORUSSIE (+375)</option>
+                                        <option value="95">BIRMANIE (+95)</option>
+                                        <option value="591">BOLIVIE (+591)</option>
+                                        <option value="387">BOSNIE-HERZEGOVINE (+387)</option>
+                                        <option value="267">BOTSWANA (+267)</option>
+                                        <option value="47">BOUVET (ILE) (+47)</option>
+                                        <option value="55">BRESIL (+55)</option>
+                                        <option value="673">BRUNEI (+673)</option>
+                                        <option value="359">BULGARIE (+359)</option>
+                                        <option value="226">BURKINA (+226)</option>
+                                        <option value="257">BURUNDI (+257)</option>
+                                        <option value="1-345">CAIMANES (ILES) (+1-345)</option>
+                                        <option value="855">CAMBODGE (+855)</option>
+                                        <option value="237">CAMEROUN (+237)</option>
+                                        <option value="1">CANADA (+1)</option>
+                                        <option value="238">CAP-VERT (+238)</option>
+                                        <option value="236">CENTRAFRICAINE (REPUBLIQUE) (+236)</option>
+                                        <option value="56">CHILI (+56)</option>
+                                        <option value="86">CHINE (+86)</option>
+                                        <option value="61">CHRISTMAS (ILE) (+61)</option>
+                                        <option value="357">CHYPRE (+357)</option>
+                                        <option value="61">COCOS ou KEELING (ILES) (+61)</option>
+                                        <option value="57">COLOMBIE (+57)</option>
+                                        <option value="269">COMORES (+269)</option>
+                                        <option value="242">CONGO (+242)</option>
+                                        <option value="243">CONGO (REPUBLIQUE DEMOCRATIQUE) (+243)</option>
+                                        <option value="682">COOK (ILES) (+682)</option>
+                                        <option value="82">COREE (REPUBLIQUE DE) (+82)</option>
+                                        <option value="850">COREE (REPUBLIQUE POPULAIRE DEMOCRATIQUE DE) (+850)</option>
+                                        <option value="506">COSTA RICA (+506)</option>
+                                        <option value="225">COTE D'IVOIRE (+225)</option>
+                                        <option value="385">CROATIE (+385)</option>
+                                        <option value="53">CUBA (+53)</option>
+                                        <option value="45">DANEMARK (+45)</option>
+                                        <option value="253">DJIBOUTI (+253)</option>
+                                        <option value="1-809,1-829,1-849">DOMINICAINE (REPUBLIQUE) (+1-809,1-829,1-849)</option>
+                                        <option value="1-767">DOMINIQUE (+1-767)</option>
+                                        <option value="20">EGYPTE (+20)</option>
+                                        <option value="503">EL SALVADOR (+503)</option>
+                                        <option value="971">EMIRATS ARABES UNIS (+971)</option>
+                                        <option value="593">EQUATEUR (+593)</option>
+                                        <option value="291">ERYTHREE (+291)</option>
+                                        <option value="34">ESPAGNE (+34)</option>
+                                        <option value="372">ESTONIE (+372)</option>
+                                        <option value="1">ETATS-UNIS (+1)</option>
+                                        <option value="251">ETHIOPIE (+251)</option>
+                                        <option value="389">EX-REPUBLIQUE YOUGOSLAVE DE MACEDOINE (+389)</option>
+                                        <option value="298">FEROE (ILES) (+298)</option>
+                                        <option value="679">FIDJI (+679)</option>
+                                        <option value="358">FINLANDE (+358)</option>
+                                        <option value="33">FRANCE (+33)</option>
+                                        <option value="241">GABON (+241)</option>
+                                        <option value="220">GAMBIE (+220)</option>
+                                        <option value="995">GEORGIE (+995)</option>
+                                        <option value="500">GEORGIE DU SUD ET LES ILES SANDWICH DU SUD (+500)</option>
+                                        <option value="233">GHANA (+233)</option>
+                                        <option value="350">GIBRALTAR (+350)</option>
+                                        <option value="30">GRECE (+30)</option>
+                                        <option value="1-473">GRENADE (+1-473)</option>
+                                        <option value="299">GROENLAND (+299)</option>
+                                        <option value="590">GUADELOUPE (+590)</option>
+                                        <option value="1-671">GUAM (+1-671)</option>
+                                        <option value="502">GUATEMALA (+502)</option>
+                                        <option value="224">GUINEE (+224)</option>
+                                        <option value="245">GUINEE-BISSAU (+245)</option>
+                                        <option value="240">GUINEE EQUATORIALE (+240)</option>
+                                        <option value="592">GUYANA (+592)</option>
+                                        <option value="594">GUYANE (+594)</option>
+                                        <option value="509">HAITI (+509)</option>
+                                        <option value="672">HEARD ET MACDONALD (ILES) (+672)</option>
+                                        <option value="504">HONDURAS (+504)</option>
+                                        <option value="852">HONG-KONG (+852)</option>
+                                        <option value="36">HONGRIE (+36)</option>
+                                        <option value="91">INDE (+91)</option>
+                                        <option value="62">INDONESIE (+62)</option>
+                                        <option value="98">IRAN (+98)</option>
+                                        <option value="964">IRAQ (+964)</option>
+                                        <option value="353">IRLANDE, OU EIRE (+353)</option>
+                                        <option value="354">ISLANDE (+354)</option>
+                                        <option value="972">ISRAEL (+972)</option>
+                                        <option value="39">ITALIE (+39)</option>
+                                        <option value="1-876">JAMAIQUE (+1-876)</option>
+                                        <option value="81">JAPON (+81)</option>
+                                        <option value="962">JORDANIE (+962)</option>
+                                        <option value="7">KAZAKHSTAN (+7)</option>
+                                        <option value="254">KENYA (+254)</option>
+                                        <option value="996">KIRGHIZISTAN (+996)</option>
+                                        <option value="686">KIRIBATI (+686)</option>
+                                        <option value="965">KOWEIT (+965)</option>
+                                        <option value="856">LAOS (+856)</option>
+                                        <option value="262">LA REUNION (+262)</option>
+                                        <option value="266">LESOTHO (+266)</option>
+                                        <option value="371">LETTONIE (+371)</option>
+                                        <option value="961">LIBAN (+961)</option>
+                                        <option value="231">LIBERIA (+231)</option>
+                                        <option value="218">LIBYE (+218)</option>
+                                        <option value="423">LIECHTENSTEIN (+423)</option>
+                                        <option value="370">LITUANIE (+370)</option>
+                                        <option value="352">LUXEMBOURG (+352)</option>
+                                        <option value="853">MACAO (+853)</option>
+                                        <option value="261">MADAGASCAR (+261)</option>
+                                        <option value="60">MALAISIE (+60)</option>
+                                        <option value="265">MALAWI (+265)</option>
+                                        <option value="960">MALDIVES (+960)</option>
+                                        <option value="223">MALI (+223)</option>
+                                        <option value="500">MALOUINES, OU FALKLAND (ILES) (+500)</option>
+                                        <option value="356">MALTE (+356)</option>
+                                        <option value="1-670">MARIANNES DU NORD (ILES) (+1-670)</option>
+                                        <option value="212">MAROC (+212)</option>
+                                        <option value="692">MARSHALL (ILES) (+692)</option>
+                                        <option value="596">MARTINIQUE (+596)</option>
+                                        <option value="230">MAURICE (+230)</option>
+                                        <option value="222">MAURITANIE (+222)</option>
+                                        <option value="262">MAYOTTE (+262)</option>
+                                        <option value="52">MEXIQUE (+52)</option>
+                                        <option value="691">MICRONESIE (ETATS FEDERES DE) (+691)</option>
+                                        <option value="373">MOLDAVIE (+373)</option>
+                                        <option value="377">MONACO (+377)</option>
+                                        <option value="976">MONGOLIE (+976)</option>
+                                        <option value="382">MONTENEGRO (+382)</option>
+                                        <option value="1-664">MONTSERRAT (+1-664)</option>
+                                        <option value="258">MOZAMBIQUE (+258)</option>
+                                        <option value="264">NAMIBIE (+264)</option>
+                                        <option value="674">NAURU (+674)</option>
+                                        <option value="977">NEPAL (+977)</option>
+                                        <option value="505">NICARAGUA (+505)</option>
+                                        <option value="227">NIGER (+227)</option>
+                                        <option value="234">NIGERIA (+234)</option>
+                                        <option value="683">NIUE (+683)</option>
+                                        <option value="672">NORFOLK (ILE) (+672)</option>
+                                        <option value="47">NORVEGE (+47)</option>
+                                        <option value="687">NOUVELLE-CALEDONIE (+687)</option>
+                                        <option value="64">NOUVELLE-ZELANDE (+64)</option>
+                                        <option value="246">OCEAN INDIEN (TERRITOIRE BRITANNIQUE DE L') (+246)</option>
+                                        <option value="968">OMAN (+968)</option>
+                                        <option value="256">OUGANDA (+256)</option>
+                                        <option value="998">OUZBEKISTAN (+998)</option>
+                                        <option value="92">PAKISTAN (+92)</option>
+                                        <option value="680">PALAOS (ILES) (+680)</option>
+                                        <option value="970">PALESTINE (Etat de) (+970)</option>
+                                        <option value="507">PANAMA (+507)</option>
+                                        <option value="675">PAPOUASIE-NOUVELLE-GUINEE (+675)</option>
+                                        <option value="595">PARAGUAY (+595)</option>
+                                        <option value="31">PAYS-BAS (+31)</option>
+                                        <option value="51">PEROU (+51)</option>
+                                        <option value="63">PHILIPPINES (+63)</option>
+                                        <option value="48">POLOGNE (+48)</option>
+                                        <option value="689">POLYNESIE FRANCAISE (+689)</option>
+                                        <option value="1">PORTO RICO (+1)</option>
+                                        <option value="351">PORTUGAL (+351)</option>
+                                        <option value="974">QATAR (+974)</option>
+                                        <option value="40">ROUMANIE (+40)</option>
+                                        <option value="44">ROYAUME-UNI (+44)</option>
+                                        <option value="7">RUSSIE (+7)</option>
+                                        <option value="250">RWANDA (+250)</option>
+                                        <option value="212">SAHARA OCCIDENTAL (+212)</option>
+                                        <option value="1-869">SAINT-CHRISTOPHE-ET-NIEVES (+1-869)</option>
+                                        <option value="290 n">SAINTE HELENE, ASCENSION ET TRISTAN DA CUNHA (+290 n)</option>
+                                        <option value="1-758">SAINTE-LUCIE (+1-758)</option>
+                                        <option value="378">SAINT-MARIN (+378)</option>
+                                        <option value="508">SAINT-PIERRE-ET-MIQUELON (+508)</option>
+                                        <option value="1-784">SAINT-VINCENT-ET-LES GRENADINES (+1-784)</option>
+                                        <option value="677">SALOMON (ILES) (+677)</option>
+                                        <option value="1-684">SAMOA AMERICAINES (+1-684)</option>
+                                        <option value="685">SAMOA OCCIDENTALES (+685)</option>
+                                        <option value="239">SAO TOME-ET-PRINCIPE (+239)</option>
+                                        <option value="221">SENEGAL (+221)</option>
+                                        <option value="381 p">SERBIE (+381 p)</option>
+                                        <option value="248">SEYCHELLES (+248)</option>
+                                        <option value="232">SIERRA LEONE (+232)</option>
+                                        <option value="65">SINGAPOUR (+65)</option>
+                                        <option value="421">SLOVAQUIE (+421)</option>
+                                        <option value="386">SLOVENIE (+386)</option>
+                                        <option value="252">SOMALIE (+252)</option>
+                                        <option value="249">SOUDAN (+249)</option>
+                                        <option value="94">SRI LANKA (+94)</option>
+                                        <option value="46">SUEDE (+46)</option>
+                                        <option value="41">SUISSE (+41)</option>
+                                        <option value="597">SURINAME (+597)</option>
+                                        <option value="47">SVALBARD et ILE JAN MAYEN (+47)</option>
+                                        <option value="268">SWAZILAND (+268)</option>
+                                        <option value="963">SYRIE (+963)</option>
+                                        <option value="992">TADJIKISTAN (+992)</option>
+                                        <option value="886">TAIWAN (+886)</option>
+                                        <option value="255">TANZANIE (+255)</option>
+                                        <option value="235">TCHAD (+235)</option>
+                                        <option value="420">TCHEQUE (REPUBLIQUE) (+420)</option>
+                                        <option value="262">TERRES AUSTRALES FRANCAISES (+262)</option>
+                                        <option value="66">THAILANDE (+66)</option>
+                                        <option value="228">TOGO (+228)</option>
+                                        <option value="690">TOKELAU (+690)</option>
+                                        <option value="676">TONGA (+676)</option>
+                                        <option value="1-868">TRINITE-ET-TOBAGO (+1-868)</option>
+                                        <option value="216">TUNISIE (+216)</option>
+                                        <option value="993">TURKMENISTAN (+993)</option>
+                                        <option value="1-649">TURKS ET CAIQUES (ILES) (+1-649)</option>
+                                        <option value="90">TURQUIE (+90)</option>
+                                        <option value="688">TUVALU (+688)</option>
+                                        <option value="380">UKRAINE (+380)</option>
+                                        <option value="598">URUGUAY (+598)</option>
+                                        <option value="678">VANUATU (+678)</option>
+                                        <option value="39-06">VATICAN, ou SAINT-SIEGE (+39-06)</option>
+                                        <option value="58">VENEZUELA (+58)</option>
+                                        <option value="1-284">VIERGES BRITANNIQUES (ILES) (+1-284)</option>
+                                        <option value="1-340">VIERGES DES ETATS-UNIS (ILES) (+1-340)</option>
+                                        <option value="84">VIET NAM (+84)</option>
+                                        <option value="681">WALLIS-ET-FUTUNA (+681)</option>
+                                        <option value="967">YEMEN (+967)</option>
+                                        <option value="260">ZAMBIE (+260)</option>
+                                        <option value="263">ZIMBABWE (+263)</option>
+                                    </select>
+                                </div>
+                                <div id="auth_5_error_phone" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> téléphone déjà associé à une autre adresse email : <span id="auth_5_error_phone_email"></span> </div>
+                                <div id="auth_5_error_toomany" class="auth_5_msg" style="display:none;font-size:14px;padding:5px;background-color: white;border-radius:10px;width:305px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> vous avez fait trop d'essais. Votre compte est bloqué. <a href="https://laprimaire.org/contact/?topic=Compte%20bloqué" target="_blank">contactez-nous</a> pour le débloquer. </div>
+                                <div id="auth_5_error_tel" class="auth_5_msg" style="display:none;padding:4px;background-color: white;border-radius:10px;width:310px;margin:0 auto;color:#5e5e5e;font-size:13px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> Numéro invalide. Vérifiez que vous avez indiqué le bon indicatif pays et que votre numéro est correct.</div>
+                                <div id="auth_5_error_type" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#d91d1c"></i> fixe ou portable ?</div>
+                                <div id="auth_5_msg_sent" class="auth_5_msg" style="display:none;padding:5px;background-color: white;border-radius:10px;width:200px;margin:0 auto;color:#5e5e5e;"><i class="fa fa-cog fa-spin" aria-hidden="true" style="color:#999"></i> patientez...</div>							    
+							    <p style="font-size:16px;margin-top:15px;">Pour vous authentifier, nous allons vous envoyer un code.<br/>Comment souhaitez-vous recevoir ce code ?</p>
+							    <div class="radio" style="font-size:16px;width:100%;">
 								    <label>
 									    <input type="radio" name="typeTel" id="radioPortable" value="sms" checked>
 									    Envoyez-moi un SMS avec le code
 								    </label>
 							    </div>
-							    <div class="radio" style="font-size:16px;">
-								    <label>
+							    <div class="radio" style="font-size:16px;width:100%;">
+								    <label style="width:100%;">
 									    <input type="radio" name="typeTel" id="radioFixe" value="call">
 									    Appelez-moi pour me donner le code
 								    </label>
@@ -344,7 +602,8 @@ h3 { color:white; }
 							    </div>
 							    <br/>
 							    <div class="btn_bottom">
-								    <button id="auth_6_yes" class="btn btn-xl oui">OK</button>
+								    <button id="auth_6_no" class="btn btn-xl non">Retour</button>&nbsp;&nbsp;
+								    <button id="auth_6_yes" class="btn btn-xl oui">Continuer</button>
 							    </div>
 							    <div class="mention_cnil">
 								    <p style="font-size:10px;color:#5e5e5e;">CNIL déclaration normale n°1996018</p>
@@ -426,11 +685,6 @@ $(document).ready(function() {
 		$('#auth_0').hide();
 		$('#auth_1').show();
 		if ($('#auth_1_input').val()=="") { $('#auth_1_input').focus(); }
-//        $('#auth_1_input').on('keypress',function(e) {
-//            if (e.which==13) {
-//                $('#auth_1_yes').click();
-//            }
-//        });
 	});
 	$('#auth_1_no').click(function() { 
 			$('.auth_1_msg').hide();
@@ -454,11 +708,6 @@ $(document).ready(function() {
 			$('#auth_1').hide();
 			$('#auth_2').show();
 			if ($('#auth_2_input').val()=="") { $('#auth_2_input').focus(); }
-//            $('#auth_2_input').on('keypress',function(e) {
-//                if (e.which==13) {
-//                    $('#auth_2_yes').click();
-//                }
-//            });
 			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'firstname'})
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
@@ -491,14 +740,7 @@ $(document).ready(function() {
                   return suggestion.name+'<br/><span style="font-size:11px;line-height:10px;padding:0px;">'+suggestion.name_circonscription+'</span><br/><span style="font-size:11px;">Député(e) sortant(e): '+suggestion.deputy_name+' ('+suggestion.deputy_party+')</span>';
                 }
               }
-            }]).on('autocomplete:selected', function(event, suggestion, dataset) {
-                $('#auth_3_yes').click();
-            });
-//            $('#auth_3_input').on('keypress',function(e) {
-//                if (e.which==13) {
-//                    $('#auth_3_yes').click();
-//                }
-//            });
+            }]).on('autocomplete:selected', function(event, suggestion, dataset) { console.log(suggestion); });
 			$.get("<%= API_HOST %>/v1/auth/step/<%= citoyen['user_key'] %>",{'step':'lastname'})
 			.done(function( data ){ console.log(data); })
 			.error(function(data) { console.log(data); });
@@ -522,7 +764,7 @@ $(document).ready(function() {
 			}
             $.post("<%= API_HOST %>/v2/auth/country",{'country':country,'key':'<%= citoyen['user_key'] %>'})
             .done(function(data){ 
-                $('#dial_code').val(data['dial_code']);
+                $('#dial_country_code').val(data['dial_code']);
             })
             .error(function(data) { console.log(data); });
             $('#auth_3').hide();
@@ -542,17 +784,11 @@ $(document).ready(function() {
                      $('#auth_3b_code_departement').val(suggestion.code_departement);
                      $('#auth_3b_num_circonscription').val(suggestion.num_circonscription);
                      $('#auth_3b_num_commune').val(suggestion.num_commune);                     
-                     $('#auth_3b_yes').click();
                 });
                 $('#auth_3b').show();
                 if ($('#auth_3b_input').val()=="") { $('#auth_3b_input').focus(); }
             } else {
                 // le citoyen n'habite pas en France
-//                $('#auth_3a_input').on('keypress',function(e) {
-//                    if (e.which==13) {
-//                        $('#auth_3a_yes').click();
-//                    }
-//                });
                 $('#auth_3a').show();
                 if ($('#auth_3a_input').val()=="") { $('#auth_3a_input').focus(); }
             }
@@ -589,7 +825,7 @@ $(document).ready(function() {
                 }
 			} else {
                 $.post("<%= API_HOST %>/v2/auth/city",{'city':city,'key':'<%= citoyen['user_key'] %>','france':false})
-                .done(function(data){ console.log(data['city']) })
+                .done(function(data){ console.log(data) })
                 .error(function(data) { console.log(data); });
             }
             $('#auth_3a').hide();
@@ -681,31 +917,19 @@ $(document).ready(function() {
 				return;
 			});
 	});
-	//$('#radioFixe').click(function() { $('#tel_fixe_label').show(); $('#tel_portable_label').hide();});
-	//$('#radioPortable').click(function() { $('#tel_portable_label').show(); $('#tel_fixe_label').hide();});
 	$('#auth_5_yes').click(function() {
 			$('.auth_5_msg').hide();
 			var tel=$('#auth_5_input').val();
+        	var dial_code=$('#dial_country_code').val();
 			var type=$('input[name=typeTel]:checked').val();
-			if (tel==null || tel.trim()=='') {
+			if (tel==null || tel.trim()=='' || dial_code==null || dial_code.trim()=='') {
 				$('.auth_5_msg').hide();
 				$('#auth_5_error_tel').show();
 				$('#auth_5_input').focus();
 				return;
 			}
-			tel=tel.trim();
-			if (tel.lastIndexOf("00",0)===0) {
-				while (tel.charAt(0) === '0') { tel = tel.substr(1); }
-				tel='+'+tel;
-				console.log("phone number reformatted: "+tel);
-			} else if (tel.lastIndexOf("33",0)===0) {
-				tel='+'+tel;
-				console.log("phone number reformatted: "+tel);
-			} else if (tel.charAt(0)!=='+') {
-				while (tel.charAt(0) === '0') { tel = tel.substr(1); }
-				tel='+33'+tel;
-				console.log("phone number reformatted: "+tel);
-			}
+			tel='+'+dial_code+tel.trim();
+            console.log(tel);
 			$('#auth_5_yes').prop('disabled',true);
 			$('#auth_5_msg_sent').show();
 			$.get("<%= API_HOST %>/v1/auth/phone/lookup/<%= citoyen['user_key'] %>",{'tel':tel,'type':type})
@@ -713,7 +937,13 @@ $(document).ready(function() {
 				console.log(data);
 				if (data['error']=='phone_already_used') {
 					$('.auth_5_msg').hide();
-					$('#auth_5_error_phone').show();
+                    $('#auth_5_error_phone_email').html(data['email']);
+                    $('#auth_5_error_phone').show();
+					$('#auth_5_input').focus();
+					$('#auth_5_yes').prop('disabled',false);
+                } else if (data['error']=='too_many_attempts') {
+                    $('.auth_5_msg').hide();
+                    $('#auth_5_error_toomany').show();
 					$('#auth_5_input').focus();
 					$('#auth_5_yes').prop('disabled',false);
 				} else {
@@ -765,7 +995,6 @@ $(document).ready(function() {
 				console.log(data);
 				if (data['verified']=="yes") {
 					$('#auth_6').hide();
-					//$('#auth_7').show();
 					$('#auth_6_input').focus();
 					$('#auth_6_yes').prop('disabled',false);
 					$('.auth_6_msg').hide();
@@ -773,8 +1002,7 @@ $(document).ready(function() {
 					.always(function( data ){ 
 						console.log(data);
 						var loc=window.location.href;
-						loc=loc.replace("auth","vote");
-						loc+='/1';
+						loc=loc.replace("auth/","");
 						window.location=loc;
 					});
 				} else {
@@ -791,6 +1019,11 @@ $(document).ready(function() {
 				$('#auth_6_yes').prop('disabled',false);
 			});
 	});
-    $('#auth_3b_yes').click(); // FIXME
+    $('#auth_6_no').click(function() {
+        $('#auth_6').hide();
+        $('.auth_6_msg').hide();
+        $('#auth_5').show();
+        if ($('#auth_5_input').val()=="") { $('#auth_5_input').focus(); }
+    });
 });
 </script>
