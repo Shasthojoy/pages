@@ -257,6 +257,12 @@ footer {
 		padding-top:7px;
 	}
 }
+        #input_pb {
+            display:none;
+            color:red;
+            font-size:14px;
+            font-style:italic;
+        }
     </style>
 </head>
 <body class="index">
@@ -427,6 +433,7 @@ footer {
                     <input type="hidden" id="input_referer" class="form-control" value="">
                 </div>
                 <button type="submit" class="btn btn-primary"><i style="width:30px;padding:0px;display:none;" id="input_loading" class="fa fa-refresh fa-spin fa-fw"></i>Accéder</button>
+                <span id="input_pb">mauvais email</span>
             </form>
 	       </div>
            <div class="modal-footer">
@@ -529,15 +536,19 @@ $(document).ready(function(){
 	if ($('#JoinsUsNow')!=null) {
 		$('#JoinUsNow').on('shown.bs.modal', function () {
 			ga('send', 'pageview', '/inscription-popup/');
+            $('#input_email').on('focus', function(e) {
+                $('#input_pb').hide();
+            })
             $('#login_form').on('submit', function(e) {
                 e.preventDefault();
                 $('#input_loading').show();
                 $('#input_email').prop('disabled',true);
                 var email=$('#input_email').val();
                 $.post("<%= API_HOST %>/v2/auth/login",{'email':email})
-                .done(function(data){ window.location.href= '/citoyen/auth/'+data['user_key']; })
+                .done(function(data){ window.location.href= data['redirect_url']; })
                 .error(function(data) {
                     console.log(data);
+                    $('#input_pb').show();
                     $('#input_loading').hide();
                     $('#input_email').prop('disabled',false)
                 });

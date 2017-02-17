@@ -25,9 +25,14 @@ module Pages
 			super(base)
 			@queries={
 				'get_citizen_by_key'=><<END,
-SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement
+SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement
 FROM users AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 WHERE c.user_key=$1
+END
+                'get_citizen_by_email'=><<END,
+SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement
+FROM users AS c LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
+WHERE c.email=$1
 END
 				'get_supported_candidates_by_key'=><<END,
 SELECT ca.*, s.support_date
@@ -71,8 +76,16 @@ END
 		end
 
 		helpers do
-			def page_info(infos)
-				info={
+			def page_info(infos=nil)
+				return {
+					'page_description'=>"description",
+					'page_author'=>"Des citoyens ordinaires",
+					'page_image'=>"pas de photo",
+					'page_url'=>"https://laprimaire.org",
+					'page_title'=>"Votez !",
+					'social_title'=>"Votez !"
+				} if infos.nil?
+                return {
 					'page_description'=>"description",
 					'page_author'=>"Des citoyens ordinaires",
 					'page_image'=>"pas de photo",
@@ -80,7 +93,6 @@ END
 					'page_title'=>"Votez !",
 					'social_title'=>"Votez !"
 				}
-				return info
 			end
 
 			def create_ballot(email,vote_id)
@@ -214,7 +226,19 @@ END
 			}
 		end
 
-		get '/citoyen/auth/:user_key' do
+        get '/citoyen/verif/:email' do
+            return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if params['email'].nil?
+            email=params['email'].downcase.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
+            return erb :error, :locals=>{:msg=>{"title"=>"Mauvais email","message"=>"Votre email n'est pas valide"}} if email.match(/\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/).nil?
+            erb :index, :locals=>{
+				'page_info'=>page_info(),
+				'vars'=>{'email'=>params['email']},
+				'no_navbar'=>true,
+				'template'=>:email_verification
+			}
+        end
+            
+        get '/citoyen/auth/:user_key' do
 			begin
 				Pages.db_init()
 				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
@@ -238,7 +262,7 @@ END
 			ensure
 				Pages.db_close()
 			end
-			redirect "/citoyen/vote/#{params['user_key']}/1" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
+			redirect "/citoyen/#{params['user_key']}" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
 			citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
 			erb :index, :locals=>{
 				'page_info'=>page_info(citoyen),

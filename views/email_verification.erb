@@ -1,0 +1,168 @@
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<style>
+header {
+	position:absolute;
+	height:100%;
+	width:100%;
+}
+#header_overlay { height:100%; }
+.modal-content {
+	height:430px;
+}
+.modal-body { height:100%;}
+input[type=text], input[type=search], input[type=date], input[type=tel] {
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	padding: 3px 0px 3px 3px;
+	margin: 5px 1px 3px 0px;
+	border: 1px solid #fff;
+	box-shadow:none;
+	background-color:#527bdd;
+	color:white;
+	font-size:30px;
+	border:0px;
+	text-align:center;
+	border: 1px solid rgba(200, 200, 200, 1);
+}
+input::selection { background: white; }
+input::-moz-selection { background: white; }
+input[type=text]:focus, input[type=search]:focus, input[type=date]:focus, input[type=tel]:focus {
+	box-shadow: 0 0 20px rgba(200, 200, 200, 1);
+	padding: 3px 0px 3px 3px;
+	margin: 5px 1px 3px 0px;
+	border: 1px solid rgba(200, 200, 200, 1);
+}
+button.non:hover { background-color:#d91d1c !important; border-color:#d91d1c !important;color:white !important; }
+button.oui:hover { background-color:#4ae54a !important; border-color:#4ae54a !important;color:white !important;}
+.form-inline .form-control { vertical-align: bottom; }
+.form-control {height: 40px;}
+.mention_email.title {
+	top:30px;
+	font-size:18px;
+}
+.mention_logo {
+	position: absolute;
+	width:180;
+	top:10px;
+	left:10px;
+}
+.mention_email {
+	font-size:10px;
+	position: absolute;
+	text-align:right;
+	width:100%;
+	top:20px;
+	right:25px;
+	color:white;
+}
+.mention_cnil {
+	position: absolute;
+	width:100%;
+	bottom:-10px;
+}
+.btn_bottom {
+	margin-top:20px;
+	width:100%;
+}
+.btn_bottom .btn {
+	background-color:white;
+	color:#5e5e5e;
+}
+.btn-xl {
+	padding:2px;
+	font-size: 26px;
+	width:150px;
+}
+.num_tel {
+	font-size:28px;
+}
+h3 { color:white; }
+.ap-dropdown-menu { text-align:left; }
+.ap-name {color:#5e5e5e;}
+    
+ .algolia-autocomplete {
+    width: 100%;
+  }
+  .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+    width: 100%;
+  }
+  .algolia-autocomplete .aa-hint {
+    color: #999;
+  }
+  .algolia-autocomplete .aa-dropdown-menu {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-top: none;
+    color: #777;
+  }
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer;
+    padding: 5px 4px;
+  }
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: #B2D7FF;
+  }
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+    font-weight: bold;
+    font-style: normal;
+  }
+</style>
+    <header>
+    <div id="header_overlay" class="white" style="border-bottom: 2px solid #527bdd;">
+	    <div class="container">
+		    <div class="row" style="padding-top:10px;">
+		    </div>
+	    </div>
+    </div>
+    </header>
+
+    <div class="modal fade" id="Authentication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog" role="document">
+		    <div class="modal-content" style="height:500px;">
+			    <div class="modal-body" >
+				    <div style="margin:0 auto;background:#527bdd;height:100%;">
+                        <div id="auth_A" class="auth_step" style="margin:0 auto;padding-top:35px;padding-bottom:100px;width:100%;color:white;text-align:center;display:visible;">
+						    <div class="mention_logo">
+							    <img src="https://laprimaire.org/assets/images/logos/laprimaire-185x60.jpg"/>
+						    </div>
+                            <h3>Bienvenue !</h3><br/>
+                            <p style="font-size:15px;">Nous venons de vous envoyer un email à l'adresse suivante :</p>
+                            <div style="margin-bottom:20px;background-color: white;border-radius: 10px;color:#5e5e5e;padding:10px;width:300px;margin:0px auto 20px auto;font-size:16px;"><%= email %></div>
+                            <p style="font-size:15px;">Pour continuer et vous authentifier, merci de <b>cliquer sur le lien présent dans l'email qui vient de vous être envoyé</b> et que vous devriez recevoir d'ici quelques secondes, ou quelques minutes tout au plus.</p><br/>
+                            <p style="font-size:15px;">PS : Pensez à regarder dans vos spam également au cas où...</p>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script>
+function resizeIframe(obj){
+	obj.style.height = 0;
+	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
+
+/* google analytics */
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-60977053-1', 'auto');
+ga('send', 'pageview');
+        
+$(document).ready(function() {
+	if ($('#Authentication')!=null) {
+		$('#Authentication').modal({backdrop:'static', keyboard: false});
+		$('#Authentication').modal('show');
+	}
+});
+</script>
+<script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
+
