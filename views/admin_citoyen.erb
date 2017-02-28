@@ -220,6 +220,20 @@
     $(".button-collapse").sideNav();
     var el = document.querySelector('.custom-scrollbar');
     Ps.initialize(el);
+    function shuffle (o){
+	    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	    return o;
+    }
+    function show_notification(data) {
+	    err=JSON.parse(data.responseText);
+	    if (err['type']=='success') {
+		    toastr.success(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
+	    } else if (err['type']=='info') {
+		    toastr.info(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
+	    } else { // error // default
+		    toastr.error(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
+	    }
+    }
     function load_path(node,path,f) {
         $(node).load('/citoyen/spa/<%= citoyen['user_key'] %>'+path, function(response,status,xhr) {
             if (status=="error") {
@@ -227,6 +241,7 @@
                 toastr["error"]('<i>'+error['title']+'</i><br/>'+error['msg']);
             } else {
                 if (typeof(f)!=='undefined') f();
+                if (typeof(pageReady)!=='undefined') pageReady();
                 $('#breadcrumb-top-page').html($('#partial_title').val());
                 $('.button-collapse').sideNav('hide');
             }

@@ -417,6 +417,7 @@ END
 				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
 				circonscription=get_circonscription(citoyen['email'],'legislatives-2017')
 				circonscription['deputy_slug']=circonscription['deputy_url'].split('/')[-1]
+				circonscription['election_slug']=circonscription['slug']
 				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
 			rescue StandardError => e
 				return erb 'spa/elections/choose-circonscription'.to_sym, :locals=>{

@@ -18,8 +18,9 @@ db=PG.connect(
 Algolia.init :application_id=>ALGOLIA_ID, :api_key=>ALGOLIA_KEY
 index_circos=Algolia::Index.new("circonscriptions")
 circos_list=<<END
-SELECT circonscription_id,departement,code_departement,num_commune,name_commune,num_circonscription,departement,name_circonscription,deputy_name,deputy_gender,date_part('year',age(deputy_birthday)) as deputy_age,deputy_group,deputy_party,deputy_url,deputy_mandates,deputy_election,deputy_job,deputy_twitter
-FROM circos
+SELECT e.slug as election_slug,c.circonscription_id,departement,code_departement,num_commune,name_commune,num_circonscription,departement,name_circonscription,deputy_name,deputy_gender,date_part('year',age(deputy_birthday)) as deputy_age,deputy_group,deputy_party,deputy_url,deputy_mandates,deputy_election,deputy_job,deputy_twitter
+FROM circos AS c
+INNER JOIN elections AS e ON (e.circonscription_id=c.circonscription_id)
 ORDER BY departement,num_circonscription DESC
 END
 
@@ -42,6 +43,7 @@ if not res.num_tuples.zero? then
             "objectID"=>id,
             "departement"=>deptnum,
             "circonscription_id"=>r['circonscription_id'],
+	    "election_slug"=>r['election_slug'],
             "code_departement"=>r['code_departement'],
             "num_commune"=>citynum,
             "name_commune"=>r['name_commune'],

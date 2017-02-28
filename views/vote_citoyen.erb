@@ -518,7 +518,7 @@ $(document).ready(function() {
 					    }
 				    });
 				    $.ajax({
-					url: "/citoyen/token/<%= citoyen['user_key'] %>",
+					url: "/api/token/<%= citoyen['user_key'] %>",
 					data: "ballot=<%= ballot['ballot_id'] %>&vote_id=<%= vote['vote_id'] %>",
 					dataType: "json",
 					success: function(data) {
