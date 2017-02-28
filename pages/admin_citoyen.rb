@@ -370,44 +370,7 @@ END
 			redirect "/citoyen/vote/#{params['user_key']}/2"
 		end
 
-		post '/citoyen/api/:user_key/candidate/:candidate/support' do
-			begin
-				Pages.db_init()
-				citoyen=authenticate_citizen(params['user_key'])
-				return JSON.dump({'error'=>'unknown user'}) if citoyen.nil?
-				candidates=get_candidates_supported(citoyen['email'])
-				return JSON.dump({'error'=>'max support by citizen reached'}) if candidates.num_tuples==3
-				res=add_supporter(params['candidate'],citoyen['email'])
-				return JSON.dump({'error'=>''}) if res.num_tuples.zero?
-			rescue PG::Error => e
-				Pages.log.error "/citoyen/api/candidate/support DB Error #{params}\n#{e.message}"
-				return JSON.dump({'error'=>'DB error'})
-			ensure
-				Pages.db_close()
-			end
-			return JSON.dump({'success'=>1})
-		end
-
-		post '/citoyen/api/:user_key/candidate/:candidate/unsupport' do
-		end
-
-		post '/citoyen/api/:user_key/elections/legislatives-2017-inscription' do
-			begin
-				Pages.db_init()
-				citoyen=authenticate_citizen(params['user_key'])
-				return JSON.dump({'error'=>'unknown user'}) if citoyen.nil?
-				circonscription=set_circonscription(citoyen['email'],params['circonscription'],'legislatives-2017')
-				return JSON.dump({'error'=>'circonscription not set'}) if circonscription.nil?
-			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/elections/legislatives-2017-inscription DB Error #{params}\n#{e.message}"
-				return JSON.dump({'success'=>0})
-			ensure
-				Pages.db_close()
-			end
-			return JSON.dump({'success'=>1})
-		end
-
-		get '/citoyen/spa/:user_key/elections/legislatives-2017' do
+		get '/citoyen/spa/:user_key/election/legislatives-2017' do
 			errors=[]
 			success=[]
 			begin
@@ -420,11 +383,11 @@ END
 				circonscription['election_slug']=circonscription['slug']
 				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
 			rescue StandardError => e
-				return erb 'spa/elections/choose-circonscription'.to_sym, :locals=>{
+				return erb 'spa/election/choose-circonscription'.to_sym, :locals=>{
 					'citoyen'=>citoyen
 				}
 			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/elections/legislatives-2017 DB Error [code:CSEL1] #{params}\n#{e.message}"
+				Pages.log.error "/citoyen/spa/election/legislatives-2017 DB Error [code:CSEL1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEL1]"})
 			ensure
 				Pages.db_close()
@@ -437,7 +400,7 @@ END
 			}
 		end
 
-		get '/citoyen/spa/:user_key/elections/presidentielle-2017' do
+		get '/citoyen/spa/:user_key/election/presidentielle-2017' do
 			begin
 				Pages.db_init()
 				citoyen=authenticate_citizen(params['user_key'])
@@ -453,7 +416,7 @@ END
 					end
 				end
 			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/elections DB Error #{params}\n#{e.message}"
+				Pages.log.error "/citoyen/spa/election DB Error #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEP0]"})
 			ensure
 				Pages.db_close()
@@ -484,17 +447,6 @@ END
 
 		get '/citoyen/spa/:user_key/home' do
 			erb 'spa/home'.to_sym
-		end
-
-		get '/citoyen/spa/:user_key/:partial' do
-			template = 'spa/home'
-			template = 'spa/elections' if params['partial'].split('|')[0]=='elections'
-			template = 'spa/candidate' if params['partial'].split('|')[0]=='candidate'
-			template = 'spa/donations' if params['partial'].split('|')[0]=='donations'
-			template = 'spa/about' if params['partial'].split('|')[0]=='about'
-			erb template.to_sym, :locals=>{
-				'partial'=>params['partial']
-			}
 		end
 
 		get '/citoyen/vote/:user_key' do

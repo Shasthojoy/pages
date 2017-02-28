@@ -1,4 +1,4 @@
-<input type="hidden" id="partial_title" value="Primaire ouverte pour les Législatives de 2017">
+<input type="hidden" id="partial_title" value="Primaire Ouverte pour les Législatives de 2017">
 <input type="hidden" id="election_slug" value="<%= circonscription['election_slug'] %>">
 <style>
     .independant {display:none;}
@@ -36,11 +36,11 @@
         <a href="<%= circonscription['deputy_url'] %>" target="_blank">
             <img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
         </a>
-        &nbsp;<b><%= circonscription['deputy_name'] %></b><br/>
+	&nbsp;<a href="<%= circonscription['deputy_url'] %>" target="_blank"><b><%= circonscription['deputy_name'] %></b></a><br/>
         &nbsp;<%= circonscription['deputy_party'] %><br/>
         &nbsp;<%= circonscription['deputy_job'] %>
         <div class="clearfix" style="margin-bottom:15px;"></div>
-        <h3 class="h4-responsive doc-title">Les candidats</h3>
+        <h3 class="h4-responsive doc-title">Les candidats en lice</h3>
         <div class="container-fluid">
 		<div id="hits" class="row">
 		</div>

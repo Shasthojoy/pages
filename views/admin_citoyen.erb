@@ -127,9 +127,9 @@
                     <li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-users"></i> Elections<i class="fa fa-angle-down rotate-icon"></i></a>
                         <div class="collapsible-body">
                             <ul class="collapsible collapsible-accordion">
-                                <li><a href="#elections/presidentielle-2017" id="presidentielle-2017" class="collapsible-header waves-effect arrow-r">Présidentielle 2017</a>
+                                <li><a href="#election/presidentielle-2017" id="presidentielle-2017" class="collapsible-header waves-effect arrow-r">Présidentielle 2017</a>
                                 </li>
-                                <li><a href="#elections/legislatives-2017" id="legislatives-2017" class="waves-effect">Législatives 2017</a>
+                                <li><a href="#election/legislatives-2017" id="legislatives-2017" class="waves-effect">Législatives 2017</a>
                                 </li>
                             </ul>
                         </div>
@@ -252,8 +252,8 @@
     var router= new Navigo(root,useHash);
     router
         .on({
-        'elections/presidentielle-2017*': function() { load_path('main','/elections/presidentielle-2017'); },
-        'elections/legislatives-2017*': function() { load_path('main','/elections/legislatives-2017'); },
+        'election/presidentielle-2017*': function() { load_path('main','/election/presidentielle-2017'); },
+        'election/legislatives-2017*': function() { load_path('main','/election/legislatives-2017'); },
         'candidate/admin': function() { load_path('main','/candidate/admin'); },
         'home': function() { load_path('main','/home'); }
     }).resolve();
