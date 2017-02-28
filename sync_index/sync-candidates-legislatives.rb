@@ -18,7 +18,7 @@ db=PG.connect(
 Algolia.init :application_id=>ALGOLIA_ID, :api_key=>ALGOLIA_KEY
 index_candidats=Algolia::Index.new("candidats_legislatives")
 candidates_list=<<END
-SELECT c.code_departement,c.departement,c.name_circonscription,c.num_circonscription,u.email,u.slug,u.firstname,u.lastname,u.gender,u.birthday,u.job,u.secteur,ce.accepted,ce.verified,ce.enrolled_at::DATE as enrolled_at, date_part('day',ce.verified_at::DATE) as verified_at,date_part('day',now() - ce.verified_at) as nb_days_verified,ce.qualified,ce.qualified_at,ce.official,ce.official_at,ce.fields->>'vision', ce.fields->>'prio1', ce.fields->>'prio2', ce.fields->>'prio3', u.photo, u.website, u.twitter, u.facebook, u.youtube,u.linkedin,u.blog,u.wikipedia,u.instagram, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
+SELECT c.code_departement,c.departement,c.name_circonscription,c.num_circonscription,u.email,u.slug,u.firstname,u.lastname,u.gender,u.birthday,u.job,u.secteur,ce.accepted,ce.verified,ce.enrolled_at::DATE as enrolled_at, date_part('day',ce.verified_at::DATE) as verified_at,date_part('day',now() - ce.verified_at) as nb_days_verified,ce.qualified,ce.qualified_at,ce.official,ce.official_at,ce.fields->>'candidate' as supported_candidate, ce.fields->>'candidate_photo' as supported_candidate_photo, ce.fields->>'vision', ce.fields->>'prio1', ce.fields->>'prio2', ce.fields->>'prio3', u.photo, u.website, u.twitter, u.facebook, u.youtube,u.linkedin,u.blog,u.wikipedia,u.instagram, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
 FROM users as u
 INNER JOIN candidates_elections as ce ON (ce.email=u.email)
 INNER JOIN elections as e ON (e.election_id=ce.election_id AND e.parent_election_id=2)
@@ -59,6 +59,9 @@ if not res.num_tuples.zero? then
 		qualified = r['qualified'].to_b ? "oui" : "non"
 		verified = r['verified'].to_b ? "verified" : "not_verified"
 		official= r['official'].to_b ? "official" : "not_official"
+		supported_candidate= r['supported_candidate'].empty? ? "Indépendant" : r['supported_candidate']
+		supported_candidate_photo= r['supported_candidate_photo'].nil? ? "independant.jpg" : r['supported_candidate_photo']
+		supported_candidate_visibility= r['supported_candidate'].empty? ? "invisible" : ""
 		gender= r['gender']=='M' ? "Homme" : "Femme"
 		birthday=Date.parse(r['birthday'].split('?')[0]) unless r['birthday'].nil?
 		status="incomplete"
@@ -72,15 +75,17 @@ if not res.num_tuples.zero? then
 		end
 
 		#if (r['verified'].to_b and not r['vision'].nil? and r['nb_soutiens_30j'].to_i>0) then
-        if (r['accepted'].to_b) then
+		if (r['accepted'].to_b) then
 			index_candidats.save_object({
 				"objectID"=>r['email']+'-'+r['election_id'].to_s,
 				"slug"=>r['slug'],
-                "candidate"=>r['candidate'],
-                "code_departement"=>r['code_departement'],
-                "num_departement"=>r['departement'],
-                "name_circonscription"=>r['name_circonscription'],
-                "num_circonscription"=>r['num_circonscription'].to_i,
+				"supported_candidate"=>supported_candidate,
+				"supported_candidate_photo"=>supported_candidate_photo,
+				"supported_candidate_visibility"=>supported_candidate_visibility,
+				"code_departement"=>r['code_departement'],
+				"num_departement"=>r['departement'],
+				"name_circonscription"=>r['name_circonscription'],
+				"num_circonscription"=>r['num_circonscription'].to_i,
 				"name"=>r['firstname']+' '+r['lastname'],
 				"photo"=>r['photo'],
 				"gender"=>gender,

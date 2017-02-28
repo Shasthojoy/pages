@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+gem 'rack-cors'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'unicorn'

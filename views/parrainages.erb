@@ -1,0 +1,29 @@
+<div class="container">
+    <% candidats.each do |c| %>
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-4" style="text-align:right;">
+            <img src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/<%= c['photo'] %>" style="width:100px;height:100px;border-radius:5px;">
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-8">
+            <% if c['slug']=='charlotte-marchandise' then %>
+            <div><%= c['parrainages'] %> parrainages officiels et <%= c['promesses'] %> promesses pour <%= c['name'] %></div>
+            <% else %>
+            <div><%= c['parrainages'] %> parrainages officiellement reçus pour <%= c['name'] %></div>
+            <% end %>
+            <div id="<%= c['slug'] %>-bar" class="parrainages-bar"></div>
+        </div>
+    </div>
+    <% end %>
+</div>
+                                                                      
+<script>
+function load_parrainages() { 
+<% candidats.each do |c| %>
+    <% if c['slug']=='charlotte-marchandise' then %>
+    $('#<%= c['slug'] %>-bar').goalProgress({ goalAmount: 500, indicatorAmount: <%= c['promesses'] %>,currentAmount: <%= c['parrainages'] %>, textBefore: '', textAfter: ' parrainages', textBeforeIndicator: '', textAfterIndicator: ' promesses' });
+    <% else %>
+    $('#<%= c['slug'] %>-bar').goalProgress({ goalAmount: 500,currentAmount: <%= c['parrainages'] %>, textBefore: '', textAfter: ' parrainages', textBeforeIndicator: '', textAfterIndicator: ' promesses' });
+    <% end %>
+<% end %>
+}
+</script>

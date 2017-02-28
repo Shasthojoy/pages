@@ -1,0 +1,630 @@
+<% if partial=='presidentielle-2017' then %>
+    <input type="hidden" id="partial_title" value="Primaire ouverte pour la Présidentielle de 2017">    
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="stepper stepper-horizontal">
+                <li class="completed">
+                    <a id="qualification" style="cursor:pointer;">
+                        <span class="circle">1</span>
+                        <span class="label">Qualif<span class="hidden-xs-down">ication</span><i style="color:#00C851;" class="fa fa-check" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+                <li class="completed">
+                    <a id="preselection" style="cursor:pointer;">
+                        <span class="circle">2</span>
+                        <span class="label">Pré-sélection <i style="color:#00C851;" class="fa fa-check" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+                <li class="completed grey lighten-3 active">
+                    <a id="vote-final" style="cursor:pointer;">
+                        <span class="circle">3</span>
+                        <span class="label">Vote final <i style="color:#00C851;" class="fa fa-check" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="presidentielle-2017-1" class="step" style="display:none;">
+        <h2 class="h2-responsive doc-title">Du 4 avril octobre au 14 juillet 2016</h2>
+        <p class="text-justify">Tout(e) citoyen(ne) pouvait être candidat(e) à LaPrimaire.org pour la présidentielle 2017, la seule condition pour se qualifier et pouvoir participer était de rassembler 500 soutiens citoyens avant le 14 juillet. Au total, ce sont 215 candidat(e)s qui ont fait campagne et <a href="https://articles.laprimaire.org/les-16-citoyens-candidats-%C3%A0-laprimaire-org-17a2901a0a20#.ly42b3st0" target="_blank">16 d'entre eux</a> qui se sont qualifiés en parvenant à atteindre le seuil des 500 soutiens.</p>
+        <h2 class="doc-title h2-responsive">Les 16 candidat(e)s qualifié(e)s</h2>
+        <div class="row">
+        <% qualified.each_with_index do |q,i| %>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <!--Card-->
+                <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay hm-white-slight">
+                        <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/<%= q['photo'] %>" alt="<%= q['firstname'] %> <%= q['lastname'] %>">
+                        <a href="#">
+                            <div class="mask waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block">
+                        <!--Title-->
+                        <h4 class="h4-responsive card-title"><%= q['firstname'] %> <%= q['lastname'] %></h4>
+                        <!--Text-->
+                        <p class="text-fluid card-text text-justify">“<%= q['fields']['vision'] %>”</p>
+                    </div>
+                </div><br/>
+                <!--/.Card-->
+            </div>
+            <% if ((i+1)%4)==0 then %>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <% end %>
+        <% end %>
+        </div>
+    </div>
+    <div id="presidentielle-2017-2" class="step" style="display:none;">
+        <h2 class="h2-responsive doc-title">Du 26 octobre au 6 novembre 2016</h2>
+        <p class="text-justify">Le tour de pré-selection s'est déroulé du 26 octobre au 6 novembre 2016 avec pour objectif de faire émerger 5 citoyen(ne)s candidat(e)s finalistes. Pour ce faire, les citoyen(ne)s ont été invités à évaluer chacun un lot de 5 candidat(e)s (parmi les 16 qualifiés) choisis aléatoirement selon la méthode du jugement majoritaire. Voir les <a href="https://articles.laprimaire.org/r%C3%A9sultats-du-1er-tour-de-laprimaire-org-c8fe612b64cb#.15cnxaa8u" target="_blank">résultats détaillés</a>.</p>
+        <h2 class="doc-title h2-responsive">Les 5 citoyen(ne)s finalistes</h2>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <!--Card-->
+                <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay hm-white-slight">
+                        <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/663402096368.jpg" alt="Charlotte Marchandise">
+                        <a href="#">
+                            <div class="mask waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block">
+                        <!--Title-->
+                        <h4 class="h4-responsive card-title">Charlotte Marchandise</h4>
+                        <!--Text-->
+                        <p class="card-text text-justify">“Coopération, animation, pédagogie et transparence : les clés d'une transition vers une démocratie réelle, partagée et pertinente”</p>
+                    </div>
+                    <!--/.Card content-->
+                    <div class="card-data success-color">
+                        <span>Mention Bien - 71,62%</span>
+                    </div>
+                </div><br/>
+                <!--/.Card-->
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <!--Card-->
+                <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay hm-white-slight">
+                        <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/405106694739.jpg" alt="Nicolas Bernabeu">
+                        <a href="#">
+                            <div class="mask waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block">
+                        <!--Title-->
+                        <h4 class="card-title h4-responsive">Nicolas Bernabeu</h4>
+                        <!--Text-->
+                        <p class="card-text text-justify">“Ni droite, ni gauche, ni extrême, ni centre. L'union plutôt que la division !”</p><br/>
+                    </div>
+                    <!--/.Card content-->
+                    <div class="card-data success-color">
+                        <span>Mention Bien - 55,83%</span>
+                    </div>
+                </div><br/>
+                <!--/.Card-->
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <!--Card-->
+                <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay hm-white-slight">
+                        <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/205888341238.jpeg" alt="Roxane Revon">
+                        <a href="#">
+                            <div class="mask waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block">
+                        <!--Title-->
+                        <h4 class="card-title h4-responsive">Roxane Revon</h4>
+                        <!--Text-->
+                        <p class="card-text text-justify">“C'est à nous, citoyens français, de prendre en main l'avenir de notre modèle de société : celui de la France et de l'Europe !”</p>
+                    </div>
+                    <!--/.Card content-->
+                    <div class="card-data success-color">
+                        <span>Mention Bien - 53,65%</span>
+                    </div>
+                </div><br/>
+                <!--/.Card-->
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <!--Card-->
+                <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay hm-white-slight">
+                        <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/179165103473.jpg" alt="Michel Bourgeois">
+                        <a href="#">
+                            <div class="mask waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block">
+                        <!--Title-->
+                        <h4 class="card-title h4-responsive">Michel Bourgeois</h4>
+                        <!--Text-->
+                        <p class="card-text text-justify">“Il est temps pour la France de revenir aux valeurs, fondatrices de notre "vivre-ensemble », assises sur plus de deux mille ans d’Histoire”</p>
+                    </div>
+                    <!--/.Card content-->
+                    <div class="card-data warning-color">
+                        <span>Mention Assez Bien - 66,26%</span>
+                    </div>
+                </div><br/>
+                <!--/.Card-->
+            </div>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <!--Card-->
+                <div class="card">
+                    <!--Card image-->
+                    <div class="view overlay hm-white-slight">
+                        <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/161703998889.jpg" alt="Michael Pettini">
+                        <a href="#">
+                            <div class="mask waves-effect waves-light"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+                    <!--Card content-->
+                    <div class="card-block">
+                        <!--Title-->
+                        <h4 class="card-title h4-responsive">Michael Pettini</h4>
+                        <!--Text-->
+                        <p class="card-text text-justify">“Ayant 2 enfants en bas âge, je ne souhaite pas leur laisser un monde sans avoir tout tenté pour changer positivement les choses !”</p>
+                    </div>
+                    <!--/.Card content-->
+                    <div class="card-data warning-color">
+                        <span>Mention Assez Bien - 66,26%</span>
+                    </div>
+                </div><br/>
+                <!--/.Card-->
+            </div>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+    </div>
+    <div id="presidentielle-2017-3" class="step active" style="display:visible;">
+        <h2 class="doc-title h2-responsive">Du 15 au 30 décembre 2016</h2>
+        <p class="text-justify">Le vote final de LaPrimaire.org s'est déroulé du 15 au 30 décembre 2016, 15 jours durant lesquels Les 5 candidat(e)s finalistes ont été évalués par les citoyen(ne)s au jugement majoritaire. Les résultats ont été <a href="https://articles.laprimaire.org/r%C3%A9sultats-du-2nd-tour-de-laprimaire-org-2d61b2ad1394#.a2xjqikj9" target="_blank">dévoilés le 31 décembre 2016</a>.</p>
+        <h2 class="doc-title h2-responsive">La candidate citoyenne élue</h2>
+        <!--Panel-->
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <!--Author box-->
+                <div class="author-box">
+                    <!--Name-->
+                    <div class="row">
+                        <!--Avatar-->
+                        <div class="col-12 col-sm-3">
+                            <a href="http://charlotte-marchandise.fr/" target="_blank"><img src="https://s3.eu-central-1.amazonaws.com/laprimaire/663402096368.jpg" class="img-fluid rounded-circle z-depth-2"></a><br/>
+                            <div class="personal-sm text-center">
+                                <a class="email-ic" target="_blank" href="http://charlotte-marchandise.fr/"><i class="fa fa-home"> </i></a>&nbsp;
+                                <a class="fb-ic" target="_blank" href="https://www.facebook.com/CharlotteMarchandiseFranquet/"><i class="fa fa-facebook"> </i></a>&nbsp;
+                                <a class="tw-ic" target="_blank" href="https://twitter.com/MarCharlott"><i class="fa fa-twitter"> </i></a>&nbsp;
+                                <a class="email-ic" target="_blank" href="mailto:charlotte@candidat.laprimaire.org"><i class="fa fa-envelope-o"> </i></a>
+                            </div>
+                        </div>
+                        <!--Author Data-->
+                        <div class=" col-12 col-sm-9">
+
+                            <h3 class="h3-responsive"><a href="http://charlotte-marchandise.fr/" target="_blank">Charlotte Marchandise</a></h3>
+                            <p>42 ans, Formatrice (35 - Ille-et-Vilaine)</p>
+                            <p>“L'humanisme, la justice sociale et la protection du vivant au cœur d'une démocratie réelle. Dès aujourd'hui, choisissons demain, ensemble.”</p>
+                            <div >
+                                <a type="button" target="_blank" href="http://charlotte-marchandise.fr/" class="btn btn-primary">En savoir plus</a>
+                                <a type="button" target="_blank" href="https://laprimaire.org/don-charlotte-marchandise/" class="btn btn-success">Soutenir sa campagne</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.Author box-->
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card">
+            <!--        <h3 class="card-header primary-color white-text">Résultats</h3>-->
+                    <div class="card-block">
+                        <h4 class="h4-responsive card-title">Les résultats détaillés</h4>
+                        <p class="card-text text-justify">32.685 citoyens ont désigné la candidate qui aura pour mission de porter une candidature citoyenne en 2017 : <b>Charlotte Marchandise-Franquet</b>, élue avec mention majoritaire <b>Très bien</b> accordée par 50,64% des citoyens.</p>
+                        <a class="btn btn-primary" href="https://articles.laprimaire.org/r%C3%A9sultats-du-2nd-tour-de-laprimaire-org-2d61b2ad1394#.vhd1p6orj" target="_blank">Voir les résultats</a>
+                        <a class="btn btn-default" href="https://laprimaire.cocorico.cc/vote/ballot-box/5852587934e6721b9323b2a5" target="_blank">Vérifier votre vote</a>
+                    </div>
+                </div>
+                <!--/.Panel-->
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#qualification').on('click', function() {
+            if ($('#qualification').parent().hasClass('active')) {
+                return;
+            }
+            $('.active').removeClass('active grey lighten-3');
+            $('.step').hide();
+            $('#presidentielle-2017-1').addClass('animated fadeIn');
+            $('#presidentielle-2017-1').show();
+            $('#qualification').parent().addClass('active grey lighten-3');
+        });
+        $('#preselection').on('click', function() {
+            if ($('#preselection').parent().hasClass('active')) {
+                return;
+            }
+            $('.active').removeClass('active grey lighten-3');
+            $('.step').hide();
+            $('#presidentielle-2017-2').addClass('animated fadeIn');
+            $('#presidentielle-2017-2').show();
+            $('#preselection').parent().addClass('active grey lighten-3');
+        });
+        $('#vote-final').on('click', function() {
+            if ($('#vote-final').parent().hasClass('active')) {
+                return;
+            }
+            $('.active').removeClass('active grey lighten-3');
+            $('.step').hide();
+            $('#presidentielle-2017-3').addClass('animated fadeIn');
+            $('#presidentielle-2017-3').show();
+            $('#vote-final').parent().addClass('active grey lighten-3');
+        });
+    </script>
+
+<% elsif partial=='legislatives-2017' then %>
+
+<input type="hidden" id="partial_title" value="Primaire ouverte pour les Législatives de 2017">
+<input type="hidden" id="num_circonscription" value="<%= circonscription['num_circonscription'] %>">
+<input type="hidden" id="num_departement" value="<%= circonscription['departement'] %>">
+<input type="hidden" id="circonscription_id" value="<%= circonscription['id'] %>">
+<style>
+    .independant {display:none;}
+</style>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="stepper stepper-horizontal">
+                <li class="completed active grey lighten-3">
+                    <a href="#!">
+                        <span class="circle">1</span>
+                        <span class="label">Qualification <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#!">
+                        <span class="circle">2</span>
+                        <span class="label">Vote</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span class="circle">3</span>
+                        <span class="label">Résultats</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="legislatives-2017-1" class="step" style="display:visible;">
+        <h2 class="h2-responsive doc-title">Du 21 février au 15 avril 2017</h2>
+        <p class="text-justify">Afin de se qualifier, un(e) candidat(e) doit recueillir au moins X soutiens de citoyen(ne)s. Un(e) citoyen(ne) ne peut soutenir que 3 candidat(e)s au maximum.</p>
+        <h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
+        <h3 class="h4-responsive doc-title">Député(e) actuel(le)</h3>
+        <a href="<%= circonscription['deputy_url'] %>" target="_blank">
+            <img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
+        </a>
+        &nbsp;<b><%= circonscription['deputy_name'] %></b><br/>
+        &nbsp;<%= circonscription['deputy_party'] %><br/>
+        &nbsp;<%= circonscription['deputy_job'] %>
+        <div class="clearfix" style="margin-bottom:15px;"></div>
+        <h3 class="h4-responsive doc-title">Les candidats</h3>
+        <div class="container-fluid">
+                <div id="hits"></div>
+        </div>
+        <div id="num_departement" style="display:none;"></div>
+        <div id="num_circonscription" style="display:none;"></div>
+    </div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+<script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+<script>
+function support_candidate(slug) {
+    if ($('#support-'+slug).hasClass('btn-outline-primary')) {
+        $.post('/citoyen/api/<%= citoyen['slug'] %>/'+slug+'/support',{'election'=>'legislatives-2017'});
+        $('#support-'+slug).removeClass('btn-outline-primary');
+        $('#support-'+slug).addClass('btn-primary');
+        $('#support-'+slug).html('Soutenu(e)');
+        toastr.success('Soutien bien enregistré','Merci',{positionClass: 'toast-bottom-right'});
+    } else {
+        $.post('/citoyen/api/<%= citoyen['slug'] %>/'+slug+'/unsupport',{'election'=>'legislatives-2017'});
+        $('#support-'+slug).removeClass('btn-primary');
+        $('#support-'+slug).addClass('btn-outline-primary');
+        $('#support-'+slug).html('Soutenir');
+        toastr.info('Soutien supprimé','Bien reçu',{positionClass: 'toast-bottom-right'});
+    }
+}
+</script>
+<script type="text/html" id="hit-template">
+        <div class="card">
+            <div class="view overlay hm-white-slight">
+                <div style="position:absolute;z-index:1000;left:0px;">
+                    <span class="badge red">dept {{num_departement}}</span>
+                    <span class="badge green">circo {{num_circonscription}}</span>
+                </div>
+                <div style="position:absolute;z-index:1000;bottom:0px;bottom:-8px;left:8px;" class="{{supported_candidate_visibility}}">
+                        
+                    <div class="chip" title="Je soutiens {{supported_candidate}}">
+                        <img style="float:right;margin:0 -12px 0 8px;" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/{{supported_candidate_photo}}"> Je soutiens
+                    </div>
+                </div>
+                <img class="img-fluid img-thumbnail" src="https://s3.eu-central-1.amazonaws.com/{{photo}}" alt="{{{_highlightResult.name.value}}}">
+                <a href="#">
+                    <div class="mask waves-effect waves-light"></div>
+                </a>
+            </div>
+            <div class="progress" style="height:8px;">
+                <div class="progress-bar bg-success" role="progressbar" style="height:8px;width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" title="25/100"></div>
+            </div>
+            <div class="card-block" style="padding:0.8em;">
+                <h5 class="card-title text-center" style="margin-bottom:0px;">{{{_highlightResult.name.value}}}</h5>
+                <p style="font-size:0.7em;text-align:center;margin-bottom:0.5em;">Candidat depuis {{nb_days_verified}} jours</p>
+                <div class="text-center">
+                    <button id="support-{{slug}}" type="button" onclick="support_candidate('{{slug}}');" class="support-candidate text-center btn btn-outline-primary waves-effect" autocomplete="off">Soutenir</button>
+                </div>
+            </div>
+        </div><br/>
+</script>
+<script>
+function shuffle (o){
+	  for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	    return o;
+}
+function getTemplate(templateName) {
+  return document.getElementById(templateName + '-template').innerHTML;
+}
+    
+$.getScript('https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js')
+.done(function(script,status) {
+    var search = instantsearch({
+        appId: 'D1XVECSSVA',
+        apiKey: '58643f9dff29db9f8da06875479fb290',
+        indexName: 'candidats_legislatives',
+        urlSync: false
+    });
+    search.addWidget(
+        instantsearch.widgets.menu({
+        container: '#num_departement',
+        attributeName: 'num_departement',
+        sortBy: ['num_departement:asc'],
+        autoHideContainer: false,
+        collapsible: true,
+        limit: 105,
+        cssClasses: {
+            header:'lp-cat-header',
+            item:'lp-cat-item',
+            checkbox:'lp-cat-checkbox',
+            label:'lp-cat-label',
+            active:'lp-cat-active',
+            count:'lp-cat-count'
+        },
+        templates: {
+            header: 'Département',
+            item: 'département {{name}} ({{count}})'
+        }
+    })
+    );
+    search.addWidget(
+        instantsearch.widgets.menu({
+        container: '#num_circonscription',
+        attributeName: 'num_circonscription',
+        sortBy: ['num_circonscription:asc'],
+        limit: 105,
+        autoHideContainer: false,
+        collapsible: true,
+        cssClasses: {
+            header:'lp-cat-header',
+            item:'lp-cat-item',
+            checkbox:'lp-cat-checkbox',
+            label:'lp-cat-label',
+            active:'lp-cat-active',
+            count:'lp-cat-count'
+        },
+        templates: {
+            header: 'Circonscription',
+            item: 'circonscription {{name}} ({{count}})'
+        }
+    })
+    );
+    search.addWidget(
+        instantsearch.widgets.hits({
+            container: '#hits',
+            transformData: {
+                allItems: function (content) {
+                    return { hits: shuffle(content.hits) };
+                }
+            },
+            templates: {
+                   item: getTemplate('hit')
+            },
+            cssClasses: {
+                item: 'col-lg-2 col-md-4 col-sm-6 col-xs-12',
+                root: 'row'
+            },
+            hitsPerPage: 10
+        })
+    );
+//    var num_dept=$('#num_departement').val();
+//    var num_circo=$('#num_circonscription').val();
+    var num_dept='72';
+    var num_circo='3';
+    if (!!num_dept) {
+        search.searchParameters={
+                hierarchicalFacetsRefinements: { // menu is implemented as a hierarchicalFacetsRefinements
+                    num_departement: [num_dept],
+                    num_circonscription: [num_circo]
+            }
+        }
+    }
+    search.start();     
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
+
+});
+</script>
+
+<% elsif partial=='choose-circonscription' then %>
+
+<style>
+.ap-dropdown-menu { text-align:left; }
+.ap-name {color:#5e5e5e;}
+    
+.algolia-autocomplete {
+    width: 100%;
+}
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+    width: 100%;
+}
+.algolia-autocomplete .aa-hint {
+    color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-top: none;
+    color: #777;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer;
+    padding: 5px 4px;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: #B2D7FF;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+    font-weight: bold;
+    font-style: normal;
+}
+#mycirco {
+    font-weight:bold;
+}
+</style>
+    <input type="hidden" id="partial_title" value="La primaire citoyenne pour les élections Législatives 2017">
+    <h2 class="h2-responsive doc-title">Inscription</h2>
+    <p class="text-justify">Pour pouvoir participer, merci de bien vouloir remplir les informations ci-dessous.</p>
+
+<!--Form without header-->
+<div class="card">
+    <div class="card-block">
+
+        <!--Header-->
+        <div class="text-center">
+            <h3 class="h3-responsive">Votre circonscription électorale</h3>
+            <hr class="mt-2 mb-2">
+        </div>
+
+        <!--Body-->
+        <label>Ou habitez-vous ?</label>
+        <!--Body-->
+        <div class="form-inline">
+            <fieldset class="form-group">
+                <input onclick="$('#abroad').hide();$('#france').show();" name="group1" type="radio" class="with-gap" id="radio11">
+                <label for="radio11">En France ou DOM-TOM</label>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input onclick="$('#france').hide();$('#abroad').show();" name="group1" type="radio" class="with-gap" id="radio21">
+                <label for="radio21">A l'étranger</label>
+            </fieldset>
+        </div>
+        <br/>
+        <div id="abroad" class="md-form" style="display:none;">
+            <input type="text" id="form3" class="form-control" style="margin-bottom:0px;" placeholder="Etats-Unis, Royaume-uni etc...">
+            <label class="active" for="form3">Dans quel pays ?</label>
+        </div>
+
+        <div id="france" class="md-form" style="display:none;">
+            <input type="text" id="form2" class="form-control" style="margin-bottom:0px;" placeholder="Paris, Strasbourg, Cruaz etc...">
+            <label class="active" for="form2">Dans quelle ville ?</label>
+        </div>
+        <input type="hidden" id="circonscription" value="">
+        <p id="mycirco_wrapper" style="display:none;">Votre circonscription électorale : <span id="mycirco"></span></p>
+        <div class="text-center">
+            <button id="bouton_ok" class="btn btn-primary" disabled>OK</button>
+        </div>
+
+    </div>
+</div>
+<!--/Form without header-->
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js" type="text/javascript"></script>
+<script>
+    $('#bouton_ok').on('click',function() {
+        var circo=$('#circonscription').val();
+        if (circo=='') {
+            toastr.error('Merci de remplir le formulaire à nouveau','Erreur',{positionClass: 'toast-bottom-right'});
+            $('#bouton_ok').prop('disabled',true);
+        } else {
+            $.post('/citoyen/api/<%= citoyen['user_key'] %>/elections/legislatives-2017-inscription',{'circonscription': circo}, function() {
+                window.location.href=window.location.href+'?reload=1';       
+            });
+        }
+    })
+    $.getScript('https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
+    .done(function(script,status) {
+        var algolia = algoliasearch('D1XVECSSVA', '58643f9dff29db9f8da06875479fb290');
+        var index_countries = algolia.initIndex('countries');
+        var index_circos = algolia.initIndex('circonscriptions');
+        $.getScript('https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js')
+        .done(function(script,status) {
+            $('#form3').autocomplete({ hint: false, autoselect: true }, [{
+                source: $.fn.autocomplete.sources.hits(index_countries, { hitsPerPage: 5 }),
+                displayKey: 'name',
+                templates: {
+                    suggestion: function(suggestion) {
+                      return suggestion.name+'<br/><span style="font-size:11px;line-height:10px;padding:0px;">'+suggestion.name_circonscription+'</span><br/><span style="font-size:11px;">Député(e) sortant(e): '+suggestion.deputy_name+' ('+suggestion.deputy_party+')</span>';
+                    }
+                }
+            }]).on('autocomplete:selected', function(event, suggestion, dataset) { 
+                $('#circonscription').val(suggestion.circonscription_id);
+                $('#mycirco').html(suggestion.name_circonscription);
+                $('#mycirco_wrapper').show();
+                $('#bouton_ok').prop('disabled',false);
+            });
+            $('#form2').autocomplete({ hint: false, autoselect: true }, [{
+                source: $.fn.autocomplete.sources.hits(index_circos, { hitsPerPage: 5 }),
+                displayKey: 'name_commune',
+                templates: {
+                    suggestion: function(suggestion) {
+                        return suggestion._highlightResult.name_commune.value+' - '+suggestion._highlightResult.name_circonscription.value+'<br/><p style="font-size:11px;">Député(e) sortant(e): '+suggestion._highlightResult.deputy_name.value+' ('+suggestion.deputy_party+')</p>';
+                    }
+                }
+            }]).on('autocomplete:selected', function(event, suggestion, dataset) {
+                $('#circonscription').val(suggestion.circonscription_id);
+                $('#mycirco').html(suggestion.name_circonscription);
+                $('#mycirco_wrapper').show();
+                $('#bouton_ok').prop('disabled',false);
+            });
+        });
+    });
+</script>
+
+<% end %>

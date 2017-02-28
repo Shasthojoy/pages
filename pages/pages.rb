@@ -56,7 +56,6 @@ module Pages
 		configure :development do
 			 register Sinatra::Reloader
 		end
-        use Pages::Circonscription
 		use Pages::Paiement
 		use Pages::Ville
 		use Pages::Theme

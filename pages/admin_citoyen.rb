@@ -31,18 +31,19 @@ LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.user_key=$1
 END
-                'get_citizen_by_email'=><<END,
+				'get_citizen_by_email'=><<END,
 SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
 FROM users AS c 
 LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.email=$1
 END
-				'get_supported_candidates_by_key'=><<END,
-SELECT ca.*, s.support_date
+				'get_candidates_by_election'=><<END,
+SELECT u.*,ce.fields,ce.finalist
 FROM users AS u
-INNER JOIN supporters AS s ON (s.email=u.email AND u.user_key=$1)
-INNER JOIN candidates AS ca ON (ca.candidate_id=s.candidate_id);
+INNER JOIN candidates_elections AS ce ON (ce.email=u.email and ce.qualified)
+INNER JOIN elections as e ON (ce.election_id=e.election_id)
+WHERE e.slug=$1
 END
 				'reset_citizen_email'=><<END,
 UPDATE users SET email_status=2, validation_level=(validation_level & 14), email=reset_email, reset_email=null, reset_code=null WHERE email=$1 AND reset_email IS NOT null RETURNING *
@@ -75,11 +76,61 @@ INNER JOIN ballot_candidates as bc ON (bc.candidate_id=c.candidate_id)
 INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id)
 ORDER BY bc.position ASC;
 END
-
+				'get_circonscription_by_email'=><<END,
+SELECT * FROM voters as v 
+INNER JOIN users AS u ON (u.email=v.email AND u.email=$1)
+INNER JOIN elections_view as ev ON (ev.election_id=v.election_id)
+INNER JOIN circonscriptions as c ON (c.id=ev.circonscription_id)
+WHERE ev.parent_slug=$2
+END
+				'set_circonscription_by_email'=><<END,
+INSERT INTO voters (election_id,email) SELECT ev.election_id,$1 FROM elections_view as ev WHERE ev.circonscription_id=$2 AND ev.parent_slug=$3
+END
+				'get_candidates_supported'=><<END,
+SELECT c.*
+FROM users AS u
+INNER JOIN voters AS v ON (v.email=u.email AND u.email=$1)
+INNER JOIN elections AS e ON (e.election_id=v.election_id AND e.slug=$2)
+INNER JOIN supporters AS s ON (s.supporter=u.email)
+INNER JOIN users AS c ON (s.candidate=c.email)
+END
+				'add_supporter'=><<END,
+INSERT INTO supporters (election_id,supporter,candidate)
+SELECT e.election_id,$1,c.email
+FROM users AS c ON (c.slug=$2)
+END
 			}
 		end
 
 		helpers do
+			def error_occurred(code,msg) 
+				status code
+				return JSON.dump({
+					'title'=>msg['title'],
+					'msg'=>msg['msg']
+				})
+			end
+
+			def authenticate_citizen(user_key)
+				res=Pages.db_query(@queries["get_citizen_by_key"],[user_key])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def get_candidates_supported(supporter_email,election_slug)
+				res=Pages.db_query(@queries["get_candidates_supported"],[supporter_email,election_slug])
+				return res.num_tuples.zero? ? nil : res
+			end
+
+			def get_circonscription(email,election_slug)
+				res=Pages.db_query(@queries["get_circonscription_by_email"],[email,election_slug])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def set_circonscription(email,circonscription_id,election_slug)
+				res=Pages.db_query(@queries["set_circonscription_by_email"],[email,circonscription_id,election_slug])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
 			def page_info(infos=nil)
 				return {
 					'page_description'=>"description",
@@ -89,13 +140,13 @@ END
 					'page_title'=>"Votez !",
 					'social_title'=>"Votez !"
 				} if infos.nil?
-                return {
+				return {
 					'page_description'=>"description",
 					'page_author'=>"Des citoyens ordinaires",
 					'page_image'=>"pas de photo",
 					'page_url'=>"https://laprimaire.org/citoyen/vote/#{infos['user_key']}",
 					'page_title'=>"Votez !",
-					'social_title'=>"Votez !"
+						'social_title'=>"Votez !"
 				}
 			end
 
@@ -149,7 +200,7 @@ END
 			success=[]
 			begin
 				Pages.db_init()
-                res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
+				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
 				return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
 				citoyen=res[0]
 				#1 We check the validation level of the candidate authentication 
@@ -185,7 +236,12 @@ END
 				return erb :error, :locals=>{:msg=>{"title"=>"Email non mis à jour","message"=>errors[0]}}
 			end
 			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if res.num_tuples.zero?
-            return erb :index, :locals=>{
+			return erb :admin_citoyen, :locals=>{
+				'citoyen'=>citoyen,
+				'errors'=>errors,
+				'success'=>success
+			}
+			return erb :index, :locals=>{
 				'page_info'=>{
 					'page_description'=>"Explorez et comparez les propositions des 5 citoyen(ne)s candidat(e)s finalistes à LaPrimaire.org.",
 					'page_author'=>"Les citoyen(ne)s candidat(e)s à LaPrimaire.org",
@@ -196,10 +252,10 @@ END
 				},
 				'template'=>:citoyen,
 				'vars'=>{
-                    'citoyen'=>citoyen,
-                    'errors'=>errors,
-                    'success'=>success
-                }
+					'citoyen'=>citoyen,
+					'errors'=>errors,
+					'success'=>success
+				}
 			}
 		end
 
@@ -230,19 +286,19 @@ END
 			}
 		end
 
-        get '/citoyen/verif/:email' do
-            return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if params['email'].nil?
-            email=params['email'].downcase.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
-            return erb :error, :locals=>{:msg=>{"title"=>"Mauvais email","message"=>"Votre email n'est pas valide"}} if email.match(/\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/).nil?
-            erb :index, :locals=>{
+		get '/citoyen/verif/:email' do
+			return erb :error, :locals=>{:msg=>{"title"=>"Page inconnue","message"=>"La page demandée n'existe pas"}} if params['email'].nil?
+			email=params['email'].downcase.gsub(/\A\p{Space}*|\p{Space}*\z/, '')
+			return erb :error, :locals=>{:msg=>{"title"=>"Mauvais email","message"=>"Votre email n'est pas valide"}} if email.match(/\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/).nil?
+			erb :index, :locals=>{
 				'page_info'=>page_info(),
 				'vars'=>{'email'=>params['email'],'newcitizen'=>params['newcitizen']},
 				'no_navbar'=>true,
 				'template'=>:email_verification
 			}
-        end
-            
-        get '/citoyen/auth/:user_key' do
+		end
+
+		get '/citoyen/auth/:user_key' do
 			begin
 				Pages.db_init()
 				res=Pages.db_query(@queries["get_citizen_by_key"],[params['user_key']])
@@ -311,11 +367,139 @@ END
 		end
 
 		get '/citoyen/vote/:user_key/1' do
-				redirect "/citoyen/vote/#{params['user_key']}/2"
+			redirect "/citoyen/vote/#{params['user_key']}/2"
+		end
+
+		post '/citoyen/api/:user_key/candidate/:candidate/support' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return JSON.dump({'error'=>'unknown user'}) if citoyen.nil?
+				candidates=get_candidates_supported(citoyen['email'])
+				return JSON.dump({'error'=>'max support by citizen reached'}) if candidates.num_tuples==3
+				res=add_supporter(params['candidate'],citoyen['email'])
+				return JSON.dump({'error'=>''}) if res.num_tuples.zero?
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/api/candidate/support DB Error #{params}\n#{e.message}"
+				return JSON.dump({'error'=>'DB error'})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump({'success'=>1})
+		end
+
+		post '/citoyen/api/:user_key/candidate/:candidate/unsupport' do
+		end
+
+		post '/citoyen/api/:user_key/elections/legislatives-2017-inscription' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return JSON.dump({'error'=>'unknown user'}) if citoyen.nil?
+				circonscription=set_circonscription(citoyen['email'],params['circonscription'],'legislatives-2017')
+				return JSON.dump({'error'=>'circonscription not set'}) if circonscription.nil?
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/elections/legislatives-2017-inscription DB Error #{params}\n#{e.message}"
+				return JSON.dump({'success'=>0})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump({'success'=>1})
+		end
+
+		get '/citoyen/spa/:user_key/elections/legislatives-2017' do
+			errors=[]
+			success=[]
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEL0]"}) if citoyen.nil?
+				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
+				circonscription=get_circonscription(citoyen['email'],'legislatives-2017')
+				circonscription['deputy_slug']=circonscription['deputy_url'].split('/')[-1]
+				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
+			rescue StandardError => e
+				return erb 'spa/elections'.to_sym, :locals=>{
+					'partial'=>'choose-circonscription',
+					'citoyen'=>citoyen
+				}
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/elections/legislatives-2017 DB Error #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEL1]"})
+			ensure
+				Pages.db_close()
+			end
+			return erb 'spa/elections'.to_sym, :locals=>{
+				'partial'=>'legislatives-2017',
+				'citoyen'=>citoyen,
+				'circonscription'=>circonscription,
+				'errors'=>errors,
+				'success'=>success
+			}
+		end
+
+		get '/citoyen/spa/:user_key/elections/presidentielle-2017' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEL0]"}) if citoyen.nil?
+				res=Pages.db_query(@queries["get_candidates_by_election"],['presidentielle-2017'])
+				qualified=[]
+				finalists=[]
+				if not res.num_tuples.zero? then
+					res.each do |c|
+						c['fields']=JSON.parse(c['fields'])
+						qualified.push(c)
+						finalists.push(c) if c['finalist'].to_b
+					end
+				end
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/elections DB Error #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEP0]"})
+			ensure
+				Pages.db_close()
+			end
+			erb 'spa/elections'.to_sym, :locals=>{
+				'partial'=>'presidentielle-2017',
+				'qualified'=>qualified
+			}
+		end
+
+		get '/citoyen/spa/:user_key/candidate/:partial' do
+			erb 'spa/candidate'.to_sym, :locals=>{
+				'partial'=>params['partial']
+			}
+		end
+
+		get '/citoyen/spa/:user_key/donations/:partial' do
+			erb 'spa/donations'.to_sym, :locals=>{
+				'partial'=>params['partial']
+			}
+		end
+
+		get '/citoyen/spa/:user_key/about/:partial' do
+			erb 'spa/about'.to_sym, :locals=>{
+				'partial'=>params['partial']
+			}
+		end
+
+		get '/citoyen/spa/:user_key/home' do
+			erb 'spa/home'.to_sym
+		end
+
+		get '/citoyen/spa/:user_key/:partial' do
+			template = 'spa/home'
+			template = 'spa/elections' if params['partial'].split('|')[0]=='elections'
+			template = 'spa/candidate' if params['partial'].split('|')[0]=='candidate'
+			template = 'spa/donations' if params['partial'].split('|')[0]=='donations'
+			template = 'spa/about' if params['partial'].split('|')[0]=='about'
+			erb template.to_sym, :locals=>{
+				'partial'=>params['partial']
+			}
 		end
 
 		get '/citoyen/vote/:user_key' do
-				redirect "/citoyen/vote/#{params['user_key']}/2"
+			redirect "/citoyen/vote/#{params['user_key']}/2"
 		end
 
 		get '/citoyen/vote/:user_key/:vote_id' do
