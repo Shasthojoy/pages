@@ -40,7 +40,7 @@ END
 UPDATE users SET hash=$1 WHERE email=$2 RETURNING *;
 END
 				'set_circonscription_by_email'=><<END,
-INSERT INTO voters (election_id,email) SELECT ev.election_id,$1 FROM elections_view as ev WHERE ev.slug=$2
+INSERT INTO voters (election_id,email) SELECT e.election_id,$1 FROM elections as e WHERE e.slug=$2 RETURNING *
 END
 				'get_candidates_supported'=><<END,
 SELECT c.*
@@ -169,9 +169,11 @@ END
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEC2]"}) if citoyen.nil?
 				candidates=get_candidates_by_election(params['election_slug'],citoyen['email'])
 				json=[]
-				candidates.each do |c| 
-					c['fields']=JSON.parse(c['fields'])
-					json.push(c)
+				if not candidates.nil? then
+					candidates.each do |c| 
+						c['fields']=JSON.parse(c['fields'])
+						json.push(c)
+					end
 				end
 			rescue PG::Error => e
 				Pages.log.error "/api/citizen/elections/candidates DB Error [code:ACEC4] #{params}\n#{e.message}"

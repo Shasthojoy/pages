@@ -252,8 +252,8 @@
     var router= new Navigo(root,useHash);
     router
         .on({
-        'elections/presidentielle-2017': function() { load_path('main','/elections/presidentielle-2017'); },
-        'elections/legislatives-2017': function() { load_path('main','/elections/legislatives-2017'); },
+        'elections/presidentielle-2017*': function() { load_path('main','/elections/presidentielle-2017'); },
+        'elections/legislatives-2017*': function() { load_path('main','/elections/legislatives-2017'); },
         'candidate/admin': function() { load_path('main','/candidate/admin'); },
         'home': function() { load_path('main','/home'); }
     }).resolve();

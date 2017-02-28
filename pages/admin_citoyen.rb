@@ -424,7 +424,7 @@ END
 					'citoyen'=>citoyen
 				}
 			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/elections/legislatives-2017 DB Error #{params}\n#{e.message}"
+				Pages.log.error "/citoyen/spa/elections/legislatives-2017 DB Error [code:CSEL1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEL1]"})
 			ensure
 				Pages.db_close()
