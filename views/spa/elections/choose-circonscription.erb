@@ -1,0 +1,136 @@
+<style>
+.ap-dropdown-menu { text-align:left; }
+.ap-name {color:#5e5e5e;}
+    
+.algolia-autocomplete {
+    width: 100%;
+}
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+    width: 100%;
+}
+.algolia-autocomplete .aa-hint {
+    color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-top: none;
+    color: #777;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer;
+    padding: 5px 4px;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: #B2D7FF;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+    font-weight: bold;
+    font-style: normal;
+}
+#mycirco {
+    font-weight:bold;
+}
+</style>
+    <input type="hidden" id="partial_title" value="La primaire citoyenne pour les élections Législatives 2017">
+    <h2 class="h2-responsive doc-title">Inscription</h2>
+    <p class="text-justify">Pour pouvoir participer, merci de bien vouloir remplir les informations ci-dessous.</p>
+
+<!--Form without header-->
+<div class="card">
+    <div class="card-block">
+
+        <!--Header-->
+        <div class="text-center">
+            <h3 class="h3-responsive">Votre circonscription électorale</h3>
+            <hr class="mt-2 mb-2">
+        </div>
+
+        <!--Body-->
+        <label>Ou habitez-vous ?</label>
+        <!--Body-->
+        <div class="form-inline">
+            <fieldset class="form-group">
+                <input onclick="$('#abroad').hide();$('#france').show();" name="group1" type="radio" class="with-gap" id="radio11">
+                <label for="radio11">En France ou DOM-TOM</label>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <input onclick="$('#france').hide();$('#abroad').show();" name="group1" type="radio" class="with-gap" id="radio21">
+                <label for="radio21">A l'étranger</label>
+            </fieldset>
+        </div>
+        <br/>
+        <div id="abroad" class="md-form" style="display:none;">
+            <input type="text" id="form3" class="form-control" style="margin-bottom:0px;" placeholder="Etats-Unis, Royaume-uni etc...">
+            <label class="active" for="form3">Dans quel pays ?</label>
+        </div>
+
+        <div id="france" class="md-form" style="display:none;">
+            <input type="text" id="form2" class="form-control" style="margin-bottom:0px;" placeholder="Paris, Strasbourg, Cruaz etc...">
+            <label class="active" for="form2">Dans quelle ville ?</label>
+        </div>
+        <input type="hidden" id="circonscription" value="">
+        <p id="mycirco_wrapper" style="display:none;">Votre circonscription électorale : <span id="mycirco"></span></p>
+        <div class="text-center">
+            <button id="bouton_ok" class="btn btn-primary" disabled>OK</button>
+        </div>
+
+    </div>
+</div>
+<!--/Form without header-->
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js" type="text/javascript"></script>
+<script>
+    $('#bouton_ok').on('click',function() {
+        var circo=$('#circonscription').val();
+        if (circo=='') {
+            toastr.error('Merci de remplir le formulaire à nouveau','Erreur',{positionClass: 'toast-bottom-right'});
+            $('#bouton_ok').prop('disabled',true);
+        } else {
+            $.post('/citoyen/api/<%= citoyen['user_key'] %>/elections/legislatives-2017-inscription',{'circonscription': circo}, function() {
+                window.location.href=window.location.href+'?reload=1';       
+            });
+        }
+    })
+    $.getScript('https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
+    .done(function(script,status) {
+        var algolia = algoliasearch('D1XVECSSVA', '58643f9dff29db9f8da06875479fb290');
+        var index_countries = algolia.initIndex('countries');
+        var index_circos = algolia.initIndex('circonscriptions');
+        $.getScript('https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js')
+        .done(function(script,status) {
+            $('#form3').autocomplete({ hint: false, autoselect: true }, [{
+                source: $.fn.autocomplete.sources.hits(index_countries, { hitsPerPage: 5 }),
+                displayKey: 'name',
+                templates: {
+                    suggestion: function(suggestion) {
+                      return suggestion.name+'<br/><span style="font-size:11px;line-height:10px;padding:0px;">'+suggestion.name_circonscription+'</span><br/><span style="font-size:11px;">Député(e) sortant(e): '+suggestion.deputy_name+' ('+suggestion.deputy_party+')</span>';
+                    }
+                }
+            }]).on('autocomplete:selected', function(event, suggestion, dataset) { 
+                $('#circonscription').val(suggestion.circonscription_id);
+                $('#mycirco').html(suggestion.name_circonscription);
+                $('#mycirco_wrapper').show();
+                $('#bouton_ok').prop('disabled',false);
+            });
+            $('#form2').autocomplete({ hint: false, autoselect: true }, [{
+                source: $.fn.autocomplete.sources.hits(index_circos, { hitsPerPage: 5 }),
+                displayKey: 'name_commune',
+                templates: {
+                    suggestion: function(suggestion) {
+                        return suggestion._highlightResult.name_commune.value+' - '+suggestion._highlightResult.name_circonscription.value+'<br/><p style="font-size:11px;">Député(e) sortant(e): '+suggestion._highlightResult.deputy_name.value+' ('+suggestion.deputy_party+')</p>';
+                    }
+                }
+            }]).on('autocomplete:selected', function(event, suggestion, dataset) {
+                $('#circonscription').val(suggestion.circonscription_id);
+                $('#mycirco').html(suggestion.name_circonscription);
+                $('#mycirco_wrapper').show();
+                $('#bouton_ok').prop('disabled',false);
+            });
+        });
+    });
+</script>
+
+

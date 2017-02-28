@@ -419,8 +419,7 @@ END
 				circonscription['deputy_slug']=circonscription['deputy_url'].split('/')[-1]
 				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
 			rescue StandardError => e
-				return erb 'spa/elections'.to_sym, :locals=>{
-					'partial'=>'choose-circonscription',
+				return erb 'spa/elections/choose-circonscription'.to_sym, :locals=>{
 					'citoyen'=>citoyen
 				}
 			rescue PG::Error => e
@@ -429,8 +428,7 @@ END
 			ensure
 				Pages.db_close()
 			end
-			return erb 'spa/elections'.to_sym, :locals=>{
-				'partial'=>'legislatives-2017',
+			return erb 'spa/elections/legislatives-2017'.to_sym, :locals=>{
 				'citoyen'=>citoyen,
 				'circonscription'=>circonscription,
 				'errors'=>errors,
@@ -459,7 +457,7 @@ END
 			ensure
 				Pages.db_close()
 			end
-			erb 'spa/elections'.to_sym, :locals=>{
+			erb 'spa/elections/presidentielle-2017'.to_sym, :locals=>{
 				'partial'=>'presidentielle-2017',
 				'qualified'=>qualified
 			}
