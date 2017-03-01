@@ -32,9 +32,9 @@ LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.user_key=$1
 END
 				'get_election_by_slug'=><<END,
-SELECT * from elections as e 
-LEFT JOIN circonscriptions AS c ON (c.id=e.circonscription_id)
-WHERE e.slug=$1
+SELECT * from elections as ev
+LEFT JOIN circonscriptions AS c ON (c.id=ev.circonscription_id)
+WHERE ev.slug=$1
 END
 				'update_citizen_hash'=><<END,
 UPDATE users SET hash=$1 WHERE email=$2 RETURNING *;
@@ -66,11 +66,29 @@ WHERE c.slug=$2 AND c.email=s.candidate AND s.supporter=$1 AND e.slug=$3 AND e.e
 RETURNING *
 END
 				'get_candidates_by_election'=><<END,
-SELECT c.firstname||' '||c.lastname as name, c.*,s.*,ci.*,ce.* FROM users AS c
+SELECT c.firstname||' '||c.lastname as name, e.slug as election_slug, c.*,s.*,ci.*,ce.* FROM users AS c
 INNER JOIN candidates_elections AS ce ON (ce.email=c.email)
 INNER JOIN elections AS e ON (e.election_id=ce.election_id AND e.slug=$1)
 INNER JOIN circonscriptions AS ci ON (ci.id=e.circonscription_id)
 LEFT JOIN supporters AS s ON (s.candidate=c.email AND s.supporter=$2 AND s.election_id=e.election_id)
+END
+				'get_candidate_by_slug-backup'=><<END,
+SELECT * FROM users AS c 
+INNER JOIN candidates_elections AS ce ON (ce.election_id=$2 AND ce.email=c.email AND c.slug=$1)
+END
+				'get_candidate_by_slug'=><<END,
+SELECT u.*, ce.*,ci.code_departement,ci.num_circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
+    FROM users as u
+    INNER JOIN candidates_elections as ce ON (ce.email=u.email)
+    INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.election_id=$2)
+    INNER JOIN circonscriptions as ci ON (ci.id=e.circonscription_id)
+    LEFT JOIN (
+	    SELECT candidate,election_id,count(supporter) as soutiens
+	    FROM supporters
+	    GROUP BY candidate,election_id
+      ) as s
+  on (s.candidate = u.email AND s.election_id=e.election_id)
+WHERE u.slug = $1;
 END
 			}
 		end
@@ -118,6 +136,12 @@ END
 				res=Pages.db_query(@queries["get_candidates_by_election"],[election_slug,supporter_email])
 				return res.num_tuples.zero? ? nil : res
 			end
+
+			def get_candidate_by_slug(candidate_slug,election_id)
+				res=Pages.db_query(@queries["get_candidate_by_slug"],[candidate_slug,election_id])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
 		end
 
 		configure do
@@ -166,7 +190,7 @@ END
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEC0]"}) if citoyen.nil?
 				return error_occurred(403,{"title"=>"Authentification manquante","msg"=>"Merci de vous authentifier [code:ACEC1]"}) if citoyen['validation_level'].to_i<3
 				election=authenticate_election(params['election_slug'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEC2]"}) if citoyen.nil?
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEC2]"}) if election.nil?
 				candidates=get_candidates_by_election(params['election_slug'],citoyen['email'])
 				json=[]
 				if not candidates.nil? then
@@ -224,7 +248,7 @@ END
 				citoyen=authenticate_citizen(params['user_key'])
 				return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
 				election=authenticate_election(params['election_slug'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEI0]"}) if citoyen.nil?
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEI0]"}) if election.nil?
 				circonscription=set_circonscription(citoyen['email'],params['election_slug'])
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Circonscription non définie [code:ACEI1]"}) if circonscription.nil?
 			rescue PG::Error => e
@@ -234,6 +258,32 @@ END
 				Pages.db_close()
 			end
 			return JSON.dump({'success'=>1})
+		end
+
+		get '/api/election/:election_slug/candidate/:candidate_slug/summary' do
+			begin
+				Pages.db_init()
+				election=authenticate_election(params['election_slug'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:AECS0]"}) if election.nil?
+				candidate=get_candidate_by_slug(params['candidate_slug'],election['election_id'])
+				return error_occurred(404,{"title"=>"Erreur","msg"=>"Candidat inconnu"}) if candidate.nil?
+				candidate_fields=JSON.parse(candidate['fields'])
+				candidate.merge!(candidate_fields)
+				candidate.delete('fields')
+				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
+				age=nil
+				unless birthday.nil? then
+					now = Time.now.utc.to_date
+					candidate['age'] = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+				end
+
+			rescue PG::Error => e
+				Pages.log.error "/api/election/candidate/summary DB Error [code:AECS1] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:AECS1]"})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump(candidate);
 		end
 	end
 end

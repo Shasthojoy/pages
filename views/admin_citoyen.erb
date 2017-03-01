@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <!-- Required meta tags always come first -->
     <meta charset="utf-8">
@@ -21,6 +20,9 @@
         #logo-space {
             background-color:white;
         }
+	#partial_title {
+		display:none;
+	}
     </style>
 </head>
 <body class="fixed-sn">
@@ -39,10 +41,6 @@
                 </div>
                 <!--Body-->
                 <div class="modal-body">
-<!--
-                    <p>We like to receive a messages.</p>
-                    <br>
--->
                     <div class="md-form">
                         <i class="fa fa-user prefix"></i>
                         <input type="text" id="form22" class="form-control" value="<%= citoyen['firstname']+' '+citoyen['lastname'] %>">
@@ -215,6 +213,7 @@
     <!-- SCRIPTS -->
     <script src="https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/compiled.min.js"></script>
     <script src="https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/navigo.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
     
     <script>
     $(".button-collapse").sideNav();
@@ -241,8 +240,11 @@
                 toastr["error"]('<i>'+error['title']+'</i><br/>'+error['msg']);
             } else {
                 if (typeof(f)!=='undefined') f();
-                if (typeof(pageReady)!=='undefined') pageReady();
-                $('#breadcrumb-top-page').html($('#partial_title').val());
+		if (typeof(pageReady)!=='undefined') {
+			pageReady();
+			pageReady=undefined;
+		}
+                $('#breadcrumb-top-page').html($('#partial_title').html());
                 $('.button-collapse').sideNav('hide');
             }
         });
@@ -251,11 +253,15 @@
     var useHash=false;
     var router= new Navigo(root,useHash);
     router
-        .on({
-        'election/presidentielle-2017*': function() { load_path('main','/election/presidentielle-2017'); },
-        'election/legislatives-2017*': function() { load_path('main','/election/legislatives-2017'); },
-        'candidate/admin': function() { load_path('main','/candidate/admin'); },
-        'home': function() { load_path('main','/home'); }
+    .on(/election\/(legislatives-2017[\w-].*)\/candidat\/([\w-].*$)/, function(election_slug,candidate_slug) { 
+	    load_path('main','/election/'+election_slug+'/candidat/'+candidate_slug); 
+    }).resolve();
+    router
+    .on({
+	    'election/presidentielle-2017*': function() { load_path('main','/election/presidentielle-2017'); },
+	    'election/legislatives-2017*': function() { load_path('main','/election/legislatives-2017'); },
+	    'candidate/admin': function() { load_path('main','/candidate/admin'); },
+	    'home': function() { load_path('main','/home'); }
     }).resolve();
     router.
         on(function() { $("main").load('/citoyen/spa/<%= citoyen['user_key'] %>/home'); 

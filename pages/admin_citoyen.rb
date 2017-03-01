@@ -38,6 +38,11 @@ LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.email=$1
 END
+				'get_election_by_slug'=><<END,
+SELECT * from elections_view as ev 
+LEFT JOIN circonscriptions AS c ON (c.id=ev.circonscription_id)
+WHERE ev.slug=$1
+END
 				'get_candidates_by_election'=><<END,
 SELECT u.*,ce.fields,ce.finalist
 FROM users AS u
@@ -113,6 +118,11 @@ END
 
 			def authenticate_citizen(user_key)
 				res=Pages.db_query(@queries["get_citizen_by_key"],[user_key])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def authenticate_election(election_slug)
+				res=Pages.db_query(@queries["get_election_by_slug"],[election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -368,6 +378,26 @@ END
 
 		get '/citoyen/vote/:user_key/1' do
 			redirect "/citoyen/vote/#{params['user_key']}/2"
+		end
+
+		get '/citoyen/spa/:user_key/election/:election_slug/candidat/:candidate_slug' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC0]"}) if citoyen.nil?
+				election=authenticate_election(params['election_slug'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC2]"}) if citoyen.nil?
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/election/candidat DB Error [code:CSEC1] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEC1]"})
+			ensure
+				Pages.db_close()
+			end
+			return erb 'spa/candidats/summary'.to_sym, :locals=>{
+				'citoyen'=>citoyen,
+				'election'=>election,
+				'candidate_slug'=>params['candidate_slug']
+			}
 		end
 
 		get '/citoyen/spa/:user_key/election/legislatives-2017' do
