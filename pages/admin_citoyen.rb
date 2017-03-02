@@ -413,7 +413,7 @@ END
 				circonscription['election_slug']=circonscription['slug']
 				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
 			rescue StandardError => e
-				return erb 'spa/election/choose-circonscription'.to_sym, :locals=>{
+				return erb 'spa/elections/choose-circonscription'.to_sym, :locals=>{
 					'citoyen'=>citoyen
 				}
 			rescue PG::Error => e

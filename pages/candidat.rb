@@ -233,10 +233,8 @@ END
 				'page_title'=>"Tous les parrainages reçus par les candidats à la présidentielle",
 				'social_title'=>"Découvrez en temps réel, les parrainages reçus par les candidats à la présidentielle"
 			}
-			erb :index, :locals=>{
-				'page_info'=>info,
-				'vars'=>{'candidats'=>candidats},
-				'template'=>:parrainages
+			erb :parrainages, :locals=>{
+				'candidats'=>candidats
 			}
 		end
 

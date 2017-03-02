@@ -253,14 +253,12 @@
     var useHash=false;
     var router= new Navigo(root,useHash);
     router
-    .on(/election\/(legislatives-2017[\w-].*)\/candidat\/([\w-].*$)/, function(election_slug,candidate_slug) { 
-	    load_path('main','/election/'+election_slug+'/candidat/'+candidate_slug); 
-    }).resolve();
-    router
     .on({
-	    'election/presidentielle-2017*': function() { load_path('main','/election/presidentielle-2017'); },
-	    'election/legislatives-2017*': function() { load_path('main','/election/legislatives-2017'); },
+	    'election/:election_slug/candidat/:candidate_slug': function(params) { load_path('main','/election/'+params.election_slug+'/candidat/'+params.candidate_slug); },
+	    'election/:election_slug': function(params) { load_path('main','/election/'+params.election_slug); },
 	    'candidate/admin': function() { load_path('main','/candidate/admin'); },
+	    'dons': function() { load_path('main','/donations'); }
+	    'apropos': function() { load_path('main','/about'); }
 	    'home': function() { load_path('main','/home'); }
     }).resolve();
     router.

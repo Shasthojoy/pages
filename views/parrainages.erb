@@ -6,7 +6,7 @@
         </div>
         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-8">
             <% if c['slug']=='charlotte-marchandise' then %>
-            <div><%= c['parrainages'] %> parrainages officiels et <%= c['promesses'] %> promesses pour <%= c['name'] %></div>
+		    <div><%= c['parrainages'] %> parrainages officiels et <%= c['promesses'] %> promesses pour <%= c['name'] %> : Aidez Charlotte à <a href="http://parrainages.charlotte-marchandise.fr/" target="_blank">obtenir ses 500 parrainages</a> !</div>
             <% else %>
             <div><%= c['parrainages'] %> parrainages officiellement reçus pour <%= c['name'] %></div>
             <% end %>
@@ -20,7 +20,7 @@
 function load_parrainages() { 
 <% candidats.each do |c| %>
     <% if c['slug']=='charlotte-marchandise' then %>
-    $('#<%= c['slug'] %>-bar').goalProgress({ goalAmount: 500, indicatorAmount: <%= c['promesses'] %>,currentAmount: <%= c['parrainages'] %>, textBefore: '', textAfter: ' parrainages', textBeforeIndicator: '', textAfterIndicator: ' promesses' });
+    $('#<%= c['slug'] %>-bar').goalProgress({ goalAmount: 500, promessesAmount: <%= c['promesses'] %>,currentAmount: <%= c['parrainages'] %>, textBefore: '', textAfter: ' parrainages', textBeforeIndicator: '', textAfterIndicator: ' promesses' });
     <% else %>
     $('#<%= c['slug'] %>-bar').goalProgress({ goalAmount: 500,currentAmount: <%= c['parrainages'] %>, textBefore: '', textAfter: ' parrainages', textBeforeIndicator: '', textAfterIndicator: ' promesses' });
     <% end %>
