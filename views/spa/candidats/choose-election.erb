@@ -1,0 +1,54 @@
+<div id="partial_title">A quelle élection souhaitez-vous être candidat(e) ?</div>
+<h2 class="doc-title">Les élections en cours</h2>
+<p>Voici les élections pour lesquelles il y a une Primaire Ouverte et auxquelles vous pouvez être candidat(e) :</p>
+<div class="row">
+<% if elections.empty? %>
+	<p>Aucune élection en cours pour le moment.</p>
+<% else %>
+	<% elections.each do |e| %>
+		<div class="col-12 col-sm-6 col-lg-3">
+			<!--Card-->
+			<div class="card">
+				<!--Card image-->
+				<div class="view overlay hm-white-slight">
+					<img class="img-fluid rounded" src="https://s3.us-east-2.amazonaws.com/reprezentus/elections/<%= e['slug']%>.jpg" alt="<%= e['name'] %>">
+					<div class="mask waves-effect waves-light">
+					</div>
+				<% if e['current'].to_b then %>
+					<div style="position:absolute;top:5px;"><span class="badge green">Ouvert</span></div>
+				<% else %>
+					<div style="position:absolute;top:5px;"><span class="badge red">Terminée</span></div>
+				<% end %>
+				<% if e['participating'].to_b then %>
+					<div style="position:absolute;top:25px;"><span class="badge blue">Vous êtes candidat</span></div>
+				<% end %>
+				</div>
+				<!--/.Card image-->
+
+				<!--Card content-->
+				<div class="card-block">
+					<!--Title-->
+					<h4 class="card-title"><%= e['name'] %></h4>
+					<!--Text-->
+					<p class="card-text text-justify"><%= e['description'] %></p>
+				<% if e['current'].to_b then %>
+					<% if e['participating'].to_b then %>
+						<a href="#election/<%= e['slug'] %>/candidat/<%= citoyen['slug']%>/edit" class="btn btn-success">Modifier mes infos</a>
+					<% else %>
+						<a href="#election/<%= e['slug'] %>/run" class="btn btn-success">Etre candidat</a>
+					<% end %>
+				<% else %>
+					<a href="#election/<%= e['slug'] %>" target="_blank" class="btn btn-primary">Voir les résultats</a>
+				<% end %>
+				</div>
+				<!--/.Card content-->
+			</div>
+			<!--/.Card-->
+		</div>
+	<% end %>
+<% end %>
+<script>
+function pageReady() {
+	$('.mdb-select').material_select();
+}
+</script>
