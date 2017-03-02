@@ -1,9 +1,64 @@
 <div id="partial_title">Mes dons</div>
+<h2 class="doc-title">Faire un don</h2>
+<p>Voici les campagnes de financement en cours :</p>
+<div class="row">
+    <div class="col-12 col-sm-6 col-lg-4">
+        <!--Card-->
+	<div class="card">
+            <!--Card image-->
+            <div class="view overlay hm-white-slight">
+                <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/logos/logo_laprimaire_200x75.jpg" alt="Soutenez LaPrimaire.org">
+                <a href="https://laprimaire.org/adherer/">
+                    <div class="mask waves-effect waves-light"></div>
+                </a>
+            </div>
+            <!--/.Card image-->
+
+            <!--Card content-->
+            <div class="card-block">
+                <!--Title-->
+                <h4 class="card-title">L'action de LaPrimaire.org</h4>
+                <!--Text-->
+                <p class="card-text text-justify">LaPrimaire.org est le 1er parti politique dont l'unique but est de permettre aux citoyens d'être eux-mêmes candidats, librement et en toute indépendance. LaPrimaire.org est entièrement gratuite pour les citoyens donc son financement repose uniquement sur vos dons.</p>
+                <a href="https://laprimaire.org/adherer/" target="_blank" class="btn btn-primary">Soutenir LaPrimaire.org</a>
+            </div>
+            <!--/.Card content-->
+        </div>
+        <!--/.Card-->
+    </div>
+    <div class="col-12 col-sm-6 col-lg-4">
+        <!--Card-->
+        <div class="card">
+            <!--Card image-->
+            <div class="view overlay hm-white-slight">
+                <img class="img-fluid" src="https://s3.eu-central-1.amazonaws.com/laprimaire/banners/charlotte-lavoiecitoyenne.jpg" alt="Soutenez Charlotte Marchandise">
+                <a href="https://laprimaire.org/don-charlotte-marchandise/">
+                    <div class="mask waves-effect waves-light"></div>
+                </a>
+            </div>
+            <!--/.Card image-->
+
+            <!--Card content-->
+            <div class="card-block">
+                <!--Title-->
+                <h4 class="card-title">La campagne de Charlotte Marchandise</h4>
+                <!--Text-->
+                <p class="card-text text-justify">Maintenant qu'elle est élue, Charlotte doit disposer des moyens de pouvoir faire une vraie campagne qui lui permette non seulement d'aller chercher les 500 parrainages mais aussi et surtout de l'emporter en 2017. Elle a besoin de votre soutien !</p>
+                <a href="https://laprimaire.org/don-charlotte-marchandise/" target="_blank" class="btn btn-primary">Soutenir Charlotte</a>
+            </div>
+            <!--/.Card content-->
+        </div>
+        <!--/.Card-->
+    </div>
+    <div class="col-12 col-sm-6 col-lg-4">
+    </div>
+</div>
+<br/>
+<h2 class="doc-title">Historique de mes dons</h2><br/>
 <% dons.each do |struct,v| %>
-	<h2 class="doc-title"><%= struct %></h2>
-	<br/>
+	<h3 class="doc-title"><%= struct %></h3>
 	<% v.each do |year,w| %>
-		<h4 class="doc-title">Total dons <%= year %> : <%= w['total'] %> euros</h4>
+		<h5 class="doc-title">Total des dons en <%= year %> : <%= w['total'] %> euros</h5>
 		<table class="table table-striped">
 			<thead>
 				<tr>

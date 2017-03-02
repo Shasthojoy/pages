@@ -1,0 +1,71 @@
+<link type="text/css" href="//code.cloudcms.com/alpaca/1.5.22/bootstrap/alpaca.min.css" rel="stylesheet" />
+<div id="form"></div>
+<script type="text/javascript">
+function pageReady() {
+	// Alpaca.logLevel = Alpaca.DEBUG;
+	$.getScript('https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js')
+		.done(function() {
+			$.getScript('//code.cloudcms.com/alpaca/1.5.22/bootstrap/alpaca.min.js')
+				.done(function() {
+					var data = {
+						"name": "Inigo Montoya",
+						"age": 29,
+						"phone": "414-111-2222",
+						"country": "usa"
+					};
+					var schema = {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"age": {
+								"type": "number",
+								"minimum": 0,
+								"maximum": 50
+							},
+							"phone": {
+								"type": "string"
+							},
+							"country": {
+								"type": "string",
+								"required": true
+							}
+						}
+					};
+					var options = {
+						"fields": {
+							"name": {
+								"type": "text",
+								"label": "Name"
+							},
+							"age": {
+								"type": "number",
+								"label": "Age"
+							},
+							"phone": {
+								"type": "phone",
+								"label": "Phone",
+								"class":"mdxxxxx"
+							},
+							"country": {
+								"type": "country",
+								"label": "Country",
+								"class":"mdb-select"
+							}
+						}
+					};
+					var postRenderCallback = function(control) {
+						$('.mdb-select').material_select()
+					};
+					$("#form").alpaca({
+						"data": data,
+						"schema": schema,
+						"options": options,
+						"postRender": postRenderCallback,
+						"view": "bootstrap-edit"
+					});
+				});
+		});
+}
+</script>

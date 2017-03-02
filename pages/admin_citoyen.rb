@@ -394,6 +394,26 @@ END
 			redirect "/citoyen/vote/#{params['user_key']}/2"
 		end
 
+		get '/citoyen/spa/:user_key/election/:election_slug/run' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC0]"}) if citoyen.nil?
+				election=authenticate_election(params['election_slug'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC2]"}) if citoyen.nil?
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/election/candidat DB Error [code:CSEC1] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEC1]"})
+			ensure
+				Pages.db_close()
+			end
+			return erb 'spa/candidats/run'.to_sym, :locals=>{
+				'citoyen'=>citoyen,
+				'election'=>election,
+				'candidate_slug'=>params['candidate_slug']
+			}
+		end
+
 		get '/citoyen/spa/:user_key/election/:election_slug/candidat/:candidate_slug' do
 			begin
 				Pages.db_init()
