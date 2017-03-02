@@ -104,6 +104,15 @@ INSERT INTO supporters (election_id,supporter,candidate)
 SELECT e.election_id,$1,c.email
 FROM users AS c ON (c.slug=$2)
 END
+				'get_donations_by_email'=><<END
+SELECT d.*,d.created::date as donation_date,z.total,ca.name,date_part('year',d.created) AS year
+FROM donations AS d 
+INNER JOIN (
+	SELECT SUM(amount) AS total,email FROM donations WHERE email=$1 GROUP BY email
+) AS z ON (d.email=z.email)
+LEFT JOIN candidates AS ca ON (ca.candidate_id=d.candidate_id)
+WHERE d.email=$1 ORDER BY d.created DESC
+END
 			}
 		end
 
@@ -139,6 +148,11 @@ END
 			def set_circonscription(email,circonscription_id,election_slug)
 				res=Pages.db_query(@queries["set_circonscription_by_email"],[email,circonscription_id,election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def get_donations(email)
+				res=Pages.db_query(@queries["get_donations_by_email"],[email])
+				return res.num_tuples.zero? ? nil : res
 			end
 
 			def page_info(infos=nil)
@@ -463,20 +477,68 @@ END
 			}
 		end
 
-		get '/citoyen/spa/:user_key/donations/:partial' do
-			erb 'spa/donations'.to_sym, :locals=>{
-				'partial'=>params['partial']
-			}
+		get '/citoyen/spa/:user_key/about' do
+			erb 'spa/about'.to_sym, :locals=>{ }
 		end
 
-		get '/citoyen/spa/:user_key/about/:partial' do
-			erb 'spa/about'.to_sym, :locals=>{
-				'partial'=>params['partial']
+		get '/citoyen/spa/:user_key/donations' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSD0]"}) if citoyen.nil?
+				res=get_donations(citoyen['email'])
+				donations=[]
+				dons={}
+				if not res.nil? then
+					res.each do |d|
+						if d['recipient']=='ASSO' then
+							d['structure']='Association Democratech' 
+							d['recipient']='Association Democratech' 
+							d['objet']='Préparation LaPrimaire.org'
+							d['fisc']='Non' 
+						elsif d['recipient']=='PARTI' then
+							d['structure']='Parti LaPrimaire.org' 
+							d['recipient']='Parti LaPrimaire.org' 
+							d['fisc']='Oui, en 2018' if d['year']=='2017'
+							d['fisc']='Oui, en 2017' if d['year']=='2016'
+							d['objet']='Financement LaPrimaire.org'
+							d['objet']="Campagne #{d['name']}" if not d['name'].nil?
+						end
+						dons[d['recipient']]={} if dons[d['recipient']].nil?
+						dons[d['recipient']][d['year']]={'total'=>0,'dons'=>[]} if dons[d['recipient']][d['year']].nil?
+						dons[d['recipient']][d['year']]['total']+=d['amount'].to_i
+						dons[d['recipient']][d['year']]['dons'].push(d)
+						donations.push(d)
+					end
+				end
+				puts dons
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/donations DB Error #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSD0]"})
+			ensure
+				Pages.db_close()
+			end
+			erb 'spa/donations'.to_sym, :locals=>{
+				'citoyen'=>citoyen,
+				'donations'=>donations,
+				'dons'=>dons
 			}
 		end
 
 		get '/citoyen/spa/:user_key/home' do
-			erb 'spa/home'.to_sym
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSH0]"}) if citoyen.nil?
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/home DB Error #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSH0]"})
+			ensure
+				Pages.db_close()
+			end
+			erb 'spa/home'.to_sym, :locals=>{
+				'citoyen'=>citoyen
+			}
 		end
 
 		get '/citoyen/vote/:user_key' do

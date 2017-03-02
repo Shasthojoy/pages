@@ -1,0 +1,33 @@
+<div id="partial_title">Mes dons</div>
+<% dons.each do |struct,v| %>
+	<h2 class="doc-title"><%= struct %></h2>
+	<br/>
+	<% v.each do |year,w| %>
+		<h4 class="doc-title">Total dons <%= year %> : <%= w['total'] %> euros</h4>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Num</th>
+					<th>Date</th>
+					<th>Don</th>
+					<th>Objet</th>
+					<th>Déduction fiscale</th>
+				</tr>
+			</thead>
+			<tbody>
+			<% w['dons'].each do |d| %>
+				<tr>
+					<td><%= d['donation_id'] %></td>
+					<td><%= d['donation_date'] %></td>
+					<td><%= d['amount'] %>€</td>
+					<td><%= d['objet'] %></td>
+					<td><%= d['fisc'] %></td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+		<br/>
+	<% end %>
+	<br/>
+<% end %>
+

@@ -1,0 +1,99 @@
+<input type="hidden" id="election_slug" value="<%= election['slug'] %>">
+<input type="hidden" id="candidate_slug" value="<%= candidate_slug %>">
+<div id="partial_title">
+	<b>&lt;&lt;</b>&nbsp;<a href="#election/<%= election['parent_slug'] %>"><%= election['name'] %></a>
+</div>
+<style>
+.progress {
+	height: 25px;
+}
+.progress .progress-bar {
+	height: 25px;
+	font-size:14px;
+	padding-top:5px;
+	padding-right:5px;
+}
+</style>
+
+<div id="hits"></div>
+
+<script type="text/html" id="hit-template">
+
+
+<!-- Nav tabs -->
+<!--
+<ul class="nav nav-tabs tabs-3 red" role="tablist">
+	<li class="nav-item">
+		<a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Profile</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Follow</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" data-toggle="tab" href="#panel3" role="tab">Contact</a>
+	</li>
+</ul>
+-->
+<!-- Tab panels -->
+<div class="tab-content card">
+	<!--Panel 1-->
+	<div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+		<div class="row">
+			<div class="col-lg-3">
+				<div style="position:absolute;z-index:1000;left:20px;">
+				    <span class="badge red">dept {{code_departement}}</span>
+				    <span class="badge green">circo {{num_circonscription}}</span>
+				</div>
+				<img class="rounded" src="https://s3.eu-central-1.amazonaws.com/{{photo}}">
+				<div class="progress" style="margin-top:5px;">
+					<div class="text-right progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="{{soutiens}}" aria-valuemin="0" aria-valuemax="100">{{soutiens}} soutiens</div>
+				</div>
+				{{#website}}<a class="icons-xs li-ic" href="{{website}}" target="_blank"><i class="fa fa-globe"> </i>&nbsp;site web</a>{{/website}}
+				{{#facebook}}<a class="icons-xs fb-ic" href="{{facebook}}" target="_blank"><i class="fa fa-facebook"> </i>&nbsp;facebook</a>{{/facebook}}
+				{{#twitter}}<a class="icons-xs tw-ic" href="{{twitter}}" target="_blank"><i class="fa fa-twitter"> </i>&nbsp;twitter</a>{{/twitter}}
+				{{#youtube}}<a class="icons-xs yt-ic" href="{{youtube}}" target="_blank"><i class="fa fa-youtube"> </i>&nbsp;youtube</a>{{/youtube}}
+			</div>
+			<div class="col-lg-9">
+				<h2 class="h2-responsive doc-title">
+					{{firstname}} {{lastname}}
+					{{^qualified}}<span class="badge red">Non qualifié</span>{{/qualified}}
+					{{#qualified}}<span class="badge green">Qualifié</span>{{/qualified}}
+				</h2>
+				<p>{{job}}<br/>{{age}} ans ({{city}})</p>
+			</div>
+		</div>
+	</div>
+	<!--/.Panel 1-->
+	<!--Panel 2-->
+	<div class="tab-pane fade" id="panel2" role="tabpanel">
+		<br>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione porro voluptate odit minima.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione porro voluptate odit minima.</p>
+	</div>
+	<!--/.Panel 2-->
+	<!--Panel 3-->
+	<div class="tab-pane fade" id="panel3" role="tabpanel">
+		<br>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione porro voluptate odit minima.</p>
+	</div>
+	<!--/.Panel 3-->
+</div>
+
+</script>
+<script>
+function pageReady() {
+	var election_slug=$('#election_slug').val();
+	var candidate_slug=$('#candidate_slug').val();
+	$.get('/api/election/'+election_slug+'/candidate/'+candidate_slug+'/summary')
+		.done(function(data) {
+			var t=$('#hit-template').html();
+			Mustache.parse(t);
+			console.log(JSON.parse(data));
+			var rendered=Mustache.render(t,JSON.parse(data));
+			$('#hits').html(rendered);
+		})
+	.fail(function(data) {
+		show_notification(data);
+	});
+}
+</script>
