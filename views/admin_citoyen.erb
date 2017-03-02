@@ -132,7 +132,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li><a class="collapsible-header waves-effect arrow-r" href="#election/legislatives-2017/run"><i class="fa fa-hand-paper-o"></i> Etre candidat</a>
+                    <li><a class="collapsible-header waves-effect arrow-r" href="#election/run"><i class="fa fa-hand-paper-o"></i> Etre candidat</a>
                     <!--<li><a class="collapsible-header waves-effect arrow-r" href="#candidate/admin"><i class="fa fa-hand-paper-o"></i> Etre candidat<i class="fa fa-angle-down rotate-icon"></i></a>
                         <div class="collapsible-body">
                             <ul>
@@ -159,6 +159,7 @@
                             </ul>
                         </div>
 		    </li>-->
+		    <li><a class="collapsible-header waves-effect arrow-r" href="#admin"><i class="fa fa-info"></i> Admin</a></li>
                 </ul>
             </li>
             <!--/. Side navigation links -->
@@ -258,6 +259,7 @@ function load_path(node,path,f) {
     var router= new Navigo(root,useHash);
     router
     .on({
+	    'election/run': function(params) { load_path('main','/election/run'); },
 	    'election/:election_slug/run': function(params) { load_path('main','/election/'+params.election_slug+'/run'); },
 	    'election/:election_slug/candidat/:candidate_slug': function(params) { load_path('main','/election/'+params.election_slug+'/candidat/'+params.candidate_slug); },
 	    'election/:election_slug': function(params) { load_path('main','/election/'+params.election_slug); },

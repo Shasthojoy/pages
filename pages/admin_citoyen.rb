@@ -104,7 +104,7 @@ INSERT INTO supporters (election_id,supporter,candidate)
 SELECT e.election_id,$1,c.email
 FROM users AS c ON (c.slug=$2)
 END
-				'get_donations_by_email'=><<END
+				'get_donations_by_email'=><<END,
 SELECT d.*,d.created::date as donation_date,z.total,ca.name,date_part('year',d.created) AS year
 FROM donations AS d 
 INNER JOIN (
@@ -112,6 +112,20 @@ INNER JOIN (
 ) AS z ON (d.email=z.email)
 LEFT JOIN candidates AS ca ON (ca.candidate_id=d.candidate_id)
 WHERE d.email=$1 ORDER BY d.created DESC
+END
+				'get_elections_by_organization'=><<END,
+SELECT e.*,y.sub_elections, CASE WHEN e.end_at<now() THEN false ELSE true END as current, CASE WHEN y.sub_elections is not null THEN true ELSE false END as multiple, CASE WHEN ce.email is not null THEN true ELSE false END as participating
+FROM elections AS e 
+INNER JOIN organizations AS o ON (e.organization_id=o.id AND o.slug=$1 AND e.parent_election_id is null)
+INNER JOIN organizations_users AS ou ON (ou.organization_id=o.id AND ou.email=$2) 
+LEFT JOIN (
+	SELECT array_agg(ARRAY[e2.slug,e2.name] order by e2.slug) AS sub_elections,e1.slug 
+	FROM elections AS e1
+	INNER JOIN elections AS e2 ON (e2.parent_election_id=e1.election_id)
+	GROUP BY e1.slug
+) as y ON (y.slug=e.slug)
+LEFT JOIN candidates_elections AS ce ON (ce.email=$1 AND ce.election_id=e.election_id)
+ORDER BY e.end_at DESC
 END
 			}
 		end
@@ -152,6 +166,11 @@ END
 
 			def get_donations(email)
 				res=Pages.db_query(@queries["get_donations_by_email"],[email])
+				return res.num_tuples.zero? ? nil : res
+			end
+
+			def get_elections(organization_slug,user_email)
+				res=Pages.db_query(@queries["get_elections_by_organization"],[organization_slug,user_email])
 				return res.num_tuples.zero? ? nil : res
 			end
 
@@ -394,16 +413,43 @@ END
 			redirect "/citoyen/vote/#{params['user_key']}/2"
 		end
 
+		get '/citoyen/spa/:user_key/election/run' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER00]"}) if citoyen.nil?
+				res=get_elections('laprimaire-org',citoyen['email']) #FIXME the right organization slug should be found dynamically here with the hostname
+				elections=[]
+				if not res.num_tuples.zero? then
+					res.each do |e|
+						 e['sub_elections']=Hash[*e['sub_elections'].delete('{}"').split(',')] unless e['sub_elections'].nil?
+						 elections.push(e)
+					end
+				end
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/spa/election/run DB Error [code:CSER01] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSER01]"})
+			ensure
+				Pages.db_close()
+			end
+			return erb 'spa/candidats/choose-election'.to_sym, :locals=>{
+				'citoyen'=>citoyen,
+				'elections'=>elections,
+				'candidate_slug'=>params['candidate_slug']
+			}
+
+		end
+
 		get '/citoyen/spa/:user_key/election/:election_slug/run' do
 			begin
 				Pages.db_init()
 				citoyen=authenticate_citizen(params['user_key'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC0]"}) if citoyen.nil?
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER0]"}) if citoyen.nil?
 				election=authenticate_election(params['election_slug'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC2]"}) if citoyen.nil?
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER2]"}) if election.nil?
 			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/election/candidat DB Error [code:CSEC1] #{params}\n#{e.message}"
-				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEC1]"})
+				Pages.log.error "/citoyen/spa/election/candidat DB Error [code:CSER1] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSER1]"})
 			ensure
 				Pages.db_close()
 			end
@@ -420,7 +466,7 @@ END
 				citoyen=authenticate_citizen(params['user_key'])
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC0]"}) if citoyen.nil?
 				election=authenticate_election(params['election_slug'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC2]"}) if citoyen.nil?
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEC2]"}) if election.nil?
 			rescue PG::Error => e
 				Pages.log.error "/citoyen/spa/election/candidat DB Error [code:CSEC1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSEC1]"})
