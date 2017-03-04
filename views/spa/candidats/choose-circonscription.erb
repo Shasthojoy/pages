@@ -1,3 +1,4 @@
+<div id="partial_title">Dans quelle circonscription souhaitez-vous vous présenter ?</div>
 <style>
 .ap-dropdown-menu { text-align:left; }
 .ap-name {color:#5e5e5e;}
@@ -33,9 +34,7 @@
     font-weight:bold;
 }
 </style>
-    <div id="partial_title">Primaire Ouverte pour les élections Législatives 2017</div>
-    <h2 class="h2-responsive doc-title">Inscription</h2>
-    <p class="text-justify">Pour pouvoir participer, merci de bien vouloir remplir les informations ci-dessous.</p>
+    <h2 class="h2-responsive doc-title">Ou êtes-vous candidat(e) ?</h2>
 
 <!--Form without header-->
 <div class="card">
@@ -43,12 +42,12 @@
 
         <!--Header-->
         <div class="text-center">
-            <h3 class="h3-responsive">Votre circonscription électorale</h3>
+            <h3 class="h3-responsive">Votre choix de circonscription</h3>
             <hr class="mt-2 mb-2">
         </div>
 
         <!--Body-->
-        <label>Ou habitez-vous ?</label>
+        <label>Ou se situe la circonscription dans laquelle vous souhaitez vous présenter ?</label>
         <!--Body-->
         <div class="form-inline">
             <fieldset class="form-group">
@@ -89,8 +88,8 @@ $('#bouton_ok').on('click',function() {
 		toastr.error('Merci de remplir le formulaire à nouveau','Erreur',{positionClass: 'toast-bottom-right'});
 		$('#bouton_ok').prop('disabled',true);
 	} else {
-		$.post('/api/citizen/<%= citoyen['user_key'] %>/election/'+election_slug+'/register', function() {
-			window.location.href=window.location.href+'?reload=1';       
+		$.post('/api/citizen/<%= citoyen['user_key'] %>/election/'+election_slug+'/run', function() {
+			router.navigate('/citoyen/<%= citoyen['user_key'] %>/election/'+election_slug+'/run');
 		})
 		.fail(function(data) { show_notification(data); });
 	}

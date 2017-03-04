@@ -1,5 +1,5 @@
 <div id="partial_title">A quelle élection souhaitez-vous être candidat(e) ?</div>
-<h2 class="doc-title">Soyez candidat</h2>
+<h2 class="doc-title">Soyez candidat(e)</h2>
 <p>Voici les élections pour lesquelles il y a une Primaire Ouverte et auxquelles vous pouvez être candidat(e) :</p>
 <div class="row">
 <% if elections.empty? %>
@@ -15,7 +15,7 @@
 					<div class="mask waves-effect waves-light">
 					</div>
 				<% if e['current'].to_b then %>
-					<div style="position:absolute;top:5px;"><span class="badge green">Ouvert</span></div>
+					<div style="position:absolute;top:5px;"><span class="badge green">Ouverte</span></div>
 				<% else %>
 					<div style="position:absolute;top:5px;"><span class="badge red">Terminée</span></div>
 				<% end %>

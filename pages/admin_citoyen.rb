@@ -25,21 +25,22 @@ module Pages
 			super(base)
 			@queries={
 				'get_citizen_by_key'=><<END,
-SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
+SELECT c.slug,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
 FROM users AS c 
 LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.user_key=$1
 END
 				'get_citizen_by_email'=><<END,
-SELECT c.telegram_id,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
+SELECT c.slug,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
 FROM users AS c 
 LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.email=$1
 END
 				'get_election_by_slug'=><<END,
-SELECT * from elections_view as ev 
+SELECT *, CASE WHEN c.id is not null THEN true ELSE false END as circonscription
+FROM elections_view as ev
 LEFT JOIN circonscriptions AS c ON (c.id=ev.circonscription_id)
 WHERE ev.slug=$1
 END
@@ -127,6 +128,23 @@ LEFT JOIN (
 LEFT JOIN candidates_elections AS ce ON (ce.email=$1 AND ce.election_id=e.election_id)
 ORDER BY e.end_at DESC
 END
+				'get_candidate_by_election'=><<END,
+SELECT e2.slug,ce.email, CASE WHEN c.id is not null THEN true ELSE false END as circonscription
+FROM elections AS e1
+INNER JOIN elections AS e2 ON (e1.election_id=e2.parent_election_id AND e1.slug=$2)
+INNER JOIN candidates_elections AS ce ON (ce.election_id=e2.election_id AND ce.email=$1)
+LEFT JOIN circonscriptions AS c ON (c.id=e2.circonscription_id)
+END
+				'set_candidate_slug'=><<END,
+UPDATE users SET slug=$2
+FROM (
+	SELECT count(*) 
+	FROM users 
+	WHERE slug=$2
+) AS z
+WHERE email=$1 AND z.count=0
+RETURNING *
+END
 			}
 		end
 
@@ -172,6 +190,16 @@ END
 			def get_elections(organization_slug,user_email)
 				res=Pages.db_query(@queries["get_elections_by_organization"],[organization_slug,user_email])
 				return res.num_tuples.zero? ? nil : res
+			end
+
+			def is_candidate(candidate_email,election_slug)
+				res=Pages.db_query(@queries["get_candidate_by_election"],[candidate_email,election_slug])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def register_candidate(candidate_email,candidate_slug)
+				res=Pages.db_query(@queries["set_candidate_slug"],[candidate_email,candidate_slug])
+				return (not res.num_tuples.zero?)
 			end
 
 			def page_info(infos=nil)
@@ -447,8 +475,22 @@ END
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER0]"}) if citoyen.nil?
 				election=authenticate_election(params['election_slug'])
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER2]"}) if election.nil?
+				previous_election=is_candidate(citoyen['email'],election['slug']) #a candidate can be a candidate only in 1 circonscription and he cannot change it later on.
+				election=previous_election if not previous_election.nil?
+				if citoyen['slug'].nil? then #a citizen does not have slug by default. We create it the 1st time he wants to be a candidate
+					slug=(citoyen['firstname']+'-'+citoyen['lastname']).slugify
+					while not register_candidate(citoyen['email'],slug) do
+						slug=(citoyen['firstname']+'-'+citoyen['lastname']+rand(100).to_s).slugify
+					end
+					citoyen['slug']=slug
+				end
+				raise 'choose-circonscription' if not election['circonscription'].to_b #candidate has not yet registered to the election
+			rescue RuntimeError => e
+				return erb 'spa/candidats/choose-circonscription'.to_sym, :locals=>{
+					'citoyen'=>citoyen
+				}
 			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/election/candidat DB Error [code:CSER1] #{params}\n#{e.message}"
+				Pages.log.error "/citoyen/spa/election/run DB Error [code:CSER1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSER1]"})
 			ensure
 				Pages.db_close()
@@ -492,7 +534,7 @@ END
 				circonscription['deputy_slug']=circonscription['deputy_url'].split('/')[-1]
 				circonscription['election_slug']=circonscription['slug']
 				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
-			rescue StandardError => e
+			rescue RuntimeError => e
 				return erb 'spa/elections/choose-circonscription'.to_sym, :locals=>{
 					'citoyen'=>citoyen
 				}
@@ -577,7 +619,6 @@ END
 						donations.push(d)
 					end
 				end
-				puts dons
 			rescue PG::Error => e
 				Pages.log.error "/citoyen/spa/donations DB Error #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSD0]"})

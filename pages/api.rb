@@ -42,6 +42,23 @@ END
 				'set_circonscription_by_email'=><<END,
 INSERT INTO voters (election_id,email) SELECT e.election_id,$1 FROM elections as e WHERE e.slug=$2 RETURNING *
 END
+				'register_candidate_for_election'=><<END,
+INSERT INTO candidates_elections (email,election_id,fields)
+SELECT CAST($1 AS VARCHAR),e.election_id,'{}'::json 
+FROM elections as e 
+WHERE e.election_id=election_id AND e.slug=$2 AND NOT EXISTS (
+	SELECT p.slug, ce.email,e.election_id,e.parent_election_id
+	FROM candidates_elections AS ce 
+	INNER JOIN elections AS e ON (e.election_id=ce.election_id AND ce.email=$1 AND e.parent_election_id is not null)
+	INNER JOIN (
+		SELECT election_id,slug,parent_election_id
+		FROM elections AS e1
+		WHERE e1.slug=$2
+	) as p ON (p.parent_election_id=e.parent_election_id)
+	INNER JOIN elections AS e2 ON (e2.parent_election_id=p.parent_election_id)
+        INNER JOIN candidates_elections AS ce1 ON (e2.election_id=ce1.election_id AND ce1.email=$1)
+) RETURNING *
+END
 				'get_candidates_supported'=><<END,
 SELECT c.*
 FROM users AS u
@@ -119,6 +136,12 @@ END
 
 			def set_circonscription(email,election_slug)
 				res=Pages.db_query(@queries["set_circonscription_by_email"],[email,election_slug])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			# The query is a bit complex because we cannot allow a candidate to run for several 'sub'elections in parallel
+			def register_candidate_for_election(email,election_slug)
+				res=Pages.db_query(@queries["register_candidate_for_election"],[email,election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -242,7 +265,7 @@ END
 			return JSON.dump({'success'=>1})
 		end
 
-		post '/api/citizen/:user_key/election/:election_slug/inscription' do
+		post '/api/citizen/:user_key/election/:election_slug/register' do
 			begin
 				Pages.db_init()
 				citoyen=authenticate_citizen(params['user_key'])
@@ -254,6 +277,26 @@ END
 			rescue PG::Error => e
 				Pages.log.error "/api/citizen/election/inscription DB Error [code:ACEI2] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACEI2]"})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump({'success'=>1})
+		end
+
+		post '/api/citizen/:user_key/election/:election_slug/run' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
+				election=authenticate_election(params['election_slug'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACER0]"}) if election.nil?
+				puts citoyen['email']
+				puts election['slug']
+				election=register_candidate_for_election(citoyen['email'],election['slug'])
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Candidature non enregistrée car vous êtes déjà candidat sur une autre circonscription. [code:ACER1]"}) if election.nil?
+			rescue PG::Error => e
+				Pages.log.error "/api/citizen/election/register DB Error [code:ACEI2] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACER2]"})
 			ensure
 				Pages.db_close()
 			end
