@@ -2,61 +2,196 @@
 <div id="form"></div>
 <script type="text/javascript">
 function pageReady() {
-	// Alpaca.logLevel = Alpaca.DEBUG;
 	$.getScript('https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js')
 		.done(function() {
-			$.getScript('//code.cloudcms.com/alpaca/1.5.22/bootstrap/alpaca.min.js')
+			//$.getScript('//code.cloudcms.com/alpaca/1.5.22/bootstrap/alpaca.min.js')
+			$.getScript('https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/alpaca.min.js')
 				.done(function() {
+					Alpaca.registerMessages({
+						"notOptional": "Ce champ est obligatoire",
+						"stringValueTooSmall": "La valeur minimum pour ce champ est {0}",
+						"stringValueTooLarge": "La valeur maximum pour ce champ est {0}",
+						"stringNotAnInteger": "Cette valeur n'est pas un nombre entier"
+					});
 					var data = {
-						"name": "Inigo Montoya",
-						"age": 29,
-						"phone": "414-111-2222",
-						"country": "usa"
+						"firstname": "<%= citoyen['firstname'] %>",
+						"lastname": "<%= citoyen['lastname'] %>",
+						"age": "<%= citoyen['age'] %>",
+						"gender": "<%= citoyen['gender'] %>",
+						"address1": "<%= citoyen['address1'] %>",
+						"address2": "<%= citoyen['address2'] %>",
+						"city": "<%= citoyen['city'] %>",
+						"zipcode": "<%= citoyen['zipcode'] %>",
+						"country": "<%= citoyen['country'] %>",
+						"birthplace": "<%= citoyen['birthplace'] %>",
+						"job": "<%= citoyen['job'] %>",
+						"phone": "<%= citoyen['telephone'] %>",
+						"secteur": "<%= citoyen['secteur'] %>",
+						"country": "<%= citoyen['country'] %>"
 					};
 					var schema = {
 						"type": "object",
 						"properties": {
-							"name": {
-								"type": "string"
+							"firstname": {
+								"type": "string",
+								"required":true
+							},
+							"lastname": {
+								"type": "string",
+								"required":true
 							},
 							"age": {
-								"type": "number",
-								"minimum": 0,
-								"maximum": 50
+								"minimum":18,
+								"maximum":120,
+								"required":true
 							},
-							"phone": {
+							"gender": {
+								"enum": ["M","F"],
+								"required":true
+							},
+							"address1": {
+								"type": "string",
+								"required":true
+							},
+							"address2": {
 								"type": "string"
+							},
+							"city": {
+								"type": "string",
+								"required":true
+							},
+							"zipcode": {
+								"type": "string",
+								"required":true
 							},
 							"country": {
 								"type": "string",
-								"required": true
+								"required":true
+							},
+							"birthplace": {
+								"type": "string",
+								"required":true
+							},
+							"job": {
+								"type": "string",
+								"required":true
+							},
+							"secteur": {
+								"type": "string",
+								"required":true
+							},
+							"phone": {
+								"type": "string",
+								"required":true
 							}
 						}
 					};
 					var options = {
+						"hideInitValidationError": true,
+						"form":{
+							"buttons": {
+								"register": {
+									"type":"button",
+									"styles":"btn btn-primary",
+									"title":"Valider",
+									"click": function() {
+										this.refreshValidationState(true);
+										if (this.isValid(true)) {
+											var value=this.getValue();
+											alert(JSON.stringify(value,null," "));
+										}
+
+									}
+								}
+							}
+						},
 						"fields": {
-							"name": {
+							"firstname": {
 								"type": "text",
-								"label": "Name"
+								"label": "Prénom",
+								"fieldClass":"md-form"
+							},
+							"lastname": {
+								"type": "text",
+								"label": "Nom",
+								"fieldClass":"md-form"
 							},
 							"age": {
-								"type": "number",
-								"label": "Age"
+								"type": "integer",
+								"label": "Votre age",
+								"fieldClass":"md-form"
 							},
-							"phone": {
-								"type": "phone",
-								"label": "Phone",
-								"class":"mdxxxxx"
+							"gender": {
+								"type":"radio",
+								"label":"Vous êtes",
+								"optionLabels":{
+									"M":"Un homme",
+									"F":"Une femme",
+								},
+								"fieldClass":"form-group",
+								"vertical":true
+							},
+							"address1":{
+								"type": "text",
+								"label": "Votre adresse",
+								"placeholder": "",
+								"fieldClass":"md-form"
+							},
+							"address2":{
+								"type": "text",
+								"label": "Complément d'adresse (optionnel)",
+								"placeholder": "",
+								"fieldClass":"md-form"
+							},
+							"city":{
+								"type": "text",
+								"label": "Ville",
+								"fieldClass":"md-form",
+								"placeholder": ""
+							},
+							"zipcode":{
+								"type": "text",
+								"label": "Code postal",
+								"fieldClass":"md-form",
+								"placeholder": ""
 							},
 							"country": {
-								"type": "country",
-								"label": "Country",
-								"class":"mdb-select"
+								"type": "text",
+								"label": "Pays",
+								"fieldClass":"md-form"
+							},
+							"phone": {
+								"type": "text",
+								"label": "Numéro de téléphone pour vous joindre",
+								"fieldClass":"md-form"
+							},
+							"birthplace": {
+								"type": "text",
+								"label": "Votre lieu de naissance",
+								"fieldClass":"md-form"
+							},
+							"job": {
+								"type": "text",
+								"label": "Votre profession",
+								"fieldClass":"md-form"
+							},
+							"secteur": {
+								"type": "text",
+								"label": "Votre secteur d'activité",
+								"fieldClass":"md-form"
 							}
 						}
 					};
+					for (var key in data) {
+						if (!data.hasOwnProperty(key))  {
+							continue;
+						}
+						if (data[key]) {
+							options['fields'][key]['active']=true;
+						}
+					}
 					var postRenderCallback = function(control) {
-						$('.mdb-select').material_select()
+						$('.datepicker').pickadate();
 					};
 					$("#form").alpaca({
 						"data": data,
