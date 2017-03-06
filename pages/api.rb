@@ -165,6 +165,16 @@ END
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
+			def upload_image(key,data)
+				bucket=Pages.aws.bucket('laprimaire')
+				obj=bucket.object(key)
+				if bucket.object(key).exists? then
+					Pages.log.info "#{key} already exists in S3 bucket. deleting previous object."
+					obj.delete
+				end
+				obj.upload_file(data[:tempfile], acl:'public-read',cache_control:'public, max-age=14400', content_type:data[:type])
+				return key
+			end
 		end
 
 		configure do
@@ -271,12 +281,12 @@ END
 				citoyen=authenticate_citizen(params['user_key'])
 				return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
 				election=authenticate_election(params['election_slug'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEI0]"}) if election.nil?
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACERE0]"}) if election.nil?
 				circonscription=set_circonscription(citoyen['email'],params['election_slug'])
-				return error_occurred(500,{"title"=>"Erreur","msg"=>"Circonscription non définie [code:ACEI1]"}) if circonscription.nil?
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Circonscription non définie [code:ACERE1]"}) if circonscription.nil?
 			rescue PG::Error => e
 				Pages.log.error "/api/citizen/election/inscription DB Error [code:ACEI2] #{params}\n#{e.message}"
-				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACEI2]"})
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACERE2]"})
 			ensure
 				Pages.db_close()
 			end
@@ -289,18 +299,37 @@ END
 				citoyen=authenticate_citizen(params['user_key'])
 				return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
 				election=authenticate_election(params['election_slug'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACER0]"}) if election.nil?
-				puts citoyen['email']
-				puts election['slug']
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACERU0]"}) if election.nil?
 				election=register_candidate_for_election(citoyen['email'],election['slug'])
-				return error_occurred(500,{"title"=>"Erreur","msg"=>"Candidature non enregistrée car vous êtes déjà candidat sur une autre circonscription. [code:ACER1]"}) if election.nil?
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Candidature non enregistrée car vous êtes déjà candidat sur une autre circonscription. [code:ACERU1]"}) if election.nil?
 			rescue PG::Error => e
-				Pages.log.error "/api/citizen/election/register DB Error [code:ACEI2] #{params}\n#{e.message}"
-				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACER2]"})
+				Pages.log.error "/api/citizen/election/register DB Error [code:ACERU2] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACERU2]"})
 			ensure
 				Pages.db_close()
 			end
 			return JSON.dump({'success'=>1})
+		end
+
+		post '/api/citizen/:user_key/profile/picture' do
+			begin
+				Pages.db_init()
+				citoyen=authenticate_citizen(params['user_key'])
+				return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
+				img_name=citoyen['slug']+File.extname(params['slim_output_0'][:filename])
+				path='photos_citoyens/'+img_name
+				upload_image(path,params['slim_output_0'])
+			rescue PG::Error => e
+				Pages.log.error "/api/citizen/profile/picture DB Error [code:ACPP0] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACPP0]"})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump({
+				'status'=>'success',
+				'name'=>img_name,
+				'path'=>path
+			})
 		end
 
 		get '/api/election/:election_slug/candidate/:candidate_slug/summary' do

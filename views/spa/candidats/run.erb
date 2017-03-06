@@ -1,10 +1,405 @@
+<div id="partial_title">Votre candidature aux élections <%= election['name'] %></div>
 <link type="text/css" href="//code.cloudcms.com/alpaca/1.5.22/bootstrap/alpaca.min.css" rel="stylesheet" />
-<div id="form"></div>
+<link type="text/css" rel="stylesheet" href="https://assets-cdn.ziggeo.com/v1-stable/ziggeo.css" />
+<link type="text/css" rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/reprezentus/templates/css/slim.min.css" />
+<script src="//cloud.tinymce.com/stable/tinymce.min.js?apiKey=vhb3ke8xhmxm0nalqrxxkrdw4lafueg4ngtl085qh7bkuxd5"></script>
+<style>
+.classic-tabs.tabs-red {
+	background-color: #f44336;
+}
+textarea {
+	height:auto !important;
+}
+</style>
+<!-- Nav tabs -->
+<div class="tabs-wrapper"> 
+	<ul class="nav classic-tabs tabs-red" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link waves-light active" data-toggle="tab" name="profil" href="#panel1" role="tab"><i class="fa fa-user fa-2x" aria-hidden="true"></i><br> Profil</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link waves-light" data-toggle="tab" name="candidature" href="#panel2" role="tab"><i class="fa fa-heart fa-2x" aria-hidden="true"></i><br> Candidature</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link waves-light" data-toggle="tab" name="photo" href="#panel3" role="tab"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i><br> Photo</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link waves-light" data-toggle="tab" name="video" href="#panel4" role="tab"><i class="fa fa-star fa-2x" aria-hidden="true"></i><br> Vidéo</a>
+		</li>
+	</ul>
+</div>
+
+<div class="tab-content card">
+	<!--Panel 1-->
+	<div class="tab-pane fade in show active" name="profil" id="panel1" role="tabpanel">
+		<p>Merci pour votre engagement ! Pour enregistrer votre candidature, merci de bien vouloir rentrer les informations suivantes.</p>
+		<div id="profile-tab"></div>
+	</div>
+	<div class="tab-pane fade" name="candidature" id="panel2" role="tabpanel">
+		<div id="candidature-tab"></div>
+	</div>
+	<div class="tab-pane fade" name="photo" id="panel3" role="tabpanel">
+		<div id="photo-tab">
+			<div class="slim"
+	data-meta-user-id="1234"
+ 	data-ratio="16:9"
+	data-size="600,300"
+	data-output-base64="true"
+	data-push="true"
+	data-service="/api/citizen/<%= citoyen['user_key'] %>/profile/picture">
+				<input type="file" name="slim[]">
+			</div>
+			<button type="submit">Send!</button>
+		</div>
+	</div>
+	<div class="tab-pane fade" name="video" id="panel4" role="tabpanel">
+		<div id="video-recorder"></div>
+	</div>
+</div>
+
 <script type="text/javascript">
 function pageReady() {
+	var dataProfile = {
+		"firstname": "<%= citoyen['firstname'] %>",
+		"lastname": "<%= citoyen['lastname'] %>",
+		"age": "<%= citoyen['age'] %>",
+		"gender": "<%= citoyen['gender'] %>",
+		"address1": "<%= citoyen['address1'] %>",
+		"address2": "<%= citoyen['address2'] %>",
+		"city": "<%= citoyen['city'] %>",
+		"zipcode": "<%= citoyen['zipcode'] %>",
+		"country": "<%= citoyen['country'] %>",
+		"birthplace": "<%= citoyen['birthplace'] %>",
+		"job": "<%= citoyen['job'] %>",
+		"phone": "<%= citoyen['telephone'] %>",
+		"secteur": "<%= citoyen['secteur'] %>",
+		"country": "<%= citoyen['country'] %>"
+	};
+	var schemaProfile = {
+		"type": "object",
+		"properties": {
+			"firstname": {
+				"type": "string",
+				"required":true
+			},
+			"lastname": {
+				"type": "string",
+				"required":true
+			},
+			"age": {
+				"minimum":18,
+				"maximum":120,
+				"required":true
+			},
+			"gender": {
+				"enum": ["M","F"],
+				"required":true
+			},
+			"address1": {
+				"type": "string",
+				"required":true
+			},
+			"address2": {
+				"type": "string"
+			},
+			"city": {
+				"type": "string",
+				"required":true
+			},
+			"zipcode": {
+				"type": "string",
+				"required":true
+			},
+			"country": {
+				"type": "string",
+				"required":true
+			},
+			"birthplace": {
+				"type": "string",
+				"required":true
+			},
+			"job": {
+				"type": "string",
+				"required":true
+			},
+			"secteur": {
+				"type": "string",
+				"required":true
+			},
+			"phone": {
+				"type": "string",
+				"required":true
+			}
+		}
+	};
+	var optionsProfile = {
+		"hideInitValidationError": true,
+		"form":{
+			"buttons": {
+				"register": {
+					"type":"button",
+					"styles":"btn btn-primary",
+					"title":"Valider",
+					"click": function() {
+						this.refreshValidationState(true);
+						if (this.isValid(true)) {
+							var value=this.getValue();
+							alert(JSON.stringify(value,null," "));
+						}
+
+					}
+				}
+			}
+		},
+		"fields": {
+			"firstname": {
+				"type": "text",
+				"label": "Prénom",
+				"fieldClass":"md-form"
+			},
+			"lastname": {
+				"type": "text",
+				"label": "Nom",
+				"fieldClass":"md-form"
+			},
+			"age": {
+				"type": "integer",
+				"label": "Votre age",
+				"fieldClass":"md-form"
+			},
+			"gender": {
+				"type":"radio",
+				"label":"Vous êtes",
+				"optionLabels":{
+					"M":"Un homme",
+					"F":"Une femme",
+				},
+				"fieldClass":"form-group",
+				"vertical":false
+			},
+			"address1":{
+				"type": "text",
+				"label": "Votre adresse",
+				"placeholder": "",
+				"fieldClass":"md-form"
+			},
+			"address2":{
+				"type": "text",
+				"label": "Complément d'adresse (optionnel)",
+				"placeholder": "",
+				"fieldClass":"md-form"
+			},
+			"city":{
+				"type": "text",
+				"label": "Ville",
+				"fieldClass":"md-form",
+				"placeholder": ""
+			},
+			"zipcode":{
+				"type": "text",
+				"label": "Code postal",
+				"fieldClass":"md-form",
+				"placeholder": ""
+			},
+			"country": {
+				"type": "text",
+				"label": "Pays",
+				"fieldClass":"md-form"
+			},
+			"phone": {
+				"type": "text",
+				"label": "Numéro de téléphone pour vous joindre",
+				"fieldClass":"md-form"
+			},
+			"birthplace": {
+				"type": "text",
+				"label": "Votre lieu de naissance",
+				"fieldClass":"md-form"
+			},
+			"job": {
+				"type": "text",
+				"label": "Votre profession",
+				"fieldClass":"md-form"
+			},
+			"secteur": {
+				"type": "text",
+				"label": "Votre secteur d'activité",
+				"fieldClass":"md-form"
+			}
+		}
+	};
+	var schemaCandidature = {
+		"type": "object",
+		"properties": {
+			"suppleant_yn": {
+				"type":"string",
+				"enum": ["OUI","NON"],
+				"required":true
+			},
+			"suppleant_name": {
+				"type": "string",
+				"required":true
+			},
+			"suppleant_email": {
+				"format": "email",
+				"required":true
+			},
+			"supported_candidate_yn": {
+				"type":"string",
+				"enum": ["OUI","NON"],
+				"required":true
+			},
+			"supported_candidate": {
+				"enum":["Aucun","Alexandre Jardin","Antoine Waechter","Bastien Faudot","Benoît Hamon","Charlotte Marchandise","Christian Troadec","Emmanuel Macron","François Asselineau","François Fillon","Henri Guaino","Jacques Cheminade","Jean Lassalle","Jean-Luc Mélenchon","Jean-Pierre Gorges","Marine Le Pen","Michèle Alliot-Marie","Nathalie Arthaud","Nicolas Dupont-Aignan","Nicolas Miguet","Oscar Temaru","Paul Mumbach","Philippe Poutou","Pierre Larrouturou","Rama Yade","Stéphane Guyot","Yannick Jadot"]
+			},
+			"political_party": {
+				"enum":["Aucun","Cap21 (C21)","Citoyens du Vote Blanc (CVB)","Debout La France (DLF)","En Marche (EM)","Europe Ecologie Les Verts (EELV)","Front National (FN)","Génération Citoyens (GC)","La France qui Ose (LFQO)","Les Citoyens1 (LC1)","Les Républicains (LR)","Lutte Ouvrière (LO)","MaVoix (MV)","Mouvement 100% (M100%)","Mouvement Démocrate (MODEM)","Nous Citoyens (NC)","Nouveau Parti Anticapitaliste (NPA)","Nouvelle Donne (ND)","Objectif France (OF)","Parti Chrétien-Démocrate (PCD)","Parti Communiste Français (PCF)","Parti de Gauche (PG)","Parti Pirate (PP)","Parti Radical (PR)","Parti Socialiste (PS)","Sens Commun (SC)","Solidarité et Progrès (SP)","Union des Démocrates et Indépendants (UDI)","Union Populaire Républicaine (UPR)"]
+			},
+			"already_candidate_yn": {
+				"enum": ["NON","OUI","PLUSIEURS"],
+				"type":"string",
+				"required":true
+			},
+			"already_candidate": {
+				"type": "string",
+				"required":true
+			},
+			"already_elected_yn": {
+				"enum": ["OUI","NON"],
+				"required":true
+			},
+			"already_elected": {
+				"type": "string",
+				"required":true
+			},
+			"website": {
+				"format": "uri",
+			},
+			"twitter": {
+				"format": "uri",
+			},
+			"facebook": {
+				"format": "uri",
+			},
+			"presentation": {
+				"required":true
+			}
+		},
+		"dependencies":{
+			"suppleant_name":["suppleant_yn"],
+			"suppleant_email":["suppleant_yn"],
+			"supported_candidate":["supported_candidate_yn"],
+			"already_candidate":["already_candidate_yn"],
+			"already_elected":["already_elected_yn"]
+		}
+	};
+	var optionsCandidature = {
+		"hideInitValidationError": true,
+		"form":{
+			"buttons": {
+				"save": {
+					"type":"button",
+					"styles":"btn btn-primary",
+					"title":"Suivant",
+					"click": function() {
+						this.refreshValidationState(true);
+						if (this.isValid(true)) {
+							var value=this.getValue();
+							alert(JSON.stringify(value,null," "));
+						}
+
+					}
+				}
+			}
+		},
+		"fields": {
+			"suppleant_yn": {
+				"type":"radio",
+				"label": "Avez-vous déjà un(e) suppléant(e) ?",
+				"fieldClass":"form-group",
+				"vertical":false
+
+			},
+			"suppleant_name": {
+				"type": "text",
+				"label": "Quel est le nom de votre suppléant(e) ?",
+				"fieldClass":"md-form",
+				"dependencies": { "suppleant_yn":"OUI" }
+			},
+			"suppleant_email": {
+				"label": "Quel est l'email de votre suppléant(e) ?",
+				"fieldClass":"md-form",
+				"dependencies": { "suppleant_yn":"OUI" }
+			},
+			"supported_candidate_yn": {
+				"label": "Soutenez-vous un(e) candidat(e) à la Présidentielle en particulier ?",
+				"fieldClass":"form-group",
+				"vertical":false
+			},
+			"supported_candidate": {
+				"label": "Quel(le) candidat(e) à la présidentielle soutenez-vous ?",
+				"fieldClass":"browser-default",
+				"dependencies": { "supported_candidate_yn":"OUI" },
+				"hideNone":true
+			},
+			"political_party": {
+				"label": "Quel mouvement citoyen / un parti politique soutenez-vous ?",
+				"fieldClass":"browser-default",
+				"hideNone":true
+			},
+			"already_candidate_yn": {
+				"label": "Avez-vous déjà été candidat(e) à une élection publique ?",
+				"fieldClass":"form-group",
+				"vertical":false
+			},
+			"already_candidate": {
+				"label": "Laquelle/Lesquelles",
+				"dependencies": { "already_candidate_yn":["OUI","PLUSIEURS"] },
+				"fieldClass":"md-form"
+			},
+			"already_elected_yn": {
+				"label": "Avez-vous déjà été exercé un mandat public ?",
+				"fieldClass":"form-group",
+				"vertical":false
+			},
+			"already_elected": {
+				"label": "Lequel/Lesquels",
+				"dependencies": { "already_elected_yn": "OUI" },
+				"fieldClass":"md-form"
+			},
+			"website": {
+				"type":"url",
+				"label": "Votre site web",
+				"fieldClass":"md-form"
+			},
+			"twitter": {
+				"type":"url",
+				"label": "Votre twitter",
+				"fieldClass":"md-form"
+			},
+			"facebook": {
+				"type":"url",
+				"label": "Votre facebook",
+				"fieldClass":"md-form"
+			},
+			"presentation": {
+				"type":"textarea",
+				"label":"Courte présentation et motivation de votre candidature (300 mots maximum)",
+				"rows":6,
+				"cols":80,
+				"wordlimit":300,
+				"fieldClass":"browser-default,tiny-mce-editor",
+				"required":true
+			}
+		}
+	};
+
+	for (var key in dataProfile) {
+		if (!dataProfile.hasOwnProperty(key))  { continue; }
+		if (dataProfile[key]) { optionsProfile['fields'][key]['active']=true; }
+	}
 	$.getScript('https://cdn.jsdelivr.net/handlebarsjs/4.0.5/handlebars.min.js')
 		.done(function() {
-			//$.getScript('//code.cloudcms.com/alpaca/1.5.22/bootstrap/alpaca.min.js')
 			$.getScript('https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/alpaca.min.js')
 				.done(function() {
 					Alpaca.registerMessages({
@@ -13,194 +408,102 @@ function pageReady() {
 						"stringValueTooLarge": "La valeur maximum pour ce champ est {0}",
 						"stringNotAnInteger": "Cette valeur n'est pas un nombre entier"
 					});
-					var data = {
-						"firstname": "<%= citoyen['firstname'] %>",
-						"lastname": "<%= citoyen['lastname'] %>",
-						"age": "<%= citoyen['age'] %>",
-						"gender": "<%= citoyen['gender'] %>",
-						"address1": "<%= citoyen['address1'] %>",
-						"address2": "<%= citoyen['address2'] %>",
-						"city": "<%= citoyen['city'] %>",
-						"zipcode": "<%= citoyen['zipcode'] %>",
-						"country": "<%= citoyen['country'] %>",
-						"birthplace": "<%= citoyen['birthplace'] %>",
-						"job": "<%= citoyen['job'] %>",
-						"phone": "<%= citoyen['telephone'] %>",
-						"secteur": "<%= citoyen['secteur'] %>",
-						"country": "<%= citoyen['country'] %>"
-					};
-					var schema = {
-						"type": "object",
-						"properties": {
-							"firstname": {
-								"type": "string",
-								"required":true
-							},
-							"lastname": {
-								"type": "string",
-								"required":true
-							},
-							"age": {
-								"minimum":18,
-								"maximum":120,
-								"required":true
-							},
-							"gender": {
-								"enum": ["M","F"],
-								"required":true
-							},
-							"address1": {
-								"type": "string",
-								"required":true
-							},
-							"address2": {
-								"type": "string"
-							},
-							"city": {
-								"type": "string",
-								"required":true
-							},
-							"zipcode": {
-								"type": "string",
-								"required":true
-							},
-							"country": {
-								"type": "string",
-								"required":true
-							},
-							"birthplace": {
-								"type": "string",
-								"required":true
-							},
-							"job": {
-								"type": "string",
-								"required":true
-							},
-							"secteur": {
-								"type": "string",
-								"required":true
-							},
-							"phone": {
-								"type": "string",
-								"required":true
-							}
-						}
-					};
-					var options = {
-						"hideInitValidationError": true,
-						"form":{
-							"buttons": {
-								"register": {
-									"type":"button",
-									"styles":"btn btn-primary",
-									"title":"Valider",
-									"click": function() {
-										this.refreshValidationState(true);
-										if (this.isValid(true)) {
-											var value=this.getValue();
-											alert(JSON.stringify(value,null," "));
-										}
-
-									}
-								}
-							}
-						},
-						"fields": {
-							"firstname": {
-								"type": "text",
-								"label": "Prénom",
-								"fieldClass":"md-form"
-							},
-							"lastname": {
-								"type": "text",
-								"label": "Nom",
-								"fieldClass":"md-form"
-							},
-							"age": {
-								"type": "integer",
-								"label": "Votre age",
-								"fieldClass":"md-form"
-							},
-							"gender": {
-								"type":"radio",
-								"label":"Vous êtes",
-								"optionLabels":{
-									"M":"Un homme",
-									"F":"Une femme",
-								},
-								"fieldClass":"form-group",
-								"vertical":true
-							},
-							"address1":{
-								"type": "text",
-								"label": "Votre adresse",
-								"placeholder": "",
-								"fieldClass":"md-form"
-							},
-							"address2":{
-								"type": "text",
-								"label": "Complément d'adresse (optionnel)",
-								"placeholder": "",
-								"fieldClass":"md-form"
-							},
-							"city":{
-								"type": "text",
-								"label": "Ville",
-								"fieldClass":"md-form",
-								"placeholder": ""
-							},
-							"zipcode":{
-								"type": "text",
-								"label": "Code postal",
-								"fieldClass":"md-form",
-								"placeholder": ""
-							},
-							"country": {
-								"type": "text",
-								"label": "Pays",
-								"fieldClass":"md-form"
-							},
-							"phone": {
-								"type": "text",
-								"label": "Numéro de téléphone pour vous joindre",
-								"fieldClass":"md-form"
-							},
-							"birthplace": {
-								"type": "text",
-								"label": "Votre lieu de naissance",
-								"fieldClass":"md-form"
-							},
-							"job": {
-								"type": "text",
-								"label": "Votre profession",
-								"fieldClass":"md-form"
-							},
-							"secteur": {
-								"type": "text",
-								"label": "Votre secteur d'activité",
-								"fieldClass":"md-form"
-							}
-						}
-					};
-					for (var key in data) {
-						if (!data.hasOwnProperty(key))  {
-							continue;
-						}
-						if (data[key]) {
-							options['fields'][key]['active']=true;
-						}
-					}
-					var postRenderCallback = function(control) {
-						$('.datepicker').pickadate();
-					};
-					$("#form").alpaca({
-						"data": data,
-						"schema": schema,
-						"options": options,
-						"postRender": postRenderCallback,
+					$("#profile-tab").alpaca({
+						"data": dataProfile,
+						"schema": schemaProfile,
+						"options": optionsProfile,
 						"view": "bootstrap-edit"
 					});
 				});
 		});
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		$.get('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/summary')
+			.done(function(data) {
+				infos=JSON.parse(data);
+				console.log(infos);
+				if (e.target.name=='profil') {
+					for (var key in infos) {
+						if (!infos.hasOwnProperty(key))  { continue; }
+						if (infos[key]) { 
+							if (optionsProfile['fields'][key]!=undefined) {
+								optionsProfile['fields'][key]['active']=true;
+							}
+						}
+					}
+					$("#profile-tab").alpaca({
+						"data": infos,
+						"schema": schemaProfile,
+						"options": optionsProfile,
+						"view": "bootstrap-edit"
+					});
+				} else if (e.target.name=='candidature') {
+					for (var key in infos) {
+						if (!infos.hasOwnProperty(key))  { continue; }
+						if (infos[key]) { 
+							if (optionsCandidature['fields'][key]!=undefined) {
+								optionsCandidature['fields'][key]['active']=true;
+							}
+						}
+					}
+					$("#candidature-tab").alpaca({
+						"data": infos,
+						"schema": schemaCandidature,
+						"options": optionsCandidature,
+						"view": "bootstrap-edit",
+						"postRender": function() {
+							$('.mdb-select').material_select();
+							tinymce.init({
+								selector: 'textarea',
+								language_url: 'https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/tinymce_fr_FR.js',
+								height: 250,
+								menubar: false,
+								plugins: [
+									'advlist autolink lists link image charmap print preview anchor',
+									'searchreplace visualblocks code fullscreen',
+									'insertdatetime media table contextmenu paste code'
+								],
+								toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+								content_css: '//www.tinymce.com/css/codepen.min.css'
+							});
+						}
+					});
+
+				} else if (e.target.name=='photo') {
+					$.getScript('https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/slim.kickstart.min.js')
+						.done(function() {
+						})
+				} else if (e.target.name=='video') {
+					$.getScript('https://assets-cdn.ziggeo.com/v1-r23/ziggeo.js')
+						.done(function() {
+							ZiggeoApi.token = "dec836dec48133bf9f0225552ae31ad2";
+							ZiggeoApi.Events.on("system_ready", function() {
+								var recorder = new ZiggeoApi.V2.Recorder({
+									element: document.getElementById("video-recorder"),
+									attrs: {
+										width: 640,
+										height: 480,
+										responsive: true,
+										recordingwidth: 640,
+										recordingheight: 480,
+										key: '<%= citoyen['slug'] %>',
+										'auto-crop': false,
+										'auto-pad': true,
+										timelimit: 60,
+										title: 'Présentation vidéo de <%= citoyen['firstname']+' '+citoyen['lastname'] %>',
+										rerecordable: true,
+										allowupload: false,
+										allowrecord: true,
+										'force-overwrite': true
+									}
+								});
+								recorder.activate();
+							});
+						});
+
+				}
+				//e.relatedTarget // previous active tab
+			});
+	})
+
 }
 </script>

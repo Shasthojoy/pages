@@ -39,10 +39,11 @@ LEFT JOIN telephones AS t ON (t.international=c.telephone)
 WHERE c.email=$1
 END
 				'get_election_by_slug'=><<END,
-SELECT *, CASE WHEN c.id is not null THEN true ELSE false END as circonscription
-FROM elections_view as ev
-LEFT JOIN circonscriptions AS c ON (c.id=ev.circonscription_id)
-WHERE ev.slug=$1
+SELECT e.*,e1.name as parent_name, e1.slug as parent_slug, CASE WHEN c.id is not null THEN true ELSE false END as circonscription
+FROM elections AS e
+LEFT JOIN circonscriptions AS c ON (c.id=e.circonscription_id)
+LEFT JOIN elections AS e1 ON (e1.election_id=e.parent_election_id)
+WHERE e.slug=$1
 END
 				'get_candidates_by_election'=><<END,
 SELECT u.*,ce.fields,ce.finalist
@@ -497,8 +498,7 @@ END
 			end
 			return erb 'spa/candidats/run'.to_sym, :locals=>{
 				'citoyen'=>citoyen,
-				'election'=>election,
-				'candidate_slug'=>params['candidate_slug']
+				'election'=>election
 			}
 		end
 

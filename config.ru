@@ -17,5 +17,5 @@ COCORICO_SECRET=DEBUG ? CC_SECRET_TEST : CC_SECRET
 API_HOST=DEBUG ? API_HOST_TEST : API_HOST_PROD
 Pages.log=Logger.new(::DEBUG ? STDOUT : STDERR)
 Pages.log.level= ::DEBUG ? Logger::DEBUG : Logger::WARN
-
+Pages.aws=Aws::S3::Resource.new(credentials: Aws::Credentials.new(AWS_API_KEY,AWS_API_SECRET),region: AWS_REGION)
 run Pages::App
