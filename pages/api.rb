@@ -109,6 +109,12 @@ END
 				'save_image'=><<END,
 UPDATE users SET photo=$2 WHERE user_key=$1 RETURNING *
 END
+				'get_yearly_donations_amount'=><<END,
+SELECT sum(amount) as sum FROM donations WHERE recipient='PARTI' AND status='AUTHORISED' AND email=$1 AND extract(year FROM current_date)=extract(year FROM created)
+END
+				'publish_candidate'=><<END,
+UPDATE candidates_elections SET accepted=true, verified=true WHERE email=$1 AND election_id=$2 RETURNING *
+END
 			}
 		end
 
@@ -175,6 +181,12 @@ END
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
+			def is_member(email)
+				res=Pages.db_query(@queries["get_yearly_donations_amount"],[email])
+				return false if res.num_tuples.zero?
+				return res[0]['sum'].to_i>=30
+			end
+
 			def save_candidate_infos(email,election_id,infos)
 				infos=JSON.dump(infos)
 				res=Pages.db_query(@queries["save_candidate_infos"],[email,election_id,infos])
@@ -183,6 +195,11 @@ END
 
 			def save_image(user_key,path)
 				res=Pages.db_query(@queries["save_image"],[user_key,path])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def publish_candidate(candidate_email,election_id)
+				res=Pages.db_query(@queries["publish_candidate"],[candidate_email,election_id])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -370,6 +387,37 @@ END
 				Pages.db_close()
 			end
 			return show_notification({'title'=>'Succès !','msg'=>'Vos informations ont bien été enregistrées'})
+		end
+
+		get '/api/election/:election_slug/candidate/:candidate_slug/validate' do
+			errors=[]
+			status='error'
+			begin
+				Pages.db_init()
+				election=authenticate_election(params['election_slug'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:AECV0]"}) if election.nil?
+				candidate=get_candidate_by_slug(params['candidate_slug'],election['election_id'])
+				return error_occurred(404,{"title"=>"Erreur","msg"=>"Candidat inconnu"}) if candidate.nil?
+				candidate_fields=JSON.parse(candidate['fields'])
+				errors.push('missing_photo') if (candidate['photo'].nil? or candidate['photo'].empty?)
+				errors.push('missing_profil') if (candidate_fields['age'].nil? or candidate_fields['age'].empty?)
+				errors.push('missing_candidature') if (candidate_fields['supported_candidate'].nil? or candidate_fields['supported_candidate'].empty?)
+				errors.push('missing_donation') if !is_member(candidate['email'])
+				if !errors.empty? then
+					publish_candidate(candidate['email'],election['election_id'])
+					status='success'
+				end
+			rescue PG::Error => e
+				Pages.log.error "/api/election/candidate/summary DB Error [code:AECV1] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:AECV1]"})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump({
+				'status'=>status,
+				'errors'=>errors
+			});
+
 		end
 
 		get '/api/election/:election_slug/candidate/:candidate_slug/summary' do

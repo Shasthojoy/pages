@@ -5,7 +5,7 @@
 <% if elections.empty? %>
 	<p>Aucune élection en cours pour le moment.</p>
 <% else %>
-	<% elections.each do |e| %>
+	<% elections.each do |k,e| %>
 		<div class="col-12 col-sm-6 col-lg-3">
 			<!--Card-->
 			<div class="card">
@@ -20,7 +20,17 @@
 					<div style="position:absolute;top:5px;"><span class="badge red">Terminée</span></div>
 				<% end %>
 				<% if e['participating'].to_b then %>
-					<div style="position:absolute;top:25px;"><span class="badge blue">Vous êtes candidat</span></div>
+					<% if e['finalist'].to_b then %>
+					<div style="position:absolute;top:25px;"><span class="badge green">Vous êtes finaliste</span></div>
+					<% elsif e['qualified'].to_b then %>
+					<div style="position:absolute;top:25px;"><span class="badge green">Vous êtes qualifié</span></div>
+					<% elsif e['verified'].to_b then %>
+					<div style="position:absolute;top:25px;"><span class="badge green">Candidature validée</span></div>
+					<% elsif e['accepted'].to_b then %>
+					<div style="position:absolute;top:25px;"><span class="badge orange">Candidature en cours de validation</span></div>
+					<% else %>
+					<div style="position:absolute;top:25px;"><span class="badge red">Candidature incomplète</span></div>
+					<% end %>
 				<% end %>
 				</div>
 				<!--/.Card image-->
@@ -33,7 +43,7 @@
 					<p class="card-text text-justify"><%= e['description'] %></p>
 				<% if e['current'].to_b then %>
 					<% if e['participating'].to_b then %>
-						<a href="#election/<%= e['slug'] %>/candidat/<%= citoyen['slug']%>/edit" class="btn btn-success">Modifier mes infos</a>
+						<a href="#election/<%= e['parent_slug'] %>/run" class="btn btn-success">Modifier mes infos</a>
 					<% else %>
 						<a href="#election/<%= e['slug'] %>/run" class="btn btn-success">Etre candidat</a>
 					<% end %>

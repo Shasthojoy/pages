@@ -24,7 +24,7 @@ textarea {
 }
 </style>
 <!-- Nav tabs -->
-<p>Lorsque vous aurez rempli les informations demandées, cliquer sur ce bouton pour publier votre candidature : <button class="btn btn-success btn-rounded">Publier ma candidature</button></p>
+<p>Lorsque vous aurez rempli les informations demandées, cliquer sur ce bouton pour publier votre candidature : <button id="publishme" class="btn btn-success btn-rounded">Publier ma candidature</button></p>
 <div class="tabs-wrapper"> 
 	<ul class="nav classic-tabs tabs-red" id="candidature-tabs" role="tablist">
 		<li class="nav-item">
@@ -89,9 +89,81 @@ textarea {
 		</div>
 	</div>
 </div>
-
+<div class="modal fade" id="verification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<!--Content-->
+		<div class="modal-content">
+			<!--Header-->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title w-100" id="myModalLabel">Validation de votre candidature</h4>
+			</div>
+			<!--Body-->
+			<div class="modal-body">
+				<div id="status_success" style="display:none;" class="validation_text">
+					<p>Merci ! Votre candidature est en ligne.</p>
+				</div>
+				<div id="status_error" style="display:none;" class="validation_text">
+					<p>Merci de régler les problèmes suivants afin que nous puissions publier votre candidature :</p>
+					<ol>
+						<li id="missing_photo" style="display:none;" class="validation_text text-justify">Votre profil n'a pas de photo. Une photo de vous est nécessaire.</li>
+						<li id="missing_profil" style="display:none;" class="validation_text text-justify">Il semblerait que vous n'ayez pas rempli votre profil encore...</li>
+						<li id="missing_candidature" style="display:none;" class="validation_text text-justify">Avez-vous bien complété toutes les informations relatives à votre candidature ?</li>
+						<li id="missing_donation" style="display:none;" class="validation_text text-justify">Il semblerait que vous ne vous soyez pas encore acquitté de votre adhésion à LaPrimaire.org. Pour adhérer, il suffit de faire un don de 30 euros ou plus (30 euros équivalent à 10,20 euros après réduction fiscale). Votre don sert à couvrir les frais de fonctionnement de LaPrimaire.org.</li>
+					</ol>
+				</div>
+			</div>
+			<!--Footer-->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+				<a type="button" class="btn btn-primary validation_text" href="#election/<%= election['slug'] %>/candidat/<%= citoyen['slug'] %>" id="public_page" style="display:none;cursor:pointer;">Voir ma page publique</a>
+				<a target="_blank" type="button" class="btn btn-primary validation_text" href="https://laprimaire.org/adherer/?e=<%= citoyen['email'] %>" id="donation_page" style="display:none;">Adhérer</a>
+			</div>
+		</div>
+		<!--/.Content-->
+	</div>
+</div>
 <script type="text/javascript">
 function pageReady() {
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+	function isEmpty(obj) {
+		if (obj == null) return true;
+		if (obj.length > 0)    return false;
+		if (obj.length === 0)  return true;
+		if (typeof obj !== "object") return true;
+		for (var key in obj) {
+			if (hasOwnProperty.call(obj, key)) return false;
+		}
+		return true;
+	}
+	$('#publishme').on("click",function() {
+		$.get('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/validate')
+			.done(function(data) {
+				$('.validation_text').hide();
+				var error=false;
+				data=JSON.parse(data);
+				errors=data['errors'];
+				publish_status=data['status'];
+				if (publish_status=='error') {
+					for (var key in errors) {
+						if (!errors.hasOwnProperty(key))  { continue; }
+						console.log(errors[key]);
+						$('#'+errors[key]).show();
+					}
+					$('#status_error').show();
+					if ($('#missing_donation').is(':visible')) {
+						$('#donation_page').show();
+					}
+				} else {
+					$('#status_success').show();
+					$('#public_page').show();
+				}
+			})
+		.fail(function(data) { show_notification(data); });
+		$('#verification').modal({});
+	});
 	var dataProfile = {
 		"firstname": "<%= citoyen['firstname'] %>",
 		"lastname": "<%= citoyen['lastname'] %>",
@@ -281,11 +353,11 @@ function pageReady() {
 				"format": "email",
 				"required":true
 			},
-			"supported_candidate_yn": {
+			/*"supported_candidate_yn": {
 				"type":"string",
 				"enum": ["OUI","NON"],
 				"required":true
-			},
+			},*/
 			"supported_candidate": {
 				"required":true,
 				"enum":["Aucun","Alexandre Jardin","Antoine Waechter","Bastien Faudot","Benoît Hamon","Charlotte Marchandise","Christian Troadec","Emmanuel Macron","François Asselineau","François Fillon","Henri Guaino","Jacques Cheminade","Jean Lassalle","Jean-Luc Mélenchon","Jean-Pierre Gorges","Marine Le Pen","Michèle Alliot-Marie","Nathalie Arthaud","Nicolas Dupont-Aignan","Nicolas Miguet","Oscar Temaru","Paul Mumbach","Philippe Poutou","Pierre Larrouturou","Rama Yade","Stéphane Guyot","Yannick Jadot"]
@@ -327,7 +399,7 @@ function pageReady() {
 		"dependencies":{
 			"suppleant_name":["suppleant_yn"],
 			"suppleant_email":["suppleant_yn"],
-			"supported_candidate":["supported_candidate_yn"],
+			/*"supported_candidate":["supported_candidate_yn"],*/
 			"already_candidate":["already_candidate_yn"],
 			"already_elected":["already_elected_yn"]
 		}
@@ -375,15 +447,15 @@ function pageReady() {
 				"fieldClass":"md-form",
 				"dependencies": { "suppleant_yn":"OUI" }
 			},
-			"supported_candidate_yn": {
+			/*"supported_candidate_yn": {
 				"label": "Soutenez-vous un(e) candidat(e) à la Présidentielle en particulier ?",
 				"fieldClass":"form-group",
 				"vertical":false
-			},
+			},*/
 			"supported_candidate": {
 				"label": "Quel(le) candidat(e) à la présidentielle soutenez-vous ?",
 				"fieldClass":"browser-default",
-				"dependencies": { "supported_candidate_yn":"OUI" },
+				/*"dependencies": { "supported_candidate_yn":"OUI" },*/
 				"hideNone":true
 			},
 			"political_party": {

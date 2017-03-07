@@ -116,17 +116,15 @@ LEFT JOIN candidates AS ca ON (ca.candidate_id=d.candidate_id)
 WHERE d.email=$1 ORDER BY d.created DESC
 END
 				'get_elections_by_organization'=><<END,
-SELECT e.*,y.sub_elections, CASE WHEN e.end_at<now() THEN false ELSE true END as current, CASE WHEN y.sub_elections is not null THEN true ELSE false END as multiple, CASE WHEN ce.email is not null THEN true ELSE false END as participating
+SELECT e.*,
+CASE WHEN ce.email is not null THEN true ELSE false END as participating,
+CASE WHEN e.end_at<now() THEN false ELSE true END as current,
+CASE WHEN e.parent_election_id is null THEN true ELSE false END as main_election,
+ce.accepted, ce.verified, ce.qualified, ce.finalist, ce.abandonned, ce.disqualified
 FROM elections AS e 
-INNER JOIN organizations AS o ON (e.organization_id=o.id AND o.slug=$1 AND e.parent_election_id is null)
+INNER JOIN organizations AS o ON (e.organization_id=o.id AND o.slug=$1)
 INNER JOIN organizations_users AS ou ON (ou.organization_id=o.id AND ou.email=$2) 
-LEFT JOIN (
-	SELECT array_agg(ARRAY[e2.slug,e2.name] order by e2.slug) AS sub_elections,e1.slug 
-	FROM elections AS e1
-	INNER JOIN elections AS e2 ON (e2.parent_election_id=e1.election_id)
-	GROUP BY e1.slug
-) as y ON (y.slug=e.slug)
-LEFT JOIN candidates_elections AS ce ON (ce.email=$1 AND ce.election_id=e.election_id)
+LEFT JOIN candidates_elections AS ce ON (ce.email=$2 AND ce.election_id=e.election_id)
 ORDER BY e.end_at DESC
 END
 				'get_candidate_by_election'=><<END,
@@ -467,11 +465,24 @@ END
 				citoyen=authenticate_citizen(params['user_key'])
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER00]"}) if citoyen.nil?
 				res=get_elections('laprimaire-org',citoyen['email']) #FIXME the right organization slug should be found dynamically here with the hostname
-				elections=[]
+				elections={}
+				main_elections={}
 				if not res.num_tuples.zero? then
 					res.each do |e|
-						 e['sub_elections']=Hash[*e['sub_elections'].delete('{}"').split(',')] unless e['sub_elections'].nil?
-						 elections.push(e)
+						elections[e['election_id']]=e
+						main_elections[e['election_id']]=e if e['main_election'].to_b
+					end
+				end
+				elections.each do |k,v|
+					if v['accepted'].to_b then
+						main_elections[v['parent_election_id']]['participating']=v['participating'].to_b
+						main_elections[v['parent_election_id']]['accepted']=v['accepted'].to_b
+						main_elections[v['parent_election_id']]['verified']=v['verified'].to_b
+						main_elections[v['parent_election_id']]['qualified']=v['qualified'].to_b
+						main_elections[v['parent_election_id']]['finalist']=v['finalist'].to_b
+						main_elections[v['parent_election_id']]['abandonned']=v['abandonned'].to_b
+						main_elections[v['parent_election_id']]['disqualified']=v['disqualified'].to_b
+						main_elections[v['parent_election_id']]['parent_slug']=v['slug']
 					end
 				end
 			rescue PG::Error => e
@@ -482,8 +493,7 @@ END
 			end
 			return erb 'spa/candidats/choose-election'.to_sym, :locals=>{
 				'citoyen'=>citoyen,
-				'elections'=>elections,
-				'candidate_slug'=>params['candidate_slug']
+				'elections'=>main_elections
 			}
 
 		end
