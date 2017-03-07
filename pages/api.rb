@@ -115,6 +115,9 @@ END
 				'publish_candidate'=><<END,
 UPDATE candidates_elections SET accepted=true, verified=true WHERE email=$1 AND election_id=$2 RETURNING *
 END
+				'is_supported'=><<END,
+SELECT * FROM supporters WHERE candidate=$1 AND supporter=$2
+END
 			}
 		end
 
@@ -179,6 +182,11 @@ END
 			def get_candidate_by_slug(candidate_slug,election_id)
 				res=Pages.db_query(@queries["get_candidate_by_slug"],[candidate_slug,election_id])
 				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def is_supported(candidate_email,citoyen_email)
+				res=Pages.db_query(@queries["is_supported"],[candidate_email,citoyen_email])
+				return !res.num_tuples.zero?
 			end
 
 			def is_member(email)
@@ -427,6 +435,11 @@ END
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:AECS0]"}) if election.nil?
 				candidate=get_candidate_by_slug(params['candidate_slug'],election['election_id'])
 				return error_occurred(404,{"title"=>"Erreur","msg"=>"Candidat inconnu"}) if candidate.nil?
+				if !params['user_key'].nil? then
+					citoyen=authenticate_citizen(params['user_key'])
+					return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
+					candidate['is_supported']=is_supported(candidate['email'],citoyen['email'])
+				end
 				candidate_fields=JSON.parse(candidate['fields'])
 				candidate.merge!(candidate_fields)
 				candidate.delete('fields')
@@ -436,6 +449,12 @@ END
 					now = Time.now.utc.to_date
 					candidate['age'] = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
 				end
+				soutiens_perc=(100*candidate['soutiens'].to_i/150).to_f.to_i
+				candidate['soutiens_perc']=soutiens_perc>25 ? soutiens_perc:25
+				candidate['accepted']=candidate['accepted'].to_b
+				candidate['verified']=candidate['verified'].to_b
+				candidate['qualified']=candidate['qualified'].to_b
+				candidate['finalist']=candidate['finalist'].to_b
 			rescue PG::Error => e
 				Pages.log.error "/api/election/candidate/summary DB Error [code:AECS1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:AECS1]"})

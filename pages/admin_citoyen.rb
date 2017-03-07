@@ -25,7 +25,7 @@ module Pages
 			super(base)
 			@queries={
 				'get_citizen_by_key'=><<END,
-SELECT c.slug,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
+SELECT c.slug,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national, ci.code_insee
 FROM users AS c 
 LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)

@@ -33,13 +33,20 @@
         <p class="text-justify">Afin de se qualifier, un(e) candidat(e) doit recueillir au moins X soutiens de citoyen(ne)s. Un(e) citoyen(ne) ne peut soutenir que 3 candidat(e)s au maximum.</p>
         <h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
         <h3 class="h4-responsive doc-title">Député(e) actuel(le)</h3>
-        <a href="<%= circonscription['deputy_url'] %>" target="_blank">
-            <img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
-        </a>
-	&nbsp;<a href="<%= circonscription['deputy_url'] %>" target="_blank"><b><%= circonscription['deputy_name'] %></b></a><br/>
-        &nbsp;<%= circonscription['deputy_party'] %><br/>
-        &nbsp;<%= circonscription['deputy_job'] %>
-        <div class="clearfix" style="margin-bottom:15px;"></div>
+	<div class="card card-block" style="max-width:420px;">
+		<div style="position:absolute;width:100px;top:20px;right:0px;">
+			<a href="<%= circonscription['deputy_url'] %>" target="_blank">
+				<img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
+			</a>
+		</div>
+		<div style="width:320px;">
+			<h4 class="card-title"><%= circonscription['deputy_name'] %></h4>
+			<p class="card-text">Parti: <%= circonscription['deputy_party'] %><br/>Métier: <%= circonscription['deputy_job'] %></p>
+			<div class="flex-row">
+				<a href="<%= circonscription['deputy_url'] %>" target="_blank" class="card-link">Voir sa fiche sur nosdéputés.fr</a>
+			</div>
+		</div>
+	</div><br/>
         <h3 class="h4-responsive doc-title">Les candidats en lice</h3>
         <div class="container-fluid">
 		<div id="hits" class="row">
@@ -63,7 +70,7 @@
                 </div>
                     {{/fields.candidate}} 
                 <img class="img-fluid img-thumbnail" src="https://s3.eu-central-1.amazonaws.com/{{photo}}" alt="{{name}}">
-                <a href="#">
+                <a href="#election/{{election_slug}}/candidat/{{slug}}">
                     <div class="mask waves-effect waves-light"></div>
                 </a>
             </div>
