@@ -7,53 +7,86 @@
 .classic-tabs.tabs-red {
 	background-color: #f44336;
 }
+.slim {
+	border-radius: 0.5rem;
+}
 textarea {
 	height:auto !important;
 }
+.ba-videorecorder-container {
+	border: 2px solid #d91d1c;
+	max-width:640px;
+	max-height:480px;
+}
+.video-recorder-initial .btn-primary {
+	background-color: #527bdd;
+	border: 1px solid #d91d1c;
+}
 </style>
 <!-- Nav tabs -->
+<p>Lorsque vous aurez rempli les informations demandées, cliquer sur ce bouton pour publier votre candidature : <button class="btn btn-success btn-rounded">Publier ma candidature</button></p>
 <div class="tabs-wrapper"> 
-	<ul class="nav classic-tabs tabs-red" role="tablist">
+	<ul class="nav classic-tabs tabs-red" id="candidature-tabs" role="tablist">
 		<li class="nav-item">
-			<a class="nav-link waves-light active" data-toggle="tab" name="profil" href="#panel1" role="tab"><i class="fa fa-user fa-2x" aria-hidden="true"></i><br> Profil</a>
+			<a id="panel1-tab" class="nav-link waves-light active" data-toggle="tab" name="profil" href="#panel1" role="tab"><i class="fa fa-user fa-2x" aria-hidden="true"></i><br> Mon Profil</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link waves-light" data-toggle="tab" name="candidature" href="#panel2" role="tab"><i class="fa fa-heart fa-2x" aria-hidden="true"></i><br> Candidature</a>
+			<a id="panel2-tab" class="nav-link waves-light" data-toggle="tab" name="candidature" href="#panel2" role="tab"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i><br> Ma Candidature</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link waves-light" data-toggle="tab" name="photo" href="#panel3" role="tab"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i><br> Photo</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link waves-light" data-toggle="tab" name="video" href="#panel4" role="tab"><i class="fa fa-star fa-2x" aria-hidden="true"></i><br> Vidéo</a>
+			<a id="panel3-tab" class="nav-link waves-light" data-toggle="tab" name="video" href="#panel3" role="tab"><i class="fa fa-video-camera fa-2x" aria-hidden="true"></i><br> Ma Vidéo</a>
 		</li>
 	</ul>
 </div>
-
 <div class="tab-content card">
 	<!--Panel 1-->
 	<div class="tab-pane fade in show active" name="profil" id="panel1" role="tabpanel">
 		<p>Merci pour votre engagement ! Pour enregistrer votre candidature, merci de bien vouloir rentrer les informations suivantes.</p>
-		<div id="profile-tab"></div>
-	</div>
-	<div class="tab-pane fade" name="candidature" id="panel2" role="tabpanel">
-		<div id="candidature-tab"></div>
-	</div>
-	<div class="tab-pane fade" name="photo" id="panel3" role="tabpanel">
-		<div id="photo-tab">
-			<div class="slim"
-	data-meta-user-id="1234"
- 	data-ratio="16:9"
-	data-size="600,300"
-	data-output-base64="true"
-	data-push="true"
-	data-service="/api/citizen/<%= citoyen['user_key'] %>/profile/picture">
-				<input type="file" name="slim[]">
+		<div class="row">
+			<div class="col-lg-3 col-sm-4 col-xs-12" style="max-width:400px;max-height:400px;">
+				<div id="photo-tab">
+					<div class="slim"
+	  data-meta-user-id="<%= citoyen['slug'] %>"
+   data-ratio="1:1"
+   data-size="400,400"
+   data-label="Cliquez ou glissez/déposez votre photo ici"
+   data-push="true"
+   data-service="/api/citizen/<%= citoyen['user_key'] %>/profile/picture">
+   <% if !citoyen['photo'].nil? and !citoyen['photo'].empty? then %>
+	   <img src="https://s3.eu-central-1.amazonaws.com/<%= citoyen['photo'] %>" crossorigin="anonymous">
+   <% end %>
+   <input type="file" name="slim[]">
+					</div>
+					<div style="margin:15px auto;width:255px;">
+						<button type="submit" class="btn btn-large btn-primary">Enregistrer ma photo</button>
+					</div>
+				</div>
+
 			</div>
-			<button type="submit">Send!</button>
+			<div class="col-lg-9 col-sm-8 col-xs-12">
+				<div id="profile-tab"></div>
+			</div>
 		</div>
 	</div>
-	<div class="tab-pane fade" name="video" id="panel4" role="tabpanel">
-		<div id="video-recorder"></div>
+	<div class="tab-pane fade" name="candidature" id="panel2" role="tabpanel">
+		<p>Dites-nous en plus sur votre engagement et votre candidature.</p>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<div id="candidature-tab"></div>
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane fade" name="video" id="panel3" role="tabpanel">
+		<h4>Enregistrez votre vidéo de présentation</h4>
+		<div class="row">
+			<div class="col-lg-4 col-sm-6 col-xs-12">
+				<p class="text-justify">Si vous avez une webcam ou si vous utilisez votre téléphone portable, vous pouvez enregistrer une courte (45 secondes maximum) vidéo pour présenter votre candidature et vos motivations.</p>
+				<p class="text-justify">Vous pouvez ré-enregistrer votre vidéo autant de fois que vous voulez jusqu'à ce qu'elle vous plaise.</p>
+			</div>
+			<div class="col-lg-8 col-sm-6 col-xs-12">
+				<div id="ziggeo-recorder"></div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -123,8 +156,8 @@ function pageReady() {
 				"required":true
 			},
 			"secteur": {
-				"type": "string",
-				"required":true
+				"required":true,
+				"enum":["Agriculture","Associatif","Armée, sécurité","Art, design","Audit, gestion","Audiovisuel - Spectacle","Automobile","Banque, assurance","Bâtiment et travaux publics","Chimie, pharmacie","Culture - Artisanat d'art","Commerce, distribution","Communication - Marketing, publicité","Construction aéronautique, ferroviaire et navale","Droit, justice","Édition - Journalisme","Électronique","Enseignement","Énergie","Environnement","Bois (filière)","Fonction publique","Hôtellerie, restauration","Industrie alimentaire","Informatique, internet et télécom","Maintenance, entretien","Mode et industrie textile","Logistique, transport","Santé","Social","Recherche","Sport, loisirs – Tourisme","Traduction, interprétation","Verre, béton, céramique"]
 			},
 			"phone": {
 				"type": "string",
@@ -139,12 +172,17 @@ function pageReady() {
 				"register": {
 					"type":"button",
 					"styles":"btn btn-primary",
-					"title":"Valider",
+					"title":"Sauver et continuer",
 					"click": function() {
 						this.refreshValidationState(true);
 						if (this.isValid(true)) {
 							var value=this.getValue();
-							alert(JSON.stringify(value,null," "));
+							$.post('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/info',{candidate_infos: value})
+								.done(function(data) {
+									$('#panel2-tab').tab('show');
+									show_notification(data);
+								})
+							.fail(function(data) { show_notification(data); });
 						}
 
 					}
@@ -199,7 +237,6 @@ function pageReady() {
 				"type": "text",
 				"label": "Code postal",
 				"fieldClass":"md-form",
-				"placeholder": ""
 			},
 			"country": {
 				"type": "text",
@@ -208,7 +245,7 @@ function pageReady() {
 			},
 			"phone": {
 				"type": "text",
-				"label": "Numéro de téléphone pour vous joindre",
+				"label": "Numéro de téléphone",
 				"fieldClass":"md-form"
 			},
 			"birthplace": {
@@ -222,9 +259,9 @@ function pageReady() {
 				"fieldClass":"md-form"
 			},
 			"secteur": {
-				"type": "text",
 				"label": "Votre secteur d'activité",
-				"fieldClass":"md-form"
+				"fieldClass":"browser-default",
+				"hideNone":true
 			}
 		}
 	};
@@ -250,9 +287,11 @@ function pageReady() {
 				"required":true
 			},
 			"supported_candidate": {
+				"required":true,
 				"enum":["Aucun","Alexandre Jardin","Antoine Waechter","Bastien Faudot","Benoît Hamon","Charlotte Marchandise","Christian Troadec","Emmanuel Macron","François Asselineau","François Fillon","Henri Guaino","Jacques Cheminade","Jean Lassalle","Jean-Luc Mélenchon","Jean-Pierre Gorges","Marine Le Pen","Michèle Alliot-Marie","Nathalie Arthaud","Nicolas Dupont-Aignan","Nicolas Miguet","Oscar Temaru","Paul Mumbach","Philippe Poutou","Pierre Larrouturou","Rama Yade","Stéphane Guyot","Yannick Jadot"]
 			},
 			"political_party": {
+				"required":true,
 				"enum":["Aucun","Cap21 (C21)","Citoyens du Vote Blanc (CVB)","Debout La France (DLF)","En Marche (EM)","Europe Ecologie Les Verts (EELV)","Front National (FN)","Génération Citoyens (GC)","La France qui Ose (LFQO)","Les Citoyens1 (LC1)","Les Républicains (LR)","Lutte Ouvrière (LO)","MaVoix (MV)","Mouvement 100% (M100%)","Mouvement Démocrate (MODEM)","Nous Citoyens (NC)","Nouveau Parti Anticapitaliste (NPA)","Nouvelle Donne (ND)","Objectif France (OF)","Parti Chrétien-Démocrate (PCD)","Parti Communiste Français (PCF)","Parti de Gauche (PG)","Parti Pirate (PP)","Parti Radical (PR)","Parti Socialiste (PS)","Sens Commun (SC)","Solidarité et Progrès (SP)","Union des Démocrates et Indépendants (UDI)","Union Populaire Républicaine (UPR)"]
 			},
 			"already_candidate_yn": {
@@ -300,12 +339,17 @@ function pageReady() {
 				"save": {
 					"type":"button",
 					"styles":"btn btn-primary",
-					"title":"Suivant",
+					"title":"Sauver et continuer",
 					"click": function() {
 						this.refreshValidationState(true);
 						if (this.isValid(true)) {
 							var value=this.getValue();
-							alert(JSON.stringify(value,null," "));
+							$.post('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/info',{candidate_infos: value})
+								.done(function(data) {
+									$('#panel3-tab').tab('show');
+									show_notification(data);
+								})
+							.fail(function(data) { show_notification(data); });
 						}
 
 					}
@@ -383,13 +427,12 @@ function pageReady() {
 				"fieldClass":"md-form"
 			},
 			"presentation": {
-				"type":"textarea",
+				"type":"tinymce",
 				"label":"Courte présentation et motivation de votre candidature (300 mots maximum)",
 				"rows":6,
 				"cols":80,
 				"wordlimit":300,
-				"fieldClass":"browser-default,tiny-mce-editor",
-				"required":true
+				"fieldClass":"browser-default,tiny-mce-editor"
 			}
 		}
 	};
@@ -414,13 +457,13 @@ function pageReady() {
 						"options": optionsProfile,
 						"view": "bootstrap-edit"
 					});
+					$.getScript('https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/slim.kickstart.min.js');
 				});
 		});
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		$.get('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/summary')
 			.done(function(data) {
 				infos=JSON.parse(data);
-				console.log(infos);
 				if (e.target.name=='profil') {
 					for (var key in infos) {
 						if (!infos.hasOwnProperty(key))  { continue; }
@@ -451,7 +494,6 @@ function pageReady() {
 						"options": optionsCandidature,
 						"view": "bootstrap-edit",
 						"postRender": function() {
-							$('.mdb-select').material_select();
 							tinymce.init({
 								selector: 'textarea',
 								language_url: 'https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/tinymce_fr_FR.js',
@@ -467,21 +509,14 @@ function pageReady() {
 							});
 						}
 					});
-
-				} else if (e.target.name=='photo') {
-					$.getScript('https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/slim.kickstart.min.js')
-						.done(function() {
-						})
 				} else if (e.target.name=='video') {
 					$.getScript('https://assets-cdn.ziggeo.com/v1-r23/ziggeo.js')
 						.done(function() {
 							ZiggeoApi.token = "dec836dec48133bf9f0225552ae31ad2";
 							ZiggeoApi.Events.on("system_ready", function() {
 								var recorder = new ZiggeoApi.V2.Recorder({
-									element: document.getElementById("video-recorder"),
+									element: document.getElementById("ziggeo-recorder"),
 									attrs: {
-										width: 640,
-										height: 480,
 										responsive: true,
 										recordingwidth: 640,
 										recordingheight: 480,
@@ -497,11 +532,18 @@ function pageReady() {
 									}
 								});
 								recorder.activate();
+								recorder.on("verified", function() {
+									var value={ 'video_webcam':'<%= citoyen['slug'] %>' }
+									$.post('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/info',{candidate_infos: value})
+										.done(function(data) {
+											show_notification(data);
+										})
+									.fail(function(data) { show_notification(data); });
+								})
 							});
 						});
 
 				}
-				//e.relatedTarget // previous active tab
 			});
 	})
 

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Material Design for Bootstrap</title>
+    <title>Des primaires ouvertes pour toutes les élections - LaPrimaire.org</title>
     <link href="https://s3.us-east-2.amazonaws.com/reprezentus/templates/css/compiled.min.css" rel="stylesheet">
     <style>
         .blue-laprimaire {
@@ -232,7 +232,13 @@
 	    return o;
     }
 function show_notification(data) {
-	err=JSON.parse(data.responseText);
+	if (data.responseText!=undefined) {
+		err=JSON.parse(data.responseText);
+	} else if (data!=undefined) {
+		err=JSON.parse(data);
+	} else {
+		return;
+	}
 	if (err['type']=='success') {
 		toastr.success(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
 	} else if (err['type']=='info') {

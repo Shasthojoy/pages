@@ -136,6 +136,20 @@ INNER JOIN elections AS e2 ON (e1.election_id=e2.parent_election_id AND e1.slug=
 INNER JOIN candidates_elections AS ce ON (ce.election_id=e2.election_id AND ce.email=$1)
 LEFT JOIN circonscriptions AS c ON (c.id=e2.circonscription_id)
 END
+				'get_candidate_by_slug'=><<END,
+SELECT u.*, ce.*,ci.code_departement,ci.num_circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
+    FROM users as u
+    INNER JOIN candidates_elections as ce ON (ce.email=u.email)
+    INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.election_id=$2)
+    INNER JOIN circonscriptions as ci ON (ci.id=e.circonscription_id)
+    LEFT JOIN (
+	    SELECT candidate,election_id,count(supporter) as soutiens
+	    FROM supporters
+	    GROUP BY candidate,election_id
+      ) as s
+  on (s.candidate = u.email AND s.election_id=e.election_id)
+WHERE u.slug = $1;
+END
 				'set_candidate_slug'=><<END,
 UPDATE users SET slug=$2
 FROM (
@@ -195,6 +209,11 @@ END
 
 			def is_candidate(candidate_email,election_slug)
 				res=Pages.db_query(@queries["get_candidate_by_election"],[candidate_email,election_slug])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def get_candidate_by_slug(candidate_slug,election_id)
+				res=Pages.db_query(@queries["get_candidate_by_slug"],[candidate_slug,election_id])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -486,6 +505,17 @@ END
 					citoyen['slug']=slug
 				end
 				raise 'choose-circonscription' if not election['circonscription'].to_b #candidate has not yet registered to the election
+				candidate=get_candidate_by_slug(citoyen['slug'],election['election_id'])
+				return error_occurred(404,{"title"=>"Erreur","msg"=>"Candidat inconnu"}) if candidate.nil?
+				candidate_fields=JSON.parse(candidate['fields'])
+				candidate.merge!(candidate_fields)
+				candidate.delete('fields')
+				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
+				age=nil
+				unless birthday.nil? then
+					now = Time.now.utc.to_date
+					candidate['age'] = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+				end
 			rescue RuntimeError => e
 				return erb 'spa/candidats/choose-circonscription'.to_sym, :locals=>{
 					'citoyen'=>citoyen
@@ -497,7 +527,7 @@ END
 				Pages.db_close()
 			end
 			return erb 'spa/candidats/run'.to_sym, :locals=>{
-				'citoyen'=>citoyen,
+				'citoyen'=>candidate,
 				'election'=>election
 			}
 		end

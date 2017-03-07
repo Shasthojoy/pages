@@ -25,7 +25,7 @@ module Pages
 			super(base)
 			@queries={
 				'get_citizen_by_key'=><<END,
-SELECT c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
+SELECT c.slug,c.firstname,c.lastname,c.email,c.reset_code,c.registered,c.country,c.user_key,c.validation_level,c.birthday,c.telephone,c.city,ci.zipcode,ci.population,ci.departement,ci.num_circonscription,ci.num_commune,ci.code_departement, t.national as telephone_national
 FROM users AS c 
 LEFT JOIN cities AS ci ON (ci.city_id=c.city_id)
 LEFT JOIN telephones AS t ON (t.international=c.telephone)
@@ -89,10 +89,6 @@ INNER JOIN elections AS e ON (e.election_id=ce.election_id AND e.slug=$1)
 INNER JOIN circonscriptions AS ci ON (ci.id=e.circonscription_id)
 LEFT JOIN supporters AS s ON (s.candidate=c.email AND s.supporter=$2 AND s.election_id=e.election_id)
 END
-				'get_candidate_by_slug-backup'=><<END,
-SELECT * FROM users AS c 
-INNER JOIN candidates_elections AS ce ON (ce.election_id=$2 AND ce.email=c.email AND c.slug=$1)
-END
 				'get_candidate_by_slug'=><<END,
 SELECT u.*, ce.*,ci.code_departement,ci.num_circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
     FROM users as u
@@ -107,6 +103,12 @@ SELECT u.*, ce.*,ci.code_departement,ci.num_circonscription, CASE WHEN s.soutien
   on (s.candidate = u.email AND s.election_id=e.election_id)
 WHERE u.slug = $1;
 END
+				'save_candidate_infos'=><<END,
+UPDATE candidates_elections AS ce SET fields=fields || $3::jsonb WHERE email=$1 AND election_id=$2 RETURNING *
+END
+				'save_image'=><<END,
+UPDATE users SET photo=$2 WHERE user_key=$1 RETURNING *
+END
 			}
 		end
 
@@ -114,6 +116,14 @@ END
 			def error_occurred(code,msg) 
 				status code
 				return JSON.dump({
+					'title'=>msg['title'],
+					'msg'=>msg['msg']
+				})
+			end
+			
+			def show_notification(msg,type='success')
+				return JSON.dump({
+					'type'=>type,
 					'title'=>msg['title'],
 					'msg'=>msg['msg']
 				})
@@ -162,6 +172,17 @@ END
 
 			def get_candidate_by_slug(candidate_slug,election_id)
 				res=Pages.db_query(@queries["get_candidate_by_slug"],[candidate_slug,election_id])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def save_candidate_infos(email,election_id,infos)
+				infos=JSON.dump(infos)
+				res=Pages.db_query(@queries["save_candidate_infos"],[email,election_id,infos])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def save_image(user_key,path)
+				res=Pages.db_query(@queries["save_image"],[user_key,path])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -319,6 +340,7 @@ END
 				img_name=citoyen['slug']+File.extname(params['slim_output_0'][:filename])
 				path='photos_citoyens/'+img_name
 				upload_image(path,params['slim_output_0'])
+				save_image(citoyen['user_key'],'laprimaire/'+path)
 			rescue PG::Error => e
 				Pages.log.error "/api/citizen/profile/picture DB Error [code:ACPP0] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACPP0]"})
@@ -330,6 +352,24 @@ END
 				'name'=>img_name,
 				'path'=>path
 			})
+		end
+
+		post '/api/election/:election_slug/candidate/:candidate_slug/info' do
+			begin
+				Pages.db_init()
+				election=authenticate_election(params['election_slug'])
+				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:AECS0]"}) if election.nil?
+				candidate=get_candidate_by_slug(params['candidate_slug'],election['election_id'])
+				return error_occurred(404,{"title"=>"Erreur","msg"=>"Candidat inconnu"}) if candidate.nil?
+				candidate=save_candidate_infos(candidate['email'],election['election_id'],params['candidate_infos'])
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Infos non enregistrées [code:AECI0]"}) if candidate.nil?
+			rescue PG::Error => e
+				Pages.log.error "/api/election/candidate/summary DB Error [code:AECI1] #{params}\n#{e.message}"
+				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:AECI1]"})
+			ensure
+				Pages.db_close()
+			end
+			return show_notification({'title'=>'Succès !','msg'=>'Vos informations ont bien été enregistrées'})
 		end
 
 		get '/api/election/:election_slug/candidate/:candidate_slug/summary' do
@@ -348,7 +388,6 @@ END
 					now = Time.now.utc.to_date
 					candidate['age'] = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
 				end
-
 			rescue PG::Error => e
 				Pages.log.error "/api/election/candidate/summary DB Error [code:AECS1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:AECS1]"})
