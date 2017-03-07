@@ -266,7 +266,7 @@ function load_path(node,path,f) {
 	});
 }
     var root='<% request.host+'/citoyen/'+citoyen['user_key'] %>';
-    var useHash=false;
+    var useHash=true;
     var router= new Navigo(root,useHash);
     router
     .on({

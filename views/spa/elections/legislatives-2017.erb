@@ -49,44 +49,46 @@
 	</div><br/>
         <h3 class="h4-responsive doc-title">Les candidats en lice</h3>
         <div class="container-fluid">
-		<div id="hits" class="row">
-		</div>
+		<div id="hits" class="row"></div>
         </div>
+	<br/>
     </div>
 
 <script type="text/html" id="hit-template">
 	{{#candidates}}
-        <div class="card">
-            <div class="view overlay hm-white-slight">
-                <div style="position:absolute;z-index:1000;left:0px;">
-                    <span class="badge red">dept {{departement}}</span>
-                    <span class="badge green">circo {{num_circonscription}}</span>
-                </div>
-		    {{#fields.candidate}} 
-                <div style="position:absolute;z-index:1000;bottom:0px;bottom:-8px;left:8px;">
-                    <div class="chip" title="Je soutiens {{fields.candidate}}">
-                        <img style="float:right;margin:0 -12px 0 8px;" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/{{fields.candidate_photo}}"> Je soutiens
-                    </div>
-                </div>
-                    {{/fields.candidate}} 
-                <img class="img-fluid img-thumbnail" src="https://s3.eu-central-1.amazonaws.com/{{photo}}" alt="{{name}}">
-                <a href="#election/{{election_slug}}/candidat/{{slug}}">
-                    <div class="mask waves-effect waves-light"></div>
-                </a>
-            </div>
-            <div class="card-block" style="padding:0.8em;">
-                <h5 class="card-title text-center" style="margin-bottom:0px;">{{name}}</h5>
-                <div class="text-center">
-		{{^support_date}}
-                    <button id="support-{{slug}}" type="button" onclick="support_candidate('{{slug}}');" class="support-candidate text-center btn btn-outline-primary waves-effect" autocomplete="off">Soutenir</button>
-		{{/support_date}}
-		{{#support_date}}
-                    <button id="support-{{slug}}" type="button" onclick="support_candidate('{{slug}}');" class="support-candidate text-center btn btn-primary waves-effect" autocomplete="off">Soutenu(e)</button>
-		{{/support_date}}
-		    <a href="#election/{{election_slug}}/candidat/{{slug}}" type="button" class="text-center btn btn-outline-success waves-effect" autocomplete="off">Plus d'infos</a>
-                </div>
-            </div>
-        </div><br/>
+	<div class="col-lg-3 col-sm-4 col-xs-12">
+		<div class="card">
+		    <div class="view overlay hm-white-slight">
+			<div style="position:absolute;z-index:1000;left:0px;">
+			    <span class="badge red">dept {{departement}}</span>
+			    <span class="badge green">circo {{num_circonscription}}</span>
+			</div>
+			    {{#fields.candidate}} 
+			<div style="position:absolute;z-index:1000;bottom:0px;bottom:-8px;left:8px;">
+			    <div class="chip" title="Je soutiens {{fields.candidate}}">
+				<img style="float:right;margin:0 -12px 0 8px;" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/{{fields.candidate_photo}}"> Je soutiens
+			    </div>
+			</div>
+			    {{/fields.candidate}} 
+			<img class="img-fluid img-thumbnail" src="https://s3.eu-central-1.amazonaws.com/{{photo}}" alt="{{name}}">
+			<a href="#election/{{election_slug}}/candidat/{{slug}}">
+			    <div class="mask waves-effect waves-light"></div>
+			</a>
+		    </div>
+		    <div class="card-block" style="padding:0.8em;">
+			<h5 class="card-title text-center" style="margin-bottom:0px;">{{name}}</h5>
+			<div class="text-center">
+			{{^support_date}}
+			    <button id="support-{{slug}}" type="button" onclick="support_candidate('{{slug}}');" class="support-candidate text-center btn btn-outline-primary waves-effect" autocomplete="off">Soutenir</button>
+			{{/support_date}}
+			{{#support_date}}
+			    <button id="support-{{slug}}" type="button" onclick="support_candidate('{{slug}}');" class="support-candidate text-center btn btn-primary waves-effect" autocomplete="off">Soutenu(e)</button>
+			{{/support_date}}
+			    <a href="#election/{{election_slug}}/candidat/{{slug}}" type="button" class="text-center btn btn-outline-success waves-effect" autocomplete="off">Plus d'infos</a>
+			</div>
+		    </div>
+		</div>
+	</div><br/>
 	{{/candidates}}
 	{{^candidates}}
 Aucun(e) candidat(e) pour le moment
