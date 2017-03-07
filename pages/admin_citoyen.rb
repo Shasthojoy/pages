@@ -84,11 +84,12 @@ INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id)
 ORDER BY bc.position ASC;
 END
 				'get_circonscription_by_email'=><<END,
-SELECT * FROM voters as v 
+SELECT c.*,e.slug as election_slug FROM voters as v 
 INNER JOIN users AS u ON (u.email=v.email AND u.email=$1)
-INNER JOIN elections_view as ev ON (ev.election_id=v.election_id)
-INNER JOIN circonscriptions as c ON (c.id=ev.circonscription_id)
-WHERE ev.parent_slug=$2
+INNER JOIN elections as e ON (e.election_id=v.election_id)
+INNER JOIN elections as e2 ON (e.parent_election_id=e2.election_id)
+INNER JOIN circonscriptions as c ON (c.id=e.circonscription_id)
+WHERE e2.slug=$2
 END
 				'set_circonscription_by_email'=><<END,
 INSERT INTO voters (election_id,email) SELECT ev.election_id,$1 FROM elections_view as ev WHERE ev.circonscription_id=$2 AND ev.parent_slug=$3
@@ -571,9 +572,8 @@ END
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEL0]"}) if citoyen.nil?
 				redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
 				circonscription=get_circonscription(citoyen['email'],'legislatives-2017')
-				circonscription['deputy_slug']=circonscription['deputy_url'].split('/')[-1]
-				circonscription['election_slug']=circonscription['slug']
 				raise 'choose-circonscription' if circonscription.nil? #user has not yet registered to the election
+				circonscription['deputy_slug']=circonscription['deputy_url'].split('/')[-1]
 			rescue RuntimeError => e
 				return erb 'spa/elections/choose-circonscription'.to_sym, :locals=>{
 					'citoyen'=>citoyen

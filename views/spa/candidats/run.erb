@@ -118,7 +118,7 @@ textarea {
 			<!--Footer-->
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-				<a type="button" class="btn btn-primary validation_text" href="#election/<%= election['slug'] %>/candidat/<%= citoyen['slug'] %>" id="public_page" style="display:none;cursor:pointer;">Voir ma page publique</a>
+				<a type="button" class="btn btn-primary validation_text"  id="public_page" style="display:none;cursor:pointer;">Voir ma page publique</a>
 				<a target="_blank" type="button" class="btn btn-primary validation_text" href="https://laprimaire.org/adherer/?e=<%= citoyen['email'] %>" id="donation_page" style="display:none;">Adhérer</a>
 			</div>
 		</div>
@@ -127,17 +127,10 @@ textarea {
 </div>
 <script type="text/javascript">
 function pageReady() {
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	function isEmpty(obj) {
-		if (obj == null) return true;
-		if (obj.length > 0)    return false;
-		if (obj.length === 0)  return true;
-		if (typeof obj !== "object") return true;
-		for (var key in obj) {
-			if (hasOwnProperty.call(obj, key)) return false;
-		}
-		return true;
-	}
+	$('#public_page').on("click",function() {
+		$('#verification').modal('hide');
+		router.navigate('/citoyen/<%= citoyen['user_key'] %>/election/<%= election['slug'] %>/candidat/<%= citoyen['slug'] %>');
+	});
 	$('#publishme').on("click",function() {
 		$.get('/api/election/<%= election['slug'] %>/candidate/<%= citoyen['slug'] %>/validate')
 			.done(function(data) {
@@ -149,7 +142,6 @@ function pageReady() {
 				if (publish_status=='error') {
 					for (var key in errors) {
 						if (!errors.hasOwnProperty(key))  { continue; }
-						console.log(errors[key]);
 						$('#'+errors[key]).show();
 					}
 					$('#status_error').show();
@@ -162,7 +154,7 @@ function pageReady() {
 				}
 			})
 		.fail(function(data) { show_notification(data); });
-		$('#verification').modal({});
+		$('#verification').modal('show');
 	});
 	var dataProfile = {
 		"firstname": "<%= citoyen['firstname'] %>",

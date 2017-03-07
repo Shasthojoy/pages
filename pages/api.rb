@@ -83,9 +83,10 @@ WHERE c.slug=$2 AND c.email=s.candidate AND s.supporter=$1 AND e.slug=$3 AND e.e
 RETURNING *
 END
 				'get_candidates_by_election'=><<END,
-SELECT c.firstname||' '||c.lastname as name, e.slug as election_slug, c.*,s.*,ci.*,ce.* FROM users AS c
+SELECT c.firstname||' '||c.lastname as name, e.slug as election_slug, c.*,s.*,ci.*,ce.*
+FROM users AS c
 INNER JOIN candidates_elections AS ce ON (ce.email=c.email)
-INNER JOIN elections AS e ON (e.election_id=ce.election_id AND e.slug=$1)
+INNER JOIN elections AS e ON (e.election_id=ce.election_id and e.slug=$1)
 INNER JOIN circonscriptions AS ci ON (ci.id=e.circonscription_id)
 LEFT JOIN supporters AS s ON (s.candidate=c.email AND s.supporter=$2 AND s.election_id=e.election_id)
 END
