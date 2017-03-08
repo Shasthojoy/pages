@@ -140,7 +140,6 @@ END
 					candidat.merge!(candidate_fields){|k,o,n| n.nil? ? o : n }
 					candidat.delete('fields')
 				end
-				puts candidat
 				candidat['name']=candidat['firstname'].to_s+' '+candidat['lastname'].to_s
 				candidat['encoded_name']=URI::encode(candidat['name'])
 				candidat['goal']=candidat['soutiens'].to_i<=150 ? 150 : candidat['soutiens']
@@ -148,7 +147,6 @@ END
 				candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
 				secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
 				circonscription=candidat['circonscriptionzz']
-				puts circonscription
 				departement_name=candidat['departement'].split(' - ')[1] unless candidat['departement'].nil?
 				departement_name=html_escape(departement_name) unless departement_name.nil?
 				departement=html_escape(candidat['departement']) unless candidat['departement'].nil?
