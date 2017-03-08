@@ -24,7 +24,7 @@ textarea {
 }
 </style>
 <!-- Nav tabs -->
-<p>Lorsque vous aurez rempli les informations demandées, cliquer sur ce bouton pour publier votre candidature : <button id="publishme" class="btn btn-success btn-rounded">Publier ma candidature</button></p>
+<p>Lorsque vous aurez complété les informations demandées, cliquez sur ce bouton pour valider et publier votre candidature&nbsp;: <button id="publishme" class="btn btn-success btn-rounded">Publier ma candidature</button></p>
 <div class="tabs-wrapper"> 
 	<ul class="nav classic-tabs tabs-red" id="candidature-tabs" role="tablist">
 		<li class="nav-item">
@@ -236,7 +236,7 @@ function pageReady() {
 				"register": {
 					"type":"button",
 					"styles":"btn btn-primary",
-					"title":"Sauver et continuer",
+					"title":"Sauvegarder et continuer",
 					"click": function() {
 						this.refreshValidationState(true);
 						if (this.isValid(true)) {
@@ -325,7 +325,7 @@ function pageReady() {
 			"secteur": {
 				"label": "Votre secteur d'activité",
 				"fieldClass":"browser-default",
-				"hideNone":true
+				"hideNone":false
 			}
 		}
 	};
@@ -345,18 +345,13 @@ function pageReady() {
 				"format": "email",
 				"required":true
 			},
-			/*"supported_candidate_yn": {
-				"type":"string",
-				"enum": ["OUI","NON"],
-				"required":true
-			},*/
 			"supported_candidate": {
 				"required":true,
-				"enum":["Aucun","Alexandre Jardin","Antoine Waechter","Bastien Faudot","Benoît Hamon","Charlotte Marchandise","Christian Troadec","Emmanuel Macron","François Asselineau","François Fillon","Henri Guaino","Jacques Cheminade","Jean Lassalle","Jean-Luc Mélenchon","Jean-Pierre Gorges","Marine Le Pen","Michèle Alliot-Marie","Nathalie Arthaud","Nicolas Dupont-Aignan","Nicolas Miguet","Oscar Temaru","Paul Mumbach","Philippe Poutou","Pierre Larrouturou","Rama Yade","Stéphane Guyot","Yannick Jadot"]
+				"enum":["Alexandre Jardin","Antoine Waechter","Bastien Faudot","Benoît Hamon","Charlotte Marchandise","Christian Troadec","Emmanuel Macron","François Asselineau","François Fillon","Henri Guaino","Jacques Cheminade","Jean Lassalle","Jean-Luc Mélenchon","Jean-Pierre Gorges","Marine Le Pen","Michèle Alliot-Marie","Nathalie Arthaud","Nicolas Dupont-Aignan","Nicolas Miguet","Oscar Temaru","Paul Mumbach","Philippe Poutou","Pierre Larrouturou","Rama Yade","Stéphane Guyot","Yannick Jadot"]
 			},
 			"political_party": {
 				"required":true,
-				"enum":["Aucun","Cap21 (C21)","Citoyens du Vote Blanc (CVB)","Debout La France (DLF)","En Marche (EM)","Europe Ecologie Les Verts (EELV)","Front National (FN)","Génération Citoyens (GC)","La France qui Ose (LFQO)","Les Citoyens1 (LC1)","Les Républicains (LR)","Lutte Ouvrière (LO)","MaVoix (MV)","Mouvement 100% (M100%)","Mouvement Démocrate (MODEM)","Nous Citoyens (NC)","Nouveau Parti Anticapitaliste (NPA)","Nouvelle Donne (ND)","Objectif France (OF)","Parti Chrétien-Démocrate (PCD)","Parti Communiste Français (PCF)","Parti de Gauche (PG)","Parti Pirate (PP)","Parti Radical (PR)","Parti Socialiste (PS)","Sens Commun (SC)","Solidarité et Progrès (SP)","Union des Démocrates et Indépendants (UDI)","Union Populaire Républicaine (UPR)"]
+				"enum":["Cap21 (C21)","Citoyens du Vote Blanc (CVB)","Debout La France (DLF)","En Marche (EM)","Europe Ecologie Les Verts (EELV)","Front National (FN)","Génération Citoyens (GC)","La France qui Ose (LFQO)","Les Citoyens1 (LC1)","Les Républicains (LR)","Lutte Ouvrière (LO)","MaVoix (MV)","Mouvement 100% (M100%)","Mouvement Démocrate (MODEM)","Nous Citoyens (NC)","Nouveau Parti Anticapitaliste (NPA)","Nouvelle Donne (ND)","Objectif France (OF)","Parti Chrétien-Démocrate (PCD)","Parti Communiste Français (PCF)","Parti de Gauche (PG)","Parti Pirate (PP)","Parti Radical (PR)","Parti Socialiste (PS)","Sens Commun (SC)","Solidarité et Progrès (SP)","Union des Démocrates et Indépendants (UDI)","Union Populaire Républicaine (UPR)"]
 			},
 			"already_candidate_yn": {
 				"enum": ["NON","OUI","PLUSIEURS"],
@@ -391,7 +386,6 @@ function pageReady() {
 		"dependencies":{
 			"suppleant_name":["suppleant_yn"],
 			"suppleant_email":["suppleant_yn"],
-			/*"supported_candidate":["supported_candidate_yn"],*/
 			"already_candidate":["already_candidate_yn"],
 			"already_elected":["already_elected_yn"]
 		}
@@ -403,7 +397,7 @@ function pageReady() {
 				"save": {
 					"type":"button",
 					"styles":"btn btn-primary",
-					"title":"Sauver et continuer",
+					"title":"Sauvegarder et continuer",
 					"click": function() {
 						this.refreshValidationState(true);
 						if (this.isValid(true)) {
@@ -439,21 +433,15 @@ function pageReady() {
 				"fieldClass":"md-form",
 				"dependencies": { "suppleant_yn":"OUI" }
 			},
-			/*"supported_candidate_yn": {
-				"label": "Soutenez-vous un(e) candidat(e) à la Présidentielle en particulier ?",
-				"fieldClass":"form-group",
-				"vertical":false
-			},*/
 			"supported_candidate": {
 				"label": "Quel(le) candidat(e) à la présidentielle soutenez-vous ?",
 				"fieldClass":"browser-default",
-				/*"dependencies": { "supported_candidate_yn":"OUI" },*/
-				"hideNone":true
+				"hideNone":false
 			},
 			"political_party": {
 				"label": "Quel mouvement citoyen / un parti politique soutenez-vous ?",
 				"fieldClass":"browser-default",
-				"hideNone":true
+				"hideNone":false
 			},
 			"already_candidate_yn": {
 				"label": "Avez-vous déjà été candidat(e) à une élection publique ?",
