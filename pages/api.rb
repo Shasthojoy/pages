@@ -111,7 +111,7 @@ END
 UPDATE users SET photo=$2 WHERE user_key=$1 RETURNING *
 END
 				'get_yearly_donations_amount'=><<END,
-SELECT sum(amount) as sum FROM donations WHERE recipient='PARTI' AND status='AUTHORISED' AND email=$1 AND extract(year FROM current_date)=extract(year FROM created)
+SELECT sum(amount) as total FROM donations WHERE recipient='PARTI' AND status='AUTHORISED' AND email=$1 AND extract(year FROM current_date)=extract(year FROM created)
 END
 				'publish_candidate'=><<END,
 UPDATE candidates_elections SET accepted=true, verified=true WHERE email=$1 AND election_id=$2 RETURNING *
@@ -199,7 +199,7 @@ END
 			def is_member(email)
 				res=Pages.db_query(@queries["get_yearly_donations_amount"],[email])
 				return false if res.num_tuples.zero?
-				return res[0]['sum'].to_i>=30
+				return res[0]['total'].to_i>=30
 			end
 
 			def save_candidate_infos(email,election_id,infos)
@@ -421,7 +421,7 @@ END
 				errors.push('missing_profil') if (candidate_fields['age'].nil? or candidate_fields['age'].empty?)
 				errors.push('missing_candidature') if (candidate_fields['supported_candidate'].nil? or candidate_fields['supported_candidate'].empty?)
 				errors.push('missing_donation') if !is_member(candidate['email'])
-				if !errors.empty? then
+				if errors.empty? then
 					publish_candidate(candidate['email'],election['election_id'])
 					status='success'
 				end
@@ -435,7 +435,6 @@ END
 				'status'=>status,
 				'errors'=>errors
 			});
-
 		end
 
 		get '/api/election/:election_slug/candidate/:candidate_slug/summary' do
