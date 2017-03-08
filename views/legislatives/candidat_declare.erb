@@ -295,7 +295,7 @@ footer {
 				<div id="candidat_name"><%= candidat['name'] %></div>
 				<div class="candidate_infos">
 					<% if not age.nil? then %>
-						<%= age %> ans - <%= "#{circonscription}" %>
+						<%= age %> ans - <%= circonscription %>
 					<% end %>
 				</div>
 				<% if not candidat['vision'].nil? %>
@@ -358,14 +358,14 @@ footer {
 			<div id="candidat_support" <% if candidat['qualified'] %>class="qualified"<% else %>class="grey"<% end %>>
 				<div class="row pledge">
 					<div class="col-xs-12" style="padding-right:0px;padding-left:0px;">
-						<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">200+</div>
+						<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">150+</div>
 						<div id="fundraising_bar" class="donateurs"></div>
 					</div>
 				</div>
                 <% if not candidat['qualified']  %>
-                    <div id="candidat_soutiens">Pour se qualifier et être <%= gender['proposé'] %> au vote des citoyen(ne)s de sa circonscription, <%= candidat['name'] %> doit parvenir à rassembler 200 soutiens citoyens à temps pour pouvoir se qualifier à LaPrimaire.org pour les élections législatives de 2017.</div>
+                    <div id="candidat_soutiens">Pour se qualifier et être <%= gender['proposé'] %> au vote des citoyen(ne)s de sa circonscription, <%= candidat['name'] %> doit parvenir à rassembler 150 soutiens citoyens à temps pour pouvoir se qualifier à LaPrimaire.org pour les élections législatives de 2017.</div>
                 <% else %>
-                    <div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 500 soutiens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
+                    <div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 150 soutiens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
                 <% end %>
 				<h2 class="<%= candidat['qualified']?"green":"grey"%>">Soutenez <%= candidat['name'] %></h2>
 			<% if not candidat['qualified'] %>
@@ -377,19 +377,13 @@ footer {
 				<h3>Aidez <%= candidat['name'] %></h3>
 				<div id="candidat_supportme">Invitez vos amis et proches à soutenir <%= candidat['name'] %>&nbsp;:</div><br/>
 				<div class="row">
-					<div class="col-lg-4 text-center">
+					<div class="col-lg-6 text-center">
 						<div class="shareitem">
-							<a data-toggle="modal" data-target="#Iemail" style="cursor:pointer;"><img style="height:90px;border: 4px solid #d74937;" src="https://laprimaire.org/assets/images/partage/email-share-small.png"></a>
-						</div>
-						<div class="sharetitle">email</div>
-					</div>
-					<div class="col-lg-4 text-center">
-						<div class="shareitem">
-							<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org/candidat/<%= candidat['candidate_id'] %>" target="_blank"><img style="height:90px;border: 4px solid #425f9c;" src="https://laprimaire.org/assets/images/partage/facebook-share-small.png"></a>
+							<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org/candidat/<%= candidat['slug'] %>" target="_blank"><img style="height:90px;border: 4px solid #425f9c;" src="https://laprimaire.org/assets/images/partage/facebook-share-small.png"></a>
 						</div>
 						<div class="sharetitle">facebook</div>
 					</div>
-					<div class="col-lg-4 text-center">
+					<div class="col-lg-6 text-center">
 						<div class="shareitem">
 							<a href="https://twitter.com/intent/tweet?url=<%= URI::encode("https://legislatives.laprimaire.org/candidat/"+candidat['slug']) %>&text=Pour%202017%2C%20je%20souhaiterais%20que%20<%= URI::encode(candidat['name']) %>%20participe%20%C3%A0%20la%20construction%20de%20l%27avenir%20du%20pays&hashtags=LaPrimaire" target="_blank"><img style="height:90px;border: 4px solid #1c9fef;" src="https://laprimaire.org/assets/images/partage/twitter-share-small.png"></a>
 						</div>

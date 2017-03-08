@@ -22,10 +22,11 @@ module Pages
 			super(base)
 			@queries={
 				'get_candidate_by_slug'=><<END,
-SELECT u.*, ce.fields->>'circonscription' as circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
+SELECT u.*, ce.fields,ci.name_circonscription as circonscriptionzz, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
     FROM users as u
     INNER JOIN candidates_elections as ce ON (ce.email=u.email)
     INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.hostname=$2)
+    INNER JOIN circonscriptions AS ci ON (ci.id=e.circonscription_id)
     LEFT JOIN (
 	    SELECT candidate,election_id,count(supporter) as soutiens
 	    FROM supporters
@@ -103,9 +104,6 @@ END
 		end
 
 		subdomain do
-			get '/departement/:dept/circonscription/:circo/list' do
-			end
-
 			get '/candidat/:slug' do
 				if params['candidate_id']=='sitemap.xml' then
 					content_type 'text/xml'
@@ -137,13 +135,20 @@ END
 						return erb :error, :locals=>{:msg=>{"title"=>"Candidat disqualifié","message"=>"Ce candidat a été disqualifé pour infraction aux règles de LaPrimaire.org"}}
 					end
 				end
+				if (!candidat['fields'].nil?) then
+					candidate_fields=JSON.parse(candidat['fields'])
+					candidat.merge!(candidate_fields){|k,o,n| n.nil? ? o : n }
+					candidat.delete('fields')
+				end
+				puts candidat
 				candidat['name']=candidat['firstname'].to_s+' '+candidat['lastname'].to_s
 				candidat['encoded_name']=URI::encode(candidat['name'])
-				candidat['goal']=candidat['soutiens'].to_i<=500 ? 500 : candidat['soutiens']
-				candidat['qualified']= (candidat['soutiens'].to_i >= 500)
+				candidat['goal']=candidat['soutiens'].to_i<=150 ? 150 : candidat['soutiens']
+				candidat['qualified']= (candidat['soutiens'].to_i >= 150)
 				candidat['video']=candidat['video'].gsub('watch?v=','embed/') unless candidat['video'].nil?
 				secteur=html_escape(candidat['secteur']) unless candidat['secteur'].nil?
-				circonscription=candidat['circonscription']
+				circonscription=candidat['circonscriptionzz']
+				puts circonscription
 				departement_name=candidat['departement'].split(' - ')[1] unless candidat['departement'].nil?
 				departement_name=html_escape(departement_name) unless departement_name.nil?
 				departement=html_escape(candidat['departement']) unless candidat['departement'].nil?
@@ -183,7 +188,7 @@ END
 					"son"=>m ? "son":"sa"
 				}
 				if candidat['photo'] then
-					candidat['photo']="#{AWS_S3_BUCKET_URL}%s" % [candidat['photo']]
+					candidat['photo']="#{AWS_S3_BUCKET_URL}/%s" % [candidat['photo']]
 				else
 					candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 				end

@@ -375,7 +375,7 @@ END
 				img_name=citoyen['slug']+File.extname(params['slim_output_0'][:filename])
 				path='photos_citoyens/'+img_name
 				upload_image(path,params['slim_output_0'])
-				save_image(citoyen['user_key'],'laprimaire/'+path)
+				save_image(citoyen['user_key'],'/laprimaire/'+path)
 			rescue PG::Error => e
 				Pages.log.error "/api/citizen/profile/picture DB Error [code:ACPP0] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:ACPP0]"})
