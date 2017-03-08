@@ -321,7 +321,7 @@ END
 				"son"=>m ? "son":"sa"
 			}
 			if candidat['photo'] then
-				candidat['photo']="#{AWS_S3_BUCKET_URL}%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])]
+				candidat['photo']="#{AWS_S3_BUCKET_URL}/laprimaire/%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])]
 			else
 				candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 			end
