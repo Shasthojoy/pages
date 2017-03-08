@@ -63,13 +63,13 @@
 			    <span class="badge red">dept {{departement}}</span>
 			    <span class="badge green">circo {{num_circonscription}}</span>
 			</div>
-			    {{#fields.candidate}} 
+			    {{#supported_candidate}} 
 			<div style="position:absolute;z-index:1000;bottom:0px;bottom:-8px;left:8px;">
-			    <div class="chip" title="Je soutiens {{fields.candidate}}">
-				<img style="float:right;margin:0 -12px 0 8px;" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/{{fields.candidate_photo}}"> Je soutiens
+			    <div class="chip" title="Je soutiens {{supported_candidate}}">
+				<img style="float:right;margin:0 -12px 0 8px;" src="https://s3.eu-central-1.amazonaws.com/laprimaire/candidats/{{supported_candidate_photo}}"> Je soutiens
 			    </div>
 			</div>
-			    {{/fields.candidate}} 
+			    {{/supported_candidate}} 
 			<img class="img-fluid img-thumbnail" src="https://s3.eu-central-1.amazonaws.com/{{photo}}" alt="{{name}}">
 			<a href="#election/{{election_slug}}/candidat/{{slug}}">
 			    <div class="mask waves-effect waves-light"></div>

@@ -84,7 +84,8 @@ INNER JOIN ballots as b ON (b.ballot_id=bc.ballot_id)
 ORDER BY bc.position ASC;
 END
 				'get_circonscription_by_email'=><<END,
-SELECT c.*,e.slug as election_slug FROM voters as v 
+SELECT c.*,e.slug as election_slug
+FROM voters as v 
 INNER JOIN users AS u ON (u.email=v.email AND u.email=$1)
 INNER JOIN elections as e ON (e.election_id=v.election_id)
 INNER JOIN elections as e2 ON (e.parent_election_id=e2.election_id)
@@ -93,14 +94,6 @@ WHERE e2.slug=$2
 END
 				'set_circonscription_by_email'=><<END,
 INSERT INTO voters (election_id,email) SELECT ev.election_id,$1 FROM elections_view as ev WHERE ev.circonscription_id=$2 AND ev.parent_slug=$3
-END
-				'get_candidates_supported'=><<END,
-SELECT c.*
-FROM users AS u
-INNER JOIN voters AS v ON (v.email=u.email AND u.email=$1)
-INNER JOIN elections AS e ON (e.election_id=v.election_id AND e.slug=$2)
-INNER JOIN supporters AS s ON (s.supporter=u.email)
-INNER JOIN users AS c ON (s.candidate=c.email)
 END
 				'add_supporter'=><<END,
 INSERT INTO supporters (election_id,supporter,candidate)
@@ -163,6 +156,12 @@ END
 		end
 
 		helpers do
+			def filter_output(obj)
+				filters=['email','tel','user_key','address1','address2','birthday','birthplace','candidate_key','email_status','hash','mc_group_id','referal_code','reset_code','reset_email','suppleant_email','tags','telegram_id','telephone','vote_id']
+				filters.each {|f| obj.delete(f)}
+				return obj
+			end
+
 			def error_occurred(code,msg) 
 				status code
 				return JSON.dump({
@@ -179,11 +178,6 @@ END
 			def authenticate_election(election_slug)
 				res=Pages.db_query(@queries["get_election_by_slug"],[election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
-			end
-
-			def get_candidates_supported(supporter_email,election_slug)
-				res=Pages.db_query(@queries["get_candidates_supported"],[supporter_email,election_slug])
-				return res.num_tuples.zero? ? nil : res
 			end
 
 			def get_circonscription(email,election_slug)
@@ -603,8 +597,8 @@ END
 				if not res.num_tuples.zero? then
 					res.each do |c|
 						c['fields']=JSON.parse(c['fields'])
-						qualified.push(c)
-						finalists.push(c) if c['finalist'].to_b
+						qualified.push(filter_output(c))
+						finalists.push(filter_output(c)) if c['finalist'].to_b
 					end
 				end
 			rescue PG::Error => e

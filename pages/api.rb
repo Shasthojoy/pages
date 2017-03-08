@@ -123,6 +123,12 @@ END
 		end
 
 		helpers do
+			def filter_output(obj)
+				filters=['email','tel','user_key','address1','address2','birthday','birthplace','candidate_key','email_status','hash','mc_group_id','referal_code','reset_code','reset_email','suppleant_email','tags','telegram_id','telephone','vote_id']
+				filters.each {|f| obj.delete(f)}
+				return obj
+			end
+
 			def error_occurred(code,msg) 
 				status code
 				return JSON.dump({
@@ -274,9 +280,12 @@ END
 				candidates=get_candidates_by_election(params['election_slug'],citoyen['email'])
 				json=[]
 				if not candidates.nil? then
-					candidates.each do |c| 
-						c['fields']=JSON.parse(c['fields'])
-						json.push(c)
+					candidates.each do |c|
+						candidate_fields=JSON.parse(c['fields'])
+						c.merge!(candidate_fields)
+						c.delete('fields')
+						c['supported_candidate_photo']=c['supported_candidate'].slugify+'.jpg' if !c['supported_candidate'].nil?
+						json.push(filter_output(c))
 					end
 				end
 			rescue PG::Error => e
@@ -456,6 +465,7 @@ END
 				candidate['verified']=candidate['verified'].to_b
 				candidate['qualified']=candidate['qualified'].to_b
 				candidate['finalist']=candidate['finalist'].to_b
+				candidate=filter_output(candidate) unless !citoyen.nil? and (candidate['email']==citoyen['email'])
 			rescue PG::Error => e
 				Pages.log.error "/api/election/candidate/summary DB Error [code:AECS1] #{params}\n#{e.message}"
 				return error_occurred(500,{"title"=>"Erreur","msg"=>"Une erreur est survenue [code:AECS1]"})
