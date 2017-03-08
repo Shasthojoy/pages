@@ -43,6 +43,7 @@
 					<h4 class="card-title"><%= e['name'] %></h4>
 					<!--Text-->
 					<p class="card-text text-justify"><%= e['description'] %></p>
+					<div class="text-center">
 				<% if e['current'].to_b then %>
 					<% if e['participating'].to_b then %>
 						<a href="#election/<%= e['parent_slug'] %>/run" class="btn btn-success">Modifier mes infos</a>
@@ -52,6 +53,10 @@
 				<% else %>
 					<a href="#election/<%= e['slug'] %>" target="_blank" class="btn btn-primary">Voir les résultats</a>
 				<% end %>
+					</div>
+					<div class="flex-row text-center" style="font-size:12px;">
+						<a href="<%= e['charte'] %>" target="_blank" class="card-link">charte</a> &horbar; <a href="<%= e['reglement'] %>" target="_blank" class="card-link">règlement</a>
+					</div>
 				</div>
 				<!--/.Card content-->
 			</div>

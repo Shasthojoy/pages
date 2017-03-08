@@ -3,23 +3,24 @@
 <style>
     .independant {display:none;}
 </style>
+        <h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
     <div class="row">
         <div class="col-md-12">
             <ul class="stepper stepper-horizontal">
                 <li class="completed active grey lighten-3">
-                    <a href="#!">
+                    <a id="qualification"  style="cursor:pointer;">
                         <span class="circle">1</span>
                         <span class="label">Qualification <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
                     </a>
                 </li>
                 <li>
-                    <a href="#!">
+                    <a id="vote" style="cursor:pointer;">
                         <span class="circle">2</span>
                         <span class="label">Vote</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a id="resultats" style="cursor:pointer;">
                         <span class="circle">3</span>
                         <span class="label">Résultats</span>
                     </a>
@@ -27,12 +28,10 @@
             </ul>
         </div>
     </div>
-
     <div id="legislatives-2017-1" class="step" style="display:visible;">
-        <h2 class="h2-responsive doc-title">Du 8 mars au 20 avril 2017</h2>
+        <h3 class="h3-responsive doc-title">Du 8 mars au 20 avril 2017</h3>
         <p class="text-justify">Afin de se qualifier, un(e) candidat(e) doit recueillir au moins 150 soutiens de citoyen(ne)s. Un(e) citoyen(ne) ne peut soutenir que 3 candidat(e)s au maximum.</p>
-        <h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
-        <h3 class="h4-responsive doc-title">Député(e) actuel(le)</h3>
+        <h3 class="h3-responsive doc-title">Député(e) actuel(le)</h3>
 	<div class="card card-block" style="max-width:420px;">
 		<div style="position:absolute;width:100px;top:20px;right:0px;">
 			<a href="<%= circonscription['deputy_url'] %>" target="_blank">
@@ -47,11 +46,19 @@
 			</div>
 		</div>
 	</div><br/>
-        <h3 class="h4-responsive doc-title">Les candidats en lice</h3>
+        <h3 class="h3-responsive doc-title">Les candidats en lice</h3>
         <div class="container-fluid">
 		<div id="hits" class="row"></div>
         </div>
 	<br/>
+    </div>
+    <div id="legislatives-2017-2" class="step" style="display:none;">
+        <h3 class="h3-responsive doc-title">Du 21 avril 2017 au 5 mai 2017</h3>
+        <p class="text-justify">Vote au jugement majoritaire pour départager les candidat(e)s finalistes</p>
+    </div>
+    <div id="legislatives-2017-3" class="step" style="display:none;">
+        <h3 class="h3-responsive doc-title">Le 6 mai 2017</h3>
+        <p class="text-justify">Annonce officielle des résultats</p>
     </div>
 
 <script type="text/html" id="hit-template">
@@ -91,7 +98,13 @@
 	</div><br/>
 	{{/candidates}}
 	{{^candidates}}
-Aucun(e) candidat(e) pour le moment
+<div style="margin-top:20px;">
+<h5 class="text-center">Aucun(e) candidat(e) en lice pour le moment... Et pourquoi pas <a style="font-weight:bold;" href="#election/run">vous</a> ?</h5>
+<blockquote class="bockquote bq-primary">
+<p class="mb-0"> « On n'est jamais servi si bien que par soi-même. » </p>
+<footer class="blockquote-footer">Charles-Guillaume Étienne dans <cite title="Bruis et Palaprat (1807)">Bruis et Palaprat (1807)</cite></footer>
+</blockquote>
+</div>
 	{{/candidates}}
 </script>
 <script>
@@ -127,6 +140,36 @@ function pageReady() {
 		})
 	.fail(function(data) {
 		show_notification(data);
+	});
+	$('#qualification').on('click', function() {
+		if ($('#qualification').parent().hasClass('active')) {
+			return;
+		}
+		$('.active').removeClass('active grey lighten-3');
+		$('.step').hide();
+		$('#legislatives-2017-1').addClass('animated fadeIn');
+		$('#legislatives-2017-1').show();
+		$('#qualification').parent().addClass('active grey lighten-3');
+	});
+	$('#vote').on('click', function() {
+		if ($('#vote').parent().hasClass('active')) {
+			return;
+		}
+		$('.active').removeClass('active grey lighten-3');
+		$('.step').hide();
+		$('#legislatives-2017-2').addClass('animated fadeIn');
+		$('#legislatives-2017-2').show();
+		$('#vote').parent().addClass('active grey lighten-3');
+	});
+	$('#resultats').on('click', function() {
+		if ($('#resultats').parent().hasClass('active')) {
+			return;
+		}
+		$('.active').removeClass('active grey lighten-3');
+		$('.step').hide();
+		$('#legislatives-2017-3').addClass('animated fadeIn');
+		$('#legislatives-2017-3').show();
+		$('#resultats').parent().addClass('active grey lighten-3');
 	});
 }
 </script>
