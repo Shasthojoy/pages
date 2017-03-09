@@ -45,10 +45,10 @@ LEFT JOIN circonscriptions AS c ON (c.id=e.circonscription_id)
 LEFT JOIN elections AS e1 ON (e1.election_id=e.parent_election_id)
 WHERE e.slug=$1
 END
-				'get_candidates_by_election'=><<END,
+				'get_qualified_candidates_by_election'=><<END,
 SELECT u.*,ce.fields,ce.finalist
 FROM users AS u
-INNER JOIN candidates_elections AS ce ON (ce.email=u.email and ce.qualified)
+INNER JOIN candidates_elections AS ce ON (ce.email=u.email AND ce.qualified)
 INNER JOIN elections as e ON (ce.election_id=e.election_id)
 WHERE e.slug=$1
 END
@@ -591,7 +591,7 @@ END
 				Pages.db_init()
 				citoyen=authenticate_citizen(params['user_key'])
 				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEL0]"}) if citoyen.nil?
-				res=Pages.db_query(@queries["get_candidates_by_election"],['presidentielle-2017'])
+				res=Pages.db_query(@queries["get_qualified_candidates_by_election"],['presidentielle-2017'])
 				qualified=[]
 				finalists=[]
 				if not res.num_tuples.zero? then
