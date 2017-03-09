@@ -132,7 +132,7 @@ END
 SELECT u.*, ce.*,ci.code_departement,ci.num_circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
     FROM users as u
     INNER JOIN candidates_elections as ce ON (ce.email=u.email)
-    INNER JOIN elections as e ON (ce.election_id=e.election_id AND (e.election_id=$2 OR e.parent_election_id=$2))
+    INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.election_id=$2)
     INNER JOIN circonscriptions as ci ON (ci.id=e.circonscription_id)
     LEFT JOIN (
 	    SELECT candidate,election_id,count(supporter) as soutiens
@@ -469,7 +469,7 @@ END
 					end
 				end
 				elections.each do |k,v|
-					if v['accepted'].to_b then
+					if (!v['parent_election_id'].nil? && v['participating'].to_b) then
 						main_elections[v['parent_election_id']]['participating']=v['participating'].to_b
 						main_elections[v['parent_election_id']]['accepted']=v['accepted'].to_b
 						main_elections[v['parent_election_id']]['verified']=v['verified'].to_b
