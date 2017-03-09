@@ -132,7 +132,7 @@ END
 SELECT u.*, ce.*,ci.code_departement,ci.num_circonscription, CASE WHEN s.soutiens is NULL THEN 0 ELSE s.soutiens END
     FROM users as u
     INNER JOIN candidates_elections as ce ON (ce.email=u.email)
-    INNER JOIN elections as e ON (ce.election_id=e.election_id AND e.election_id=$2)
+    INNER JOIN elections as e ON (ce.election_id=e.election_id AND (e.election_id=$2 OR e.parent_election_id=$2))
     INNER JOIN circonscriptions as ci ON (ci.id=e.circonscription_id)
     LEFT JOIN (
 	    SELECT candidate,election_id,count(supporter) as soutiens
@@ -462,7 +462,7 @@ END
 				res=get_elections('laprimaire-org',citoyen['email']) #FIXME the right organization slug should be found dynamically here with the hostname
 				elections={}
 				main_elections={}
-				if not res.num_tuples.zero? then
+				if !res.nil? then
 					res.each do |e|
 						elections[e['election_id']]=e
 						main_elections[e['election_id']]=e if e['main_election'].to_b
