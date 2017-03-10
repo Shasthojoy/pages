@@ -282,7 +282,7 @@ END
 				if not candidates.nil? then
 					candidates.each do |c|
 						candidate_fields=JSON.parse(c['fields'])
-						c.merge!(candidate_fields)
+						c.merge!(candidate_fields){|k,o,n| n.nil? ? o : n }
 						c.delete('fields')
 						c['supported_candidate_photo']=c['supported_candidate'].slugify+'.jpg' if !c['supported_candidate'].nil?
 						json.push(filter_output(c))
@@ -450,7 +450,7 @@ END
 					candidate['is_supported']=is_supported(candidate['email'],citoyen['email'])
 				end
 				candidate_fields=JSON.parse(candidate['fields'])
-				candidate.merge!(candidate_fields)
+				candidate.merge!(candidate_fields){|k,o,n| n.nil? ? o : n }
 				candidate.delete('fields')
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
 				age=nil

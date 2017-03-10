@@ -325,22 +325,6 @@ END
 				'errors'=>errors,
 				'success'=>success
 			}
-			return erb :index, :locals=>{
-				'page_info'=>{
-					'page_description'=>"Explorez et comparez les propositions des 5 citoyen(ne)s candidat(e)s finalistes à LaPrimaire.org.",
-					'page_author'=>"Les citoyen(ne)s candidat(e)s à LaPrimaire.org",
-					'page_image'=>"https://s3.eu-central-1.amazonaws.com/laprimaire/images/comparateur.jpg",
-					'page_url'=>"https://laprimaire.org/citoyen/vote/comparateur",
-					'page_title'=>"Explorez et comparez les propositions des citoyen(ne)s candidat(e)s à LaPrimaire.org !",
-					'social_title'=>"Explorez et comparez les propositions des citoyen(ne)s candidat(e)s à LaPrimaire.org !"
-				},
-				'template'=>:citoyen,
-				'vars'=>{
-					'citoyen'=>citoyen,
-					'errors'=>errors,
-					'success'=>success
-				}
-			}
 		end
 
 		get '/citoyen/vote/tutorial' do
@@ -513,7 +497,7 @@ END
 				candidate=get_candidate_by_slug(citoyen['slug'],election['election_id'])
 				return error_occurred(404,{"title"=>"Erreur","msg"=>"Candidat inconnu"}) if candidate.nil?
 				candidate_fields=JSON.parse(candidate['fields'])
-				candidate.merge!(candidate_fields)
+				candidate.merge!(candidate_fields){|k,o,n| n.nil? ? o : n }
 				candidate.delete('fields')
 				birthday=Date.parse(candidate['birthday'].split('?')[0]) unless candidate['birthday'].nil?
 				age=nil

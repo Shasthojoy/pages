@@ -497,12 +497,13 @@ function pageReady() {
 		.done(function() {
 			$.getScript('https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/alpaca.min.js')
 				.done(function() {
-					Alpaca.registerMessages({
+					/*Alpaca.registerMessages({
 						"notOptional": "Ce champ est obligatoire",
 						"stringValueTooSmall": "La valeur minimum pour ce champ est {0}",
 						"stringValueTooLarge": "La valeur maximum pour ce champ est {0}",
 						"stringNotAnInteger": "Cette valeur n'est pas un nombre entier"
-					});
+					});*/
+					$.alpaca.setDefaultLocale('fr_FR');
 					$("#profile-tab").alpaca({
 						"data": dataProfile,
 						"schema": schemaProfile,
