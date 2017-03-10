@@ -345,9 +345,19 @@ function pageReady() {
 				"format": "email",
 				"required":true
 			},
+			"supported_candidate_yn": {
+				"enum": ["NON","OUI"],
+				"type":"string",
+				"required":true
+			},
 			"supported_candidate": {
 				"required":true,
 				"enum":["Alexandre Jardin","Antoine Waechter","Bastien Faudot","Benoît Hamon","Charlotte Marchandise","Christian Troadec","Emmanuel Macron","François Asselineau","François Fillon","Henri Guaino","Jacques Cheminade","Jean Lassalle","Jean-Luc Mélenchon","Jean-Pierre Gorges","Marine Le Pen","Michèle Alliot-Marie","Nathalie Arthaud","Nicolas Dupont-Aignan","Nicolas Miguet","Oscar Temaru","Paul Mumbach","Philippe Poutou","Pierre Larrouturou","Rama Yade","Stéphane Guyot","Yannick Jadot"]
+			},
+			"political_party_yn": {
+				"enum": ["NON","OUI"],
+				"type":"string",
+				"required":true
 			},
 			"political_party": {
 				"required":true,
@@ -386,6 +396,8 @@ function pageReady() {
 		"dependencies":{
 			"suppleant_name":["suppleant_yn"],
 			"suppleant_email":["suppleant_yn"],
+			"supported_candidate":["supported_candidate_yn"],
+			"political_party":["political_party_yn"],
 			"already_candidate":["already_candidate_yn"],
 			"already_elected":["already_elected_yn"]
 		}
@@ -433,15 +445,27 @@ function pageReady() {
 				"fieldClass":"md-form",
 				"dependencies": { "suppleant_yn":"OUI" }
 			},
+			"supported_candidate_yn": {
+				"label": "Soutenez-vous un(e) candidat(e) à l'élection présidentielle ?",
+				"fieldClass":"form-group",
+				"vertical":false
+			},
 			"supported_candidate": {
 				"label": "Quel(le) candidat(e) à la présidentielle soutenez-vous ?",
 				"fieldClass":"browser-default",
-				"hideNone":false
+				"hideNone":false,
+				"dependencies": { "supported_candidate_yn":"OUI" }
+			},
+			"political_party_yn": {
+				"label": "Etes-vous sympathisant ou adhérent d'un parti politique ou d'un mouvement citoyen ?",
+				"fieldClass":"form-group",
+				"vertical":false
 			},
 			"political_party": {
 				"label": "Quel mouvement citoyen / un parti politique soutenez-vous ?",
 				"fieldClass":"browser-default",
-				"hideNone":false
+				"hideNone":false,
+				"dependencies": { "political_party_yn":"OUI" }
 			},
 			"already_candidate_yn": {
 				"label": "Avez-vous déjà été candidat(e) à une élection publique ?",

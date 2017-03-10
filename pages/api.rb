@@ -419,7 +419,7 @@ END
 				candidate_fields=JSON.parse(candidate['fields'])
 				errors.push('missing_photo') if (candidate['photo'].nil? or candidate['photo'].empty?)
 				errors.push('missing_profil') if (candidate_fields['age'].nil? or candidate_fields['age'].empty?)
-				errors.push('missing_candidature') if (candidate_fields['supported_candidate'].nil? or candidate_fields['supported_candidate'].empty?)
+				errors.push('missing_candidature') if (candidate_fields['supported_candidate_yn'].nil? or candidate_fields['supported_candidate_yn'].empty?)
 				errors.push('missing_donation') if !is_member(candidate['email'])
 				if errors.empty? then
 					publish_candidate(candidate['email'],election['election_id'])
