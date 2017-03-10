@@ -49,7 +49,7 @@ textarea {
 	  data-meta-user-id="<%= citoyen['slug'] %>"
    data-ratio="1:1"
    data-size="400,400"
-   data-label="Cliquez ou glissez/déposez votre photo ici"
+   data-label="Cliquez ou glissez/déposez votre photo ici. Seule une photo de vous récente et respectant la Charte sera acceptée. Les avatars, dessins etc. sont interdits."
    data-push="true"
    data-service="/api/citizen/<%= citoyen['user_key'] %>/profile/picture">
    <% if !citoyen['photo'].nil? and !citoyen['photo'].empty? then %>
