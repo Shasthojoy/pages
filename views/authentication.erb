@@ -883,7 +883,11 @@ $(document).ready(function() {
         defaultDate:'01/01/1980',
         bound:false
     });
-    picker.gotoDate(new Date(moment($('#auth_4_input').val(),"DD/MM/YYYY").format("MM/DD/YYYY")));
+    var preset_date=$('#auth_4_input').val();
+    /*if (preset_date==null || preset_date=="") {
+	    preset_date="01/01/1980";
+    }*/
+    picker.gotoDate(new Date(moment(preset_date,"DD/MM/YYYY").format("MM/DD/YYYY")));
 	$('#auth_4_no').click(function() { 
 			$('.auth_4_msg').hide();
 			$('#auth_4_info_msg').show();
