@@ -59,9 +59,9 @@ if not res.num_tuples.zero? then
 		qualified = r['qualified'].to_b ? "oui" : "non"
 		verified = r['verified'].to_b ? "verified" : "not_verified"
 		official= r['official'].to_b ? "official" : "not_official"
-		supported_candidate= r['supported_candidate'].empty? ? "Indépendant" : r['supported_candidate']
+		supported_candidate= r['supported_candidate'].nil? ? "Indépendant" : r['supported_candidate']
 		supported_candidate_photo= r['supported_candidate_photo'].nil? ? "independant.jpg" : r['supported_candidate_photo']
-		supported_candidate_visibility= r['supported_candidate'].empty? ? "invisible" : ""
+		supported_candidate_visibility= r['supported_candidate'].nil? ? "invisible" : ""
 		gender= r['gender']=='M' ? "Homme" : "Femme"
 		birthday=Date.parse(r['birthday'].split('?')[0]) unless r['birthday'].nil?
 		status="incomplete"
@@ -75,7 +75,7 @@ if not res.num_tuples.zero? then
 		end
 
 		#if (r['verified'].to_b and not r['vision'].nil? and r['nb_soutiens_30j'].to_i>0) then
-		if (r['accepted'].to_b) then
+		if (r['verified'].to_b) then
 			index_candidats.save_object({
 				"objectID"=>r['email']+'-'+r['election_id'].to_s,
 				"slug"=>r['slug'],
