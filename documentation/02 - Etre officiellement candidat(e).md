@@ -22,7 +22,7 @@ La désignation d’un mandataire financier est obligatoire pour collecter des f
 
 * Modèle de déclaration d’un mandataire financier auprès de la préfecture :
   + si le mandataire financier est une [personne physique](http://www.cnccfp.fr/docs/campagne/cnccfp_2016_modele_designation_MF.pdf) ;
-  + si le mandataire financier est une [AFE](http://www.cnccfp.fr/docs/campagne/cnccfp_2016_modele_declaration_AFE.pdf) ;
+  + si le mandataire financier est une [AFE](http://www.cnccfp.fr/docs/campagne/cnccfp_2016_modele_declaration_AFE.pdf).
 * Modèle de [statuts d’AFE](http://www.cnccfp.fr/docs/campagne/cnccfp_2016_modele_statuts_AFE.pdf)
 
 ### Déclarer sa candidature
