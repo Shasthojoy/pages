@@ -13,4 +13,4 @@ Pour faire acte de candidature et être élue, tout(e) candidat(e) doit, à la d
 ### Conditions particulières
 Tout(e) candidat(e) doit :
 * être en accord avec la [Charte du (de la) candidat(e)](https://legislatives.laprimaire.org/charte/) applicable et la signer ;
-* soutenir l’action de LaPrimaire.org en adhérant au parti politique et [s’acquitter de la cotisation de 30,00 € y afférente](https://laprimaire.org/adherer/)
+* soutenir l’action de LaPrimaire.org en adhérant au parti politique et [s’acquitter de la cotisation de 30,00 € y afférente](https://laprimaire.org/adherer/).
