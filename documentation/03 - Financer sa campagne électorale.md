@@ -5,7 +5,7 @@ Dès sa désignation, le mandataire financier doit procéder à l’ouverture d�
 
 *Pratique* :
 
-Le compte bancaire doit comporter un libellé précis de manière à informer les tiers de la qualité de mandataire pour une élection donnée : *« M./Mme [●], mandataire financier de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017 »* ou *« Association de financement électoral de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017 »*
+Le compte bancaire doit comporter un libellé précis de manière à informer les tiers de la qualité de mandataire pour une élection donnée : « *M./Mme [●], mandataire financier de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017* » ou « *Association de financement électoral de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017* ».
 
 ### Collecter des fonds
 #### Les recettes acceptées
