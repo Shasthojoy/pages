@@ -8,8 +8,7 @@ Le compte bancaire doit comporter un libellé précis de manière à informer le
 
 ### Collecter des fonds
 1. Les recettes acceptées
-
-  1.1. Apport personnel du candidat
+**1.1.** Apport personnel du candidat
 * apport en numéraire
 * emprunt bancaire contracté par le candidat (le prêt peut provenir d’organismes financiers, de partis politiques ou de personnes physiques)
 
@@ -17,6 +16,7 @@ Le compte bancaire doit comporter un libellé précis de manière à informer le
 Il s’agit d’apports de fonds réalisés par un parti au profit du candidat.
 
 1.3. Les dons
+
 *Rappel* : un don est consenti à titre définitif et sans contrepartie.
 Les dons peuvent être consentis **uniquement par une personne physique** et sont **limités, pour chaque donateur, à 4.600 euros pour une même élection, tous candidats confondus**.
 
