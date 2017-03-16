@@ -25,6 +25,7 @@ La désignation d’un mandataire financier est obligatoire pour collecter des f
 
 ### Déclarer sa candidature
 Le (la) candidat(e) doit déclarer officiellement sa candidature aux élections législatives auprès de la préfecture compétente et indiquer l’identité de son suppléant, **ce dernier devant expressément l’accepter**.
+
 *Attention* : ne pas oublier de fournir l’ensemble des pièces justificatives, notamment :
 * Attestation d’inscription sur les listes électorales de moins de 30 jours (ou CNI et bulletin n°3 du casier judiciaire daté de moins de 3 mois) ;
 * Récépissé de déclaration du mandataire financier ou d’immatriculation de l’AFE.
