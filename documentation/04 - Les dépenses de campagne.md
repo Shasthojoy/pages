@@ -16,7 +16,16 @@ Le dépassement de plafond peut entraîner le rejet du compte de campagne et le 
 4.	*La qualité de la personne* : pour être électorale, la **dépense** doit avoir été **engagée par le candidat ou par un tiers pour le compte du candidat**, c’est-à-dire avec son accord. Le remplaçant est considéré comme candidat à part entière et n’a pas besoin de justifier de l’accord du candidat pour effectuer des dépenses.  
 
 ### Le remboursement forfaitaire des dépenses électorale par l’Etat
-Le remboursement des dépenses électorales est **réservé aux candidats ayant obtenu au moins 5% des suffrages exprimés au premier tour de scrutin**, dont le compte de campagne a été approuvé par la CNCCFP, et ayant déposé une déclaration de situation patrimoniale s’ils sont astreints à cette obligation. 
+Le remboursement des dépenses électorales est **réservé aux candidats ayant obtenu au moins 5% des suffrages exprimés au premier tour de scrutin**, dont le compte de campagne a été approuvé par la CNCCFP, et ayant déposé une déclaration de situation patrimoniale s’ils sont astreints à cette obligation.
+
+Le **montant maximal du remboursement forfaitaire est égal à 47,5% du plafond des dépenses de campagne**. Il ne peut excéder le montant des dépenses du candidat retracées dans son compte de campagne et acceptées par la CNCCFP. Par ailleurs, **le remboursement forfaitaire** à la charge de l'État ne doit pas conduire à l'enrichissement d'une personne physique ou morale. Son montant **est** donc **limité à la part des dépenses que le candidat a, à titre définitif, personnellement acquittées**. 
+
+Les décisions de la Commission nationale des comptes de campagne et des financements politiques portant sur le compte de campagne du candidat peuvent faire l’objet d’un recours de plein contentieux devant le Tribunal administratif de Paris par le candidat concerné, dans les deux mois suivant leur notification.
+
+Si la commission n'a pas statué dans le délai de six mois qui lui est imparti par le deuxième alinéa de l’article L. 52-15, le compte est réputé approuvé. 
+ 
+*La loi :*
+[Le contrôle des comptes de campagne par la CNCCFP](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353147&dateTexte=&categorieLien=cid)
 
 ### Cas particulier : les dépenses de la campagne « officielle » ou propagande
 Les frais de la campagne officielle comprennent l’impression des bulletins de vote, des affiches à apposer devant les bureaux de vote, des circulaires ("professions de foi") et les frais d’affichage. Les dépenses de la campagne officielle ne doivent ni transiter par le compte du mandataire, ni figurer dans le compte de campagne du candidat mais être payées soit directement par le candidat, soit par voie de subrogation de l’imprimeur (l’Etat règle directement l’imprimeur à la demande du candidat) ou encore par un parti politique.
