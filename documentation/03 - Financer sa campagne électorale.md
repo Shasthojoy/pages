@@ -8,11 +8,11 @@ Le compte bancaire doit comporter un libellé précis de manière à informer le
 
 ### Collecter des fonds
 #### Les recettes acceptées
-### Apport personnel du candidat
+*Apport personnel du candidat*
 * apport en numéraire
 * emprunt bancaire contracté par le candidat (le prêt peut provenir d’organismes financiers, de partis politiques ou de personnes physiques)
 
-### Contribution des partis ou groupement politiques
+*Contribution des partis ou groupement politiques*
 Il s’agit d’apports de fonds réalisés par un parti au profit du candidat.
 
 ### Les dons
