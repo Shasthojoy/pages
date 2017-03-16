@@ -20,11 +20,12 @@ Le remboursement des dépenses électorales est **réservé aux candidats ayant 
 
 Le **montant maximal du remboursement forfaitaire est égal à 47,5% du plafond des dépenses de campagne**. Il ne peut excéder le montant des dépenses du candidat retracées dans son compte de campagne et acceptées par la CNCCFP. Par ailleurs, **le remboursement forfaitaire** à la charge de l'État ne doit pas conduire à l'enrichissement d'une personne physique ou morale. Son montant **est** donc **limité à la part des dépenses que le candidat a, à titre définitif, personnellement acquittées**. 
 
-Les décisions de la Commission nationale des comptes de campagne et des financements politiques portant sur le compte de campagne du candidat peuvent faire l’objet d’un recours de plein contentieux devant le Tribunal administratif de Paris par le candidat concerné, dans les deux mois suivant leur notification.
+Les décisions de la CNCCFP portant sur le compte de campagne du candidat peuvent faire l’objet d’un recours de plein contentieux devant le Tribunal administratif de Paris par le candidat concerné, dans les deux mois suivant leur notification.
 
-Si la commission n'a pas statué dans le délai de six mois qui lui est imparti par le deuxième alinéa de l’article L. 52-15, le compte est réputé approuvé. 
+Si la Commission n'a pas statué dans le délai de six mois qui lui est imparti, le compte est réputé approuvé. 
  
 *La loi :*
+
 [Le contrôle des comptes de campagne par la CNCCFP](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353147&dateTexte=&categorieLien=cid)
 
 ### Cas particulier : les dépenses de la campagne « officielle » ou propagande
