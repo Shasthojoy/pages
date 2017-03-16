@@ -1,7 +1,7 @@
 ## Etre officiellement candidat(e)
 Afin d’être officiellement candidat(e) aux élections législatives, tout(e) candidat(e) doit réaliser **deux démarches spécifiques**. Ces démarches doivent être réalisées le plus tôt possible et **finalisées pour le 19 mai 2017, 18h00**, au plus tard.
 
-*Attention* : le (la) candidat(e) doit réaliser ces démarches auprès de la préfecture compétente **personnellement** (ou les faire réaliser par son suppléant).
+*Attention* : le (la) candidat(e) doit **réaliser ces démarches** auprès de la préfecture compétente **personnellement** (ou les faire réaliser par son suppléant).
 
 ### Déclarer un mandataire financier
 La désignation d’un mandataire financier est obligatoire pour collecter des fonds et régler les dépenses de campagne électorale.
