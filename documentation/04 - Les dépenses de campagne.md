@@ -24,7 +24,7 @@ Les décisions de la CNCCFP portant sur le compte de campagne du candidat peuven
 
 Si la Commission n'a pas statué dans le délai de six mois qui lui est imparti, le compte est réputé approuvé. 
  
-*La loi :*
+*La Loi :*
 
 [Le contrôle des comptes de campagne par la CNCCFP](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353147&dateTexte=&categorieLien=cid)
 
