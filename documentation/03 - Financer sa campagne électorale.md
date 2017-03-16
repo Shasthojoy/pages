@@ -19,6 +19,7 @@ Il s’agit d’apports de fonds réalisés par un parti au profit du candidat.
 *Les dons*
 
 *Rappel* : un don est consenti à titre définitif et sans contrepartie.
+
 Les dons peuvent être consentis **uniquement par une personne physique** et sont **limités, pour chaque donateur, à 4.600 euros pour une même élection, tous candidats confondus**.
 
 *Attention* : les personnes morales (association, collectivité territoriale, établissement public, entreprise…), à l'exception des partis ou groupements politiques, ne peuvent donc participer au financement de la campagne électorale d'un candidat, ni en lui consentant des dons sous quelque forme que ce soit, ni en lui fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués.
@@ -27,7 +28,7 @@ Les dons peuvent être consentis **uniquement par une personne physique** et son
 
 Toutes les prestations dont le candidat a pu bénéficier, qui n’ont pas donné lieu à une facture ou à un mouvement de fonds, ou ayant fait l’objet d’une évaluation.
 
-### Les modalités de la collecte de fonds
+#### Les modalités de la collecte de fonds
 Les fonds destinés à financer la campagne électorale peuvent être collectés de différents moyens :
 * Espèces : uniquement pour les dons < 150 € et sous réserve de la remise immédiate d’un reçu ;
 * Chèque bancaire : à libeller au nom du mandataire financier et encaissés sous huit jours de préférence ;
