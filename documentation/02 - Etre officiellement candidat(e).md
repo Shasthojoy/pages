@@ -41,3 +41,11 @@ Le (la) candidat(e) doit déclarer officiellement sa candidature aux élections 
 Modèle de déclaration de candidature et d’acceptation du suppléant : 
 * [1er tour](http://www.yvelines.gouv.fr/content/download/9346/61842/file/formulaire%20de%20d%C3%A9claration%20de%20candidature%20(titulaire%20et%20rempla%C3%A7ant).pdf)
 * [2e tour](http://www.yvelines.gouv.fr/content/download/9671/63821/file/mod%C3%A8le%20de%20d%C3%A9claration%20de%20candidature%20T2.pdf)
+
+### Retrait de candidature
+Une candidature ne peut être retirée que jusqu’à la date limite fixée pour le dépôt des déclarations de candidatures (art. R. 100). Si le retrait est opéré après la date limite, il ne peut être pris en compte pour l’établissement de la liste des candidats, ni pour l’organisation des opérations de dépouillement. En revanche, un candidat peut, à tout moment, demander le retrait de ses
+bulletins de vote (la candidature et les bulletins déposés dans l’urne, malgré ce retrait, restent valides).
+
+Aucune disposition n’impose à un candidat qui entend se retirer l’obligation de recueillir le consentement préalable de son remplaçant. En revanche, un remplaçant ne peut, même avant la date limite de dépôt des candidatures, revenir de sa propre initiative sur l’acceptation écrite qu’il a donnée et rendre ainsi la candidature non valable (L. 155).
+
+Le retrait d’une candidature permet aux candidats et remplaçants concernés de figurer dans une nouvelle déclaration de candidature déposée dans les délais prévus.
