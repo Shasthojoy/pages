@@ -23,13 +23,13 @@ Les candidats peuvent disposer de panneaux d’affichage dès l'ouverture de la 
 
 L’impression des circulaires et bulletins de vote est à la charge des candidats.
 
-#### *Circulaires*
+##### *Circulaires*
 
 Chaque candidat ne peut faire adresser à chaque électeur, par la commission de propagande, qu’une seule circulaire.
 
 *Pratique : La circulaire doit avoir un grammage compris entre 60 et 80 grammes au mètre carré et un format de 210 x 297 mm (art. R. 29). La combinaison des trois couleurs (bleu, blanc et rouge), à l’exception de la reproduction de l’emblème d’un parti ou groupement politique, est interdite. La circulaire peut être imprimée recto verso. Son texte doit être uniforme pour l’ensemble de la circonscription législative.*
 
-#### *Bulletins de vote*
+##### *Bulletins de vote*
 
 Les bulletins de vote sont soumis à des règles précises (art. R. 30). A défaut, ils seront déclarés nuls et n'entreront pas en compte dans le résultat du dépouillement (art. R.66-2). 
 
