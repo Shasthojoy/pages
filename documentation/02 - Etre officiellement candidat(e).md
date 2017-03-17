@@ -14,9 +14,7 @@ La désignation d’un mandataire financier est obligatoire pour collecter des f
 * recueillir (de la date de sa désignation, laquelle peut intervenir au maximum six mois précédant le premier jour du mois de l'élection, jusqu'à la date du dépôt du compte de campagne) les fonds destinés au financement de la campagne électorale ; et
 * régler les dépenses engagées (les dépenses antérieures à sa désignation payées directement par le (la) candidat(e) ou à son profit font l'objet d'un remboursement par le mandataire).
 
-*La Loi* :
-
-[Financement et plafonnement des dépenses électorales](https://www.legifrance.gouv.fr/affichCode.do?idSectionTA=LEGISCTA000006148459&cidTexte=LEGITEXT000006070239&dateTexte=20170313)
+*La Loi* : [Financement et plafonnement des dépenses électorales](https://www.legifrance.gouv.fr/affichCode.do?idSectionTA=LEGISCTA000006148459&cidTexte=LEGITEXT000006070239&dateTexte=20170313)
 
 *Pratique* :
 
@@ -34,7 +32,7 @@ Le (la) candidat(e) doit déclarer officiellement sa candidature aux élections 
  
 *La Loi* : [Déclaration de candidature](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353367&dateTexte=&categorieLien=cid)
 
-*Pratique* : modèle de déclaration de candidature et d’acceptation du suppléant pour le [1er tour](http://www.yvelines.gouv.fr/content/download/9346/61842/file/formulaire%20de%20d%C3%A9claration%20de%20candidature%20(titulaire%20et%20rempla%C3%A7ant).pdf) et le [2e tour](http://www.yvelines.gouv.fr/content/download/9671/63821/file/mod%C3%A8le%20de%20d%C3%A9claration%20de%20candidature%20T2.pdf)
+*Pratique* : modèle de déclaration de candidature et d’acceptation du suppléant pour le [1er tour](http://www.yvelines.gouv.fr/content/download/9346/61842/file/formulaire%20de%20d%C3%A9claration%20de%20candidature%20(titulaire%20et%20rempla%C3%A7ant).pdf) et le [2e tour](http://www.yvelines.gouv.fr/content/download/9671/63821/file/mod%C3%A8le%20de%20d%C3%A9claration%20de%20candidature%20T2.pdf).
 
 ### Retrait de candidature
 Une candidature ne peut être retirée que jusqu’à la date limite fixée pour le dépôt des déclarations de candidatures (art. R. 100). Si le retrait est opéré après la date limite, il ne peut être pris en compte pour l’établissement de la liste des candidats, ni pour l’organisation des opérations de dépouillement. En revanche, un candidat peut, à tout moment, demander le retrait de ses
