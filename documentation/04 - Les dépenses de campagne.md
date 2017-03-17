@@ -31,7 +31,7 @@ Si la Commission n'a pas statué dans le délai de six mois qui lui est imparti,
 ### Cas particulier : les dépenses de la campagne « officielle » ou propagande
 Les frais de la campagne officielle comprennent l’impression des bulletins de vote, des affiches à apposer devant les bureaux de vote, des circulaires ("professions de foi") et les frais d’affichage. Les dépenses de la campagne officielle ne doivent ni transiter par le compte du mandataire, ni figurer dans le compte de campagne du candidat mais être payées soit directement par le candidat, soit par voie de subrogation de l’imprimeur (l’Etat règle directement l’imprimeur à la demande du candidat) ou encore par un parti politique.
 
-Le remboursement des frais de la propagande officielle est distinct de celui du compte de campagne : il relève de la compétence du préfet et ne concerne que les candidats ayant obtenu au moins 5% des suffrages exprimés.
+Le remboursement des frais de la propagande officielle est distinct de celui du compte de campagne : il relève de la compétence du préfet et ne concerne que les candidats ayant obtenu au moins 5% des suffrages exprimés. Pour ces candidats, les frais sont à la charge de l'État ([art. L. 164](https://www.legifrance.gouv.fr/affichCodeArticle.do?idArticle=LEGIARTI000006353394&cidTexte=LEGITEXT000006070239)).
 
 *Pratique* :
 * [Matériel de propagande](https://www.legifrance.gouv.fr/affichCodeArticle.do;jsessionid=346D2C8994DEFCBB626088EC6E1469C6.tpdila11v_2?idArticle=LEGIARTI000028112268&cidTexte=LEGITEXT000006070239&dateTexte=20170314)
