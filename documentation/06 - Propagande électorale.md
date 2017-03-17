@@ -15,9 +15,9 @@ La distribution de tracts électoraux pendant la période électorale est autori
 Les candidats peuvent disposer de panneaux d’affichage dès l'ouverture de la campagne électorale (art. L. 51, L. 52, R. 27 et R. 28 du Code électoral). Les affiches sont apposées par les soins des candidats ou de leurs représentants.
 
 *Pratique* :
-* *Le tirage au sort pour l’attribution des emplacements d’affichage* : les emplacements d’affichage sont attribués en fonction d’un tirage au sort effectué par le préfet, à l’issue du délai de dépôt des candidatures, entre les candidats dont la candidature a été enregistrée. Les candidats peuvent assister personnellement à ce tirage au sort ou s’y faire représenter par un mandataire. Le résultat de ce tirage au sort est communiqué aux maires de la circonscription législative concernée et mis en ligne sur le site internet de la préfecture. L’ordre d’attribution des emplacements d’affichage est également celui retenu pour la disposition des bulletins de vote dans le bureau de vote.
+* *Le tirage au sort pour l’attribution des emplacements d’affichage : les emplacements d’affichage sont attribués en fonction d’un tirage au sort effectué par le préfet, à l’issue du délai de dépôt des candidatures, entre les candidats dont la candidature a été enregistrée. Les candidats peuvent assister personnellement à ce tirage au sort ou s’y faire représenter par un mandataire. Le résultat de ce tirage au sort est communiqué aux maires de la circonscription législative concernée et mis en ligne sur le site internet de la préfecture. L’ordre d’attribution des emplacements d’affichage est également celui retenu pour la disposition des bulletins de vote dans le bureau de vote.*
 
-* *Les affiches* : elles doivent avoir une largeur maximale de 594 mm et une hauteur maximale de 841 mm. Sont interdites les affiches imprimées sur papier blanc (sauf lorsqu’elles sont recouvertes de caractères ou d’illustrations de couleur) ou celles comprenant une combinaison des couleurs bleu, blanc et rouge à l'exception de la reproduction de l'emblème d'un parti ou groupement politique (art. L. 48 et R. 27 du Code électoral).
+* *Les affiches : elles doivent avoir une largeur maximale de 594 mm et une hauteur maximale de 841 mm. Sont interdites les affiches imprimées sur papier blanc (sauf lorsqu’elles sont recouvertes de caractères ou d’illustrations de couleur) ou celles comprenant une combinaison des couleurs bleu, blanc et rouge à l'exception de la reproduction de l'emblème d'un parti ou groupement politique (art. L. 48 et R. 27 du Code électoral).*
 
 #### *Bulletins de vote et circulaires*
 
@@ -55,7 +55,7 @@ La commission de propagande, pour chacun des deux tours :
 
 ### Moyens de propagande interdits
 
-1. Sont interdits jusqu'à la date du scrutin où le résultat est acquis :
+#### Sont interdits jusqu'à la date du scrutin où le résultat est acquis :
 
 * le recours à tout affichage relatif à l'élection en dehors des emplacements réservés sur les panneaux électoraux mis en place à cet effet, sur l’emplacement réservé aux autres candidats ainsi qu’en dehors des panneaux d’affichage d’expression libre lorsqu’il en existe (art. L. 51, L. 90) ;
 
