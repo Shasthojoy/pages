@@ -88,7 +88,7 @@ Les interdictions et restrictions prévues par le Code électoral en matière de
 
 #### Sites internet à l’issue de la campagne électorale
 
-Le site internet du candidat peut être maintenu en ligne le jour du scrutin mais son actualisation est interdite à partir de la veille du scrutin 0 heure et le jour du scrutin. Les candidats sont ainsi incités à « bloquer » les discussions entre internautes se déroulant sur leur site internet.
+Le site internet du candidat peut être maintenu en ligne le jour du scrutin mais son actualisation est interdite à partir de la veille du scrutin zéro heure et le jour du scrutin. Les candidats sont ainsi incités à « bloquer » les discussions entre internautes se déroulant sur leur site internet.
 
 *La Loi* :
 * [Propagande – Partie législative]( https://www.legifrance.gouv.fr/affichCode.do;jsessionid=F547B86ACCC5B31A94B33A488F0B5FC3.tpdila17v_1?idSectionTA=LEGISCTA000006148458&cidTexte=LEGITEXT000006070239&dateTexte=20170317)
