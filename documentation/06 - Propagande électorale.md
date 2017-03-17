@@ -20,23 +20,19 @@ Les candidats peuvent disposer de panneaux d’affichage dès l'ouverture de la 
 * *Les affiches : elles doivent avoir une largeur maximale de 594 mm et une hauteur maximale de 841 mm. Sont interdites les affiches imprimées sur papier blanc (sauf lorsqu’elles sont recouvertes de caractères ou d’illustrations de couleur) ou celles comprenant une combinaison des couleurs bleu, blanc et rouge à l'exception de la reproduction de l'emblème d'un parti ou groupement politique (art. L. 48 et R. 27 du Code électoral).*
 
 #### *Circulaires et bulletins de vote*
-
 L’impression des circulaires et bulletins de vote est à la charge des candidats.
 
 ##### *Circulaires*
-
 Chaque candidat ne peut faire adresser à chaque électeur, par la commission de propagande, qu’une seule circulaire.
 
 *Pratique : La circulaire doit avoir un grammage compris entre 60 et 80 grammes au mètre carré et un format de 210 x 297 mm (art. R. 29). La combinaison des trois couleurs (bleu, blanc et rouge), à l’exception de la reproduction de l’emblème d’un parti ou groupement politique, est interdite. La circulaire peut être imprimée recto verso. Son texte doit être uniforme pour l’ensemble de la circonscription législative.*
 
 ##### *Bulletins de vote*
-
 Les bulletins de vote sont soumis à des règles précises (art. R. 30). A défaut, ils seront déclarés nuls et n'entreront pas en compte dans le résultat du dépouillement (art. R.66-2). 
 
 *Pratique : Les bulletins doivent être imprimés en une seule couleur (ce qui exclut par exemple l’utilisation du noir et d’une autre couleur sur un même bulletin) au choix du candidat, sur papier blanc d’un grammage compris entre 60 et 80 grammes au mètre carré et avoir le format 105 x 148 mm (art. R. 30). Les bulletins de vote doivent être au format paysage c'est-à-dire horizontal (art. R. 30) et porter d'abord le nom du candidat, puis l'une des mentions suivantes : « remplaçant » ou « suppléant », suivie du nom du remplaçant. Le nom du remplaçant doit être imprimé en caractères de moindres dimensions que celui de candidat (art. R. 103). En outre, les bulletins ne doivent comporter aucun nom autre que ceux du candidat et de son remplaçant (art. R. 30).*
 
 ### Commission de propagande
-
 Une commission de propagande chargée d’assurer l’envoi et la distribution de tous les documents de propagande électorale (art. R. 31) est mise en place. Pour bénéficier de son concours, les candidats doivent remettre leurs documents électoraux au président de la commission de propagande avant chacun des deux tours, dans les délais requis. Les modalités pratiques sont précisées à chaque candidat à l’occasion du dépôt de sa candidature en préfecture. 
 
 La commission de propagande n’assure pas l’envoi des circulaires et des bulletins de vote qui ne sont pas conformes aux prescriptions règlementaires (art. R. 27, R. 29, R. 30, R. 38 et R. 103). En outre, si les circulaires ou les bulletins de vote sont pliés, ils doivent être livrés sous forme désencartée.
@@ -54,9 +50,7 @@ La commission de propagande, pour chacun des deux tours :
 *Pratique : Si un candidat remet à la commission de propagande moins de circulaires ou de bulletins de vote que nécessaire, il propose la répartition de ses circulaires et bulletins de vote entre les électeurs inscrits et non en fonction du nombre d’habitants des communes. Il ne s’agit que d’une proposition, la commission de propagande conservant le pouvoir de décision eu égard à ses contraintes d’organisation. A défaut de proposition ou de proposition techniquement réalisable, les circulaires ne sont pas distribuées mais demeurent à la disposition des candidats. En revanche, les bulletins de vote sont distribués dans les bureaux de vote en proportion du nombre d’électeurs inscrits (art. R. 34). Les candidats ou leurs mandataires dûment désignés peuvent également assurer eux-mêmes la distribution de leurs bulletins de vote en les remettant au maire, au plus tard la veille du scrutin à midi, ou au président du bureau de vote le jour du scrutin (art. R. 55). Le maire ou le président du bureau de vote n’est pas tenu d’accepter les bulletins qui lui sont remis directement par les candidats d’un format manifestement différent de 105 x 148 mm ou n’étant pas au format paysage. Un candidat peut, à tout moment, demander le retrait de ses bulletins de vote à l’autorité qui les détient (art. R. 55). Sa candidature du candidat reste néanmoins valable et figure toujours sur les états récapitulatifs des candidatures.*
 
 ### Moyens de propagande interdits
-
 #### Sont interdits jusqu'à la date du scrutin où le résultat est acquis :
-
 * le recours à tout affichage relatif à l'élection en dehors des emplacements réservés sur les panneaux électoraux mis en place à cet effet, sur l’emplacement réservé aux autres candidats ainsi qu’en dehors des panneaux d’affichage d’expression libre lorsqu’il en existe (art. L. 51, L. 90) ;
 
 * l'utilisation à des fins de propagande électorale de tout procédé de publicité commerciale par la voie de la presse ou par tout moyen de communication audiovisuelle (art. L. 52-1, art. L. 90-1) ;
@@ -67,15 +61,18 @@ Toutefois, les candidats peuvent recourir à la publicité par voie de presse po
 
 * les numéros d'appel téléphonique ou télématique gratuits (art. L. 50-1, L. 113-1) ;
 
-#### Sont interdits, dès le jour de l'ouverture de la campagne électorale et jusqu'à la clôture du second tour, les affiches électorales sur papier blanc (L. 48) ou qui comprennent la combinaison des trois couleurs : bleu, blanc et rouge, à l’exception de la reproduction de l’emblème d’un parti ou groupement politique (art. R. 27)
+#### Sont interdits, dès le jour de l'ouverture de la campagne électorale et jusqu'à la clôture du second tour :
+les affiches électorales sur papier blanc (L. 48) ou qui comprennent la combinaison des trois couleurs : bleu, blanc et rouge, à l’exception de la reproduction de l’emblème d’un parti ou groupement politique (art. R. 27)
 
-#### Il est également interdit à tout candidat de porter à la connaissance du public un élément nouveau de polémique électorale à un moment tel que ses adversaires n'aient pas la possibilité d'y répondre utilement avant la fin de la campagne électorale (art. L. 48- 2)
+#### Il est également interdit à tout candidat :
+de porter à la connaissance du public un élément nouveau de polémique électorale à un moment tel que ses adversaires n'aient pas la possibilité d'y répondre utilement avant la fin de la campagne électorale (art. L. 48- 2)
 
 #### Il est interdit, à partir de la veille du scrutin à zéro heure :
 * de distribuer ou faire distribuer des bulletins, circulaires et autres documents, notamment des tracts (L. 49) ; 
 * de diffuser ou de faire diffuser par tout moyen de communication au public par voie électronique tout message ayant le caractère de propagande électorale (art. L. 49). 
 
-#### A partir de la veille du scrutin à zéro heure, il est interdit de procéder, par un système automatisé ou non, à l'appel téléphonique en série des électeurs afin de les inciter à voter pour un candidat (art. L. 49-1) (pratique dite du « phoning »)
+#### A partir de la veille du scrutin à zéro heure, il est interdit de :
+procéder, par un système automatisé ou non, à l'appel téléphonique en série des électeurs afin de les inciter à voter pour un candidat (art. L. 49-1) (pratique dite du « phoning »)
 
 #### Il est également interdit à tout agent de l'autorité publique ou municipale de distribuer des bulletins de vote, professions de foi et circulaires de candidats (art. L. 50)
 
