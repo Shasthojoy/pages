@@ -1,7 +1,7 @@
 ## Propagande électorale
 ### Durée de la campagne électorale
-**La campagne électorale en vue du premier tour de scrutin est ouverte le *lundi 22 mai 2017 à zéro heure*** (art. L. 164) **et s’achève le samedi 10 juin 2017 à minuit. Pour le second tour, s'il y a lieu, la campagne est ouverte le lundi 12 juin 2017 à zéro
-heure et est close le samedi 17 juin 2017 à minuit** (art. R. 26).
+La campagne électorale en vue du premier tour de scrutin est ouverte le lundi 22 mai 2017 à zéro heure (art. L. 164) et s’achève le samedi 10 juin 2017 à minuit. Pour le second tour, s'il y a lieu, la campagne est ouverte le lundi 12 juin 2017 à zéro
+heure et est close le samedi 17 juin 2017 à minuit (art. R. 26).
 
 ### Moyens de propagande autorisés
 Les moyens de propagande, même s’ils sont autorisés, **ne doivent pas être financés par des personnes morales** (association, collectivité territoriale, établissement public, entreprise…) à l'exception des partis ou groupements politiques. Les personnes morales ne peuvent pas non plus consentir des dons sous quelque forme que ce soit, ni en fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués.
