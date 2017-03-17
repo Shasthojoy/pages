@@ -67,29 +67,29 @@ Toutefois, les candidats peuvent recourir à la publicité par voie de presse po
 
 * les numéros d'appel téléphonique ou télématique gratuits (art. L. 50-1, L. 113-1) ;
 
-2. Sont interdits, dès le jour de l'ouverture de la campagne électorale et jusqu'à la clôture du second tour, les affiches électorales sur papier blanc (L. 48) ou qui comprennent la combinaison des trois couleurs : bleu, blanc et rouge, à l’exception de la reproduction de l’emblème d’un parti ou groupement politique (art. R. 27)
+#### Sont interdits, dès le jour de l'ouverture de la campagne électorale et jusqu'à la clôture du second tour, les affiches électorales sur papier blanc (L. 48) ou qui comprennent la combinaison des trois couleurs : bleu, blanc et rouge, à l’exception de la reproduction de l’emblème d’un parti ou groupement politique (art. R. 27)
 
-3. Il est également interdit à tout candidat de porter à la connaissance du public un élément nouveau de polémique électorale à un moment tel que ses adversaires n'aient pas la possibilité d'y répondre utilement avant la fin de la campagne électorale (art. L. 48- 2)
+#### Il est également interdit à tout candidat de porter à la connaissance du public un élément nouveau de polémique électorale à un moment tel que ses adversaires n'aient pas la possibilité d'y répondre utilement avant la fin de la campagne électorale (art. L. 48- 2)
 
-4. Il est interdit, à partir de la veille du scrutin à zéro heure :
+#### Il est interdit, à partir de la veille du scrutin à zéro heure :
 * de distribuer ou faire distribuer des bulletins, circulaires et autres documents, notamment des tracts (L. 49) ; 
 * de diffuser ou de faire diffuser par tout moyen de communication au public par voie électronique tout message ayant le caractère de propagande électorale (art. L. 49). 
 
-5. A partir de la veille du scrutin à zéro heure, il est interdit de procéder, par un système automatisé ou non, à l'appel téléphonique en série des électeurs afin de les inciter à voter pour un candidat (art. L. 49-1) (pratique dite du « phoning »)
+#### A partir de la veille du scrutin à zéro heure, il est interdit de procéder, par un système automatisé ou non, à l'appel téléphonique en série des électeurs afin de les inciter à voter pour un candidat (art. L. 49-1) (pratique dite du « phoning »)
 
-6. Il est également interdit à tout agent de l'autorité publique ou municipale de distribuer des bulletins de vote, professions de foi et circulaires de candidats (art. L. 50)
+#### Il est également interdit à tout agent de l'autorité publique ou municipale de distribuer des bulletins de vote, professions de foi et circulaires de candidats (art. L. 50)
 
 **Attention : Les infractions aux dispositions précitées sont punies de peines d’amende et/ou d’emprisonnement**
 
 ### Moyens de propagande autorisés et interdits sur Internet 
 
-1. Publicité commerciale et Internet 
+#### Publicité commerciale et Internet 
 
 Les interdictions et restrictions prévues par le Code électoral en matière de propagande électorale sont applicables à tout message ayant le caractère de propagande électorale diffusé par tout moyen de communication au public par voie électronique (art. L. 48-1).
 
 *Pratique : La réalisation et l’utilisation d’un site Internet ne revêt pas le caractère d’une publicité commerciale au sens de ces dispositions. En revanche, cette interdiction pourrait être entendue comme s’appliquant à tous les procédés de publicité couramment employés sur Internet (achat de liens sponsorisés ou de mots-clefs, ou référencement payant). Les candidats ne peuvent donc pas y recourir pendant cette période. Par ailleurs, l’affichage de messages publicitaires sur leur site aurait pour conséquence pour les candidats de les mettre en infraction avec les dispositions de l’article L. 52-8 qui prohibe tout financement de campagne électorale par une personne morale.*
 
-2. Sites Internet à l’issue de la campagne électorale
+#### Sites Internet à l’issue de la campagne électorale
 
 Le premier alinéa de l’article L. 49, qui « interdit de distribuer ou faire distribuer, à partir de la veille du scrutin à zéro heure, des bulletins, circulaires et autres documents », n’a pas pour effet d’empêcher le maintien en ligne d’un site ce jour-là. Le deuxième alinéa de cet article L. 49, qui interdit « à partir de la veille du scrutin à zéro heure […] de diffuser ou de faire diffuser par tout moyen de communication au public par voie électronique tout message ayant le caractère de propagande électorale », s’applique aux sites Internet des candidats. Cependant, cette disposition n’est pas interprétée par la jurisprudence comme prohibant le maintien en ligne du site mais seulement comme interdisant son actualisation la veille et le jour du scrutin. Les candidats sont ainsi incités à « bloquer » les discussions entre internautes se déroulant sur leur site Internet la veille du scrutin à zéro heure.
 
