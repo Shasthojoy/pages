@@ -32,9 +32,7 @@ Le (la) candidat(e) doit déclarer officiellement sa candidature aux élections 
 * Attestation d’inscription sur les listes électorales de moins de 30 jours (ou CNI et bulletin n°3 du casier judiciaire daté de moins de 3 mois) ;
 * Récépissé de déclaration du mandataire financier ou d’immatriculation de l’AFE.
  
-*La Loi* :
-
-[Déclaration de candidature](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353367&dateTexte=&categorieLien=cid)
+*La Loi* : [Déclaration de candidature](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353367&dateTexte=&categorieLien=cid)
 
 *Pratique* : modèle de déclaration de candidature et d’acceptation du suppléant pour le [1er tour](http://www.yvelines.gouv.fr/content/download/9346/61842/file/formulaire%20de%20d%C3%A9claration%20de%20candidature%20(titulaire%20et%20rempla%C3%A7ant).pdf) et le [2e tour](http://www.yvelines.gouv.fr/content/download/9671/63821/file/mod%C3%A8le%20de%20d%C3%A9claration%20de%20candidature%20T2.pdf)
 
