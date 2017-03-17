@@ -19,7 +19,7 @@ Les candidats peuvent disposer de panneaux d’affichage dès l'ouverture de la 
 
 * *Les affiches : elles doivent avoir une largeur maximale de 594 mm et une hauteur maximale de 841 mm. Sont interdites les affiches imprimées sur papier blanc (sauf lorsqu’elles sont recouvertes de caractères ou d’illustrations de couleur) ou celles comprenant une combinaison des couleurs bleu, blanc et rouge à l'exception de la reproduction de l'emblème d'un parti ou groupement politique (art. L. 48 et R. 27 du Code électoral).*
 
-#### *Bulletins de vote et circulaires*
+#### *Circulaires et bulletins de vote*
 
 L’impression des circulaires et bulletins de vote est à la charge des candidats.
 
