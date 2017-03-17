@@ -3,30 +3,25 @@
 ### Ouverture d’un compte bancaire unique
 Dès sa désignation, le mandataire financier doit procéder à l’ouverture d’un compte bancaire dédié à la campagne électorale. Cette ouverture est de droit, dans n’importe quel établissement bancaire.
 
-*Pratique* :
-
-Le compte bancaire doit comporter un libellé précis de manière à informer les tiers de la qualité de mandataire pour une élection donnée : « *M./Mme [●], mandataire financier de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017* » ou « *Association de financement électoral de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017* ».
+*Pratique* : Le compte bancaire doit comporter un libellé précis de manière à informer les tiers de la qualité de mandataire pour une élection donnée : « *M./Mme [●], mandataire financier de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017* » ou « *Association de financement électoral de M./Mme [●], candidat(e) dans la [●] circonscription du [département] dans le cadre des élections législatives des 11 et 18 juin 2017* ».
 
 ### Collecter des fonds
 #### Les recettes acceptées
-*Apport personnel du candidat*
+##### Apport personnel du candidat
 * apport en numéraire ;
 * emprunt bancaire contracté par le candidat (le prêt peut provenir d’organismes financiers, de partis politiques ou de personnes physiques).
 
-*Contribution des partis ou groupement politiques*
-
+##### Contribution des partis ou groupement politiques
 Il s’agit d’apports de fonds réalisés par un parti au profit du candidat.
 
-*Les dons*
+##### Les dons
+Les dons peuvent être consentis **uniquement par une personne physique** et sont **limités, pour chaque donateur, à 4.600 euros pour une même élection, tous candidats confondus**.
 
 *Rappel* : un don est consenti à titre définitif et sans contrepartie.
 
-Les dons peuvent être consentis **uniquement par une personne physique** et sont **limités, pour chaque donateur, à 4.600 euros pour une même élection, tous candidats confondus**.
-
 *Attention* : les personnes morales (association, collectivité territoriale, établissement public, entreprise…), à l'exception des partis ou groupements politiques, ne peuvent donc participer au financement de la campagne électorale d'un candidat, ni en lui consentant des dons sous quelque forme que ce soit, ni en lui fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués.
 
-*Apports en nature*
-
+##### Apports en nature
 Toutes les prestations dont le candidat a pu bénéficier, qui n’ont pas donné lieu à une facture ou à un mouvement de fonds, ou ayant fait l’objet d’une évaluation.
 
 #### Les modalités de la collecte de fonds
