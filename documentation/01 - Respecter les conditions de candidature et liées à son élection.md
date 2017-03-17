@@ -25,6 +25,4 @@ la liste des activités professionnelles ou d’intérêt général, même non r
 *La Loi* :
 [Déclaration de patrimoine et d'intérêts](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000028059572)
 
-*Pratique* :
-
-Les formulaires de déclaration sont disponibles sur le site internet de la Haute autorité (www.hatvp.fr).
+*Pratique* : Les formulaires de déclaration sont disponibles sur le site internet de la Haute autorité (www.hatvp.fr).
