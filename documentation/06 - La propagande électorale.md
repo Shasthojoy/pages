@@ -1,4 +1,4 @@
-## Propagande électorale
+## La propagande électorale
 ### Durée de la campagne électorale
 La campagne électorale en vue du **premier tour** de scrutin est **ouverte le lundi 22 mai 2017 à zéro heure** ([art. L. 164](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006353387)) **et s’achève le samedi 10 juin 2017 à minuit**. Pour le **second tour**, s'il y a lieu, la campagne est **ouverte le lundi 12 juin 2017 à zéro heure et est close le samedi 17 juin 2017 à minuit** ([art. R. 26](https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006070239&idArticle=LEGIARTI000006354465)).
 
