@@ -76,7 +76,7 @@ procéder, par un système automatisé ou non, à l'appel téléphonique en sér
 
 #### Il est également interdit à tout agent de l'autorité publique ou municipale de distribuer des bulletins de vote, professions de foi et circulaires de candidats (art. L. 50)
 
-**Attention : Les infractions aux dispositions précitées sont punies de peines d’amende et/ou d’emprisonnement**
+**Attention : Les infractions aux dispositions précitées sont punies de peines d’amende et/ou d’emprisonnement**.
 
 ### Moyens de propagande autorisés et interdits sur Internet 
 
@@ -84,11 +84,11 @@ procéder, par un système automatisé ou non, à l'appel téléphonique en sér
 
 Les interdictions et restrictions prévues par le Code électoral en matière de propagande électorale sont applicables à tout message ayant le caractère de propagande électorale diffusé par tout moyen de communication au public par voie électronique (art. L. 48-1).
 
-*Pratique : La réalisation et l’utilisation d’un site Internet ne revêt pas le caractère d’une publicité commerciale au sens de ces dispositions. En revanche, cette interdiction pourrait être entendue comme s’appliquant à tous les procédés de publicité couramment employés sur Internet (achat de liens sponsorisés ou de mots-clefs, ou référencement payant). Les candidats ne peuvent donc pas y recourir pendant cette période. Par ailleurs, l’affichage de messages publicitaires sur leur site aurait pour conséquence pour les candidats de les mettre en infraction avec les dispositions de l’article L. 52-8 qui prohibe tout financement de campagne électorale par une personne morale.*
+*Pratique : La réalisation et l’utilisation d’un site Internet ne revêt pas le caractère d’une publicité commerciale au sens de ces dispositions. En revanche, cette interdiction pourrait être entendue comme s’appliquant à tous les procédés de publicité couramment employés sur Internet (achat de liens sponsorisés ou de mots-clefs, référencement payant, publicités sur les réseaux sociaux...). Les candidats ne peuvent donc pas y recourir pendant cette période. Par ailleurs, l’affichage de messages publicitaires sur leur site aurait pour conséquence pour les candidats de les mettre en infraction avec les dispositions de l’article L. 52-8 qui prohibe tout financement de campagne électorale par une personne morale.*
 
-#### Sites Internet à l’issue de la campagne électorale
+#### Sites internet à l’issue de la campagne électorale
 
-Le premier alinéa de l’article L. 49, qui « interdit de distribuer ou faire distribuer, à partir de la veille du scrutin à zéro heure, des bulletins, circulaires et autres documents », n’a pas pour effet d’empêcher le maintien en ligne d’un site ce jour-là. Le deuxième alinéa de cet article L. 49, qui interdit « à partir de la veille du scrutin à zéro heure […] de diffuser ou de faire diffuser par tout moyen de communication au public par voie électronique tout message ayant le caractère de propagande électorale », s’applique aux sites Internet des candidats. Cependant, cette disposition n’est pas interprétée par la jurisprudence comme prohibant le maintien en ligne du site mais seulement comme interdisant son actualisation la veille et le jour du scrutin. Les candidats sont ainsi incités à « bloquer » les discussions entre internautes se déroulant sur leur site Internet la veille du scrutin à zéro heure.
+Le site internet du candidat peut être maintenu en ligne le jour du scrutin mais son actualisation est interdite à partir de la veille du scrutin 0 heure et le jour du scrutin. Les candidats sont ainsi incités à « bloquer » les discussions entre internautes se déroulant sur leur site internet.
 
 *La Loi* :
 * [Propagande – Partie législative]( https://www.legifrance.gouv.fr/affichCode.do;jsessionid=F547B86ACCC5B31A94B33A488F0B5FC3.tpdila17v_1?idSectionTA=LEGISCTA000006148458&cidTexte=LEGITEXT000006070239&dateTexte=20170317)
