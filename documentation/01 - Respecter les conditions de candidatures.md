@@ -1,5 +1,5 @@
 ## Respecter les conditions de candidature
-Tout(e) candidat(e) à la députation doit s’assurer, au préalable, de remplir les conditions de candidature et d’éligibilité applicables.
+Tout(e) candidat(e) à la députation doit s’assurer, au préalable, de remplir les conditions de candidature et d’éligibilité applicables. En cas d'élection, le(la) candidat(e) doit, en outre, procéder à des déclarations spécifiques.
 
 ### Conditions légales
 Pour faire acte de candidature et être élue, tout(e) candidat(e) doit, à la date du premier tour de scrutin :
