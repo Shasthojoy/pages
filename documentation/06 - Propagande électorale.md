@@ -3,7 +3,7 @@
 ### Moyens de propagande autorisés
 Les moyens de propagande, même s’ils sont autorisés, **ne doivent pas être financés par des personnes morales** (association, collectivité territoriale, établissement public, entreprise…) à l'exception des partis ou groupements politiques. Les personnes morales ne peuvent pas non plus consentir des dons sous quelque forme que ce soit, ni en fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués.
 
-1.	*Réunions*
+#### *Réunions*
 Les réunions publiques sont libres et peuvent se tenir sans autorisation, ni déclaration préalable (Loi du 30 juin 1881 sur la liberté de réunion et Loi du 28 mars 1907 relative aux réunions publiques).
 
 *Pratique* : Les mairies ont la faculté de mettre à disposition des candidats des locaux selon les conditions habituelles de mise à disposition des propriétés communales, qu’il s’agisse de lieux servant habituellement de bureau de vote ou de tout autre local communal. Les collectivités concernées doivent cependant s’astreindre à respecter strictement le principe d’égalité entre les candidats en offrant à chacun les mêmes possibilités aux mêmes conditions.
