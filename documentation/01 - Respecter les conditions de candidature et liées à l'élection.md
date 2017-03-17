@@ -1,4 +1,4 @@
-## Respecter les conditions de candidature et liées à son élection
+## Respecter les conditions de candidature et liées à l'élection
 Tout(e) candidat(e) à la députation doit s’assurer, au préalable, de remplir les conditions de candidature et d’éligibilité applicables. En cas d'élection, le(la) candidat(e) doit, en outre, procéder à des déclarations spécifiques.
 
 ### Les conditions de candidature
