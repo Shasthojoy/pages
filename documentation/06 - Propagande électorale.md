@@ -8,10 +8,10 @@ Les réunions publiques sont libres et peuvent se tenir sans autorisation, ni d�
 
 *Pratique* : Les mairies ont la faculté de mettre à disposition des candidats des locaux selon les conditions habituelles de mise à disposition des propriétés communales, qu’il s’agisse de lieux servant habituellement de bureau de vote ou de tout autre local communal. Les collectivités concernées doivent cependant s’astreindre à respecter strictement le principe d’égalité entre les candidats en offrant à chacun les mêmes possibilités aux mêmes conditions.
 
-2.	*Tracts*
+#### Tracts
 La distribution de tracts électoraux pendant la période électorale est autorisée jusqu’à la veille du scrutin à zéro heure.
 
-3.	*Affiches*
+#### *Affiches*
 Les candidats peuvent disposer de panneaux d’affichage dès l'ouverture de la campagne électorale (art. L. 51, L. 52, R. 27 et R. 28 du Code électoral). Les affiches sont apposées par les soins des candidats ou de leurs représentants.
 
 *Pratique* :
