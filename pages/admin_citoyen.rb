@@ -339,6 +339,13 @@ END
 			erb :illustration_100k
 		end
 
+		get '/citoyen/vote/facebook_voting' do
+			erb :fb_voting, :locals=>{
+				'cocorico_app_id'=>COCORICO_APP_ID,
+				'cc_vote_id'=>FB_VOTE_ID
+			}
+		end
+
 		get '/citoyen/vote/comparateur' do
 			erb :index, :locals=>{
 				'page_info'=>{

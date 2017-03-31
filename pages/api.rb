@@ -235,6 +235,30 @@ END
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
+		get '/api/token/facebook_voting' do
+			return JSON.dump({'param_missing'=>'vote_id'}) if params['vote_id'].nil?
+			return JSON.dump({'param_missing'=>'firstname'}) if params['firstname'].nil?
+			return JSON.dump({'param_missing'=>'lastname'}) if params['lastname'].nil?
+			#return JSON.dump({'param_missing'=>'fb_id'}) if params['fb_id'].nil?
+			if VOTE_PAUSED then
+				status 404
+				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
+			end
+			params['fb_id']='12323435435';
+			token={
+				:iss=> CC_APP_ID_FB,
+				:sub=> Digest::SHA256.hexdigest(params['fb_id']+'@facebook.com'),
+				:email=> params['fb_id']+'@facebook.com',
+				:lastName=> params['lastname'],
+				:firstName=> params['firstname'],
+				:authorizedVotes=> [FB_VOTE_ID],
+				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
+			}
+			vote_token=JWT.encode token, CC_SECRET_FB, 'HS256'
+			return JSON.dump({'token'=>vote_token})
+
+		end
+
 		get '/api/token/:user_key' do
 			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
 			return JSON.dump({'param_missing'=>'user key'}) if params['user_key'].nil?
