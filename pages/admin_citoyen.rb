@@ -341,7 +341,7 @@ END
 
 		get '/citoyen/vote/facebook_voting' do
 			erb :fb_voting, :locals=>{
-				'cocorico_app_id'=>COCORICO_APP_ID,
+				'cocorico_app_id'=>CC_APP_ID_FB,
 				'cc_vote_id'=>FB_VOTE_ID
 			}
 		end

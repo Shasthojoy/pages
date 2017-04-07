@@ -170,10 +170,20 @@ ul.social_buttons > li{
 		    </div>
 	    </div>
     </div>
+    <input type="hidden" value="" id="psid">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
+
+(function(d, s, id){
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) {return;}
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'Messenger'));
+
 function resizeIframe(obj){
 	obj.style.height = 0;
 	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
@@ -186,55 +196,111 @@ function resizeIframe(obj){
 ga('create', 'UA-60977053-1', 'auto');
 ga('send', 'pageview');
 
+
+function back_to_chat(cmd) {
+	var psid=$('#psid').val();
+	$.ajax({
+		url: "https://laprimaire.ngrok.io/monprefix/fbmessenger",
+		type: "POST",
+		data: {
+			'object':'api',
+			'uid':psid,
+			'cmd':cmd
+		},
+		dataType: "json",
+		success: function(data) {
+			console.log("here we go again !");
+		},
+		error: function(data) {
+			console.log("could not contact chat back");
+		}
+	});
+}
+
 $(document).ready(function() {
-		window.addEventListener("message",receiveMessage,true);
-		function receiveMessage(e) { 
-			console.log(e);
-			if (e.origin!=='https://laprimaire.cocorico.cc') {
-				return;
-			}
-			var data=JSON.parse(e['data']);
-			var voteId=data['vote']['id'];
-			if (data['message']=='voteComplete') {
-				$('#voting_frame_iframe').attr("src",'about:blank');
-				$('#voting_frame_iframe').hide();
-				$('#voting_frame_donation').show();
-				//$('.modal.cocorico').modal('hide');
-			} else if (data['message']=='voteSuccess') {
-			} else if (data['message']=='voteError') {
-				$('.modal.cocorico').modal('hide');
-			} else if (data['message']=='voteCanceled') {
-				$('.modal.cocorico').modal('hide');
-			}
-		};
-		$('#voting_frame_cc').on('hidden.bs.modal', function () {
-			$('#voting_frame_loading').show();
+	window.addEventListener("message",receiveMessage,true);
+	function receiveMessage(e) { 
+		console.log(e);
+		if (e.origin!=='https://laprimaire.cocorico.cc') {
+			return;
+		}
+		var data=JSON.parse(e['data']);
+		var voteId=data['vote']['id'];
+		if (data['message']=='voteComplete') {
+			$('#voting_frame_iframe').attr("src",'about:blank');
 			$('#voting_frame_iframe').hide();
-			$('#voting_iframe').attr("src",'about:blank');
-		});
-		$('#voting_frame_cc').on('shown.bs.modal', function () {
-			$('#voting_frame_donation').hide();
-			$('#voting_frame_iframe').load(function() { 
-				$('#voting_frame_loading').hide();
-				if ($('#voting_frame_iframe').attr("src")!='about:blank') {
-					$('#voting_frame_iframe').show();
-				}
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log("voteComplete - closing webview");
+				alert("voteComplete - closing webview");
+			}, function error(err) {
+				console.log(err);
 			});
-			$.ajax({
-				url: "/api/token/facebook_voting",
-				data: "vote_id=<%= cc_vote_id %>&firstname=thibauld&lastname=favre",
-				dataType: "json",
-				success: function(data) {
-					console.log(data);
-					$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
-				},
-				error: function(data) {
-					console.log("votes are paused. reloading page...");
-					window.location.reload(true);
-				}
+			back_to_chat("api/vote_completed");
+			$('.modal.cocorico').modal('hide');
+			//$('#voting_frame_donation').show();
+		} else if (data['message']=='voteSuccess') {
+		} else if (data['message']=='voteError') {
+			$('.modal.cocorico').modal('hide');
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log("voteError - closing webview");
+				alert("voteError - closing webview");
+			}, function error(err) {
+				console.log(err);
 			});
+			back_to_chat("api/vote_completed");
+		} else if (data['message']=='voteCanceled') {
+			$('.modal.cocorico').modal('hide');
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log("voteCancelled - closing webview");
+				alert("voteCancelled - closing webview");
+			}, function error(err) {
+				console.log(err);
+			});
+			back_to_chat("api/vote_completed");
+		}
+	};
+	$('#voting_frame_cc').on('hidden.bs.modal', function () {
+		$('#voting_frame_loading').show();
+		$('#voting_frame_iframe').hide();
+		$('#voting_iframe').attr("src",'about:blank');
+	});
+	$('#voting_frame_cc').on('shown.bs.modal', function () {
+		$('#voting_frame_donation').hide();
+		$('#voting_frame_iframe').load(function() { 
+			$('#voting_frame_loading').hide();
+			if ($('#voting_frame_iframe').attr("src")!='about:blank') {
+				$('#voting_frame_iframe').show();
+			}
 		});
-		$('#voting_frame_cc').modal();
+		//var psid=$('#psid').val();
+		var psid_rand=parseInt((Math.random()*1000000000000)).toString();
+		$.ajax({
+			url: "/api/token/facebook_voting",
+			data: "vote_id=<%= cc_vote_id %>&fb_id="+psid_rand+"&firstname=thibauld&lastname=favre",
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
+			},
+			error: function(data) {
+				console.log("votes are paused. reloading page...");
+				window.location.reload(true);
+			}
+		});
+	});
+	window.extAsyncInit = function() {
+		MessengerExtensions.getUserID(function success(uids) {
+			var psid=uids.psid;
+			$('#psid').val(psid);
+			$('#voting_frame_cc').modal();
+		}, function error(err, errorMessage) {
+			$('#voting_frame_cc').modal();
+			console.log("unable to retrieve PSID");
+			console.log(err);
+			console.log(errorMessage);
+			alert("unable to retrieve PSID : "+err+"\n"+errorMessage);
+		});
+	}
 });
     </script>
     <script src="https://use.fontawesome.com/1e37fa74cb.js"></script>
