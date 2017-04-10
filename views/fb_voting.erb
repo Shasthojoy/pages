@@ -232,8 +232,15 @@ $(document).ready(function() {
 		if (data['message']=='voteComplete') {
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			$('#voting_frame_iframe').hide();
-			$('#voting_frame_donation').show();
-			//$('.modal.cocorico').modal('hide');
+			MessengerExtensions.requestCloseBrowser(function success() {
+				console.log("voteComplete - closing webview");
+				alert("voteComplete - closing webview");
+			}, function error(err) {
+				console.log(err);
+			});
+			back_to_chat("api/vote_completed");
+			$('.modal.cocorico').modal('hide');
+			//$('#voting_frame_donation').show();
 		} else if (data['message']=='voteSuccess') {
 		} else if (data['message']=='voteError') {
 			$('.modal.cocorico').modal('hide');
