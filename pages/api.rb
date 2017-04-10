@@ -239,12 +239,12 @@ END
 			return JSON.dump({'param_missing'=>'vote_id'}) if params['vote_id'].nil?
 			return JSON.dump({'param_missing'=>'firstname'}) if params['firstname'].nil?
 			return JSON.dump({'param_missing'=>'lastname'}) if params['lastname'].nil?
-			#return JSON.dump({'param_missing'=>'fb_id'}) if params['fb_id'].nil?
+			return JSON.dump({'param_missing'=>'fb_id'}) if params['fb_id'].nil?
 			if VOTE_PAUSED then
 				status 404
 				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
 			end
-			params['fb_id']='12323435435';
+			#params['fb_id']='12323435435';
 			token={
 				:iss=> CC_APP_ID_FB,
 				:sub=> Digest::SHA256.hexdigest(params['fb_id']+'@facebook.com'),

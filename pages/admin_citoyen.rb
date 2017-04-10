@@ -339,10 +339,17 @@ END
 			erb :illustration_100k
 		end
 
-		get '/citoyen/vote/facebook_voting' do
+		get '/citoyen/vote/facebook_11' do
 			erb :fb_voting, :locals=>{
-				'cocorico_app_id'=>COCORICO_APP_ID,
-				'cc_vote_id'=>FB_VOTE_ID
+				'cocorico_app_id'=>CC_APP_ID_FB,
+				'cc_vote_id'=>FB_VOTE_ID_11
+			}
+		end
+
+		get '/citoyen/vote/facebook_4' do
+			erb :fb_voting, :locals=>{
+				'cocorico_app_id'=>CC_APP_ID_FB,
+				'cc_vote_id'=>FB_VOTE_ID_4
 			}
 		end
 
