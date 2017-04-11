@@ -235,7 +235,7 @@ END
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
-		get '/api/token/facebook_voting' do
+		get '/api/token/test_facebook_voting' do
 			return JSON.dump({'param_missing'=>'vote_id'}) if params['vote_id'].nil?
 			return JSON.dump({'param_missing'=>'firstname'}) if params['firstname'].nil?
 			return JSON.dump({'param_missing'=>'lastname'}) if params['lastname'].nil?
@@ -244,14 +244,13 @@ END
 				status 404
 				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
 			end
-			#params['fb_id']='12323435435';
 			token={
 				:iss=> CC_APP_ID_FB,
 				:sub=> Digest::SHA256.hexdigest(params['fb_id']+'@facebook.com'),
 				:email=> params['fb_id']+'@facebook.com',
 				:lastName=> params['lastname'],
 				:firstName=> params['firstname'],
-				:authorizedVotes=> [FB_VOTE_ID],
+				:authorizedVotes=> [FB_VOTE_ID_TEST],
 				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
 			}
 			vote_token=JWT.encode token, CC_SECRET_FB, 'HS256'
