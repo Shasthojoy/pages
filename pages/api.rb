@@ -235,6 +235,21 @@ END
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
+		get '/api/facebook_voting_nb' do
+			begin
+				Pages.db_init()
+				res=Pages.db_query("SELECT count(*) FROM fb_users")
+				nb=res[0]['count']
+			rescue PG::Error => e
+				Pages.log.error "/citoyen/facebook_voting_nb DB Error #{params}\n#{e.message}"
+				status 500
+				return JSON.dump({"title"=>"Erreur serveur","message"=>e.message})
+			ensure
+				Pages.db_close()
+			end
+			return JSON.dump({'total'=>nb})
+		end
+
 		get '/api/token/test_facebook_voting' do
 			return JSON.dump({'param_missing'=>'vote_id'}) if params['vote_id'].nil?
 			return JSON.dump({'param_missing'=>'firstname'}) if params['firstname'].nil?

@@ -2,12 +2,10 @@ require File.expand_path('../config/environment', __FILE__)
 
 require './config/keys.local.rb'
 
-if DEBUG then
-	use Rack::Cors do
-		allow do
-			origins '*'
-			resource '*', headers: :any, methods: [:get]
-		end
+use Rack::Cors do
+	allow do
+		origins '*',''
+		resource '*', headers: :any, methods: [:get]
 	end
 end
 
