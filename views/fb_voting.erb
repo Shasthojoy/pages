@@ -204,7 +204,7 @@ ga('send', 'pageview');
 
 function back_to_chat(cmd) {
 	$.ajax({
-		url: "https://<%= BOT_HOST %>/12xRfHrd34t90/fbmessenger",
+		url: "https://<%= BOT_HOST %>/<%= BOT_PREFIX %>/fbmessenger",
 		type: "POST",
 		data: {
 			'object':'api',
@@ -292,21 +292,19 @@ $(document).ready(function() {
 				$('#voting_frame_iframe').show();
 			}
 		});
-	<% if test=='1' %>
+	<% if test=='1' or test=='2' %>
 		var fb_id=parseInt(Math.random()*10000000000).toString();
 		$.ajax({
 			url: "/api/token/test_facebook_voting",
-			data: "vote_id=<%= cc_vote_id %>&fb_id="+fb_id+"&firstname=Test&lastname=User",
+			data: "vote_id=<%= cc_vote_id %>&fb_id="+fb_id+"&firstname=Test&lastname=User&test=<%= test %>",
 			dataType: "json",
 			success: function(data) {
 				$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
 			},
 			error: function(data) {
 				console.log("votes are paused. reloading page...");
-				//window.location.reload(true);
 			}
 		});
-		$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+token+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
 	<% else %>
 		$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user=<%= token %>&appId=<%= cocorico_app_id %>&locale=fr-FR');
 	<% end %>

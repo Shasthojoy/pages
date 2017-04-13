@@ -238,7 +238,7 @@ END
 		get '/api/facebook_voting_nb' do
 			begin
 				Pages.db_init()
-				res=Pages.db_query("SELECT count(*) FROM fb_users")
+				res=Pages.db_query("SELECT count(*) FROM fb_users WHERE profile->>'vote_OK' is not null")
 				nb=res[0]['count']
 			rescue PG::Error => e
 				Pages.log.error "/citoyen/facebook_voting_nb DB Error #{params}\n#{e.message}"
@@ -259,13 +259,15 @@ END
 				status 404
 				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
 			end
+			vote_id=FB_VOTE_ID_TEST if params['test']=='1'
+			vote_id=FB_VOTE_ID_TEST_2 if params['test']=='2'
 			token={
 				:iss=> CC_APP_ID_FB,
 				:sub=> Digest::SHA256.hexdigest(params['fb_id']+'@facebook.com'),
 				:email=> params['fb_id']+'@facebook.com',
 				:lastName=> params['lastname'],
 				:firstName=> params['firstname'],
-				:authorizedVotes=> [FB_VOTE_ID_TEST],
+				:authorizedVotes=> [vote_id],
 				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
 			}
 			vote_token=JWT.encode token, CC_SECRET_FB, 'HS256'

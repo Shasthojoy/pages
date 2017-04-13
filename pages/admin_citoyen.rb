@@ -343,8 +343,9 @@ END
 			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
 			app_id=CC_APP_ID_FB
 			vote_id=FB_VOTE_ID_11
-			test=params['test'].nil? ? '0' : '1'
+			test=params['test']
 			vote_id=FB_VOTE_ID_TEST if test=='1'
+			vote_id=FB_VOTE_ID_TEST_2 if test=='2'
 			erb :fb_voting, :locals=>{
 				'cocorico_app_id'=>app_id,
 				'cc_vote_id'=>vote_id,
@@ -357,8 +358,9 @@ END
 			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
 			app_id=CC_APP_ID_FB
 			vote_id=FB_VOTE_ID_4
-			test=params['test'].nil? ? '0' : '1'
+			test=params['test']
 			vote_id=FB_VOTE_ID_TEST if test=='1'
+			vote_id=FB_VOTE_ID_TEST_2 if test=='2'
 			erb :fb_voting, :locals=>{
 				'cocorico_app_id'=>app_id,
 				'cc_vote_id'=>vote_id,
