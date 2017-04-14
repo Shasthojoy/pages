@@ -350,7 +350,8 @@ END
 				'cocorico_app_id'=>app_id,
 				'cc_vote_id'=>vote_id,
 				'token'=>params['token'],
-				'test'=>test
+				'test'=>test,
+				'callback'=>'api/vote_completed_11'
 			}
 		end
 
@@ -365,7 +366,8 @@ END
 				'cocorico_app_id'=>app_id,
 				'cc_vote_id'=>vote_id,
 				'token'=>params['token'],
-				'test'=>test
+				'test'=>test,
+				'callback'=>'api/vote_completed_4'
 			}
 		end
 

@@ -235,7 +235,7 @@ $(document).ready(function() {
 		}
 		var data=JSON.parse(e['data']);
 		if (data['message']=='voteComplete') {
-			back_to_chat("api/vote_completed");
+			back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
@@ -250,7 +250,7 @@ $(document).ready(function() {
 			}
 		} else if (data['message']=='voteSuccess') {
 		} else if (data['message']=='voteError') {
-			back_to_chat("api/vote_completed");
+			back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
@@ -264,7 +264,7 @@ $(document).ready(function() {
 				$('#voting_frame_error').show();
 			}
 		} else if (data['message']=='voteCanceled') {
-			back_to_chat("api/vote_completed");
+			back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
