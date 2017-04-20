@@ -62,6 +62,9 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
+  Pages.db=Pages::Db.new()
+  Pages::Db.load_queries()
+  Pages.session=Pages::Session.new()
   # Create worker pids too
   child_pid = server.config[:pid].sub(/pid$/, "worker.#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")

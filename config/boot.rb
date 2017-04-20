@@ -7,5 +7,6 @@ require 'pg'
 require 'sinatra/subdomain'
 require 'rack/csrf'
 require 'encrypted_cookie'
+require 'redis'
 # require 'twilio-ruby'
 include ERB::Util

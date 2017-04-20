@@ -20,7 +20,7 @@ module Pages
 	@@db=nil
 
 	class << self
-		attr_accessor :db,:log, :aws
+		attr_accessor :db,:log,:aws,:session
 	end
 
 	def self.db_init

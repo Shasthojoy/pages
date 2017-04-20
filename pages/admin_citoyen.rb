@@ -170,6 +170,17 @@ END
 				})
 			end
 
+			# v must be a hash
+			def session_set(k,v)
+				Pages.session.set(session[:session_id],{k=>v})
+			end
+
+			# returns the whole session if k is nil
+			def session_get(k=nil)
+				s=Pages.session.get(session[:session_id])
+				return k.nil? ? s : s[k]
+			end
+
 			def authenticate_citizen(user_key)
 				res=Pages.db_query(@queries["get_citizen_by_key"],[user_key])
 				return res.num_tuples.zero? ? nil : res[0]
@@ -422,14 +433,18 @@ END
 			ensure
 				Pages.db_close()
 			end
-			redirect "/citoyen/#{params['user_key']}" if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?)
-			citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
-			erb :index, :locals=>{
-				'page_info'=>page_info(citoyen),
-				'vars'=>{'citoyen'=>citoyen},
-				'no_navbar'=>true,
-				'template'=>:authentication
-			}
+			if (citoyen['validation_level'].to_i>2 && params['reauth'].nil?) then
+				session_set('email',citoyen['email'])
+				redirect "/citoyen/#{params['user_key']}"
+			else
+				citoyen['birthday']=Date.parse(citoyen['birthday']).strftime('%d/%m/%Y') unless citoyen['birthday'].nil?
+				erb :index, :locals=>{
+					'page_info'=>page_info(citoyen),
+					'vars'=>{'citoyen'=>citoyen},
+					'no_navbar'=>true,
+					'template'=>:authentication
+				}
+			end
 		end
 
 		get '/citoyen/token/:user_key' do
