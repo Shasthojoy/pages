@@ -5,5 +5,7 @@ require 'erb'
 require 'cgi'
 require 'pg'
 require 'sinatra/subdomain'
+require 'rack/csrf'
+require 'encrypted_cookie'
 # require 'twilio-ruby'
 include ERB::Util

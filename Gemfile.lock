@@ -11,6 +11,7 @@ GEM
     aws-sdk-resources (2.3.2)
       aws-sdk-core (= 2.3.2)
     backports (3.6.8)
+    encrypted_cookie (0.0.4)
     httpclient (2.7.1)
     jmespath (1.2.4)
       json_pure (>= 1.8.1)
@@ -26,6 +27,8 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack_csrf (2.6.0)
+      rack (>= 1.1.0)
     raindrops (0.15.0)
     sinatra (1.4.7)
       rack (~> 1.5)
@@ -54,9 +57,11 @@ PLATFORMS
 DEPENDENCIES
   algoliasearch
   aws-sdk
+  encrypted_cookie
   jwt
   pg
   rack-cors
+  rack_csrf
   sinatra
   sinatra-contrib
   sinatra-subdomain

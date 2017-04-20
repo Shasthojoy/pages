@@ -9,6 +9,22 @@ use Rack::Cors do
 	end
 end
 
+cookie_settings = {
+	:domain=>'*.laprimaire.org',
+	:path=>'/',
+	:expire_after=>3600*24*30,
+	:secret=>COOKIE_SECRET
+}
+if ::DEBUG then
+	use Rack::ShowExceptions
+	use Rack::Session::Cookie, cookie_settings
+else
+	cookie_settings[:secure]=true
+	cookie_settings[:httponly]=true
+	use Rack::Session::EncryptedCookie, cookie_settings
+end
+use Rack::Csrf, :raise=>true
+
 COCORICO_HOST=DEBUG ? CC_HOST_TEST : CC_HOST
 COCORICO_APP_ID=DEBUG ? CC_APP_ID_TEST : CC_APP_ID
 COCORICO_SECRET=DEBUG ? CC_SECRET_TEST : CC_SECRET
