@@ -182,12 +182,14 @@ END
 			end
 
 			def authenticate_citizen(user_key)
-				res=Pages.db_query(@queries["get_citizen_by_key"],[user_key])
+				res=Pages.db.query(@queries["get_citizen_by_key"],[user_key])
+				return nil if res.nil?
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
 			def authenticate_election(election_slug)
-				res=Pages.db_query(@queries["get_election_by_slug"],[election_slug])
+				res=Pages.db.query(@queries["get_election_by_slug"],[election_slug])
+				return nil if res.nil?
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -585,6 +587,22 @@ END
 				'citoyen'=>citoyen,
 				'election'=>election,
 				'candidate_slug'=>params['candidate_slug']
+			}
+		end
+
+		get '/citoyen/spa/:user_key/election/jugement-majoritaire-2017' do
+			errors=[]
+			success=[]
+			citoyen=authenticate_citizen(params['user_key'])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEJM0]"}) if citoyen.nil?
+			redirect "/citoyen/auth/#{params['user_key']}" if citoyen['validation_level'].to_i<3
+			election=authenticate_election('jugement-majoritaire-2017')
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSEJM2]"}) if election.nil?
+			return erb 'spa/elections/jugement-majoritaire-2017'.to_sym, :locals=>{
+				'citoyen'=>citoyen,
+				'election'=>election,
+				'errors'=>errors,
+				'success'=>success
 			}
 		end
 

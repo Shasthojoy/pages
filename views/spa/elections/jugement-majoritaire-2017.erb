@@ -1,0 +1,205 @@
+<div id="partial_title">Votez au Jugement Majoritaire pour la Présidentielle de 2017</div>
+<style>
+    .independant {display:none;}
+</style>
+<h2 class="h2-responsive doc-title"><%= election['name'] %></h2>
+<p class="text-justify">Et si on expérimentait un nouveau mode de scrutin ? Une expérience scientifique en partenariat avec le CNRS, Dauphine et Polytechnique pour tester l'impact du mode de scrutin sur les élections démocratiques. Pour en savoir plus, rendez-vous sur le site dédié à cette expérience : <a href="https://www.jugementmajoritaire2017.com" target="_blank">www.jugementmajoritaire2017.com</a>.</p>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="stepper stepper-horizontal">
+                <li class="completed active grey lighten-3">
+                    <a id="1erTour"  style="cursor:pointer;">
+                        <span class="circle">1</span>
+                        <span class="label">1er Tour <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+                <li>
+                    <a id="2ndTour" style="cursor:pointer;">
+                        <span class="circle">2</span>
+                        <span class="label">2ème Tour</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="jm-2017-1" class="step" style="display:visible;">
+        <h3 class="h3-responsive doc-title">Du 11 avril au 23 avril 2017</h3>
+        <p class="text-justify">Exprimez-vous sur les 11 candidat(e)s officiels à l'élection ainsi que sur les 4 candidat(e)s non qualifiés mais vainqueurs ou finalistes de leur primaire.</p>
+        <h3 class="h3-responsive doc-title">Les 2 votes en cours</h3>
+        <div class="container-fluid">
+		<div id="hits" class="row"></div>
+        </div>
+	<br/>
+    </div>
+    <div id="jm-2017-2" class="step" style="display:none;">
+        <h3 class="h3-responsive doc-title">Du 24 avril 2017 au 7 mai 2017</h3>
+        <p class="text-justify">Dès les résultats du 1er tour connus, vous serez invités à vous prononcer sur les 2 candidat(e)s qui seront officiellement au 2ème tour de l'élection présidentielle.</p>
+    </div>
+    <div class="modal fade" id="voting_modal_cc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-lg">
+		    <!--Content-->
+		    <div class="modal-content">
+			    <div class="modal-body" >
+				    <div style="margin:0 auto;background:#527bdd;height:100%;" id="voting_modal_loading">
+					    <div style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:300px;color:white;text-align:center;">
+						    <p>Chargement du vote en cours...</p>
+						    <p><i style="width:100px;text-align:center;" class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></p>
+						    <span class="sr-only">Refreshing...</span>
+						    <p>Vous disposez de 10 minutes pour voter.</p>
+						    <p style="font-style:italic;">(Vous pouvez à tout moment fermer cette fenêtre et revenir plus tard)</p>
+					    </div>
+				    </div>
+				    <iframe id="voting_modal_iframe" width="100%" height="550px" style="display:none;" frameborder="0" src="about:blank"></iframe>
+				    <div style="display:none;margin:0 auto;background:rgb(104,205,104);height:100%;" id="voting_modal_donation">
+					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
+						    <p style="font-size:20px;">Merci beaucoup pour votre participation !</p>
+						    <p><i style="font-size:100px;display:inline;" class="fa fa-gift" aria-hidden="true"></i></p>
+						    <p style="text-align:justify;">LaPrimaire.org est 100% gratuite. Cependant, pour accompagner le ou la candidat(e) qui sera issu(e) de LaPrimaire.org dans sa campagne électorale et son financement ainsi que pour l'organisation à venir de <b>577 primaires pour les élections législatives</b>, nous avons vraiment besoin de votre soutien ! Si vous êtes en capacité de soutenir financièrement LaPrimaire.org, n'hésitez pas à :</p>
+						    <p><a target="_blank" href="/adherer/" style="font-size:28px;font-variant:small-caps;width:250px;cursor:pointer;" class="btn btn-xl blue donate-link" title="Faire un don">Faire un don</a></p>
+						    <p><i>Chaque don compte !</i></p>
+					    </div>
+				    </div>
+				    <div style="display:none;margin:0 auto;background-color:#d91d1c;height:100%;" id="voting_modal_error">
+					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
+						    <p style="font-size:20px;">Hmmm... un problème est survenu :/</p>
+						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
+						    <p style="text-align:center;">Veuillez nous excuser pour ce désagrément. Merci réessayer dans quelques minutes...</p>
+					    </div>
+				    </div>
+			    </div>
+		    </div>
+		    <!--/.Content-->
+	    </div>
+    </div>
+<script type="text/html" id="hit-template">
+	    {{#votes}}
+		<div class="col-12 col-sm-6 col-lg-3">
+			<!--Card-->
+			<div class="card">
+				<!--Card image-->
+				<div class="view overlay hm-white-slight">
+					<img class="img-fluid rounded" src="https://s3.eu-central-1.amazonaws.com/laprimaire/votes/{{slug}}.png" alt="{{name}}">
+					<div class="mask waves-effect waves-light">
+					</div>
+					<div style="position:absolute;top:5px;"><span class="badge green">{{Nb participants}}</span></div>
+				</div>
+				<!--/.Card image-->
+
+				<!--Card content-->
+				<div class="card-block">
+					<!--Title-->
+					<h4 class="card-title">{{name}}</h4>
+					<!--Text-->
+					<p class="card-text text-justify">{{description}}</p>
+					<div class="text-center">
+				{{#current}}
+					<button style="cursor:pointer;" class="btn btn-success jevote_btn" data-vote-id="{{vote_id}}" data-cc-id="{{cc_vote_id}}" data-app-id="{{cc_app_id}}">Je vote</button>
+				{{/current}}
+				{{#passed}}
+					<a href="#election/{{slug}}" target="_blank" class="btn btn-primary" disabled>Vote clos</a>
+				{{/passed}}
+				{{#future}}
+					<a href="#election/{{slug}}" target="_blank" class="btn btn-primary" disabled>Bientôt</a>
+				{{/future}}
+					</div>
+				</div>
+				<!--/.Card content-->
+			</div>
+			<!--/.Card-->
+		</div>
+	{{/votes}}
+</script>
+<script>
+function pageReady() {
+	$.get('/api/citizen/<%= citoyen['user_key'] %>/election/<%= election['slug'] %>/votes')
+		.done(function(data) {
+			var t=$('#hit-template').html();
+			Mustache.parse(t);
+			var votes=JSON.parse(data);
+			var rendered=Mustache.render(t,votes);
+			$('#hits').html(rendered);
+			$('#voting_modal_iframe').attr("src",'about:blank');
+			$('.jevote_btn').on("click", function() {
+				vote_id=$(this).data('vote-id');
+				cc_vote_id=$(this).data('cc-id');
+				cc_app_id=$(this).data('app-id');
+				$.ajax({
+					url: "/api/token_simple/<%= citoyen['user_key'] %>",
+					data: "vote_id="+vote_id,
+					dataType: "json",
+					success: function(dataT) {
+						$('#voting_modal_loading').show();
+						$('#voting_modal_cc').modal('show');
+						$('#voting_modal_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/'+cc_vote_id+'?user='+dataT['token']+'&appId='+cc_app_id+'&locale=fr-FR');
+						$('#voting_modal_iframe').on('load', function() {
+							$('#voting_modal_loading').hide();
+							if ($('#voting_modal_iframe').attr("src")!='about:blank') {
+								$('#voting_modal_iframe').show();
+							}
+						});
+					},
+					error: function(dataT) {
+						console.log("votes are paused. reloading page...");
+						window.location.reload(true);
+					}
+				});
+			});
+			window.addEventListener("message",receiveMessage,true);
+			function receiveMessage(e) { 
+				console.log(e);
+				if (e.origin!=='https://laprimaire.cocorico.cc') {
+					return;
+				}
+				var dataM=JSON.parse(e['data']);
+				var voteId=dataM['vote']['id'];
+				var message=dataM['message'];
+				if (message=='voteComplete') {
+					$('#voting_modal_iframe').attr("src",'about:blank');
+					$('#voting_modal_iframe').hide();
+					$('#voting_modal_donation').show();
+				} else if (message=='voteCanceled') {
+					$('#voting_modal_iframe').attr("src",'about:blank');
+					$('#voting_modal_iframe').hide();
+					$('#voting_modal_donation').show();
+				} else if (data['message']=='voteSuccess') {
+					console.log('voteSuccess');
+				} else if (data['message']=='voteError') {
+					console.log('voteError');
+					$('#voting_modal_error').show();
+				}
+			};
+			$('#voting_modal_cc').on('hidden.bs.modal', function() {
+				console.log("closing");
+				$('#voting_modal_loading').show();
+				$('#voting_modal_error').hide();
+				$('#voting_modal_iframe').hide();
+				$('#voting_modal_iframe').attr("src",'about:blank');
+				$('#voting_modal_donation').hide();
+			});
+		})
+	.fail(function(data) {
+		show_notification(data);
+	});
+	$('#1erTour').on('click', function() {
+		if ($('#1erTour').parent().hasClass('active')) {
+			return;
+		}
+		$('.active').removeClass('active grey lighten-3');
+		$('.step').hide();
+		$('#jm-2017-1').addClass('animated fadeIn');
+		$('#jm-2017-1').show();
+		$('#1erTour').parent().addClass('active grey lighten-3');
+	});
+	$('#2ndTour').on('click', function() {
+		if ($('#2ndTour').parent().hasClass('active')) {
+			return;
+		}
+		$('.active').removeClass('active grey lighten-3');
+		$('.step').hide();
+		$('#jm-2017-2').addClass('animated fadeIn');
+		$('#jm-2017-2').show();
+		$('#2ndTour').parent().addClass('active grey lighten-3');
+	});
+}
+</script>
+

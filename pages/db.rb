@@ -23,10 +23,15 @@ module Pages
 
 		def initialize
 			return unless defined? PGNAME_LIVE
+			#pgpwd=::DEBUG ? ::PGPWD_LIVE : ::PGPWD_LIVE
+			#pgname=::DEBUG ? ::PGNAME_LIVE : ::PGNAME_LIVE
+			#pguser=::DEBUG ? ::PGUSER_LIVE : ::PGUSER_LIVE
+			#pghost=::DEBUG ? ::PGHOST_LIVE : ::PGHOST_LIVE
 			pgpwd=::DEBUG ? ::PGPWD_TEST : ::PGPWD_LIVE
 			pgname=::DEBUG ? ::PGNAME_TEST : ::PGNAME_LIVE
 			pguser=::DEBUG ? ::PGUSER_TEST : ::PGUSER_LIVE
 			pghost=::DEBUG ? ::PGHOST_TEST : ::PGHOST_LIVE
+
 			Pages.log.debug "connect to database : #{pgname} with user : #{pguser}"
 			@@db=::PG.connect(
 				"dbname"=>pgname,
@@ -48,12 +53,12 @@ module Pages
 			@@db.close() unless @@db.nil?
 		end
 
-		def query(name,params)
-			Pages.log.info "#{__method__}: #{name} / values: #{params}"
+		def query(query,params)
+			Pages.log.info "#{__method__}: #{query} / values: #{params}"
 			begin
-				res=@@db.exec_params(@@queries[name],params)
+				res=@@db.exec_params(query,params)
 			rescue ::PG::Error=>e
-				Bot.log.error "DB Error: #{e}"
+				Pages.log.error "DB Error: #{e}"
 			end
 			return res
 		end

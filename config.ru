@@ -16,7 +16,6 @@ cookie_settings = {
 }
 if ::DEBUG then
 	cookie_settings[:domain]='localhost'
-	use Rack::ShowExceptions
 	use Rack::Session::Cookie, cookie_settings
 else
 	cookie_settings[:domain]='*.laprimaire.org'

@@ -82,6 +82,13 @@ USING users as c,elections as e
 WHERE c.slug=$2 AND c.email=s.candidate AND s.supporter=$1 AND e.slug=$3 AND e.election_id=s.election_id
 RETURNING *
 END
+				'get_votes_by_election'=><<END,
+SELECT v.vote_id,v.cc_vote_id,v.name,v.slug,v.description,v.start_date,v.end_date,v.election_id, 
+CASE WHEN v.start_date<now() AND v.end_date>now() THEN true ELSE false END as current,
+CASE WHEN v.start_date>now() THEN true ELSE false END as future,
+CASE WHEN v.end_date<now() THEN true ELSE false END as passed
+FROM votes AS v INNER JOIN elections as e ON (v.election_id=e.election_id AND e.slug=$1)
+END
 				'get_candidates_by_election'=><<END,
 SELECT c.firstname||' '||c.lastname as name, e.slug as election_slug, c.*,s.*,ci.*,ce.*
 FROM users AS c
@@ -124,7 +131,7 @@ END
 
 		helpers do
 			def filter_output(obj)
-				filters=['email','tel','user_key','address1','address2','birthday','birthplace','candidate_key','email_status','hash','mc_group_id','referal_code','reset_code','reset_email','suppleant_email','tags','telegram_id','telephone','vote_id']
+				filters=['email','tel','user_key','address1','address2','birthday','birthplace','candidate_key','email_status','hash','mc_group_id','referal_code','reset_code','reset_email','suppleant_email','tags','telegram_id','telephone']
 				filters.each {|f| obj.delete(f)}
 				return obj
 			end
@@ -146,7 +153,8 @@ END
 			end
 
 			def authenticate_citizen(user_key)
-				res=Pages.db_query(@queries["get_citizen_by_key"],[user_key])
+				res=Pages.db.query(@queries["get_citizen_by_key"],[user_key])
+				return nil if res.nil?
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -180,7 +188,13 @@ END
 				res=Pages.db_query(@queries["del_supporter"],[supporter_email,candidate_slug,election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
-			
+
+			def get_votes_by_election(election_slug)
+				res=Pages.db.query(@queries["get_votes_by_election"],[election_slug])
+				return nil if res.nil?
+				return res.num_tuples.zero? ? nil : res
+			end
+		
 			def get_candidates_by_election(election_slug,supporter_email)
 				res=Pages.db_query(@queries["get_candidates_by_election"],[election_slug,supporter_email])
 				return res.num_tuples.zero? ? nil : res
@@ -275,6 +289,33 @@ END
 
 		end
 
+		get '/api/token_simple/:user_key' do
+			return JSON.dump({'param_missing'=>'user key'}) if params['user_key'].nil?
+			return JSON.dump({'param_missing'=>'vote id'}) if params['vote_id'].nil?
+			if VOTE_PAUSED then
+				status 404
+				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
+			end
+			citoyen=authenticate_citizen(params['user_key'])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ATS0]"}) if citoyen.nil?
+			res=Pages.db.query("SELECT * FROM votes WHERE vote_id=$1",[params['vote_id']])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ATS1]"}) if (res.nil? or res.num_tuples.zero?)
+			vote=res[0]
+			token={
+				:iss=> CC_APP_ID_FB,
+				:sub=> Digest::SHA256.hexdigest(citoyen['email']),
+				:email=> citoyen['email'],
+				:lastName=> citoyen['lastname'],
+				:firstName=> citoyen['firstname'],
+				:birthdate=> citoyen['birthday'],
+				:authorizedVotes=> [vote['cc_vote_id']],
+				:exp=>(Time.new.getutc+VOTING_TIME_ALLOWED).to_i
+			}
+			vote_token=JWT.encode token, CC_SECRET_FB, 'HS256'
+			res=Pages.db.query(@queries["update_citizen_hash"],[token[:sub],citoyen['email']])
+			return JSON.dump({'token'=>vote_token})
+		end
+
 		get '/api/token/:user_key' do
 			return JSON.dump({'param_missing'=>'ballot'}) if params['ballot'].nil?
 			return JSON.dump({'param_missing'=>'user key'}) if params['user_key'].nil?
@@ -307,6 +348,25 @@ END
 				Pages.db_close()
 			end
 			return JSON.dump({'token'=>vote_token})
+		end
+
+		get '/api/citizen/:user_key/election/:election_slug/votes' do
+			citoyen=authenticate_citizen(params['user_key'])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEV0]"}) if citoyen.nil?
+			return error_occurred(403,{"title"=>"Authentification manquante","msg"=>"Merci de vous authentifier [code:ACEV1]"}) if citoyen['validation_level'].to_i<3
+			votes=get_votes_by_election(params['election_slug'])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACEV2]"}) if votes.nil?
+			json=[]
+			if not votes.nil? then
+				votes.each do |v|
+					v['current']=v['current'].to_b
+					v['passed']=v['passed'].to_b
+					v['future']=v['future'].to_b
+					v['cc_app_id']=CC_APP_ID_FB
+					json.push(filter_output(v))
+				end
+			end
+			return JSON.dump({'votes'=>json});
 		end
 
 		get '/api/citizen/:user_key/election/:election_slug/candidates' do
