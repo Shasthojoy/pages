@@ -209,7 +209,8 @@ END
 			end
 
 			def get_elections(organization_slug,user_email)
-				res=Pages.db_query(@queries["get_elections_by_organization"],[organization_slug,user_email])
+				res=Pages.db.query(@queries["get_elections_by_organization"],[organization_slug,user_email])
+				return nil if res.nil?
 				return res.num_tuples.zero? ? nil : res
 			end
 
@@ -488,36 +489,28 @@ END
 		end
 
 		get '/citoyen/spa/:user_key/election/run' do
-			begin
-				Pages.db_init()
-				citoyen=authenticate_citizen(params['user_key'])
-				return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER00]"}) if citoyen.nil?
-				res=get_elections('laprimaire-org',citoyen['email']) #FIXME the right organization slug should be found dynamically here with the hostname
-				elections={}
-				main_elections={}
-				if !res.nil? then
-					res.each do |e|
-						elections[e['election_id']]=e
-						main_elections[e['election_id']]=e if e['main_election'].to_b
-					end
+			citoyen=authenticate_citizen(params['user_key'])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:CSER00]"}) if citoyen.nil?
+			res=get_elections('laprimaire-org',citoyen['email']) #FIXME the right organization slug should be found dynamically here with the hostname
+			elections={}
+			main_elections={}
+			if !res.nil? then
+				res.each do |e|
+					elections[e['election_id']]=e
+					main_elections[e['election_id']]=e if (e['main_election'].to_b && e['open'].to_b)
 				end
-				elections.each do |k,v|
-					if (!v['parent_election_id'].nil? && v['participating'].to_b) then
-						main_elections[v['parent_election_id']]['participating']=v['participating'].to_b
-						main_elections[v['parent_election_id']]['accepted']=v['accepted'].to_b
-						main_elections[v['parent_election_id']]['verified']=v['verified'].to_b
-						main_elections[v['parent_election_id']]['qualified']=v['qualified'].to_b
-						main_elections[v['parent_election_id']]['finalist']=v['finalist'].to_b
-						main_elections[v['parent_election_id']]['abandonned']=v['abandonned'].to_b
-						main_elections[v['parent_election_id']]['disqualified']=v['disqualified'].to_b
-						main_elections[v['parent_election_id']]['parent_slug']=v['slug']
-					end
+			end
+			elections.each do |k,v|
+				if (!v['parent_election_id'].nil? && v['participating'].to_b) then
+					main_elections[v['parent_election_id']]['participating']=v['participating'].to_b
+					main_elections[v['parent_election_id']]['accepted']=v['accepted'].to_b
+					main_elections[v['parent_election_id']]['verified']=v['verified'].to_b
+					main_elections[v['parent_election_id']]['qualified']=v['qualified'].to_b
+					main_elections[v['parent_election_id']]['finalist']=v['finalist'].to_b
+					main_elections[v['parent_election_id']]['abandonned']=v['abandonned'].to_b
+					main_elections[v['parent_election_id']]['disqualified']=v['disqualified'].to_b
+					main_elections[v['parent_election_id']]['parent_slug']=v['slug']
 				end
-			rescue PG::Error => e
-				Pages.log.error "/citoyen/spa/election/run DB Error [code:CSER01] #{params}\n#{e.message}"
-				return error_occurred(500,{"title"=>"Erreur serveur","msg"=>"Récupération des infos impossible [code:CSER01]"})
-			ensure
-				Pages.db_close()
 			end
 			return erb 'spa/candidats/choose-election'.to_sym, :locals=>{
 				'citoyen'=>citoyen,
