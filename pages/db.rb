@@ -23,14 +23,14 @@ module Pages
 
 		def initialize
 			return unless defined? PGNAME_LIVE
-			pgpwd=::DEBUG ? ::PGPWD_LIVE : ::PGPWD_LIVE
-			pgname=::DEBUG ? ::PGNAME_LIVE : ::PGNAME_LIVE
-			pguser=::DEBUG ? ::PGUSER_LIVE : ::PGUSER_LIVE
-			pghost=::DEBUG ? ::PGHOST_LIVE : ::PGHOST_LIVE
-			#pgpwd=::DEBUG ? ::PGPWD_TEST : ::PGPWD_LIVE
-			#pgname=::DEBUG ? ::PGNAME_TEST : ::PGNAME_LIVE
-			#pguser=::DEBUG ? ::PGUSER_TEST : ::PGUSER_LIVE
-			#pghost=::DEBUG ? ::PGHOST_TEST : ::PGHOST_LIVE
+			#pgpwd=::DEBUG ? ::PGPWD_LIVE : ::PGPWD_LIVE
+			#pgname=::DEBUG ? ::PGNAME_LIVE : ::PGNAME_LIVE
+			#pguser=::DEBUG ? ::PGUSER_LIVE : ::PGUSER_LIVE
+			#pghost=::DEBUG ? ::PGHOST_LIVE : ::PGHOST_LIVE
+			pgpwd=::DEBUG ? ::PGPWD_TEST : ::PGPWD_LIVE
+			pgname=::DEBUG ? ::PGNAME_TEST : ::PGNAME_LIVE
+			pguser=::DEBUG ? ::PGUSER_TEST : ::PGUSER_LIVE
+			pghost=::DEBUG ? ::PGHOST_TEST : ::PGHOST_LIVE
 
 			Pages.log.debug "connect to database : #{pgname} with user : #{pguser}"
 			@@db=::PG.connect(

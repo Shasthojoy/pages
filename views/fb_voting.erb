@@ -11,6 +11,7 @@
     <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
     <link rel="stylesheet" href="https://s3.eu-central-1.amazonaws.com/laprimaire/styles/application-cbbc745bd85.css">
+    <link href="https://s3.us-east-2.amazonaws.com/reprezentus/templates/css/compiled.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -170,6 +171,14 @@ ul.social_buttons > li{
 						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
 					    </div>
 				    </div>
+				    <div style="display:none;margin:0 auto;background-color:#FFA500;height:100%;" id="voting_frame_paused">
+					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
+						    <p style="font-size:20px;">Désolé, les votes sont temporairement suspendus :/</p>
+						    <p style="font-size:20px;">Merci de réessayer dans quelques minutes... toutes nos excuses pour ce souci !</p>
+						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
+						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
+					    </div>
+				    </div>
 			    </div>
 		    </div>
 	    </div>
@@ -177,11 +186,27 @@ ul.social_buttons > li{
     <input id="msg_ext" value="0" type="hidden">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://s3.us-east-2.amazonaws.com/reprezentus/templates/js/compiled.min.js"></script>
     <script>
 function getURLParameter(name) {
 	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
 }
-
+function show_notification(data) {
+	if (data.responseText!=undefined) {
+		err=JSON.parse(data.responseText);
+	} else if (data!=undefined) {
+		err=JSON.parse(data);
+	} else {
+		return;
+	}
+	if (err['type']=='success') {
+		toastr.success(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
+	} else if (err['type']=='info') {
+		toastr.info(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
+	} else { // error // default
+		toastr.error(err['msg'],err['title'],{positionClass: 'toast-bottom-right'});
+	}
+}
 (function(d, s, id){
 	var js, fjs = d.getElementsByTagName(s)[0];
 	if (d.getElementById(id)) {return;}
@@ -286,7 +311,7 @@ $(document).ready(function() {
 	});
 	$('#voting_frame_cc').on('shown.bs.modal', function () {
 		$('#voting_frame_donation').hide();
-		$('#voting_frame_iframe').load(function() { 
+		$('#voting_frame_iframe').on('load',function() { 
 			$('#voting_frame_loading').hide();
 			if ($('#voting_frame_iframe').attr("src")!='about:blank') {
 				$('#voting_frame_iframe').show();
@@ -302,11 +327,17 @@ $(document).ready(function() {
 				$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
 			},
 			error: function(data) {
-				console.log("votes are paused. reloading page...");
+				console.log("votes are paused.");
+				show_notification(data);
 			}
 		});
 	<% else %>
-		$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user=<%= token %>&appId=<%= cocorico_app_id %>&locale=fr-FR');
+		<% if VOTE_PAUSED then %>
+			$('#voting_frame_loading').hide();
+			$('#voting_frame_paused').show();
+		<% else %>
+			$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user=<%= token %>&appId=<%= cocorico_app_id %>&locale=fr-FR');
+		<% end %>
 	<% end %>
 	});
 	console.log("loading voting module");

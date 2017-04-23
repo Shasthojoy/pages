@@ -3,7 +3,10 @@
 <style>
     .independant {display:none;}
 </style>
-        <h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
+
+<div class="container-fluid">
+<!--
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <ul class="stepper stepper-horizontal">
@@ -29,8 +32,97 @@
         </div>
     </div>
     <div id="legislatives-2017-1" class="step" style="display:visible;">
-        <h3 class="h3-responsive doc-title">Du 8 mars au 20 avril 2017</h3>
+        <h3 class="h3-responsive doc-title">Du 8 mars au 8 mai 2017</h3>
         <p class="text-justify">Afin de se qualifier, un(e) candidat(e) doit recueillir au moins 150 soutiens de citoyen(ne)s. Un(e) citoyen(ne) ne peut soutenir que 3 candidat(e)s au maximum.</p>
+
+
+<ul class="nav nav-tabs tabs-2 red" role="tablist">
+	<li class="nav-item">
+		<a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Ma circonscription</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Toute la France</a>
+	</li>
+</ul>
+<div class="tab-content card">
+	<div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+		<br>
+		<h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
+		<br>
+		<h3 class="h3-responsive doc-title">Député(e) actuel(le)</h3>
+		<div class="card card-block" style="max-width:420px;">
+			<div style="position:absolute;width:100px;top:20px;right:0px;">
+				<a href="<%= circonscription['deputy_url'] %>" target="_blank">
+					<img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
+				</a>
+			</div>
+			<div style="width:320px;">
+				<h4 class="card-title"><%= circonscription['deputy_name'] %></h4>
+				<p class="card-text">Parti: <%= circonscription['deputy_party'] %><br/>Métier: <%= circonscription['deputy_job'] %></p>
+				<div class="flex-row">
+					<a href="<%= circonscription['deputy_url'] %>" target="_blank" class="card-link">Voir sa fiche sur nosdéputés.fr</a>
+				</div>
+			</div>
+		</div><br/>
+		<h3 class="h3-responsive doc-title">Les candidats en lice</h3>
+		<div class="container-fluid">
+			<div id="hits" class="row"></div>
+		</div>
+		<br/>
+	</div>
+	<div class="tab-pane fade" id="panel2" role="tabpanel">
+		<br>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+
+		<div id="header_overlay" class="blue">
+			<div class="container">
+				<div class="row">
+					<input type="text" id="search-box" />
+				</div>
+			</div>
+		</div>
+		<div class="row" style="border-bottom: 2px solid #527bdd;padding: 10px;width:100%;margin: 0px auto 0px auto;font-size: 16px;color: #5e5e5e;text-align:center;">
+			Voici la liste des candidat(e)s <b>déclaré(e)s</b> aux législatives sur LaPrimaire.org. Cette liste et le nombre de soutiens sont rafraîchis 1 fois par jour.
+		</div>
+		<div style="text-align:center;background-color:#527bdd;"><a id="clear-all">réinitialiser la recherche</a></div>
+		<div class="alert alert-warning" style="display:none;">
+			<p style="font-size:16px;font-weight:bold;text-align: center;"><i class="fa fa-info-circle" style="font-size:1.5em;" aria-hidden="true"></i>La phase de qualification à LaPrimaire.org est terminée. La liste des candidat-e-s qualifié-e-s est <a href="/qualifies/" target="_blank">visible ici</a>.</p>
+		</div>
+		<div id="contribute_form" style="margin-top:0px;padding-top:0px;">
+			<div class="container-fluid">
+				<div class="row" style="width:95%;margin: 5px auto;">
+				</div>
+				<div class="row">
+					<div class="col-lg-2 col-md-2">
+						<div class="row">
+							<div class="col-xs-12">                            
+								<div id="gender"></div>
+								<div id="candidate_supporters"></div>
+								<div id="candidate_age"></div>
+								<div id="num_departement"></div>
+								<div id="num_circonscription"></div>
+								<div id="secteur"></div>
+								<div id="nb_days_verified"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-10 col-md-10">
+						<div class="row">
+							<div id="hits-container"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+	</div>
+</div>
+-->
+
+	<h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
         <h3 class="h3-responsive doc-title">Député(e) actuel(le)</h3>
 	<div class="card card-block" style="max-width:420px;">
 		<div style="position:absolute;width:100px;top:20px;right:0px;">
@@ -51,15 +143,18 @@
 		<div id="hits" class="row"></div>
         </div>
 	<br/>
+<!--
     </div>
     <div id="legislatives-2017-2" class="step" style="display:none;">
-        <h3 class="h3-responsive doc-title">Du 21 avril 2017 au 5 mai 2017</h3>
+        <h3 class="h3-responsive doc-title">Du 10 au 14 mai 2017</h3>
         <p class="text-justify">Vote au jugement majoritaire pour départager les candidat(e)s finalistes</p>
     </div>
     <div id="legislatives-2017-3" class="step" style="display:none;">
-        <h3 class="h3-responsive doc-title">Le 6 mai 2017</h3>
+        <h3 class="h3-responsive doc-title">Le 15 mai 2017</h3>
         <p class="text-justify">Annonce officielle des résultats</p>
     </div>
+-->
+</div>
 
 <script type="text/html" id="hit-template">
 	{{#candidates}}
@@ -173,4 +268,274 @@ function pageReady() {
 	});
 }
 </script>
+<script type="text/javascript">
+/*
+function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
+}
+function shuffle (o){
+	  for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+	    return o;
+}
+var num_dept=getURLParameter('dept');
+$.getScript("https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js", function() {
+	var search = instantsearch({
+		appId: 'D1XVECSSVA',
+		apiKey: '58643f9dff29db9f8da06875479fb290',
+		indexName: 'candidats_legislatives',
+		urlSync: false
+	});
+	if (!!num_dept) {
+		search.searchParameters={
+			hierarchicalFacetsRefinements: { // menu is implemented as a hierarchicalFacetsRefinements
+				num_departement: [num_dept]
+			}
+		}
+	}
+	search.addWidget(
+			instantsearch.widgets.searchBox({
+				container: '#search-box',
+				placeholder: 'Chercher un(e) candidat(e)...',
+				cssClasses: {root: 'lp-search',input:'lp-search-input'}
+			})
+			);
+	search.addWidget(
+			instantsearch.widgets.refinementList({
+				container: '#gender',
+				attributeName: 'gender',
+				sortBy: ['name:asc'],
+				autoHideContainer: false,
+				collapsible: true,
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					checkbox:'lp-cat-checkbox',
+					label:'lp-cat-label',
+					active:'lp-cat-active',
+					count:'lp-cat-count'
+				},
+				templates: {
+					header: 'Candidats',
+				}
 
+			})
+			);
+	search.addWidget(
+			instantsearch.widgets.menu({
+				container: '#secteur',
+				attributeName: 'secteur',
+				sortBy: ['count:desc'],
+				limit: 100,
+				autoHideContainer: true, // TOFIX
+				collapsible: true,
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					checkbox:'lp-cat-checkbox',
+					label:'lp-cat-label',
+					active:'lp-cat-active',
+					count:'lp-cat-count'
+				},
+				templates: {
+					header: 'Secteur d\'activité professionel',
+				}
+
+			})
+	);
+	search.addWidget(
+			instantsearch.widgets.clearAll({
+				container: '#clear-all',
+				templates: {
+					link: '<i class="fa fa-times" aria-hidden="true"></i>&nbsp;Réinitialiser la recherche'
+				},
+				cssClasses: {
+					link:'lp-reset-item',
+				},
+				autoHideContainer: true
+			})
+			);
+	search.addWidget(
+			instantsearch.widgets.menu({
+				container: '#num_departement',
+				attributeName: 'num_departement',
+				sortBy: ['num_departement:asc'],
+				autoHideContainer: false,
+				collapsible: true,
+				limit: 105,
+				showMore: true,
+				  showMore: {
+				  templates: {
+				  active:"Voir moins",
+				  inactive:"Voir tous les départements"
+				  }
+				  },
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					checkbox:'lp-cat-checkbox',
+					label:'lp-cat-label',
+					active:'lp-cat-active',
+					count:'lp-cat-count'
+				},
+				templates: {
+					header: 'Département',
+					item: 'département {{name}} ({{count}})'
+				}
+
+			})
+	);
+	search.addWidget(
+			instantsearch.widgets.menu({
+				container: '#num_circonscription',
+				attributeName: 'num_circonscription',
+				sortBy: ['num_circonscription:asc'],
+				limit: 105,
+				autoHideContainer: false,
+				collapsible: true,
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					checkbox:'lp-cat-checkbox',
+					label:'lp-cat-label',
+					active:'lp-cat-active',
+					count:'lp-cat-count'
+				},
+				templates: {
+					header: 'Circonscription',
+					item: 'circonscription {{name}} ({{count}})'
+				}
+			})
+	);
+
+	search.addWidget(
+			instantsearch.widgets.rangeSlider({
+				container: '#nb_days_verified',
+				attributeName: 'nb_days_verified',
+				autoHideContainer: true, // TOFIX
+				collapsible: true,
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					active:'lp-cat-active'
+				},
+				templates: {
+					header: 'Nombre de jours en ligne',
+				}
+			})
+			);
+	search.addWidget(
+			instantsearch.widgets.numericRefinementList({
+				container: '#candidate_supporters',
+				attributeName: 'nb_soutiens',
+				autoHideContainer: false,
+				collapsible: true,
+				options: [
+				{name: 'Tous'},
+				{start: 200, name: '> 200'},
+				{start: 100, end: 199, name: '> 100'},
+				{start: 50, end: 99, name: '> 50'},
+				{end: 49, name: '< 50'}
+				],
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					active:'lp-cat-active'
+				},
+				templates: {
+					header: 'Nombre de soutiens',
+				}
+			})
+	);
+	search.addWidget(
+			instantsearch.widgets.numericRefinementList({
+				container: '#candidate_age',
+				attributeName: 'age',
+				autoHideContainer: false,
+				collapsible: true,
+				options: [
+				{name: 'Tous'},
+				{end: 24, name: '18 - 24 ans'},
+				{start: 25, end: 34, name: '25 - 34 ans'},
+				{start: 35, end: 44, name: '35 - 44 ans'},
+				{start: 45, end: 54, name: '45 - 54 ans'},
+				{start: 55, name: 'plus de 54 ans'}
+				],
+				cssClasses: {
+					header:'lp-cat-header',
+					item:'lp-cat-item',
+					active:'lp-cat-active'
+				},
+				templates: {
+					header: 'Age du candidat(e)',
+				}
+			})
+	);
+	search.addWidget(
+			instantsearch.widgets.hits({
+				container: '#hits-container',
+				transformData: {
+					allItems: function (content) {
+						return { hits: shuffle(content.hits) };
+					}
+				},
+				templates: {
+					empty: '\
+						<div style="width:320px;margin:30px auto 30px auto;">\
+						Aucun(e) candidat(e) ne s\'est encore présenté(e) dans cette circonscription... et si <b>VOUS</b> vous présentiez ?\
+						</div>\
+						<div style="width:250px;margin:20px auto;">\
+						<a data-toggle="modal" data-target="#JoinUsNow" style="font-size:24px;font-variant:small-caps;width:250px;cursor:pointer;margin-bottom:5px;" class="btn blue" title="Je suis candidat">Je suis candidat</a>\
+						</div>\
+						<div style="width:320px;margin:0px auto 30px auto;">\
+						Sinon, pour voir les candidat(e)s des autres circonscriptions, cliquez sur "Réinitialiser la recherche" juste au dessus.\
+						</div>',
+					allItems: '{{#hits}}\
+						<div class="col-sm-6 col-md-6 col-lg-4">\
+						<div class="candidate_box">\
+						<div class="candidate_oldpic {{status}}" style="margin: 0 auto;">\
+						<div class="badge_soutiens">{{nb_soutiens}} soutiens</div>\
+						<div class="nb_soutiens_total">{{nb_soutiens}} soutiens au total</div>\
+						<div class="badge_qualified {{qualified}}">Qualifié</div>\
+						<div class="badge_dept">dept {{num_departement}}</div>\
+						<div class="badge_circo">circo {{num_circonscription}}</a></div>\
+						<div class="nb_soutiens">+{{nb_soutiens_7j}} soutiens / 7 derniers jours</div>\
+						<a href="/candidat/{{slug}}">\
+						<img src="https://s3.eu-central-1.amazonaws.com/{{photo}}" height="300px">\
+						</a>\
+						</div>\
+						<div class="candidate_pic {{status}} col-xs-6" style="margin: 0 auto;">\
+						<div class="badge_soutiens">{{nb_soutiens}} soutiens</div>\
+						<div class="nb_soutiens_total">{{nb_soutiens}} soutiens au total</div>\
+						<div class="badge_qualified {{qualified}}">Qualifié</div>\
+						<div class="nb_soutiens">+{{nb_soutiens_7j}} soutiens / 7 derniers jours</div>\
+						<a href="/candidat/{{slug}}">\
+						<img src="https://s3.eu-central-1.amazonaws.com/{{photo}}" height="300px">\
+						</a>\
+						</div>\
+						<div class="candidate_bio {{status}} col-xs-6" style="margin: 0 auto;">\
+						<div class="vision_title">Ma vision</div>\
+						<div class="vision"><q>{{{_highlightResult.vision.value}}}</q></div>\
+						<div class="priorite_title">Mes priorités</div>\
+						<ol>\
+						<li class="priorite">{{{_highlightResult.prio1.value}}}</li>\
+						<li class="priorite">{{{_highlightResult.prio2.value}}}</li>\
+						<li class="priorite">{{{_highlightResult.prio3.value}}}</li>\
+						</ol>\
+						</div>\
+						</div>\
+						<div class="candidate_name"><a href="/candidat/{{slug}}">{{{_highlightResult.name.value}}}</a></div>\
+						<div class="candidate_infos">\
+						<div class="age_job {{status}}">{{age}} ans, {{{_highlightResult.job.value}}}</div>\
+						<div class="dept {{status}}">habite le département {{{_highlightResult.departement.value}}}</div>\
+						<div class="candidate_M_since {{gender}}">candidat depuis {{nb_days_verified}} jours</div>\
+						<div class="candidate_F_since {{gender}}">candidate depuis {{nb_days_verified}} jours</div>\
+						</div>\
+						</div>{{/hits}}'
+				},
+				hitsPerPage: 200
+			})
+	);
+	search.start();
+})
+*/
+</script>

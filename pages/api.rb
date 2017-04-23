@@ -270,8 +270,7 @@ END
 			return JSON.dump({'param_missing'=>'lastname'}) if params['lastname'].nil?
 			return JSON.dump({'param_missing'=>'fb_id'}) if params['fb_id'].nil?
 			if VOTE_PAUSED then
-				status 404
-				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
+				return error_occurred(404,{"title"=>"Suspension temporaire des votes","msg"=>"Suite à une surcharge, les votes sont temporairement suspendus. Réessayez un peu plus tard..."})
 			end
 			vote_id=FB_VOTE_ID_TEST if params['test']=='1'
 			vote_id=FB_VOTE_ID_TEST_2 if params['test']=='2'
@@ -293,8 +292,7 @@ END
 			return JSON.dump({'param_missing'=>'user key'}) if params['user_key'].nil?
 			return JSON.dump({'param_missing'=>'vote id'}) if params['vote_id'].nil?
 			if VOTE_PAUSED then
-				status 404
-				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
+				return error_occurred(404,{"title"=>"Suspension temporaire des votes","msg"=>"Suite à une surcharge, les votes sont temporairement suspendus. Réessayez un peu plus tard... et toutes nos excuses !"})
 			end
 			citoyen=authenticate_citizen(params['user_key'])
 			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ATS0]"}) if citoyen.nil?
@@ -321,8 +319,7 @@ END
 			return JSON.dump({'param_missing'=>'user key'}) if params['user_key'].nil?
 			return JSON.dump({'param_missing'=>'vote id'}) if params['vote_id'].nil?
 			if VOTE_PAUSED then
-				status 404
-				return JSON.dump({'message'=>'votes are currently paused, please retry in a few minutes...'})
+				return error_occurred(404,{"title"=>"Suspension temporaire des votes","msg"=>"Suite à une surcharge, les votes sont temporairement suspendus. Réessayez un peu plus tard... et toutes nos excuses !"})
 			end
 			begin
 				Pages.db_init()
