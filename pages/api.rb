@@ -249,18 +249,26 @@ END
 			set :root, File.expand_path('../../',__FILE__)
 		end
 
-		get '/api/facebook_voting_nb' do
-			begin
-				Pages.db_init()
-				res=Pages.db_query("SELECT count(*) FROM fb_users WHERE profile->>'vote_OK' is not null")
-				nb=res[0]['count']
-			rescue PG::Error => e
-				Pages.log.error "/citoyen/facebook_voting_nb DB Error #{params}\n#{e.message}"
-				status 500
-				return JSON.dump({"title"=>"Erreur serveur","message"=>e.message})
-			ensure
-				Pages.db_close()
+		post '/api/facebook_vote_status' do
+			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
+			return JSON.dump({'param_missing'=>'vote_status'}) if params['vote_status'].nil?
+			token=params['token']
+			vote_status=params['vote_status']
+			return JSON.dump({'param_incorrect'=>'vote_status'}) if not ['voteSuccess','voteError'].include?(params['vote_status'])
+			decoded_token = JWT.decode token, CC_SECRET_FB, true, { :algorithm => 'HS256' }
+			id=Digest::SHA256.hexdigest(decoded_token[0]['email'].split('@')[0])
+			res=Pages.db.query("UPDATE fb_users SET profile=profile || $2::jsonb WHERE id=$1 RETURNING *",[id,'{"voteStatus":"'+vote_status+'"}'])
+			answer={'statusUpdated'=>1}
+			if res.num_tuples.zero? then
+				status 400
+				answer['statusUpdated']=0 
 			end
+			return JSON.dump(answer)
+		end
+
+		get '/api/facebook_voting_nb' do
+			res=Pages.db.query("SELECT count(*) FROM fb_users WHERE profile->>'vote_OK' is not null")
+			nb=res[0]['count']
 			return JSON.dump({'total'=>nb})
 		end
 

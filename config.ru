@@ -23,7 +23,7 @@ else
 	cookie_settings[:httponly]=true
 	use Rack::Session::EncryptedCookie, cookie_settings
 end
-use Rack::Csrf, :raise=>true
+#use Rack::Csrf, :raise=>true
 
 COCORICO_HOST=::DEBUG ? CC_HOST_TEST : CC_HOST
 COCORICO_APP_ID=::DEBUG ? CC_APP_ID_TEST : CC_APP_ID

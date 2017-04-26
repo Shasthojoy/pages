@@ -353,6 +353,22 @@ END
 			erb :illustration_100k
 		end
 
+		get '/citoyen/vote/facebook_2' do
+			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
+			app_id=CC_APP_ID_FB
+			vote_id=FB_VOTE_ID_2
+			test=params['test']
+			vote_id=FB_VOTE_ID_TEST if test=='1'
+			vote_id=FB_VOTE_ID_TEST_2 if test=='2'
+			erb :fb_voting, :locals=>{
+				'cocorico_app_id'=>app_id,
+				'cc_vote_id'=>vote_id,
+				'token'=>params['token'],
+				'test'=>test,
+				'callback'=>'api/vote_completed_2'
+			}
+		end
+
 		get '/citoyen/vote/facebook_11' do
 			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
 			app_id=CC_APP_ID_FB

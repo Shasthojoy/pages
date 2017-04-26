@@ -179,6 +179,14 @@ ul.social_buttons > li{
 						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
 					    </div>
 				    </div>
+				    <div style="display:none;margin:0 auto;background-color:#0099CC;height:100%;" id="voting_frame_finished">
+					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
+						    <p style="font-size:20px;">Désolé, ce vote est désormais clos</p>
+						    <p style="font-size:20px;">Il n'est plus possible de voter, la période de vote étant terminée.</p>
+						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
+						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
+					    </div>
+				    </div>
 			    </div>
 		    </div>
 	    </div>
@@ -227,6 +235,24 @@ function resizeIframe(obj){
 ga('create', 'UA-60977053-1', 'auto');
 ga('send', 'pageview');
 
+function vote_status(vote_status) {
+	$.ajax({
+		url: "https://laprimaire.org/api/facebook_vote_status",
+		//url: "http://localhost:9293/api/facebook_vote_status",
+		type: "POST",
+		data: {
+			'vote_status':vote_status,
+			'token': '<%= token %>'
+		},
+		dataType: "json",
+		success: function(data) {
+			console.log("vote status saved.");
+		},
+		error: function(data) {
+			console.log("could not save vote status");
+		}
+	});
+}
 function back_to_chat(cmd) {
 	$.ajax({
 		url: "https://<%= BOT_HOST %>/<%= BOT_PREFIX %>/fbmessenger",
@@ -260,7 +286,7 @@ $(document).ready(function() {
 		}
 		var data=JSON.parse(e['data']);
 		if (data['message']=='voteComplete') {
-			back_to_chat("<%= callback %>");
+			//back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
@@ -274,8 +300,9 @@ $(document).ready(function() {
 				$('#voting_frame_back').show();
 			}
 		} else if (data['message']=='voteSuccess') {
+			vote_status('voteSuccess');
 		} else if (data['message']=='voteError') {
-			back_to_chat("<%= callback %>");
+			vote_status('voteError');
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
@@ -288,8 +315,9 @@ $(document).ready(function() {
 			} else {
 				$('#voting_frame_error').show();
 			}
+			//back_to_chat("<%= callback %>");
 		} else if (data['message']=='voteCanceled') {
-			back_to_chat("<%= callback %>");
+			//back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
