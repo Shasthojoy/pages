@@ -8,33 +8,39 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="stepper stepper-horizontal">
-                <li class="completed active grey lighten-3">
+                <li>
                     <a id="1erTour"  style="cursor:pointer;">
                         <span class="circle">1</span>
-                        <span class="label">1er Tour <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
+                        <span class="label">1er Tour <i  style="color:#00c851;" class="fa fa-check" aria-hidden="true"></i></span>
                     </a>
                 </li>
-                <li>
+                <li class="completed active grey lighten-3">
                     <a id="2ndTour" style="cursor:pointer;">
                         <span class="circle">2</span>
-                        <span class="label">2ème Tour</span>
+                        <span class="label">2ème Tour <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
-    <div id="jm-2017-1" class="step" style="display:visible;">
+    <div id="jm-2017-1" class="step" style="display:none;">
         <h3 class="h3-responsive doc-title">Du 11 avril au 23 avril 2017</h3>
         <p class="text-justify">Exprimez-vous sur les 11 candidat(e)s officiels à l'élection ainsi que sur les 4 candidat(e)s non qualifiés mais vainqueurs ou finalistes de leur primaire.</p>
-        <h3 class="h3-responsive doc-title">Les 2 votes en cours</h3>
+        <h3 class="h3-responsive doc-title">2 votes clos</h3>
+        <p class="text-justify">Les résultats seront rendus publics la semaine suivant l'élection présidentielle.</p>
+        <div class="container-fluid">
+		<div id="hits-tour1" class="row"></div>
+        </div>
+	<br/>
+    </div>
+    <div id="jm-2017-2" class="step" style="display:visible;">
+        <h3 class="h3-responsive doc-title">Du 24 avril 2017 au 7 mai 2017</h3>
+	<p class="text-justify">Prononcez-vous sur les 2 candidats officiellement au 2ème tour de l'élection présidentielle.</p>
+        <h3 class="h3-responsive doc-title">1 vote en cours</h3>
         <div class="container-fluid">
 		<div id="hits" class="row"></div>
         </div>
 	<br/>
-    </div>
-    <div id="jm-2017-2" class="step" style="display:none;">
-        <h3 class="h3-responsive doc-title">Du 24 avril 2017 au 7 mai 2017</h3>
-        <p class="text-justify">Dès les résultats du 1er tour connus, vous serez invités à vous prononcer sur les 2 candidat(e)s qui seront officiellement au 2ème tour de l'élection présidentielle.</p>
     </div>
     <div class="modal fade" id="voting_modal_cc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	    <div class="modal-dialog modal-lg">
@@ -100,10 +106,10 @@
 					<button style="cursor:pointer;" class="btn btn-success jevote_btn" data-vote-id="{{vote_id}}" data-cc-id="{{cc_vote_id}}" data-app-id="{{cc_app_id}}">Je vote</button>
 				{{/current}}
 				{{#passed}}
-					<a href="#election/{{slug}}" target="_blank" class="btn btn-primary" disabled>Vote clos</a>
+					<a target="_blank" class="btn btn-primary" disabled>Vote clos</a>
 				{{/passed}}
 				{{#future}}
-					<a href="#election/{{slug}}" target="_blank" class="btn btn-primary" disabled>Bientôt</a>
+					<a target="_blank" class="btn btn-primary" disabled>Bientôt</a>
 				{{/future}}
 					</div>
 				</div>

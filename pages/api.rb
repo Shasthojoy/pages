@@ -368,7 +368,8 @@ END
 					v['passed']=v['passed'].to_b
 					v['future']=v['future'].to_b
 					v['cc_app_id']=CC_APP_ID_FB
-					json.push(filter_output(v))
+					#json.push(filter_output(v)) 
+					json.push(filter_output(v)) if v['current'] #FIXME gros hack
 				end
 			end
 			return JSON.dump({'votes'=>json});
