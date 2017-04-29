@@ -267,7 +267,7 @@ END
 		end
 
 		get '/api/facebook_voting_nb' do
-			res=Pages.db.query("SELECT count(*) FROM fb_users WHERE profile->>'vote_OK' is not null")
+			res=Pages.db.query("SELECT count(*) FROM fb_users WHERE profile->>'vote_OK_2' is not null",[])
 			nb=res[0]['count']
 			return JSON.dump({'total'=>nb})
 		end

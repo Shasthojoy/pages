@@ -286,7 +286,6 @@ $(document).ready(function() {
 		}
 		var data=JSON.parse(e['data']);
 		if (data['message']=='voteComplete') {
-			//back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
@@ -315,9 +314,7 @@ $(document).ready(function() {
 			} else {
 				$('#voting_frame_error').show();
 			}
-			//back_to_chat("<%= callback %>");
 		} else if (data['message']=='voteCanceled') {
-			//back_to_chat("<%= callback %>");
 			$('#voting_frame_iframe').hide();
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
