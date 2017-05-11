@@ -18,7 +18,7 @@ db=PG.connect(
 Algolia.init :application_id=>ALGOLIA_ID, :api_key=>ALGOLIA_KEY
 index_candidats=Algolia::Index.new("candidats_legislatives")
 candidates_list=<<END
-SELECT e.slug as election_slug, c.code_departement,c.departement,c.name_circonscription,c.num_circonscription,u.email,u.slug,u.firstname,u.lastname,u.gender,u.birthday,u.job,u.secteur,ce.accepted,ce.verified,ce.enrolled_at::DATE as enrolled_at, date_part('day',ce.verified_at::DATE) as verified_at,date_part('day',now() - ce.verified_at) as nb_days_verified,ce.qualified,ce.qualified_at,ce.official,ce.official_at,ce.fields->>'candidate' as supported_candidate, ce.fields->>'candidate_photo' as supported_candidate_photo, ce.fields->>'vision', ce.fields->>'prio1', ce.fields->>'prio2', ce.fields->>'prio3', u.photo, u.website, u.twitter, u.facebook, u.youtube,u.linkedin,u.blog,u.wikipedia,u.instagram, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
+SELECT e.slug as election_slug, c.code_departement,c.departement,c.name_circonscription,c.num_circonscription,u.email,u.slug,u.firstname,u.lastname,u.gender,u.birthday,u.job,u.secteur,ce.accepted,ce.verified,ce.enrolled_at::DATE as enrolled_at, date_part('day',ce.verified_at::DATE) as verified_at,date_part('day',now() - ce.verified_at) as nb_days_verified,ce.qualified,ce.qualified_at,ce.official,ce.official_at,ce.fields->>'candidate' as supported_candidate, ce.fields->>'candidate_photo' as supported_candidate_photo, ce.fields->>'age' as age, ce.fields->>'vision', ce.fields->>'prio1', ce.fields->>'prio2', ce.fields->>'prio3', u.photo, u.website, u.twitter, u.facebook, u.youtube,u.linkedin,u.blog,u.wikipedia,u.instagram, z.nb_soutiens, w.nb_soutiens_7j, y.nb_soutiens_30j
 FROM users as u
 INNER JOIN candidates_elections as ce ON (ce.email=u.email)
 INNER JOIN elections as e ON (e.election_id=ce.election_id AND e.parent_election_id=2)
@@ -68,12 +68,11 @@ if not res.num_tuples.zero? then
 		unless r['vision'].nil? or r['vision'].empty? then
 			status="complete"
 		end
-		age=nil
-		unless birthday.nil? then
-			now = Time.now.utc.to_date
-			age = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
-		end
-
+		#age=nil
+		#unless birthday.nil? then
+		#	now = Time.now.utc.to_date
+		#	age = now.year - birthday.year - ((now.month > birthday.month || (now.month == birthday.month && now.day >= birthday.day)) ? 0 : 1)
+		#end
 		#if (r['verified'].to_b and not r['vision'].nil? and r['nb_soutiens_30j'].to_i>0) then
 		if (r['verified'].to_b) then
 			index_candidats.save_object({
@@ -90,7 +89,7 @@ if not res.num_tuples.zero? then
 				"name"=>r['firstname']+' '+r['lastname'],
 				"photo"=>r['photo'],
 				"gender"=>gender,
-				"age"=>age,
+				"age"=>r['age'].to_i,
 				"job"=>r['job'],
 				"secteur"=>r['secteur'],
 				"departement"=>r['departement'],

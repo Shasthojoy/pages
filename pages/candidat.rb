@@ -211,7 +211,7 @@ END
 					:instagram=>instagram,
 					:wikipedia=>wikipedia,
 					:circonscription=>circonscription,
-					:age=>age,
+					:age=>candidat['age'],
 					:days_verified=>days_verified,
 				}
 			end

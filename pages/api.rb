@@ -42,6 +42,10 @@ END
 				'set_circonscription_by_email'=><<END,
 INSERT INTO voters (election_id,email) SELECT e.election_id,$1 FROM elections as e WHERE e.slug=$2 RETURNING *
 END
+				'reset_circonscription_by_email'=><<END,
+DELETE FROM voters USING elections AS e WHERE e.slug=$2 AND voters.election_id=e.election_id AND voters.email=$1 RETURNING *
+END
+
 				'register_candidate_for_election'=><<END,
 INSERT INTO candidates_elections (email,election_id,fields)
 SELECT CAST($1 AS VARCHAR),e.election_id,'{}'::json 
@@ -159,7 +163,7 @@ END
 			end
 
 			def authenticate_election(election_slug)
-				res=Pages.db_query(@queries["get_election_by_slug"],[election_slug])
+				res=Pages.db.query(@queries["get_election_by_slug"],[election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -169,7 +173,12 @@ END
 			end
 
 			def set_circonscription(email,election_slug)
-				res=Pages.db_query(@queries["set_circonscription_by_email"],[email,election_slug])
+				res=Pages.db.query(@queries["set_circonscription_by_email"],[email,election_slug])
+				return res.num_tuples.zero? ? nil : res[0]
+			end
+
+			def reset_circonscription(email,election_slug)
+				res=Pages.db.query(@queries["reset_circonscription_by_email"],[email,election_slug])
 				return res.num_tuples.zero? ? nil : res[0]
 			end
 
@@ -434,6 +443,15 @@ END
 			ensure
 				Pages.db_close()
 			end
+			return JSON.dump({'success'=>1})
+		end
+
+		post '/api/citizen/:user_key/election/:election_slug/reset_circonscription' do
+			citoyen=authenticate_citizen(params['user_key'])
+			return error_occurred(404,{"title"=>"Erreur","msg"=>"Utilisateur inconnu"}) if citoyen.nil?
+			election=authenticate_election(params['election_slug'])
+			return error_occurred(404,{"title"=>"Page inconnue","msg"=>"La page demandée n'existe pas [code:ACERC0]"}) if election.nil?
+			reset_circonscription(citoyen['email'],election['slug'])
 			return JSON.dump({'success'=>1})
 		end
 

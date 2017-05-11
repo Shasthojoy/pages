@@ -4,156 +4,143 @@
     .independant {display:none;}
 </style>
 
-<div class="container-fluid">
-<!--
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="stepper stepper-horizontal">
-                <li class="completed active grey lighten-3">
-                    <a id="qualification"  style="cursor:pointer;">
-                        <span class="circle">1</span>
-                        <span class="label">Qualification <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
-                    </a>
-                </li>
-                <li>
-                    <a id="vote" style="cursor:pointer;">
-                        <span class="circle">2</span>
-                        <span class="label">Vote</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="resultats" style="cursor:pointer;">
-                        <span class="circle">3</span>
-                        <span class="label">Résultats</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div id="legislatives-2017-1" class="step" style="display:visible;">
-        <h3 class="h3-responsive doc-title">Du 8 mars au 8 mai 2017</h3>
-        <p class="text-justify">Afin de se qualifier, un(e) candidat(e) doit recueillir au moins 150 soutiens de citoyen(ne)s. Un(e) citoyen(ne) ne peut soutenir que 3 candidat(e)s au maximum.</p>
-
-
-<ul class="nav nav-tabs tabs-2 red" role="tablist">
-	<li class="nav-item">
-		<a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Ma circonscription</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Toute la France</a>
-	</li>
-</ul>
-<div class="tab-content card">
-	<div class="tab-pane fade in show active" id="panel1" role="tabpanel">
-		<br>
-		<h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
-		<br>
-		<h3 class="h3-responsive doc-title">Député(e) actuel(le)</h3>
-		<div class="card card-block" style="max-width:420px;">
-			<div style="position:absolute;width:100px;top:20px;right:0px;">
-				<a href="<%= circonscription['deputy_url'] %>" target="_blank">
-					<img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
-				</a>
-			</div>
-			<div style="width:320px;">
-				<h4 class="card-title"><%= circonscription['deputy_name'] %></h4>
-				<p class="card-text">Parti: <%= circonscription['deputy_party'] %><br/>Métier: <%= circonscription['deputy_job'] %></p>
-				<div class="flex-row">
-					<a href="<%= circonscription['deputy_url'] %>" target="_blank" class="card-link">Voir sa fiche sur nosdéputés.fr</a>
+<!-- Frame Modal Medium Success -->
+<div class="modal fade" id="change_circo_confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+		<!--Content-->
+		<div class="modal-content">
+			<!--Body-->
+			<div class="modal-body">
+				<div class="text-center">
+					<span>Attention, changer de circonscription annule les soutiens que vous avez accordés aux candidats dans la circonscription actuelle.</span>
+					<a type="button" id="change_circo" class="btn btn-primary-modal">Continuer <i class="fa fa-check ml-1"></i></a>
+					<a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">Annuler</a>
 				</div>
 			</div>
-		</div><br/>
-		<h3 class="h3-responsive doc-title">Les candidats en lice</h3>
-		<div class="container-fluid">
-			<div id="hits" class="row"></div>
 		</div>
-		<br/>
+		<!--/.Content-->
 	</div>
-	<div class="tab-pane fade" id="panel2" role="tabpanel">
-		<br>
-		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+</div>
+<!-- Frame Modal Medium Success-->
 
-		<div id="header_overlay" class="blue">
-			<div class="container">
-				<div class="row">
-					<input type="text" id="search-box" />
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="stepper stepper-horizontal">
+				<li class="completed active grey lighten-3">
+					<a id="qualification"  style="cursor:pointer;">
+						<span class="circle">1</span>
+						<span class="label">Qualification <i  style="color:#ffbb33;" class="fa fa-cog" aria-hidden="true"></i></span>
+					</a>
+				</li>
+				<li>
+					<a id="vote" style="cursor:pointer;">
+						<span class="circle">2</span>
+						<span class="label">Vote</span>
+					</a>
+				</li>
+				<li>
+					<a id="resultats" style="cursor:pointer;">
+						<span class="circle">3</span>
+						<span class="label">Résultats</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="legislatives-2017-1" class="step" style="display:visible;">
+		<h3 class="h3-responsive doc-title">Du 8 mars au 8 mai 2017</h3>
+		<p class="text-justify">Afin de se qualifier, un(e) candidat(e) doit recueillir au moins 150 soutiens de citoyen(ne)s. Un(e) citoyen(ne) ne peut soutenir que 3 candidat(e)s au maximum.</p>
+		<ul class="nav nav-tabs tabs-2 red" id="circos_tab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Ma circonscription</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Toute la France</a>
+			</li>
+		</ul>
+		<div class="tab-content card">
+			<div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+				<br>
+				<h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
+				<p style="font-size:12px;">Cliquez-ici pour <a data-toggle="modal" href="#" data-target="#change_circo_confirmation" style="cursor:pointer;">changer de circonscription</a></p>
+				<br>
+				<h3 class="h3-responsive doc-title">Député(e) actuel(le)</h3>
+				<div class="card card-block" style="max-width:420px;">
+					<div style="position:absolute;width:100px;top:20px;right:0px;">
+						<a href="<%= circonscription['deputy_url'] %>" target="_blank">
+							<img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
+						</a>
+					</div>
+					<div style="width:320px;">
+						<h4 class="card-title"><%= circonscription['deputy_name'] %></h4>
+						<p class="card-text">Parti: <%= circonscription['deputy_party'] %><br/>Métier: <%= circonscription['deputy_job'] %></p>
+						<div class="flex-row">
+							<a href="<%= circonscription['deputy_url'] %>" target="_blank" class="card-link">Voir sa fiche sur nosdéputés.fr</a>
+						</div>
+					</div>
+				</div><br/>
+				<h3 class="h3-responsive doc-title">Les candidats en lice</h3>
+				<div class="container-fluid">
+					<div id="hits" class="row"></div>
 				</div>
+				<br/>
 			</div>
-		</div>
-		<div class="row" style="border-bottom: 2px solid #527bdd;padding: 10px;width:100%;margin: 0px auto 0px auto;font-size: 16px;color: #5e5e5e;text-align:center;">
-			Voici la liste des candidat(e)s <b>déclaré(e)s</b> aux législatives sur LaPrimaire.org. Cette liste et le nombre de soutiens sont rafraîchis 1 fois par jour.
-		</div>
-		<div style="text-align:center;background-color:#527bdd;"><a id="clear-all">réinitialiser la recherche</a></div>
-		<div class="alert alert-warning" style="display:none;">
-			<p style="font-size:16px;font-weight:bold;text-align: center;"><i class="fa fa-info-circle" style="font-size:1.5em;" aria-hidden="true"></i>La phase de qualification à LaPrimaire.org est terminée. La liste des candidat-e-s qualifié-e-s est <a href="/qualifies/" target="_blank">visible ici</a>.</p>
-		</div>
-		<div id="contribute_form" style="margin-top:0px;padding-top:0px;">
-			<div class="container-fluid">
-				<div class="row" style="width:95%;margin: 5px auto;">
-				</div>
-				<div class="row">
-					<div class="col-lg-2 col-md-2">
+			<div class="tab-pane fade" id="panel2" role="tabpanel">
+				<br>
+				<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+
+				<div id="header_overlay" class="blue">
+					<div class="container">
 						<div class="row">
-							<div class="col-xs-12">                            
-								<div id="gender"></div>
-								<div id="candidate_supporters"></div>
-								<div id="candidate_age"></div>
-								<div id="num_departement"></div>
-								<div id="num_circonscription"></div>
-								<div id="secteur"></div>
-								<div id="nb_days_verified"></div>
+							<input type="text" id="search-box" />
+						</div>
+					</div>
+				</div>
+				<div class="row" style="border-bottom: 2px solid #527bdd;padding: 10px;width:100%;margin: 0px auto 0px auto;font-size: 16px;color: #5e5e5e;text-align:center;">
+					Voici la liste des candidat(e)s <b>déclaré(e)s</b> aux législatives sur LaPrimaire.org. Cette liste et le nombre de soutiens sont rafraîchis 1 fois par jour.
+				</div>
+				<div style="text-align:center;background-color:#527bdd;"><a id="clear-all">réinitialiser la recherche</a></div>
+				<div class="alert alert-warning" style="display:none;">
+					<p style="font-size:16px;font-weight:bold;text-align: center;"><i class="fa fa-info-circle" style="font-size:1.5em;" aria-hidden="true"></i>La phase de qualification à LaPrimaire.org est terminée. La liste des candidat-e-s qualifié-e-s est <a href="/qualifies/" target="_blank">visible ici</a>.</p>
+				</div>
+				<div id="contribute_form" style="margin-top:0px;padding-top:0px;">
+					<div class="container-fluid">
+						<div class="row" style="width:95%;margin: 5px auto;">
+						</div>
+						<div class="row">
+							<div class="col-lg-2 col-md-2">
+								<div class="row">
+									<div class="col-xs-12">                            
+										<div id="gender"></div>
+										<div id="candidate_supporters"></div>
+										<div id="candidate_age"></div>
+										<div id="num_departement"></div>
+										<div id="num_circonscription"></div>
+										<div id="secteur"></div>
+										<div id="nb_days_verified"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-10 col-md-10">
+								<div class="row">
+									<div id="hits-container"></div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-10 col-md-10">
-						<div class="row">
-							<div id="hits-container"></div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
-
-
-
-
 	</div>
-</div>
--->
-
-	<h2 class="h2-responsive doc-title"><%= circonscription['name_circonscription'] %></h2>
-        <h3 class="h3-responsive doc-title">Député(e) actuel(le)</h3>
-	<div class="card card-block" style="max-width:420px;">
-		<div style="position:absolute;width:100px;top:20px;right:0px;">
-			<a href="<%= circonscription['deputy_url'] %>" target="_blank">
-				<img src="https://www.nosdeputes.fr/depute/photo/<%= circonscription['deputy_slug'] %>/100" style="float:left;">
-			</a>
-		</div>
-		<div style="width:320px;">
-			<h4 class="card-title"><%= circonscription['deputy_name'] %></h4>
-			<p class="card-text">Parti: <%= circonscription['deputy_party'] %><br/>Métier: <%= circonscription['deputy_job'] %></p>
-			<div class="flex-row">
-				<a href="<%= circonscription['deputy_url'] %>" target="_blank" class="card-link">Voir sa fiche sur nosdéputés.fr</a>
-			</div>
-		</div>
-	</div><br/>
-        <h3 class="h3-responsive doc-title">Les candidats en lice</h3>
-        <div class="container-fluid">
-		<div id="hits" class="row"></div>
-        </div>
-	<br/>
-<!--
-    </div>
-    <div id="legislatives-2017-2" class="step" style="display:none;">
-        <h3 class="h3-responsive doc-title">Du 10 au 14 mai 2017</h3>
-        <p class="text-justify">Vote au jugement majoritaire pour départager les candidat(e)s finalistes</p>
-    </div>
-    <div id="legislatives-2017-3" class="step" style="display:none;">
-        <h3 class="h3-responsive doc-title">Le 15 mai 2017</h3>
-        <p class="text-justify">Annonce officielle des résultats</p>
-    </div>
--->
+	<div id="legislatives-2017-2" class="step" style="display:none;">
+		<h3 class="h3-responsive doc-title">Du 10 au 14 mai 2017</h3>
+		<p class="text-justify">Vote au jugement majoritaire pour départager les candidat(e)s finalistes</p>
+	</div>
+	<div id="legislatives-2017-3" class="step" style="display:none;">
+		<h3 class="h3-responsive doc-title">Le 15 mai 2017</h3>
+		<p class="text-justify">Annonce officielle des résultats</p>
+	</div>
 </div>
 
 <script type="text/html" id="hit-template">
@@ -236,6 +223,16 @@ function pageReady() {
 	.fail(function(data) {
 		show_notification(data);
 	});
+	$('#change_circo').on('click', function() {
+		$('#change_circo_confirmation').modal('hide');
+		$.post('/api/citizen/<%= citoyen['user_key'] %>/election/'+election_slug+'/reset_circonscription')
+		.done(function(data) {
+			router.navigate('/election/legislatives-2017');
+		})
+		.fail(function(data) {
+			show_notification(data);
+		});
+	});
 	$('#qualification').on('click', function() {
 		if ($('#qualification').parent().hasClass('active')) {
 			return;
@@ -245,6 +242,7 @@ function pageReady() {
 		$('#legislatives-2017-1').addClass('animated fadeIn');
 		$('#legislatives-2017-1').show();
 		$('#qualification').parent().addClass('active grey lighten-3');
+		$('#circos_tab a:first').tab('show');
 	});
 	$('#vote').on('click', function() {
 		if ($('#vote').parent().hasClass('active')) {
