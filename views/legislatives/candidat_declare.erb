@@ -367,7 +367,7 @@ footer {
 			<% else %>
 				<div id="candidat_legend"><%= candidat['name'] %> est <%= gender['qualifié'] %> pour LaPrimaire.org, continuez à <%= gender['le'] %> soutenir pour donner un maximum de poids à ses idées&nbsp;:</div>
 			 <% end %>
-			 <% if not candidat['website'].nil? then %>
+			 <% if !candidat['website'].nil? and !candidat['website'].empty? then %>
 				 <a href="<%= candidat['website'] %>" target="_blank" class="btn btn-success joinus_action" style="font-weight:bold;padding:10px;margin:10px;">VOIR SON SITE WEB</a>
 			 <% else %>
 				 <a href="<%= candidat['website'] %>" class="btn btn-success joinus_action" style="font-weight:bold;padding:10px;margin:10px;" title="<%= candidat['name'] %> n'a pas renseigné son site web" disabled>VOIR SON SITE WEB</a>
