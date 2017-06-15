@@ -149,42 +149,49 @@ ul.social_buttons > li{
 			    <div class="modal-body" >
 				    <div style="margin:0 auto;background:#527bdd;height:100%;" id="voting_frame_loading">
 					    <div style="margin:0 auto;padding-top:100px;padding-bottom:100px;width:300px;color:white;text-align:center;">
-						    <p>Chargement du vote en cours...</p>
+						    <p>Loading ballot...</p>
 						    <p><i style="width:100px;text-align:center;" class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></p>
 						    <span class="sr-only">Refreshing...</span>
-						    <p>Vous disposez de 10 minutes pour voter.</p>
-						    <p style="font-style:italic;">(Vous pouvez à tout moment fermer cette fenêtre et revenir plus tard)</p>
+						    <p>You have 10 minutes to cast your vote.</p>
+						    <p style="font-style:italic;">(You can close this window at anytime and come back later)</p>
 					    </div>
 				    </div>
 				    <iframe id="voting_frame_iframe" width="100%" height="550px" style="display:none;" frameborder="0"></iframe>
 				    <div style="display:none;margin:0 auto;background:rgb(104,205,104);height:100%;" id="voting_frame_back">
 					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
-						    <p style="font-size:20px;">Merci beaucoup pour votre vote !</p>
+						    <p style="font-size:20px;">Thank you very much for voting!</p>
 						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
-						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
+						    <p style="text-align:center;">You can now close this tab and go back to Facebook messenger.</p>
+					    </div>
+				    </div>
+				    <div style="display:none;margin:0 auto;background-color:#f28021;height:100%;" id="voting_frame_cancel">
+					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
+						    <p style="font-size:20px;">Hmmm... it looks like you decided to cancel your vote casting process :/</p>
+						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
+						    <p style="text-align:center;">You can now close this tab and go back to Facebook messenger.</p>
 					    </div>
 				    </div>
 				    <div style="display:none;margin:0 auto;background-color:#d91d1c;height:100%;" id="voting_frame_error">
 					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
-						    <p style="font-size:20px;">Hmmm... un problème est survenu :/</p>
+						    <p style="font-size:20px;">Hmmm... a problem occurred :/</p>
 						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
-						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
+						    <p style="text-align:center;">You can now close this tab and go back to Facebook messenger.</p>
 					    </div>
 				    </div>
 				    <div style="display:none;margin:0 auto;background-color:#FFA500;height:100%;" id="voting_frame_paused">
 					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
-						    <p style="font-size:20px;">Désolé, les votes sont temporairement suspendus :/</p>
-						    <p style="font-size:20px;">Merci de réessayer dans quelques minutes... toutes nos excuses pour ce souci !</p>
+						    <p style="font-size:20px;">Sorry, votes are temporarily suspended :/</p>
+						    <p style="font-size:20px;">Please try again in a few minutes... our apologies for the inconvenience !</p>
 						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
-						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
+						    <p style="text-align:center;">You can now close this tab and go back to Facebook messenger.</p>
 					    </div>
 				    </div>
 				    <div style="display:none;margin:0 auto;background-color:#0099CC;height:100%;" id="voting_frame_finished">
 					    <div style="margin:0 auto;padding:50px 50px;color:white;text-align:center;">
-						    <p style="font-size:20px;">Désolé, ce vote est désormais clos</p>
-						    <p style="font-size:20px;">Il n'est plus possible de voter, la période de vote étant terminée.</p>
+						    <p style="font-size:20px;">Sorry but this vote is no longer open</p>
+						    <p style="font-size:20px;">Casting your vote is no longer possible as the vote is now closed.</p>
 						    <p><i style="font-size:100px;display:inline;" class="fa fa-chevron-circle-left" aria-hidden="true"></i></p>
-						    <p style="text-align:center;">Vous pouvez à présent fermer cet onglet et retourner dans facebook messenger.</p>
+						    <p style="text-align:center;">You can now close this tab and go back to Facebook messenger.</p>
 					    </div>
 				    </div>
 			    </div>
@@ -319,9 +326,9 @@ $(document).ready(function() {
 			$('#voting_frame_iframe').attr("src",'about:blank');
 			if (typeof MessengerExtensions != 'undefined') {
 				MessengerExtensions.requestCloseBrowser(function success() {
-					console.log("voteError - closing webview");
+					console.log("voteCancel - closing webview");
 				}, function error(err) {
-					$('#voting_frame_error').show();
+					$('#voting_frame_cancel').show();
 					console.log(err);
 				});
 			} else {
@@ -349,7 +356,7 @@ $(document).ready(function() {
 			data: "vote_id=<%= cc_vote_id %>&fb_id="+fb_id+"&firstname=Test&lastname=User&test=<%= test %>",
 			dataType: "json",
 			success: function(data) {
-				$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=fr-FR');
+				$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user='+data['token']+'&appId=<%= cocorico_app_id %>&locale=en-US');
 			},
 			error: function(data) {
 				console.log("votes are paused.");
@@ -361,7 +368,7 @@ $(document).ready(function() {
 			$('#voting_frame_loading').hide();
 			$('#voting_frame_paused').show();
 		<% else %>
-			$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user=<%= token %>&appId=<%= cocorico_app_id %>&locale=fr-FR');
+			$('#voting_frame_iframe').attr("src",'https://<%= COCORICO_HOST %>/embed/vote-widget/<%= cc_vote_id %>?user=<%= token %>&appId=<%= cocorico_app_id %>&locale=en-US');
 		<% end %>
 	<% end %>
 	});
