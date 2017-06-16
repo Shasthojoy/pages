@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="referrer" content="origin">
+    <meta name="author" content="LaPrimaire.org">
+<% if not candidat['trello']  %>
+    <meta property="og:title" content="Plébsicitez <%= candidat['name'] %> pour qu'<%=gender['il']%> soit <%=gender['candidat']%> à LaPrimaire.org !">
+<% else %>
+    <meta property="og:title" content="Soutenez la candidature de <%= candidat['name'] %> à LaPrimaire.org !">
+<% end %>
+    <meta property="og:site_name" content="LaPrimaire.org"/>
+    <meta property="og:url" content="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>">
+    <meta property="fb:app_id" content="115809635110050"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:description" content="Vous adhérez aux idées de <%= candidat['name'] %> et souhaiteriez qu'<%=gender['il']%> joue un rôle plus important pour décider de l'avenir du pays ? Soutenez sa candidature à LaPrimaire.org !">
+    <meta property="og:image" content="<%= candidat['photo'].nil? ? "https://laprimaire.org/assets/images/democratiser-les-elections-logo.jpg": candidat['photo'] %>">
+    <meta property="og:image:secure_url" content="<%= candidat['photo'].nil? ? "https://laprimaire.org/assets/images/democratiser-les-elections-logo.jpg": candidat['photo'] %>">
+    <meta name="twitter:image:src" content="<%= candidat['photo'].nil? ? "https://laprimaire.org/assets/images/democratiser-les-elections-logo.jpg": candidat['photo'] %>">
+    <meta name="twitter:widgets:csp" content="on">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@democratech">
+    <meta name="twitter:creator" content="@democratech">
+<% if not candidat['trello']  %>
+    <meta name="twitter:title" content="Plébsicitez <%= candidat['name'] %> pour qu'<%=gender['il']%> soit <%=gender['candidat']%> à LaPrimaire.org !">
+<% else %>
+    <meta name="twitter:title" content="Soutenez la candidature de <%= candidat['name'] %> à LaPrimaire.org !">
+<% end %>
+    <meta name="twitter:image" content="<%= candidat['photo'].nil? ? "https://laprimaire.org/assets/images/democratiser-les-elections-logo.jpg": candidat['photo'] %>">
+    <meta name="twitter:description" content="Vous adhérez aux idées de <%= candidat['name'] %> et souhaiteriez qu'<%=gender['il']%> joue un rôle plus important pour décider de l'avenir du pays ? Soutenez sa candidature à LaPrimaire.org !">
+<% if not candidat['trello']  %>
+    <title>Plébsicitez <%= candidat['name'] %> pour qu'<%=gender['il']%> soit <%=gender['candidat']%> à LaPrimaire.org !</title>
+<% else %>
+    <title>Soutenez la candidature de <%= candidat['name'] %> à LaPrimaire.org</title>
+<% end %>
+    <link rel="icon" type="image/png" href="https://laprimaire.org/assets/images/favicon.png" />
+    <link rel="canonical" href="https://laprimaire.org/candidat/<%= candidat['candidate_id'] %>">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://laprimaire.org/docs/laprimaire.css">
+    <style>
+body {
+	background: url(https://web.laprimaire.org/img/laprimaire/background-image.jpg) repeat center center fixed;
+}
+header {
+	background:none;
+}
+h2 {
+	color:#1065b4;
+}
+h2 span {
+	color: #ff4047;
+}
+h2.green {
+	color:white;
+	background-color:#51cb20;
+	margin-left:-20px;
+	width:107%;
+	padding:5px;
+}
+h2.grey {
+	color:white;
+	background-color:#bababa;
+	padding:5px;
+}
+h2.red {
+	color:white;
+	background-color:#ff4047;
+	padding:5px;
+}
+h2.blue {
+	color:white;
+	background-color:#1065b4;
+	padding:5px;
+}
+h2 {
+	font-size: 28px;
+}
+.modal-title {
+	font-size: 20px;
+	color:white;
+}
+.modal-header {
+	background-color:#ff4047;
+}
+.modal-body {
+	font-size: 18px;
+}
+#candidat_support.qualified {
+	border:20px solid #51cb20;
+}
+#candidat_support.grey {
+	border:20px solid #bababa;
+}
+#candidat_support {
+	border:20px solid #ff4047;
+	padding: 10px 0px;
+	margin-top:10px;
+	background-color:white;
+}
+#candidat_about {
+	border:20px solid #1065b4;
+	padding:0px;
+	margin-top:-40px;
+	background-color:white;
+}
+#video-button:hover {
+	background-image: url("https://laprimaire.org/assets/images/buttons/video-button-hover.png");
+	cursor: pointer;
+}
+#video-button {
+	background-image: url("https://laprimaire.org/assets/images/buttons/video-button.png");
+	position:absolute;
+	width:106px;
+	height:60px;
+	left:41%;
+	top:120px;
+	text-align:center;
+}
+#candidat_frame {}
+#candidat_photo {
+	border: 1px solid #5e5e5e;
+	margin:20px;
+	margin-bottom:0px;
+	height:300px;
+}
+#candidat_name {
+	font-size: 24px;
+	font-weight: bold;
+	margin:0px 20px;
+}
+.candidate_infos {
+	font-size:12px;
+	color:#5e5e5e;
+	text-align:center;
+	margin-bottom:10px;
+}
+#candidat_vision {
+	font-style:italic;
+	margin-top:20px;
+	padding: 0px 20px;
+}
+#candidat_priorites {
+	text-align:left;
+	font-size: 14px;
+	padding: 10px 20px;
+}
+#candidat_programme p {
+	margin-top: 20px;
+	font-size: 14px;
+}
+#candidat_programme {
+	margin: 5px 20px 20px 20px;
+}
+#candidat_soutiens {
+	font-size: 15px;
+	margin-top:10px;
+}
+#candidat_legend {
+	font-size: 15px;
+	margin:15px 0px;
+}
+#candidat_supportme {
+	font-size: 15px;
+}
+.navbar-default {
+	border-bottom:40px solid #ff4047;
+}
+.donateurs .goalProgress {
+	/*background: #1065b4;*/
+	background: white;
+	border:1px solid #BBB;
+}
+.donateurs div.progressBar {
+	/*background: #ff4047;*/
+	background: #56d840;
+	overflow:visible;
+	height:32px;
+	color: #5e5e5e;
+	text-align:left;
+	font-size: 22px;
+	letter-spacing: -1px;
+	padding-left: 20px;
+	padding-top: 2px;
+	display: block;
+	width: 20px;
+}
+span.goalAmount {
+	display: none;
+	text-indent: -9999px;
+}
+
+footer {
+	background-color:#1065b4;
+	position: relative;
+	padding: 10px;
+	margin-top: 40px;
+	font-size: 18px;
+}
+.join-link {
+	font-size: 18px;
+	font-weight: bold;
+}
+#slogan {
+	float: right !important;
+	color:#5e5e5e;
+	font-weight:bold;
+	font-size:18px;
+	margin-top: 0px;
+	font-variant:small-caps;
+	margin-right: 20px;
+}
+.about-lp {
+	text-align:center;
+	padding-top:0px;
+	padding-bottom:10px;
+}
+@media (min-width: 768px) {
+	#slogan {
+		float: right !important;
+		color:#5e5e5e;
+		font-weight:bold;
+		font-size:28px;
+		margin-top: 20px;
+		font-variant:small-caps;
+		margin-right: 20px;
+	}
+	.join-link {
+		font-size: 20px;
+	}
+	.about-lp {
+		text-align:right;
+		padding-top:10px;
+	}
+}
+@media (min-width: 1280px) {
+	footer {
+		font-size: 20px;
+		position:fixed;
+		padding: 0px;
+	}
+	#candidat_support {
+		margin-left:-60px;
+	}
+	.about-lp {
+		padding-bottom:0px;
+		padding-top:7px;
+	}
+}
+    </style>
+</head>
+<body class="index">
+<div id="fb-root"></div>
+<!-- Navigation -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+		<a style="padding-left:8px;" class="navbar-brand" href="/"><img src="https://s3.amazonaws.com/theopenprimary.org/demo/images/theopenprimary-223x60-hidef.png" width="223" height="60" alt="logo LaPrimaire.org"></a>
+            </div>
+	    <div id="slogan"><span>Candidates YOU choose!</span></div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+	<div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+			<div id="candidat_about">
+				<div id="candidat_frame">
+				<% unless candidat['video'].nil? or candidat['video'].empty? %>
+					<a data-toggle="modal" data-target="#Iwatch"><div id="video-button"></div></a>
+				<% end %>
+					<img id="candidat_photo" src="<%= candidat['photo'] %>" alt="photo de <%= candidat['name'] %>">
+				</div>
+				<div id="candidat_name">Michael Devos</div>
+				<div class="candidate_infos">
+					<% if not age.nil? then %>
+						<%= age %> years old <%= "(West Hartford, CT)" %>
+					<% end %>
+				</div>
+				<% if not candidat['vision'].nil? %>
+				<h2 class="blue">My priorities</h2>
+					<div id="candidat_vision">
+						&ldquo;Making sure every US citizen get access to education and healthcare&rdquo;
+					</div>
+					<% if not candidat['prio1'].nil? %>
+					<div id="candidat_priorites">
+						<ol>
+						<li id="candidat_prio">Push for a single-payer healthcare system</li>
+						<% if not candidat['prio2'].nil? %>
+						<li id="candidat_prio">Extend and increase the student loan debt relief program </li>
+						<% end %>
+						<% if not candidat['prio3'].nil? %>
+						<li id="candidat_prio">Fight to increase minimum wage to $10 per hour</li>
+						<% end %>
+						</ol>
+					</div>
+					<% end %>
+				<% end %>
+				<div id="candidat_programme">
+				<% if trello.nil? %>
+					<a href="<%= "https://www.google.fr/#q="+candidat['encoded_name'] %>" target="_blank" style="padding:10px;margin-bottom:20px;background-color:#1065b4;" class="btn btn-primary">Qui est <%= candidat['name'] %> ?</a>
+					<p><%= gender['ce'].capitalize+" "+gender['citoyen']%> a été plébiscité pour être candidat sur LaPrimaire.org.</p>
+					<p style="font-size: 13px; font-style:italic;text-align:justify;">Il est important de noter que <%= candidat['name'] %> n'est pas responsable de cette démarche : sa candidature a été proposée par une ou plusieurs personnes qui souhaiteraient <%= gender['le'] %> voir se présenter en tant que <%= gender['candidat'] %> sur <a href="https://laprimaire.org" target="_blank">LaPrimaire.org.</a></p>
+				<% else %>
+					<a href="<%= trello %>" target="_blank" style="padding:10px;margin-bottom:20px;background-color:#1065b4;" class="btn btn-primary">Complete program</a>
+				<% end %>
+					<div>
+				<% if not website.nil? %>
+					<a href="<%= website %>" target="_blank"><i class="fa fa-globe">&nbsp;official web site</i></a>
+				<% end %>
+				<% if not facebook.nil? %>
+					<a href="<%= facebook %>" target="_blank"><i class="fa fa-facebook-square">&nbsp;facebook</i></a>
+				<% end %>
+				<% if not twitter.nil? %>
+					<a href="<%= twitter %>" target="_blank"><i class="fa fa-twitter-square">&nbsp;twitter</i></a>
+				<% end %>
+				<% if not youtube.nil? %>
+					<a href="<%= youtube %>" target="_blank"><i class="fa fa-youtube-square">&nbsp;youtube</i></a>
+				<% end %>
+				<% if not linkedin.nil? %>
+					<a href="<%= linkedin %>" target="_blank"><i class="fa fa-linkedin-square">&nbsp;linkedin</i></a>
+				<% end %>
+				<% if not blog.nil? %>
+					<a href="<%= blog %>" target="_blank"><i class="fa fa-wordpress">&nbsp;blog</i></a>
+				<% end %>
+				<% if not wikipedia.nil? %>
+					<a href="<%= wikipedia %>" target="_blank"><i class="fa fa-medium">&nbsp;wikipedia</i></a>
+				<% end %>
+					</div>
+				</div>
+			</div>
+                </div>
+		<div class="col-lg-6">
+			<div>
+				<% if not candidat['trello']  %>
+					<h2><span>Status :</span> <%= gender['citoyen'] %> plébiscité</h2>
+				<% else %>
+					<% if not candidat['qualified']  %>
+						<h2><span>Status :</span> not yet qualified</h2>
+					<% else %>
+						<h2><span>Status :</span> <%= gender['qualifié'].capitalize %> !</h2>
+					<% end %>
+				<% end %>
+			</div>
+			<div id="candidat_support" <% if not candidat['qualified'] %>class="qualified"<% else %>class="grey"<% end %>>
+				<div class="row pledge">
+					<div class="col-xs-12" style="padding-right:0px;padding-left:0px;">
+						<div style="float:right;font-size:22px;font-weight:bold;padding-top:3px;padding-right:5px; text-align:left;">500+</div>
+						<div id="fundraising_bar" class="donateurs"></div>
+					</div>
+				</div>
+				<% if not candidat['trello']  %>
+					<div id="candidat_soutiens">Si <%= candidat['name'] %> atteint 500 soutiens, nous l'inviterons formellement à se déclarer <%= gender['candidat'] %> sur LaPrimaire.org.</div>
+				<% else %>
+					<% if not candidat['qualified']  %>
+						<div id="candidat_soutiens">Michael has not yet reached the goal of 500 supporters that will qualify him to officially run as a candidate for the Utah, 3rd Congressional District Open Primary.</div>
+					<% else %>
+						<div id="candidat_soutiens"><%= candidat['name'] %> a obtenu ses 500 soutiens citoyens et est <%= gender['qualifié'] %> pour participer à LaPrimaire.org</div>
+					<% end %>
+				<% end %>
+				<h2 class="<%= candidat['qualified']?"grey":"green"%>">Support Michael Devos</h2>
+			<% if not candidat['qualified'] %>
+				<div id="candidat_legend">Support and endorse Michael Devos if you think Michael would represent you well and would be an asset in the construction of the country's future.</div>
+			<% else %>
+				<div id="candidat_legend"><%= candidat['name'] %> est <%= gender['qualifié'] %> pour LaPrimaire.org, continuez à <%= gender['le'] %> soutenir pour donner un maximum de poids à ses idées&nbsp;:</div>
+			 <% end %>
+			 <a data-toggle="modal" data-target="#JoinUsNow" class="btn btn-success joinus_action" style="font-weight:bold;padding:10px;margin:10px;background-color:#51cb20;">I SUPPORT MICHAEL</a>
+				<% if not candidat['trello']  %>
+					<h3>Invitez <%= candidat['name'] %> à être <%= gender['candidat'] %></h3>
+					<div id="candidat_supportme">Invitez vos amis et proches à soutenir une candidature <%= candidat['name'] %>&nbsp;:</div><br/>
+				<% else %>
+					<!--<h3>Support <%= candidat['name'] %></h3>-->
+					<div id="candidat_supportme">Invite your family and friends to support <%= candidat['name'] %>&nbsp;:</div><br/>
+				<% end %>
+				<div class="row">
+					<div class="col-lg-4 text-center">
+						<div class="shareitem">
+							<a data-toggle="modal" data-target="#Iemail" style="cursor:pointer;"><img style="height:90px;border: 4px solid #d74937;" src="https://laprimaire.org/assets/images/partage/email-share-small.png"></a>
+						</div>
+						<div class="sharetitle">email</div>
+					</div>
+					<div class="col-lg-4 text-center">
+						<div class="shareitem">
+							<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flaprimaire.org/candidat/<%= candidat['candidate_id'] %>" target="_blank"><img style="height:90px;border: 4px solid #425f9c;" src="https://laprimaire.org/assets/images/partage/facebook-share-small.png"></a>
+						</div>
+						<div class="sharetitle">facebook</div>
+					</div>
+					<div class="col-lg-4 text-center">
+						<div class="shareitem">
+							<a href="https://twitter.com/intent/tweet?url=<%= URI::encode("https://laprimaire.org/candidat/"+candidat['candidate_id']) %>&text=Pour%202017%2C%20je%20souhaiterais%20que%20<%= URI::encode(candidat['name']) %>%20participe%20%C3%A0%20la%20construction%20de%20l%27avenir%20du%20pays&hashtags=LaPrimaire" target="_blank"><img style="height:90px;border: 4px solid #1c9fef;" src="https://laprimaire.org/assets/images/partage/twitter-share-small.png"></a>
+						</div>
+						<div class="sharetitle">twitter</div>
+					</div>
+				</div>
+			</div>
+                </div>
+            </div>
+       </div>
+    </header>
+
+    <footer>
+        <div class="container">
+            <div class="row" style="margin-bottom:0px;">
+		<div class="col-sm-12 col-md-9 about-lp">
+		    <span style="color:white;font-weight:bold;font-variant:small-caps;">LaPrimaire.org, la Primaire Ouverte pour l'élection Présidentielle de 2017&nbsp;: </span>
+		</div>
+		<div class="col-sm-12 col-md-3">
+		    <a style="font-variant:small-caps;background-color:#ff4047;" href="/" class="btn red join-link" title="En savoir plus sur LaPrimaire.org" target="_blank">En savoir plus</a>
+		</div>
+ 	    </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="JoinUsNow" tabindex="-1" role="dialog" aria-labelledby="JoinUsNow">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title">Je souhaite soutenir <%= candidat['name'] %> sur LaPrimaire.org</h4>
+	          </div>
+		  <div class="modal-body">
+			  <p style="font-size:14px;">Merci beaucoup, grâce à vous nous ferons émerger une candidature citoyenne forte qui soit capable de changer la donne en 2017 !</p>
+			  <div id="wufoo-qaj8t6m07xo97p">
+				  Remplissez ce <a href="https://democratech.wufoo.com/forms/qaj8t6m07xo97p">formulaire en ligne</a>.
+			  </div>
+	          </div>
+	          <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+    <!-- Modal -->
+    <% if candidat['candidate_id'].to_i!=678218775405 %> 
+    <div class="modal fade" id="Isupport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="myModalLabel">Comment apporter votre soutien à <%= candidat['name'] %></h4>
+	          </div>
+		  <div class="modal-body">
+			  <p>Très simple&nbsp;:</p>
+			  <ol>
+				  <li><p>Connectez-vous sur l'application LaPrimaire.org</p></li>
+				  <li><p>Une fois inscrit, cliquez sur le bouton "Soutenir un candidat"</p></li>
+				  <li><p>Ecrivez "<i><%= candidat['name']%></i>" et confirmez votre soutien</p></li>
+			  </ol>
+	          </div>
+	          <div class="modal-footer">
+		    <a target="_blank" id="desktop_app" type="button" class="btn btn-primary" href="https://web.laprimaire.org"><i class="fa fa-desktop"></i>&nbsp;Se connecter à l'app</a>
+	            <a target="_blank" style="display:none;" id="android_app" type="button" class="btn btn-primary" href="https://play.google.com/store/apps/details?id=org.telegraph.messenger"><i class="fa fa-android"></i>&nbsp;Se connecter à l'app</a>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+    <% else %> 
+    <div class="modal fade" id="Isupport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="myModalLabel">Supportez la candidature de <%= candidat['name'] %></h4>
+	          </div>
+		  <div class="modal-body">
+			  <div id="wufoo-qn6q7we0rxn3ix">
+				  Fill out my <a href="https://democratech.wufoo.com/forms/qn6q7we0rxn3ix">online form</a>.
+			  </div>
+			  <script type="text/javascript">var qn6q7we0rxn3ix;(function(d, t) {
+var s = d.createElement(t), options = {
+'userName':'democratech',
+'formHash':'qn6q7we0rxn3ix',
+'autoResize':true,
+'height':'259',
+'async':true,
+'host':'wufoo.com',
+'header':'hide',
+'ssl':true};
+s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+s.onload = s.onreadystatechange = function() {
+var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+try { qn6q7we0rxn3ix = new WufooForm();qn6q7we0rxn3ix.initialize(options);qn6q7we0rxn3ix.display(); } catch (e) {}};
+var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+})(document, 'script');</script>
+
+	          </div>
+	        </div>
+	      </div>
+      </div>
+    <% end %>
+    <% unless candidat['video'].nil? %>
+    <!-- Modal -->
+    <div class="modal fade" id="Iwatch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+		  <div class="modal-body">
+			  <iframe width="100%" height="315" src="<%= candidat['video'] %>" frameborder="0" allowfullscreen></iframe>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+      <% end %>
+    <!-- Modal -->
+    <div class="modal fade" id="Iemail" tabindex="-1" role="dialog" aria-labelledby="shareByEmail">
+	      <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title" id="shareByEmail">Inviter vos contacts à soutenir <%= candidat['name'] %></h4>
+	          </div>
+		  <div class="modal-body">
+			  <p style="font-size:14px;">Pour vous permettre d'inviter facilement vos contacts à soutenir <%= candidat['name'] %>, nous vous avons préparé un email "prêt à transférer" ! Indiquez-nous votre adresse email et vous le recevrez directement dans votre boîte aux lettres électronique.</p>
+			  <div id="wufoo-z172u35g0xjklqk">
+				  Fill out my <a href="https://democratech.wufoo.com/forms/z172u35g0xjklqk">online form</a>.
+			  </div>
+	          </div>
+	          <div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	          </div>
+	        </div>
+	      </div>
+      </div>
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+(function($){$.fn.extend({goalProgress:function(options){var defaults={goalAmount:100,currentAmount:50,speed:1E3,textBefore:"",textAfter:""};var options=$.extend(defaults,options);return this.each(function(){var obj=$(this);var goalAmountParsed=parseInt(defaults.goalAmount);var currentAmountParsed=parseInt(defaults.currentAmount);var percentage=currentAmountParsed/goalAmountParsed*100;var progressBar='<div class="progressBar">'+defaults.textBefore+currentAmountParsed+defaults.textAfter+"</div>";var progressBarWrapped=
+'<div class="goalProgress">'+progressBar+"</div>";obj.append(progressBarWrapped);var rendered=obj.find("div.progressBar");rendered.each(function(){$(this).html($(this).text().replace(/\s/g,"&nbsp;"))});rendered.animate({width:percentage+"%"},defaults.speed)})}})})(jQuery);
+    </script>
+    <script type="text/javascript">
+/*! device.js 0.2.7 */
+    (function(){var a,b,c,d,e,f,g,h,i,j;b=window.device,a={},window.device=a,d=window.document.documentElement,j=window.navigator.userAgent.toLowerCase(),a.ios=function(){return a.iphone()||a.ipod()||a.ipad()},a.iphone=function(){return!a.windows()&&e("iphone")},a.ipod=function(){return e("ipod")},a.ipad=function(){return e("ipad")},a.android=function(){return!a.windows()&&e("android")},a.androidPhone=function(){return a.android()&&e("mobile")},a.androidTablet=function(){return a.android()&&!e("mobile")},a.blackberry=function(){return e("blackberry")||e("bb10")||e("rim")},a.blackberryPhone=function(){return a.blackberry()&&!e("tablet")},a.blackberryTablet=function(){return a.blackberry()&&e("tablet")},a.windows=function(){return e("windows")},a.windowsPhone=function(){return a.windows()&&e("phone")},a.windowsTablet=function(){return a.windows()&&e("touch")&&!a.windowsPhone()},a.fxos=function(){return(e("(mobile;")||e("(tablet;"))&&e("; rv:")},a.fxosPhone=function(){return a.fxos()&&e("mobile")},a.fxosTablet=function(){return a.fxos()&&e("tablet")},a.meego=function(){return e("meego")},a.cordova=function(){return window.cordova&&"file:"===location.protocol},a.nodeWebkit=function(){return"object"==typeof window.process},a.mobile=function(){return a.androidPhone()||a.iphone()||a.ipod()||a.windowsPhone()||a.blackberryPhone()||a.fxosPhone()||a.meego()},a.tablet=function(){return a.ipad()||a.androidTablet()||a.blackberryTablet()||a.windowsTablet()||a.fxosTablet()},a.desktop=function(){return!a.tablet()&&!a.mobile()},a.television=function(){var a;for(television=["googletv","viera","smarttv","internet.tv","netcast","nettv","appletv","boxee","kylo","roku","dlnadoc","roku","pov_tv","hbbtv","ce-html"],a=0;a<television.length;){if(e(television[a]))return!0;a++}return!1},a.portrait=function(){return window.innerHeight/window.innerWidth>1},a.landscape=function(){return window.innerHeight/window.innerWidth<1},a.noConflict=function(){return window.device=b,this},e=function(a){return-1!==j.indexOf(a)},g=function(a){var b;return b=new RegExp(a,"i"),d.className.match(b)},c=function(a){var b=null;g(a)||(b=d.className.replace(/^\s+|\s+$/g,""),d.className=b+" "+a)},i=function(a){g(a)&&(d.className=d.className.replace(" "+a,""))},a.ios()?a.ipad()?c("ios ipad tablet"):a.iphone()?c("ios iphone mobile"):a.ipod()&&c("ios ipod mobile"):a.android()?c(a.androidTablet()?"android tablet":"android mobile"):a.blackberry()?c(a.blackberryTablet()?"blackberry tablet":"blackberry mobile"):a.windows()?c(a.windowsTablet()?"windows tablet":a.windowsPhone()?"windows mobile":"desktop"):a.fxos()?c(a.fxosTablet()?"fxos tablet":"fxos mobile"):a.meego()?c("meego mobile"):a.nodeWebkit()?c("node-webkit"):a.television()?c("television"):a.desktop()&&c("desktop"),a.cordova()&&c("cordova"),f=function(){a.landscape()?(i("portrait"),c("landscape")):(i("landscape"),c("portrait"))},h=Object.prototype.hasOwnProperty.call(window,"onorientationchange")?"orientationchange":"resize",window.addEventListener?window.addEventListener(h,f,!1):window.attachEvent?window.attachEvent(h,f):window[h]=f,f(),"function"==typeof define&&"object"==typeof define.amd&&define.amd?define(function(){return a}):"undefined"!=typeof module&&module.exports?module.exports=a:window.device=a}).call(this);
+    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script type="text/javascript">
+function getURLParameter(name) {
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||""
+}
+
+$(document).ready(function(){
+	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+	var now = new Date();
+	var firstDate = (new Date(2016,6,30)).getTime();
+	var secondDate= (new Date(now.getFullYear(),now.getMonth()+1,now.getDate())).getTime();
+	var diffDays = Math.round(Math.abs((firstDate - secondDate)/(oneDay)));
+	var amount=<%= candidat['soutiens'] %>;
+	var goal=<%= candidat['goal'] %>;
+	var goal_int=parseInt(goal);
+	var amount_int=parseInt(amount,10);
+	var soutien=" supporters";
+	if (amount_int<2) {
+		soutien=" supporter"
+	}
+	$('#fundraising_bar').goalProgress({
+		goalAmount: goal_int,
+		currentAmount: amount,
+		textBefore: '',
+		textAfter: soutien
+	});
+	$('#nb_days_left').html(diffDays);
+	if (device.android()) {
+		$('#desktop_app').hide();
+		$('#android_app').show();
+	};
+	$('#Iemail').on('shown.bs.modal', function () {
+		var z172u35g0xjklqk;(function(d, t) {
+		var s = d.createElement(t), options = {
+		'userName':'democratech',
+		'formHash':'z172u35g0xjklqk',
+		'autoResize':true,
+		'height':'259',
+		'defaultValues':'field3=<%= candidat['candidate_id'] %>',
+		'async':true,
+		'host':'wufoo.com',
+		'header':'hide',
+		'ssl':true};
+		s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+		s.onload = s.onreadystatechange = function() {
+		var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+		try { z172u35g0xjklqk = new WufooForm();z172u35g0xjklqk.initialize(options);z172u35g0xjklqk.display(); } catch (e) {}};
+		var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+		})(document, 'script');
+
+	});
+	$("a.joinus_action").click(function() {
+			ga('send','event','button','click','Je participe');
+	});
+	if ($('#JoinsUsNow')!=null) {
+		$('#JoinUsNow').on('shown.bs.modal', function () {
+			ga('send', 'pageview', '/inscription-popup/');
+			var qaj8t6m07xo97p;(function(d, t) {
+			var s = d.createElement(t), options = {
+			'userName':'democratech',
+			'formHash':'qaj8t6m07xo97p',
+			'autoResize':true,
+			'height':'397',
+			'defaultValues':'field14=<%= candidat['candidate_id'] %>&field12='+getURLParameter('ref'),
+			'async':true,
+			'host':'wufoo.com',
+			'header':'hide',
+			'ssl':true};
+			s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+			s.onload = s.onreadystatechange = function() {
+			var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+			try { qaj8t6m07xo97p = new WufooForm();qaj8t6m07xo97p.initialize(options);qaj8t6m07xo97p.display(); } catch (e) {}};
+			var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+			})(document, 'script');
+		});
+	}
+});
+
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60977053-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>

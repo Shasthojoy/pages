@@ -369,6 +369,20 @@ END
 			}
 		end
 
+		get '/citoyen/vote/facebook_demo' do
+			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
+			app_id=CC_APP_ID_FB
+			test=params['test']
+			vote_id=FB_VOTE_ID_DEMO
+			erb :fb_voting, :locals=>{
+				'cocorico_app_id'=>app_id,
+				'cc_vote_id'=>vote_id,
+				'token'=>params['token'],
+				'test'=>test,
+				'callback'=>'api/vote_completed_11'
+			}
+		end
+
 		get '/citoyen/vote/facebook_11' do
 			return JSON.dump({'param_missing'=>'token'}) if params['token'].nil?
 			app_id=CC_APP_ID_FB

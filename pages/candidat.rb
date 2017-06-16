@@ -325,7 +325,7 @@ END
 			else
 				candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 			end
-			erb :candidat_declare, :locals=>{
+			erb :candidat_declare_demo, :locals=>{
 				:candidat=>candidat,
 				:gender=>gender,
 				:secteur=>secteur,
