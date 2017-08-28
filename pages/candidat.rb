@@ -414,7 +414,7 @@ END
 			candidat['youtube']=html_escape(candidat['youtube'].split('?')[0]) unless candidat['youtube'].nil? or candidat['youtube'].empty?
 			candidat['instagram']=html_escape(candidat['instagram'].split('?')[0]) unless candidat['instagram'].nil? or candidat['instagram'].empty?
 			candidat['wikipedia']=html_escape(candidat['wikipedia'].split('?')[0]) unless candidat['wikipedia'].nil? or candidat['wikipedia'].empty?
-			candidat['photo_square']="#{AWS_S3_BUCKET_URL}qualifies/#{candidat['slug']}.jpg"
+			candidat['photo_square']="#{AWS_S3_BUCKET_URL}/qualifies/#{candidat['slug']}.jpg"
 			birthday=Date.parse(candidat['birthday'].split('?')[0]) unless candidat['birthday'].nil?
 			candidat['age']=nil
 			unless birthday.nil? then
@@ -436,7 +436,7 @@ END
 				"son"=>m ? "son":"sa"
 			}
 			if candidat['photo'] then
-				candidat['photo']="#{AWS_S3_BUCKET_URL}%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])]
+				candidat['photo']="#{AWS_S3_BUCKET_URL}/%s%s" % [candidat['candidate_id'],File.extname(candidat['photo'])]
 			else
 				candidat['photo']="https://bot.democratech.co/static/images/missing-photo-M.jpg"
 			end
